@@ -6,7 +6,8 @@ RUN go build -o sayana-demo .
 
 FROM alpine:3.22.1 AS runtime-stage
 
-COPY --from=build-stage /builddir/main /app/sayana-demo
+WORKDIR /app
+COPY --from=build-stage /builddir/sayana-demo /app/sayana-demo
 COPY --from=build-stage /builddir/public /app/public
 
 ENTRYPOINT [ "/app/sayana-demo" ]
