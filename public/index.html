@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAYA TODAY // Демо-материал после демон-аэропорта</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-fullscreen.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.8.3/css/lightgallery-bundle.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
         tailwind.config = {
@@ -95,20 +93,8 @@
             color: var(--main-dark-color);
         }
 
-        .text-main-medium {
-            color: var(--main-medium-color);
-        }
-
-        .text-main-light {
-            color: var(--main-light-color);
-        }
-
         .text-background-dark {
             color: var(--background-dark-color);
-        }
-
-        .text-background-light {
-            color: var(--background-light-color);
         }
 
         .text-secondary {
@@ -201,44 +187,16 @@
             line-height: 0.9;
         }
 
-        .lh-1-5 {
-            line-height: 1.5;
-        }
-
         .lh-2 {
             line-height: 2;
-        }
-
-        .ls-vw0-03 {
-            letter-spacing: 0.03vw;
         }
 
         .ls-vmin0-04 {
             letter-spacing: 0.04vmin;
         }
 
-        .timl-vh3 {
-            text-indent: 3vh hanging;
-        }
-
         .timl-vmax2 {
             text-indent: 2vmax hanging;
-        }
-
-        .text-vh1-2 {
-            font-size: 1.2vh;
-        }
-
-        .text-vh1-5 {
-            font-size: 1.5vh !important;
-        }
-
-        .text-vh2 {
-            font-size: 2vh !important;
-        }
-
-        .text-vh3 {
-            font-size: 3vh;
         }
 
         .text-vmax0-8 {
@@ -261,28 +219,8 @@
             width: 90vw;
         }
 
-        .h-vh1-5 {
-            max-height: 1.5vh;
-        }
-
-        .h-vh40 {
-            height: 40vh;
-        }
-
-        .h-vh50 {
-            height: 50vh;
-        }
-
-        .h-vh60 {
-            height: 60vh;
-        }
-
         .h-vh90 {
             height: 90vh;
-        }
-
-        .w-p70 {
-            width: 70%;
         }
 
         .w-p80 {
@@ -308,10 +246,6 @@
 
         .mb-vmin0-8 {
             margin-bottom: 0.8vmin;
-        }
-
-        .m-vmin0-8 {
-            margin: 0.8vmin;
         }
 
         .pl-vmin0-8 {
@@ -443,7 +377,7 @@
 
             .nav-icon-custom {
                 font-size: 6vh !important;
-                -webkit-text-stroke: 0.1vh var(--main-dark-color);
+                -webkit-text-stroke: 0.1vh var(--sidebar-stroke-color);
                 width: 10vh;
                 height: 10vh;
             }
@@ -477,6 +411,17 @@
 </head>
 
 <body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons bg-repeat bg-pattern-body h-screen flex">
+
+    <script>
+        function switchTheme() {
+            const currentTheme = document.body.getAttribute('data-theme')
+            document.body.setAttribute('data-theme', currentTheme == "olive" ? "lettuce" : "olive");
+            localStorage.setItem('theme', currentTheme == "olive" ? "lettuce" : "olive");
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'olive';
+        switchTheme(savedTheme);
+    </script>
 
     <div class="desktop-sidebar-custom fixed bg-squares-and-triangles bg-repeat flex-col items-center shadow-2xl z-20 h-screen desktop">
         <div class="logo-custom text-sidebar font-patua font-extrabold text-center relative z-20">
@@ -603,12 +548,6 @@
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
 
     <script>
-        function switchTheme() {
-            const currentTheme = document.body.getAttribute('data-theme')
-            document.body.setAttribute('data-theme', currentTheme == "olive" ? "lettuce" : "olive");
-            localStorage.setItem('theme', currentTheme == "olive" ? "lettuce" : "olive");
-        }
-
         function createLightGallery(className, elements) {
             const $lgContainers = document.getElementsByClassName(className);
             for (i = 0; i < $lgContainers.length; i++) {
@@ -643,11 +582,6 @@
                 $lgContainer.innerHTML = "";
             }
         }
-    </script>
-
-    <script>
-        const savedTheme = localStorage.getItem('theme') || 'olive';
-        switchTheme(savedTheme);
     </script>
 
     <script>
