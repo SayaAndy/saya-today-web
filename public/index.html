@@ -55,6 +55,7 @@
             --background-light-color: #fffff0;
             --sidebar-text-color: var(--background-dark-color);
             --sidebar-stroke-color: var(--main-dark-color);
+            --secondary-color: var(--main-light-color);
             --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/interlocked-hexagons.svg');
             --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/squares-and-triangles.svg');
             --invert-colors-in-sidebar: false;
@@ -68,6 +69,7 @@
             --background-light-color: #fff9ef;
             --sidebar-text-color: var(--main-dark-color);
             --sidebar-stroke-color: var(--background-dark-color);
+            --secondary-color: var(--main-medium-color);
             --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/interlocked-hexagons.svg');
             --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/squares-and-triangles.svg');
             --invert-colors-in-sidebar: true;
@@ -109,6 +111,10 @@
             color: var(--background-light-color);
         }
 
+        .text-secondary {
+            color: var(--secondary-color);
+        }
+
         .bg-main-dark {
             background-color: var(--main-dark-color);
         }
@@ -144,6 +150,7 @@
             -webkit-text-stroke: 0.1vw var(--sidebar-stroke-color);
             writing-mode: sideways-lr;
             text-orientation: mixed;
+            display: block;
         }
 
         .nav-icon-custom {
@@ -173,11 +180,6 @@
 
         .bg-pattern-body {
             background-size: 10vw;
-        }
-
-        .content-tail-text {
-            font-size: 1.2vh;
-            line-height: 0.9;
         }
 
         .inset-shadow {
@@ -211,8 +213,16 @@
             letter-spacing: 0.03vw;
         }
 
+        .ls-vmin0-04 {
+            letter-spacing: 0.04vmin;
+        }
+
         .timl-vh3 {
             text-indent: 3vh hanging;
+        }
+
+        .timl-vmax2 {
+            text-indent: 2vmax hanging;
         }
 
         .text-vh1-2 {
@@ -229,6 +239,22 @@
 
         .text-vh3 {
             font-size: 3vh;
+        }
+
+        .text-vmax0-8 {
+            font-size: 0.8vmax;
+        }
+
+        .text-vmax1 {
+            font-size: 1vmax !important;
+        }
+
+        .text-vmax1-5 {
+            font-size: 1.5vmax !important;
+        }
+
+        .text-vmax2 {
+            font-size: 2vmax;
         }
 
         .w-vw90 {
@@ -284,13 +310,15 @@
         .lg-counter {
             color: var(--main-dark-color);
             font-family: 'Spectral';
-            font-size: 1.5vh;
+            font-size: 1vmax;
+            padding-top: 0;
+            height: 1vmax;
         }
 
         .lg-toolbar .lg-icon {
-            font-size: 2vh !important;
-            padding: 1vh 1vh;
-            height: 2vh;
+            padding: 0 0.7vmax;
+            font-size: 1.5vmax !important;
+            height: 1.5vmax;
             width: auto;
             color: var(--main-dark-color);
         }
@@ -300,12 +328,21 @@
         }
 
         .lg-toolbar .lg-icon {
-            font-size: 2vh !important;
+            font-size: 1.5vmax !important;
             color: var(--main-dark-color);
         }
 
         .lg-content .lg-icon:hover {
             color: var(--main-medium-color);
+        }
+
+        .lg-sub-html {
+            padding: 0.7vmin 1.25vmin !important;
+        }
+
+        .inline-gallery-container {
+            width: 80%;
+            height: 60vmin;
         }
 
         .light-gallery-captions {
@@ -352,6 +389,10 @@
                 display: flex;
             }
 
+            .inline-gallery-container {
+                width: 100%;
+            }
+
             .desktop-sidebar-custom {
                 width: 90%;
                 margin-left: 5vw;
@@ -360,10 +401,7 @@
             }
 
             .logo-custom {
-                writing-mode: initial;
-                text-orientation: initial;
-                font-size: 6vh;
-                width: auto;
+                display: none;
             }
 
             .nav-icon-custom {
@@ -389,12 +427,6 @@
             .border-right-custom {
                 width: 1.5%;
                 border-left: 0.5vw dotted var(--main-dark-color);
-            }
-        }
-
-        @media (max-aspect-ratio: 0.8/1) {
-            .logo-custom {
-                display: none;
             }
         }
 
@@ -426,43 +458,43 @@
 
         <div class="content-square flex flex-col bg-background-dark relative mt-4 mx-4">
             <div class="flex flex-row mb-1">
-                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vh3 mt-auto mb-auto pl-2 pr-2"></i>
-                <p class="text-vh3 font-spectral italic font-extrabold select-none mt-auto pl-2 pr-3">//</p>
-                <p class="text-vh3 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
-                <p class="grow text-vh2 font-spectral text-main-light text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
+                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-2 pr-2"></i>
+                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-2 pr-3">//</p>
+                <p class="text-vmax2 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
+                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
             </div>
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
 
             <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-6">
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Это Apple Keyboard 1048 из 2003!</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Это Apple Keyboard 1048 из 2003!</p>
                 <div class="justify-content-center display-block m-2">
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container-1 relative w-p70 h-vh50 ml-auto mr-auto"></div>
+                    <div class="inline-gallery-container inline-gallery-container-1 relative ml-auto mr-auto"></div>
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
                 </div>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Но зачем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Но затем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
                 <div class="justify-content-center display-block m-2">
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container-2 relative w-p70 h-vh50 ml-auto mr-auto"></div>
+                    <div class="inline-gallery-container inline-gallery-container-2 relative ml-auto mr-auto"></div>
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
                 </div>
             </div>
 
             <div class="flex flex-row mt-2 mb-1">
-                <p class="grow text-vh1-2 lh-0-9 font-spectral italic text-right text-main-light mr-2">
+                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
                     <a href="https://demo.saya.today">Демо-материал после демон-аэропорта</a> © 2025 by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
                 </p>
                 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
                 <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
                 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
             </div>
-            
+
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
         </div>
 
@@ -486,43 +518,43 @@
 
         <div class="content-square flex flex-col bg-background-dark relative mt-4 mx-4">
             <div class="flex flex-row mb-1">
-                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vh3 mt-auto mb-auto pl-2 pr-2"></i>
-                <p class="text-vh3 font-spectral italic font-extrabold select-none mt-auto pl-2 pr-3">//</p>
-                <p class="text-vh3 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
-                <p class="grow text-vh2 font-spectral text-main-light text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
+                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-2 pr-2"></i>
+                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-2 pr-3">//</p>
+                <p class="text-vmax2 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
+                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
             </div>
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
 
             <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-6">
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Это Apple Keyboard 1048 из 2003!</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Это Apple Keyboard 1048 из 2003!</p>
                 <div class="justify-content-center display-block m-2">
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container-1 relative w-p70 h-vh50 ml-auto mr-auto"></div>
+                    <div class="inline-gallery-container inline-gallery-container-1 relative ml-auto mr-auto"></div>
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
                 </div>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Но зачем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
-                <p class="text-vh1-5 font-spectral lh-2 ls-vw0-03 timl-vh3 text-left mt-4">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Но затем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
+                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-4">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
                 <div class="justify-content-center display-block m-2">
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container-2 relative w-p70 h-vh50 ml-auto mr-auto"></div>
+                    <div class="inline-gallery-container inline-gallery-container-2 relative ml-auto mr-auto"></div>
                     <hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-p80 ml-auto mr-auto">
                 </div>
             </div>
 
             <div class="flex flex-row mt-2 mb-1">
-                <p class="grow text-vh1-2 lh-0-9 font-spectral italic text-right text-main-light mr-2">
+                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
                     <a href="https://demo.saya.today">Демо-материал после демон-аэропорта</a> © 2025 by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
                 </p>
                 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
                 <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
                 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
             </div>
-            
+
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
         </div>
 
@@ -539,24 +571,51 @@
             document.body.setAttribute('data-theme', currentTheme == "olive" ? "lettuce" : "olive");
             localStorage.setItem('theme', currentTheme == "olive" ? "lettuce" : "olive");
         }
+
+        function createLightGallery(className, elements) {
+            const $lgContainers = document.getElementsByClassName(className);
+            for (i = 0; i < $lgContainers.length; i++) {
+                const $lgContainer = $lgContainers[i];
+                const inlineGallery = lightGallery($lgContainer, {
+                    container: $lgContainer,
+                    dynamic: true,
+                    width: "100%",
+                    height: "50vmin",
+                    hash: false,
+                    closable: false,
+                    showMaximizeIcon: true,
+                    appendSubHtmlTo: ".lg-sub-html",
+                    slideDelay: 0,
+                    plugins: [lgZoom, lgThumbnail],
+                    dynamicEl: elements,
+                    thumbWidth: 160,
+                    thumbHeight: "10vmin",
+                    thumbMargin: 4
+                });
+
+                setTimeout(() => {
+                    inlineGallery.openGallery();
+                }, 200);
+            }
+        }
+
+        function destroyLightGallery(className) {
+            const $lgContainers = document.getElementsByClassName(className);
+            for (i = 0; i < $lgContainers.length; i++) {
+                const $lgContainer = $lgContainers[i];
+                $lgContainer.innerHTML = "";
+            }
+        }
     </script>
 
     <script>
-        const $lgContainers1 = document.getElementsByClassName("inline-gallery-container-1");
-        for (i = 0; i < $lgContainers1.length; i++) {
-            const $lgContainer1 = $lgContainers1[i];
-            const inlineGallery1 = lightGallery($lgContainer1, {
-            container: $lgContainer1,
-            dynamic: true,
-            width: "70%",
-            height: "50vh",
-            hash: false,
-            closable: false,
-            showMaximizeIcon: true,
-            appendSubHtmlTo: ".lg-sub-html",
-            slideDelay: 0,
-            plugins: [lgZoom, lgThumbnail],
-            dynamicEl: [
+        const savedTheme = localStorage.getItem('theme') || 'olive';
+        switchTheme(savedTheme);
+    </script>
+
+    <script>
+        createLightLibrary1 = (() => {
+            createLightGallery("inline-gallery-container-1", [
                 {
                 src:
                     "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-191056.jpg",
@@ -565,41 +624,28 @@
                 thumb:
                     "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-191056.webp",
                 subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vh1-5 text-left lh-0-9 font-spectral text-main-dark">Табло #3</p>
-                                <p class="text-vh1-5 text-right lh-0-9 font-spectral text-main-light">2025.07.21 19:10:56 UTC+7</p>
+                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Клава в отливе тусклого вечера</p>
+                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 19:10:56 UTC+7</p>
                             </div>`
                 }
-            ],
+            ]);
+        });
 
-            // Completely optional
-            // Adding as the codepen preview is usually smaller
-            thumbWidth: 160,
-            thumbHeight: "8vh",
-            thumbMargin: 4
-            });
+        createLightLibrary1();
 
-            setTimeout(() => {
-                inlineGallery1.openGallery();
-            }, 200);
-        }
+        let resizeTimer1;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimer1);
+            resizeTimer1 = setTimeout(() => {
+                destroyLightGallery("inline-gallery-container-1");
+                createLightLibrary1();
+            }, 1000);
+        });
     </script>
 
     <script>
-        const $lgContainers2 = document.getElementsByClassName("inline-gallery-container-2");
-        for (i = 0; i < $lgContainers2.length; i++) {
-            const $lgContainer2 = $lgContainers2[i];
-            const inlineGallery2 = lightGallery($lgContainer2, {
-            container: $lgContainer2,
-            dynamic: true,
-            width: "70%",
-            height: "50vh",
-            hash: false,
-            closable: false,
-            showMaximizeIcon: true,
-            appendSubHtmlTo: ".lg-sub-html",
-            slideDelay: 0,
-            plugins: [lgZoom, lgThumbnail],
-            dynamicEl: [
+        createLightLibrary2 = (() => {
+            createLightGallery("inline-gallery-container-2", [
                 {
                 src:
                     "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-185010.jpg",
@@ -608,8 +654,8 @@
                 thumb:
                     "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-185010.webp",
                 subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vh1-5 text-left lh-0-9 font-spectral text-main-dark">Табло #1</p>
-                                <p class="text-vh1-5 text-right lh-0-9 font-spectral text-main-light">2025.07.21 18:50:10 UTC+7</p>
+                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Что можно сделать с F16? Не знаю. Я в принципе F-клавиши редко клацаю.</p>
+                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 18:50:10 UTC+7</p>
                             </div>`
                 },
                 {
@@ -620,23 +666,23 @@
                 thumb:
                     "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-190655.webp",
                 subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vh1-5 text-left lh-0-9 font-spectral text-main-dark">Табло #2</p>
-                                <p class="text-vh1-5 text-right lh-0-9 font-spectral text-main-light">2025.07.21 19:06:55 UTC+7</p>
+                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Уход от Enter в задний план</p>
+                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 19:06:55 UTC+7</p>
                             </div>`
                 }
-            ],
+            ]);
+        });
 
-            // Completely optional
-            // Adding as the codepen preview is usually smaller
-            thumbWidth: 160,
-            thumbHeight: "8vh",
-            thumbMargin: 4
-            });
+        createLightLibrary2();
 
-            setTimeout(() => {
-                inlineGallery2.openGallery();
-            }, 200);
-        }
+        let resizeTimer2;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimer2);
+            resizeTimer2 = setTimeout(() => {
+                destroyLightGallery("inline-gallery-container-2");
+                createLightLibrary2();
+            }, 1000);
+        });
     </script>
 
 </body>
