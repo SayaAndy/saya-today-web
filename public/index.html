@@ -413,10 +413,13 @@
 <body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons bg-repeat bg-pattern-body h-screen flex">
 
     <script>
-        function switchTheme() {
-            const currentTheme = document.body.getAttribute('data-theme')
-            document.body.setAttribute('data-theme', currentTheme == "olive" ? "lettuce" : "olive");
-            localStorage.setItem('theme', currentTheme == "olive" ? "lettuce" : "olive");
+        function switchTheme(theme) {
+            if (theme == "" || typeof theme == "undefined") {
+                const currentTheme = document.body.getAttribute('data-theme');
+                theme = currentTheme == "olive" ? "lettuce" : "olive";
+            }
+            localStorage.setItem('theme', theme);
+            document.body.setAttribute('data-theme', theme);
         }
 
         const savedTheme = localStorage.getItem('theme') || 'olive';
@@ -431,7 +434,7 @@
             <i class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
             <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
             <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i onclick="switchTheme()" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
         </div>
     </div>
 
@@ -488,7 +491,7 @@
             <i class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
             <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
             <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i onclick="switchTheme()" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
         </div>
         <div class="logo-custom text-background-dark font-patua font-extrabold text-center relative grow z-20">
             demo.saya.today
