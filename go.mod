@@ -1,4 +1,4 @@
-module gitlab.com/SayaAndy/saya-today-web
+module github.com/SayaAndy/saya-today-web
 
 go 1.24.5
 
