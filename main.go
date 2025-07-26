@@ -20,7 +20,7 @@ func main() {
 		})
 	})
 
-	app.Static("/", "./public")
+	app.Static("/", "./static")
 
 	log.Fatal(app.Listen(":3000"))
 }
