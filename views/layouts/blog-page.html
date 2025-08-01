@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAYA TODAY // {{ .Title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
+</head>
+
+<body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons bg-repeat bg-pattern-body h-screen flex">
+
+    <script>
+        function switchTheme(theme) {
+            if (theme == "" || typeof theme == "undefined") {
+                const currentTheme = document.body.getAttribute('data-theme');
+                switch (currentTheme) {
+                    case "olive": theme = "lettuce"; break;
+                    case "lettuce": theme = "night"; break;
+                    case "night": theme = "olive"; break;
+                }
+            }
+            localStorage.setItem('theme', theme);
+            document.body.setAttribute('data-theme', theme);
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'olive';
+        switchTheme(savedTheme);
+    </script>
+
+    <div class="desktop-sidebar-custom fixed bg-squares-and-triangles bg-repeat flex-col items-center shadow-2xl z-20 h-screen desktop">
+        <div class="logo-custom text-sidebar font-patua font-extrabold text-center relative z-20">
+            saya.today
+        </div>
+        <div class="flex flex-col gap-0 relative z-20">
+            <i onclick="location.href='/';" class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+        </div>
+    </div>
+
+    <div class="bg-background-dark z-10 h-screen desktop" style="padding-left: 5vw;">
+        <div class="border-left-custom bg-background-dark"></div>
+
+        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
+            <div class="flex flex-row mb-vmin0-4">
+                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
+                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
+                <p class="text-vmax2 font-spectral italic text-left mt-auto">{{ .Title }}</p>
+                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+            </div>
+            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+
+            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
+                {{ .ParsedMarkdownDesktop }}
+            </div>
+
+            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
+                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
+                    <a href="">{{ .Title }}</a> © {{ .PublishedYear }} by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+                </p>
+                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+            </div>
+
+            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+        </div>
+
+        <div class="border-right-custom bg-background-dark shadow-2xl"></div>
+    </div>
+
+    <div class="mobile-topbar-custom fixed bg-squares-and-triangles bg-repeat flex-row items-center shadow-2xl w-vw90 z-20 mobile">
+        <div class="flex flex-row gap-0 relative z-20">
+            <i onclick="location.href='/';" class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
+        </div>
+        <div class="logo-custom text-background-dark font-patua font-extrabold text-center relative grow z-20">
+            demo.saya.today
+        </div>
+    </div>
+
+    <div class="bg-background-dark flex-row z-10 w-vw90 h-vh90 mobile" style="margin-left: 5vw; margin-top: 10vh;">
+        <div class="border-left-custom bg-background-dark"></div>
+
+        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
+            <div class="flex flex-row mb-vmin0-4">
+                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
+                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
+                <p class="text-vmax2 font-spectral italic text-left mt-auto">{{ .Title }}</p>
+                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+            </div>
+            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+
+            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
+                {{ .ParsedMarkdownMobile }}
+            </div>
+
+            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
+                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
+                    <a href="">{{ .Title }}</a> © {{ .PublishedYear }} by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+                </p>
+                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+                <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+            </div>
+
+            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+        </div>
+
+        <div class="border-right-custom bg-background-dark shadow-2xl"></div>
+    </div>
+
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
+
+</body>
+</html>

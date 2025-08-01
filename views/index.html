@@ -3,281 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAYA TODAY // {{ .Title }}</title>
+    <title>SAYA TODAY // Заглавная</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    <link href="./output.css" rel="stylesheet">
+    <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons bg-repeat bg-pattern-body h-screen flex">
+<body data-theme="night" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-col">
+
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
+    <div class="absolute star z-0">*</div>
 
     <script>
         function switchTheme(theme) {
             if (theme == "" || typeof theme == "undefined") {
                 const currentTheme = document.body.getAttribute('data-theme');
-                theme = currentTheme == "olive" ? "lettuce" : "olive";
+                switch (currentTheme) {
+                    case "olive": theme = "lettuce"; break;
+                    case "lettuce": theme = "night"; break;
+                    case "night": theme = "olive"; break;
+                }
             }
-            localStorage.setItem('theme', theme);
+            // localStorage.setItem('theme', theme);
             document.body.setAttribute('data-theme', theme);
         }
 
-        const savedTheme = localStorage.getItem('theme') || 'olive';
+        const savedTheme = 'night';
         switchTheme(savedTheme);
     </script>
 
-    <div class="desktop-sidebar-custom fixed bg-squares-and-triangles bg-repeat flex-col items-center shadow-2xl z-20 h-screen desktop">
-        <div class="logo-custom text-sidebar font-patua font-extrabold text-center relative z-20">
-            demo.saya.today
-        </div>
-        <div class="flex flex-col gap-0 relative z-20">
-            <i class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-        </div>
-    </div>
-
-    <div class="bg-background-dark z-10 h-screen desktop" style="padding-left: 5vw;">
-        <div class="border-left-custom bg-background-dark"></div>
-
-        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
-            <div class="flex flex-row mb-vmin0-4">
-                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
-                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
-                <p class="text-vmax2 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
-                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
-            </div>
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
-
-            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Это Apple Keyboard 1048 из 2003!</p>
-                <div class="justify-content-center display-block m-2">
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container inline-gallery-container-1 relative ml-auto mr-auto"></div>
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+    <div class="p-4 w-6/12 h-4/12 z-1 rounded-4xl bg-background-dark flex flex-col mx-auto my-auto opacity-70">
+        <p class="font-patua mx-auto text-4xl mt-2 mb-4">saya.today</p>
+        <div class="w-10/12 grow bg-background-light flex flex-col mx-auto mb-4 overflow-y-auto opacity-100">
+            {{- range .BlogPages }}
+            <div class="m-2 min-h-16 flex flex-row justify-center justify-items-center gap-4">
+                <img style="flex-grow: 0;" class="flex-1 object-cover w-16 h-16 rounded-4xl select-none" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
+                <div class="flex-5 justify-self-center flex-col border-r-1 border-dashed border-opacity-50 border-main-medium">
+                    <a href="/blog/{{ .Link }}" class="block font-extrabold">{{ .Title }}</a>
+                    <a href="/blog/{{ .Link }}" class="block italic text-secondary">{{ .ActionDate }}</a>
+                    <p>{{ .ShortDescription }}</p>
                 </div>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Но затем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
-                <div class="justify-content-center display-block m-2">
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container inline-gallery-container-2 relative ml-auto mr-auto"></div>
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                <div class="flex-3 justify-self-center flex flex-col text-right">
+                    <p class="grow">
+                        Тэги: {{ .Tags }}
+                    </p>
+                    <p class="italic text-secondary">
+                        {{ .PublishedTime }}
+                    </p>
                 </div>
             </div>
-
-            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
-                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
-                    <a href="https://demo.saya.today">Демо-материал после демон-аэропорта</a> © 2025 by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-                </p>
-                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-            </div>
-
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
-        </div>
-
-        <div class="border-right-custom bg-background-dark shadow-2xl"></div>
-    </div>
-
-    <div class="mobile-topbar-custom fixed bg-squares-and-triangles bg-repeat flex-row items-center shadow-2xl w-vw90 z-20 mobile">
-        <div class="flex flex-row gap-0 relative z-20">
-            <i class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i class="fas fa-images nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-            <i onclick="switchTheme('')" class="fas fa-swatchbook nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
-        </div>
-        <div class="logo-custom text-background-dark font-patua font-extrabold text-center relative grow z-20">
-            demo.saya.today
+            {{- end }}
         </div>
     </div>
-
-    <div class="bg-background-dark flex-row z-10 w-vw90 h-vh90 mobile" style="margin-left: 5vw; margin-top: 10vh;">
-        <div class="border-left-custom bg-background-dark"></div>
-
-        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
-            <div class="flex flex-row mb-vmin0-4">
-                <i class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
-                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
-                <p class="text-vmax2 font-spectral italic text-left mt-auto">Демо-материал после демон-аэропорта</p>
-                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">2025.07.21 20:34:44 UTC+3</p>
-            </div>
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
-
-            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Ученик однажды попросил мудреца переименовать фотографические файлы формата JPG за 21 июля 2025 на своём телефоне, чтобы структура их имён была идентична. Ученик очень хотел поделиться своими двоякими впечатлениями от современных реалий российского авиатранспорта и хотел сначала загрузить свои фотографии в нужном формате. В ответ мудрец удалил их нахуй</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Мудрец будет удалён к ебеням с телефона и оценён на 1 звезду.</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">В итоге, чтобы собрать материал под эту демо-страницу, я вспомнил про недавно купленную клавиатуру.</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Это Apple Keyboard 1048 из 2003!</p>
-                <div class="justify-content-center display-block m-2">
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container inline-gallery-container-1 relative ml-auto mr-auto"></div>
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                </div>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left">Мотив был такой -- мне нравится её внешний вид, эта курватура аля склона холма. Ну и USB, ничего не мешает подключить куда угодно. И цена таким на рынке -- 2 тыщи на рынке (~25$).</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Купил -- понравилась и тактильность, хоть это и мембранная клава!</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Но затем я решил её почистить, ибо она была желтоватая и у неё слипались пробел и клавиша Mac. На выходе действительно она получилась белей, клавиши все нажимаются на ура... но идея опрыскать базу клавы перекисью была ошибкой. Теперь у неё работает только Enter. :(</p>
-                <p class="text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 text-left mt-vmin1-6">Напоследок немного макросъёмки, ибо почему бы и нет:</p>
-                <div class="justify-content-center display-block m-2">
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                    <div class="inline-gallery-container inline-gallery-container-2 relative ml-auto mr-auto"></div>
-                    <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                </div>
-            </div>
-
-            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
-                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
-                    <a href="https://demo.saya.today">{{ .Title }}</a> © 2025 by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-                </p>
-                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-            </div>
-
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
-        </div>
-
-        <div class="border-right-custom bg-background-dark shadow-2xl"></div>
-    </div>
-
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
 
     <script>
-        function createLightGallery(className, elements) {
-            const $lgContainers = document.getElementsByClassName(className);
-            for (i = 0; i < $lgContainers.length; i++) {
-                const $lgContainer = $lgContainers[i];
-                const inlineGallery = lightGallery($lgContainer, {
-                    container: $lgContainer,
-                    dynamic: true,
-                    width: "100%",
-                    height: "50vmin",
-                    hash: false,
-                    closable: false,
-                    showMaximizeIcon: true,
-                    appendSubHtmlTo: ".lg-sub-html",
-                    isMobile: () => { return false; },
-                    slideDelay: 0,
-                    plugins: [lgZoom, lgThumbnail],
-                    dynamicEl: elements,
-                    thumbWidth: 160,
-                    thumbHeight: "10vmin",
-                    thumbMargin: 4
-                });
+        function generateStars() {
+            var clWidth = document.documentElement.clientWidth;
+            var clHeight = document.documentElement.clientHeight;
 
-                setTimeout(() => {
-                    inlineGallery.openGallery();
-                }, 200);
+            stars = document.getElementsByClassName("star");
+            for (let starIndex = 0; starIndex < stars.length; starIndex++) {
+                const star = stars[starIndex];
+                const x = Math.floor(Math.random() * clWidth);
+                const y = Math.floor(Math.random() * clHeight * 0.8);
+                const rot = Math.random() * 90;
+                const animDuration = (Math.random() * 10) + 3;
+                const sz = Math.floor(Math.random() * 8) + 12;
+                star.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
+                star.style.animationDuration = `${animDuration}s`;
+                star.style.fontSize = `${sz}px`;
             }
         }
 
-        function destroyLightGallery(className) {
-            const $lgContainers = document.getElementsByClassName(className);
-            for (i = 0; i < $lgContainers.length; i++) {
-                const $lgContainer = $lgContainers[i];
-                $lgContainer.innerHTML = "";
-            }
-        }
-    </script>
+        document.addEventListener('DOMContentLoaded', generateStars);
 
-    <script>
-        createLightLibrary1 = (() => {
-            createLightGallery("inline-gallery-container-1", [
-                {
-                src:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-191056.jpg",
-                downloadUrl:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-191056.jpg",
-                alt: "Клава в отливе тусклого вечернего солнца",
-                sources: [{
-                    srcset: "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-191056.webp",
-                    media: "(max-width: 800px)"
-                }],
-                thumb:
-                    "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-191056.webp",
-                subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Клава в отливе тусклого вечера</p>
-                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 19:10:56 UTC+7</p>
-                            </div>`
-                }
-            ]);
-        });
-
-        createLightLibrary1();
-
-        let resizeTimer1;
+        let generateStarsTimer;
         window.addEventListener("resize", () => {
-            clearTimeout(resizeTimer1);
-            resizeTimer1 = setTimeout(() => {
-                destroyLightGallery("inline-gallery-container-1");
-                createLightLibrary1();
+            clearTimeout(generateStarsTimer);
+            generateStarsTimer = setTimeout(() => {
+                generateStars();
             }, 1000);
         });
     </script>
-
-    <script>
-        createLightLibrary2 = (() => {
-            createLightGallery("inline-gallery-container-2", [
-                {
-                src:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-185010.jpg",
-                downloadUrl:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-185010.jpg",
-                alt: "Что можно сделать с F16? Не знаю. Я в принципе F-клавиши редко клацаю.",
-                sources: [{
-                    srcset: "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-185010.webp",
-                    media: "(max-width: 800px)"
-                }],
-                thumb:
-                    "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-185010.webp",
-                subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Что можно сделать с F16? Не знаю. Я в принципе F-клавиши редко клацаю.</p>
-                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 18:50:10 UTC+7</p>
-                            </div>`
-                },
-                {
-                src:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-190655.jpg",
-                downloadUrl:
-                    "https://f003.backblazeb2.com/file/sayana-photos/full/Novosibirsk-Home-20250721-190655.jpg",
-                alt: "Уход от Enter в задний план",
-                sources: [{
-                    srcset: "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-190655.webp",
-                    media: "(max-width: 800px)"
-                }],
-                thumb:
-                    "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/Novosibirsk-Home-20250721-190655.webp",
-                subHtml: `<div class="flex flex-row light-gallery-captions">
-                                <p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">Уход от Enter в задний план</p>
-                                <p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">2025.07.21 19:06:55 UTC+7</p>
-                            </div>`
-                }
-            ]);
-        });
-
-        createLightLibrary2();
-
-        let resizeTimer2;
-        window.addEventListener("resize", () => {
-            clearTimeout(resizeTimer2);
-            resizeTimer2 = setTimeout(() => {
-                destroyLightGallery("inline-gallery-container-2");
-                createLightLibrary2();
-            }, 1000);
-        });
-    </script>
-
 </body>
 </html>

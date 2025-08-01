@@ -26,8 +26,10 @@
     --sidebar-stroke-color: var(--main-dark-color);
     --secondary-color: var(--main-light-color);
     --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/interlocked-hexagons.svg');
+    --interlocked-hexagons-background-repeat: repeat;
+    --interlocked-hexagons-background-size: 10vw;
     --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/squares-and-triangles.svg');
-    --invert-colors-in-sidebar: false;
+    --squares-and-triangles-background-repeat: repeat;
 }
 
 [data-theme="lettuce"] {
@@ -40,16 +42,37 @@
     --sidebar-stroke-color: var(--background-dark-color);
     --secondary-color: var(--main-medium-color);
     --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/interlocked-hexagons.svg');
+    --interlocked-hexagons-background-repeat: repeat;
+    --interlocked-hexagons-background-size: 10vw;
     --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/squares-and-triangles.svg');
-    --invert-colors-in-sidebar: true;
+    --squares-and-triangles-background-repeat: repeat;
+}
+
+[data-theme="night"] {
+    --main-dark-color: var(--color-sky-100);
+    --main-medium-color: var(--color-sky-200);
+    --main-light-color: var(--color-sky-300);
+    --background-dark-color: #13131b;
+    --background-light-color: #222230;
+    --sidebar-text-color: var(--main-dark-color);
+    --sidebar-stroke-color: var(--background-light-color);
+    --secondary-color: var(--main-light-color);
+    --interlocked-hexagons-background: radial-gradient(33.5% 25% at 100% 82%, rgba(190, 227, 248, 0.2) 0%, rgba(197, 179, 246, 0.13) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(54% 25% at 55% 100%, rgba(190, 227, 248, 0.2) 0%, rgba(197, 179, 246, 0.13) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(37% 19.5% at 20% 100%, rgba(176, 220, 248, 0.3) 0%, rgba(197, 172, 247, 0.2) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(63% 34.5% at 66% 77%, rgba(190, 227, 248, 0.15) 0%, rgba(197, 179, 246, 0.1) 33.33%, rgba(255, 0, 0, 0) 100%), linear-gradient(0deg, #2f5883 0%, #2f4e7a 4.75%, #2e4472 9.5%, #2a3065 19%, #272e57 26.5%, #242b4b 34%, #1f2437 49%, #1c2030 57.75%, #1a1b29 66.5%, #13131b 84%);
+    --interlocked-hexagons-background-repeat: no-repeat;
+    --interlocked-hexagons-background-size: 100vw 100vh;
+    --squares-and-triangles-background: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='60' height='60' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%2313131bff'/><path d='M10 50H0m60-40H50m0 40v10M10 0v10m21 30v20m0-60v20m9 10h20M0 30h20m0 10h20V20H20v10zM10 10h40v40H10zM0 0h60v60H0z'  stroke-width='0.5' stroke='%23353543ff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+    --squares-and-triangles-background-repeat: repeat;
 }
 
 .bg-interlocked-hexagons {
     background-image: var(--interlocked-hexagons-background);
+    background-repeat: var(--interlocked-hexagons-background-repeat);
+    background-size: var(--interlocked-hexagons-background-size);
 }
 
 .bg-squares-and-triangles {
     background-image: var(--squares-and-triangles-background);
+    background-repeat: var(--squares-and-triangles-background-repeat);
 }
 
 .text-sidebar {
@@ -62,6 +85,10 @@
 
 .text-main-dark {
     color: var(--main-dark-color);
+}
+
+.text-main-medium {
+    color: var(--main-medium-color);
 }
 
 .text-background-dark {
@@ -88,6 +115,10 @@
     border-color: var(--main-dark-color);
 }
 
+.border-main-medium {
+    border-color: var(--main-medium-color);
+}
+
 .desktop-sidebar-custom {
     width: 5vw;
     background-size: 10vw;
@@ -102,7 +133,7 @@
 
 .logo-custom {
     width: 3.5vw;
-    height: 25vw;
+    height: 20vw;
     font-size: 2.5vw;
     -webkit-text-stroke: 0.1vw var(--sidebar-stroke-color);
     writing-mode: sideways-lr;
@@ -135,10 +166,6 @@
 .border-right-custom {
     width: 0.5vw;
     border-left: 0.5vh dotted var(--main-dark-color);
-}
-
-.bg-pattern-body {
-    background-size: 10vw;
 }
 
 .inset-shadow {
@@ -180,12 +207,20 @@
     font-size: 1vmax !important;
 }
 
+.text-vmax1-2 {
+    font-size: 1.2vmax;
+}
+
 .text-vmax1-5 {
     font-size: 1.5vmax !important;
 }
 
 .text-vmax2 {
     font-size: 2vmax;
+}
+
+.text-vmax2-5 {
+    font-size: 2.5vmax;
 }
 
 .w-vw90 {
@@ -217,12 +252,28 @@
     margin-bottom: 0.4vmin;
 }
 
+.mb-vmin0-6 {
+    margin-bottom: 0.8vmin;
+}
+
 .mb-vmin0-8 {
     margin-bottom: 0.8vmin;
 }
 
+.mb-vmin1-2 {
+    margin-bottom: 1.2vmin;
+}
+
+.mb-vmin1-6 {
+    margin-bottom: 1.6vmin;
+}
+
 .pl-vmin0-8 {
     padding-left: 0.8vmin;
+}
+
+.pl-vmax2 {
+    padding-left: 2vmax;
 }
 
 .pr-vmin1-2 {
@@ -231,6 +282,10 @@
 
 .p-vmin2-4 {
     padding: 2.4vmin;
+}
+
+.space-y-vmin0-8 {
+    column-gap: 0.8vmin;
 }
 
 .lg-backdrop {
@@ -383,5 +438,29 @@
     .desktop-sidebar-custom {
         width: 100%;
         margin-left: 0;
+    }
+}
+
+.star {
+    color: var(--color-yellow-100);
+    animation-name: blink;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    20% {
+        opacity: 0.2;
+    }
+    80% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
     }
 }
