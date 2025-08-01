@@ -9,9 +9,37 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
     <link href="/output.css" rel="stylesheet">
+    <style>
+        .menu-outer-body {
+            border-radius: 10%;
+            width: 60vw;
+            height: 40vh;
+        }
+
+        .menu-inner-body {
+            width: 85%;
+        }
+
+        @media (max-aspect-ratio: 1.2/1) {
+            .menu-inner-body {
+                width: 92.5%;
+            }
+        }
+
+        @media (max-aspect-ratio: 0.8/1) {
+            .menu-outer-body {
+                width: 100vw;
+                height: 80vh;
+            }
+
+            .menu-inner-body {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
-<body data-theme="night" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-col">
+<body data-theme="night" class="font-spectral text-main-dark text-vmax1-5 overflow-hidden bg-interlocked-hexagons h-screen flex flex-col">
 
     <div class="absolute star z-0">*</div>
     <div class="absolute star z-0">*</div>
@@ -57,22 +85,22 @@
         switchTheme(savedTheme);
     </script>
 
-    <div class="p-4 w-6/12 h-4/12 z-1 rounded-4xl bg-background-dark flex flex-col mx-auto my-auto opacity-70">
-        <p class="font-patua mx-auto text-4xl mt-2 mb-4">saya.today</p>
-        <div class="w-10/12 grow bg-background-light flex flex-col mx-auto mb-4 overflow-y-auto opacity-100">
+    <div class="menu-outer-body p-4 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
+        <p class="font-patua mx-auto text-vmax2-5 mt-vmin0-8 mb-vmin1-6">saya.today</p>
+        <div class="menu-inner-body grow bg-background-light flex flex-col mx-auto mb-vmin1-6 overflow-y-auto opacity-100">
             {{- range .BlogPages }}
-            <div class="m-2 min-h-16 flex flex-row justify-center justify-items-center gap-4">
-                <img style="flex-grow: 0;" class="flex-1 object-cover w-16 h-16 rounded-4xl select-none" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
+            <div class="m-2 flex flex-row justify-center justify-items-center gap-4">
+                <img style="flex-grow: 0;" class="flex-1 object-cover rounded-4xl select-none w-vmax4 h-vmax4" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
                 <div class="flex-5 justify-self-center flex-col border-r-1 border-dashed border-opacity-50 border-main-medium">
                     <a href="/blog/{{ .Link }}" class="block font-extrabold">{{ .Title }}</a>
-                    <a href="/blog/{{ .Link }}" class="block italic text-secondary">{{ .ActionDate }}</a>
+                    <a href="/blog/{{ .Link }}" class="block italic text-vmax1 text-secondary">{{ .ActionDate }}</a>
                     <p>{{ .ShortDescription }}</p>
                 </div>
                 <div class="flex-3 justify-self-center flex flex-col text-right">
-                    <p class="grow">
+                    <p class="grow text-vmax1">
                         Тэги: {{ .Tags }}
                     </p>
-                    <p class="italic text-secondary">
+                    <p class="italic text-secondary text-vmax1">
                         {{ .PublishedTime }}
                     </p>
                 </div>

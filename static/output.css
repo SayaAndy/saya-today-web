@@ -12,8 +12,6 @@
     --color-sky-200: oklch(90.1% 0.058 230.902);
     --color-sky-300: oklch(82.8% 0.111 230.318);
     --spacing: 0.25rem;
-    --text-4xl: 2.25rem;
-    --text-4xl--line-height: calc(2.5 / 2.25);
     --font-weight-medium: 500;
     --font-weight-bold: 700;
     --font-weight-extrabold: 800;
@@ -222,9 +220,6 @@
   .my-auto {
     margin-block: auto;
   }
-  .mt-2 {
-    margin-top: calc(var(--spacing) * 2);
-  }
   .mt-auto {
     margin-top: auto;
   }
@@ -233,9 +228,6 @@
   }
   .mr-auto {
     margin-right: auto;
-  }
-  .mb-4 {
-    margin-bottom: calc(var(--spacing) * 4);
   }
   .mb-auto {
     margin-bottom: auto;
@@ -249,29 +241,11 @@
   .flex {
     display: flex;
   }
-  .h-4\/12 {
-    height: calc(4/12 * 100%);
-  }
-  .h-16 {
-    height: calc(var(--spacing) * 16);
-  }
   .h-auto {
     height: auto;
   }
   .h-screen {
     height: 100vh;
-  }
-  .min-h-16 {
-    min-height: calc(var(--spacing) * 16);
-  }
-  .w-6\/12 {
-    width: calc(6/12 * 100%);
-  }
-  .w-10\/12 {
-    width: calc(10/12 * 100%);
-  }
-  .w-16 {
-    width: calc(var(--spacing) * 16);
   }
   .max-w-full {
     max-width: 100%;
@@ -393,10 +367,6 @@
   }
   .font-spectral {
     font-family: var(--font-spectral);
-  }
-  .text-4xl {
-    font-size: var(--text-4xl);
-    line-height: var(--tw-leading, var(--text-4xl--line-height));
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
@@ -614,11 +584,17 @@
 .w-vw90 {
   width: 90vw;
 }
+.w-p80 {
+  width: 80%;
+}
+.w-vmax4 {
+  width: 4vmax;
+}
 .h-vh90 {
   height: 90vh;
 }
-.w-p80 {
-  width: 80%;
+.h-vmax4 {
+  height: 4vmax;
 }
 .mt-vmin0-8 {
   margin-top: 0.8vmin;

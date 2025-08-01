@@ -227,12 +227,20 @@
     width: 90vw;
 }
 
+.w-p80 {
+    width: 80%;
+}
+
+.w-vmax4 {
+    width: 4vmax;
+}
+
 .h-vh90 {
     height: 90vh;
 }
 
-.w-p80 {
-    width: 80%;
+.h-vmax4 {
+    height: 4vmax;
 }
 
 .mt-vmin0-8 {
