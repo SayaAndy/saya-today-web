@@ -8,10 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
+{{- if .MapLocationX }}
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+{{- end }}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
     <link href="/output.css" rel="stylesheet">
+
+    <style>
+        .map-container .leaflet-container {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
 </head>
 
 <body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex">
@@ -60,6 +70,11 @@
 
             <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
                 {{ .ParsedMarkdownDesktop }}
+                {{- if .MapLocationX }}
+                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                <div id="location-map-desktop" class="relative p-vmin0-8 flex-none ml-auto mr-auto w-p60 h-vh40"></div>
+                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                {{- end }}
             </div>
 
             <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
@@ -103,6 +118,11 @@
 
             <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
                 {{ .ParsedMarkdownMobile }}
+                {{- if .MapLocationX }}
+                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                <div id="location-map-mobile" class="relative p-vmin0-8 flex-none ml-auto mr-auto w-p100 h-vh40"></div>
+                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                {{- end }}
             </div>
 
             <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
@@ -123,6 +143,52 @@
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
+{{- if .MapLocationX }}
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+
+    <script>
+        function initLocationMap(id, x, y, relativeErrorMeters = 0) {
+            var map = L.map(id).setView([x, y], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            if (relativeErrorMeters != 0) {
+                var circle = L.circle([x, y], {
+                    color: '#8a9d8a',
+                    fillColor: '#8a9d8a',
+                    fillOpacity: 0.15,
+                    radius: relativeErrorMeters
+                }).addTo(map);
+            }
+
+            var marker = L.marker([x, y]).addTo(map);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {initLocationMap(
+            'location-map-desktop',
+            {{ .MapLocationX }},
+            {{ .MapLocationY }},
+            {{ .MapLocationAreaMeters }}
+        )});
+
+        document.addEventListener('DOMContentLoaded', () => {initLocationMap(
+            'location-map-mobile',
+            {{ .MapLocationX }},
+            {{ .MapLocationY }},
+            {{ .MapLocationAreaMeters }}
+        )});
+
+        window.addEventListener('resize', function() {
+            setTimeout(() => {
+                if (window.location-map-desktop) window.location-map-desktop.invalidateSize();
+                if (window.location-map-mobile) window.location-map-mobile.invalidateSize();
+            }, 100);
+        });
+    </script>
+{{- end }}
 
 </body>
 </html>

@@ -259,6 +259,9 @@
   .flex-5 {
     flex: 5;
   }
+  .flex-none {
+    flex: none;
+  }
   .flex-grow {
     flex-grow: 1;
   }
@@ -584,11 +587,20 @@
 .w-vw90 {
   width: 90vw;
 }
+.w-p60 {
+  width: 60%;
+}
 .w-p80 {
   width: 80%;
 }
+.w-p100 {
+  width: 100%;
+}
 .w-vmax4 {
   width: 4vmax;
+}
+.h-vh40 {
+  height: 40vh;
 }
 .h-vh90 {
   height: 90vh;
@@ -629,6 +641,9 @@
 }
 .pr-vmin1-2 {
   padding-right: 1.2vmin;
+}
+.p-vmin0-8 {
+  padding: 0.8vmin;
 }
 .p-vmin2-4 {
   padding: 2.4vmin;

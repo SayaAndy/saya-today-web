@@ -101,12 +101,25 @@ func main() {
 			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("failed to find '%s' post", c.Params("title")))
 		}
 
+		geolocationParts := strings.Split(metadata.Geolocation, " ")
+		var x, y, areaError string
+		if len(geolocationParts) >= 2 {
+			x = geolocationParts[0]
+			y = geolocationParts[1]
+		}
+		if len(geolocationParts) >= 3 {
+			areaError = geolocationParts[2]
+		}
+
 		return c.Render("layouts/blog-page", fiber.Map{
 			"Title":                 metadata.Title,
 			"PublishedDate":         metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00"),
 			"PublishedYear":         strconv.Itoa(metadata.PublishedTime.Year()),
 			"ParsedMarkdownDesktop": template.HTML(parsedMarkdownDesktop),
 			"ParsedMarkdownMobile":  template.HTML(parsedMarkdownMobile),
+			"MapLocationX":          x,
+			"MapLocationY":          y,
+			"MapLocationAreaMeters": areaError,
 		})
 	})
 
