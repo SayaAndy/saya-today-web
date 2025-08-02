@@ -124,11 +124,19 @@
     background-size: 10vw;
 }
 
+body:has(.lg-container:not([class~="lg-inline"])) .desktop-sidebar-custom {
+    display: none !important;
+}
+
 .mobile-topbar-custom {
     width: 90vw;
-    height: 10vh;
-    background-size: 20vh;
+    height: 8%;
+    background-size: 16vh;
     margin-left: 5vw;
+}
+
+body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
+    display: none !important;
 }
 
 .logo-custom {
@@ -314,10 +322,18 @@
 
 .lg-backdrop {
     background-color: var(--background-light-color);
+    opacity: 0.8 !important;
+}
+
+.lg-container:not([class~="lg-inline"]) .lg-outer {
+    width: 80%;
+    height: 80%;
+    margin: 10%;
 }
 
 .lg-thumb-outer {
     background-color: var(--background-light-color) !important;
+    opacity: 0.8 !important;
 }
 
 .lg-prev {
@@ -338,12 +354,30 @@
     height: 1vmax;
 }
 
+.lg-container:not([class~="lg-inline"]) .lg-counter {
+    font-size: 2vmax;
+    height: 2vmax;
+}
+
+.lg-content {
+    top: 3vmax !important;
+}
+
+.lg-container:not([class~="lg-inline"]) .lg-content {
+    top: 4vmax !important;
+}
+
 .lg-toolbar .lg-icon {
     padding: 0 0.7vmax;
     font-size: 1.5vmax !important;
     height: 1.5vmax;
     width: auto;
     color: var(--main-dark-color);
+}
+
+.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon {
+    font-size: 3vmax !important;
+    height: 3vmax;
 }
 
 .lg-toolbar .lg-icon:hover {
@@ -431,16 +465,16 @@
     }
 
     .nav-icon-custom {
-        font-size: 6vh !important;
+        font-size: 5vh !important;
         -webkit-text-stroke: 0.1vh var(--sidebar-stroke-color);
-        width: 10vh;
-        height: 10vh;
+        width: 8vh;
+        height: 8vh;
         align-content: center;
         text-align: center;
     }
 
     .nav-icon-custom:hover {
-        font-size: 8vh;
+        font-size: 7vh;
     }
 
     .bg-pattern-body {

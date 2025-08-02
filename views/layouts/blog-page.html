@@ -24,7 +24,7 @@
     </style>
 </head>
 
-<body data-theme="olive" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex">
+<body data-theme="night" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex">
 
     <script>
         function switchTheme(theme) {
@@ -40,11 +40,11 @@
             document.body.setAttribute('data-theme', theme);
         }
 
-        const savedTheme = localStorage.getItem('theme') || 'olive';
+        const savedTheme = localStorage.getItem('theme') || 'night';
         switchTheme(savedTheme);
     </script>
 
-    <div class="desktop-sidebar-custom fixed bg-squares-and-triangles bg-repeat flex-col items-center shadow-2xl z-20 h-screen desktop">
+    <div class="desktop-sidebar-custom sticky bg-squares-and-triangles bg-repeat flex-col items-center shadow-2xl z-20 h-screen desktop">
         <div class="logo-custom text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="bg-background-dark z-10 h-screen desktop" style="padding-left: 5vw;">
+    <div class="bg-background-dark z-10 h-screen desktop">
         <div class="border-left-custom bg-background-dark"></div>
 
         <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex-row z-10 w-vw90 h-vh90 mobile" style="margin-left: 5vw; margin-top: 10vh;">
+    <div class="bg-background-dark flex-row z-10 w-vw90 h-[92vh] mobile" style="margin-left: 5vw; margin-top: 8vh;">
         <div class="border-left-custom bg-background-dark"></div>
 
         <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
