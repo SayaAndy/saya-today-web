@@ -671,9 +671,9 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
   opacity: 0.8 !important;
 }
 .lg-container:not([class~="lg-inline"]) .lg-outer {
-  width: 80%;
-  height: 80%;
-  margin: 10%;
+  width: 90%;
+  height: 90%;
+  margin: 5vh 5vw;
 }
 .lg-thumb-outer {
   background-color: var(--background-light-color) !important;
