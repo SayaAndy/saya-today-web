@@ -425,7 +425,7 @@
   --secondary-color: var(--main-light-color);
   --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/interlocked-hexagons.svg');
   --interlocked-hexagons-background-repeat: repeat;
-  --interlocked-hexagons-background-size: 10vw;
+  --interlocked-hexagons-background-size: 10vh;
   --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/olive/squares-and-triangles.svg');
   --squares-and-triangles-background-repeat: repeat;
 }
@@ -440,7 +440,7 @@
   --secondary-color: var(--main-medium-color);
   --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/interlocked-hexagons.svg');
   --interlocked-hexagons-background-repeat: repeat;
-  --interlocked-hexagons-background-size: 10vw;
+  --interlocked-hexagons-background-size: 10vh;
   --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/lettuce/squares-and-triangles.svg');
   --squares-and-triangles-background-repeat: repeat;
 }
