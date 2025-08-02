@@ -87,7 +87,7 @@ function createLightLibrary%s() {
 			closable: false,
 			showMaximizeIcon: true,
 			appendSubHtmlTo: ".lg-sub-html",
-            isMobile: () => { return false; },
+            isMobile: () => false,
 			slideDelay: 0,
 			plugins: [lgZoom, lgThumbnail],
 			thumbWidth: 160,
