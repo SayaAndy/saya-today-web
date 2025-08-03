@@ -1,5 +1,6 @@
 ---
 - name: Deploy saya-today-web Docker Container
+  hosts: all
   remote_user: svc_github
 
   tasks:
