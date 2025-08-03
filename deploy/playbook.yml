@@ -17,5 +17,5 @@
         - name: caddy
           ipv4_address: "{{ saya_today_web_ipv4_address }}"
       restart_policy: unless-stopped
-    no_log: true
+    no_log: false
 ...

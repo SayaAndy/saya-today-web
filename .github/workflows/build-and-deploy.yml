@@ -61,7 +61,7 @@ jobs:
 
       - name: Test SSH connection
         run: |
-          ssh -o ConnectTimeout=10 -i ~/.ssh/id_rsa svc_github@pl.saya.today "echo 'SSH connection successful'"
+          ssh -o ConnectTimeout=10 -i ~/.ssh/id_ed25519 svc_github@pl.saya.today "echo 'SSH connection successful'"
 
       - name: Install Ansible
         shell: bash
@@ -73,10 +73,5 @@ jobs:
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
         working-directory: ./deploy
-        run: >
-          ansible-playbook -i inventory.yml -l stage playbook.yml
-            --private-key ~/.ssh/id_ed25519
-            -u svc_github
-            -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }}
-            -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }}
-            -e saya_today_web_tag=${{ github.ref_name }}
+        run: |
+          ansible-playbook -i inventory.yml -l stage playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }} -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }} -e saya_today_web_tag=${{ github.ref_name }}
