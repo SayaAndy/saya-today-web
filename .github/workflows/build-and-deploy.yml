@@ -77,6 +77,6 @@ jobs:
           ansible-playbook -i inventory.yml -l stage playbook.yml
             --private-key ~/.ssh/id_ed25519
             -u svc_github
-            -e saya_today_web.b2.key_id=${{ secrets.B2_KEY_ID }}
-            -e saya_today_web.b2.application_key=${{ secrets.B2_APPLICATION_KEY }}
-            -e saya_today_web.tag=${{ github.ref_name }}
+            -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }}
+            -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }}
+            -e saya_today_web_tag=${{ github.ref_name }}
