@@ -36,6 +36,7 @@ config*.json
 
 /main
 /sayana-demo
+/static/input.css
 
 /.vscode
 .envrc
