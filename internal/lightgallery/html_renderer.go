@@ -38,13 +38,13 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 			return ast.WalkContinue, nil
 		}
 
-		galleryID := generateDivId(4)
+		galleryID := generateDivId(8)
 
 		w.WriteString(fmt.Sprintf(`
 <div class="justify-content-center display-block m-2">
-	<hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+	<hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%%] ml-auto mr-auto">
 	<div id="lg-%s" class="inline-gallery-container relative ml-auto mr-auto"></div>
-	<hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+	<hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%%] ml-auto mr-auto">
 </div>`, galleryID))
 
 		var dynamicElements []string
@@ -67,8 +67,8 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				thumb:
 					"https://f003.backblazeb2.com/file/sayana-photos/thumbnails/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
-								<p class="grow text-vmax1 text-left lh-0-9 font-spectral text-main-dark">%s</p>
-								<p class="text-vmax1 text-right lh-0-9 font-spectral text-secondary">%s</p>
+								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
+								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
 			}`, img.URL, img.URL, img.Caption, imageUrlWithoutExt, imageUrlWithoutExt, img.Caption, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}

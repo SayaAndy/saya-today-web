@@ -59,26 +59,26 @@
     <div class="bg-background-dark z-10 h-screen desktop">
         <div class="border-left-custom bg-background-dark"></div>
 
-        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
-            <div class="flex flex-row mb-vmin0-4">
-                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
-                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
-                <p class="text-vmax2 font-spectral italic text-left mt-auto">{{ .Title }}</p>
-                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+        <div class="content-square flex flex-col bg-background-dark relative mt-[1.6vmin] mx-[1.6vmin]">
+            <div class="flex flex-row mb-[0.4vmin]">
+                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
+                <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
+                <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
+                <p class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
             </div>
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
-            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-vmin2-4">
+            <div class="bg-background-light flex flex-col flex-1 overflow-y-auto inset-shadow p-[2.4vmin]">
                 {{ .ParsedMarkdownDesktop }}
                 {{- if .MapLocationX }}
-                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                <div id="location-map-desktop" class="relative p-vmin0-8 flex-none ml-auto mr-auto w-p60 h-vh40"></div>
-                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
+                <div id="location-map-desktop" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[60%] h-[40vh]"></div>
+                <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
                 {{- end }}
             </div>
 
-            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
-                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
+            <div class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
+                <p class="grow text-[0.8vmax]/[0.9] font-spectral italic text-right text-secondary mr-2">
                     <a href="">{{ .Title }}</a> © {{ .PublishedYear }} by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
                 </p>
                 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
@@ -86,13 +86,13 @@
                 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
             </div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
         </div>
 
         <div class="border-right-custom bg-background-dark shadow-2xl"></div>
     </div>
 
-    <div class="mobile-topbar-custom fixed bg-squares-and-triangles bg-repeat flex-row items-center shadow-2xl w-vw90 z-20 mobile">
+    <div class="mobile-topbar-custom fixed bg-squares-and-triangles bg-repeat flex-row items-center shadow-2xl w-[90vw] z-20 mobile">
         <div class="flex flex-row gap-0 relative z-20">
             <i onclick="location.href='/';" class="fas fa-home nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
             <i class="fas fa-search nav-icon-custom text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex justify-center items-center rounded-lg"></i>
@@ -104,29 +104,29 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex-row z-10 w-vw90 h-[92vh] mobile" style="margin-left: 5vw; margin-top: 8vh;">
+    <div class="bg-background-dark flex-row z-10 w-[90vw] h-[92vh] mobile ml-[5vw] mt-[8vh]">
         <div class="border-left-custom bg-background-dark"></div>
 
-        <div class="content-square flex flex-col bg-background-dark relative mt-vmin1-6 mx-vmin1-6">
-            <div class="flex flex-row mb-vmin0-4">
-                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-vmax2 mt-auto mb-auto pl-vmin0-8 pr-2"></i>
-                <p class="text-vmax2 font-spectral italic font-extrabold select-none mt-auto pl-vmin0-8 pr-vmin1-2">//</p>
-                <p class="text-vmax2 font-spectral italic text-left mt-auto">{{ .Title }}</p>
-                <p class="grow text-vmax1-5 font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+        <div class="content-square flex flex-col bg-background-dark relative mt-[1.6vmin] mx-[1.6vmin]">
+            <div class="flex flex-row mb-[0.4vmin]">
+                <i onclick="location.href='/';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
+                <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
+                <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
+                <p class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
             </div>
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
-            <div class="bg-background-light flex flex-col overflow-y-auto inset-shadow p-vmin2-4 max-h-[80%]">
+            <div class="bg-background-light flex flex-col overflow-y-auto inset-shadow p-[2.4vmin] max-h-[80%]">
                 {{ .ParsedMarkdownMobile }}
                 {{- if .MapLocationX }}
-                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
-                <div id="location-map-mobile" class="relative p-vmin0-8 flex-none ml-auto mr-auto w-p100 h-vh40"></div>
-                <hr class="border-t-4 border-dotted border-main-dark mt-vmin0-8 mb-vmin0-8 w-p80 ml-auto mr-auto">
+                <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
+                <div id="location-map-mobile" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[100%] h-[40vh]"></div>
+                <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
                 {{- end }}
             </div>
 
-            <div class="flex flex-row mt-vmin0-8 mb-vmin0-4">
-                <p class="grow text-vmax0-8 lh-0-9 font-spectral italic text-right text-secondary mr-2">
+            <div class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
+                <p class="grow text-[0.8vmax]/[0.9] font-spectral italic text-right text-secondary mr-2">
                     <a href="">{{ .Title }}</a> © {{ .PublishedYear }} by <a href="https://t.me/EarlInisMona">Saya Andy</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
                 </p>
                 <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
@@ -134,7 +134,7 @@
                 <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
             </div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-vmin0-8">
+            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
         </div>
 
         <div class="border-right-custom bg-background-dark shadow-2xl"></div>

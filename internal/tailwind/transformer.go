@@ -17,44 +17,44 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 		switch node := n.(type) {
 		case *ast.Heading:
 			classes := map[int]string{
-				1: "font-patua text-vmax2-5 font-bold text-main-dark mb-vmin1-2 ls-vmin0-04",
-				2: "font-spectral text-vmax2 font-bold text-main-dark mb-vmin0-8 ls-vmin0-04",
-				3: "font-spectral text-vmax1-5 font-medium text-main-dark mb-vmin0-6 ls-vmin0-04",
-				4: "font-spectral text-vmax1-2 font-medium text-main-medium mb-vmin0-4 ls-vmin0-04",
-				5: "font-spectral text-vmax1 font-medium text-main-medium mb-vmin0-4 italic ls-vmin0-04",
-				6: "font-spectral text-vmax1 font-medium text-secondary mb-vmin0-4",
+				1: "font-patua text-[2.5vmax] font-bold text-main-dark mb-[1.2vmin] tracking-[0.04vmin]",
+				2: "font-spectral text-[2vmax] font-bold text-main-dark mb-[0.8vmin] tracking-[0.04vmin]",
+				3: "font-spectral text-[1.5vmax] font-medium text-main-dark mb-[0.6vmin] tracking-[0.04vmin]",
+				4: "font-spectral text-[1.2vmax] font-medium text-main-medium mb-[0.4vmin] tracking-[0.04vmin]",
+				5: "font-spectral text-[1vmax] font-medium text-main-medium mb-[0.4vmin] italic tracking-[0.04vmin]",
+				6: "font-spectral text-[1vmax] font-medium text-secondary mb-[0.4vmin]",
 			}
 			if class, ok := classes[node.Level]; ok {
 				node.SetAttribute([]byte("class"), []byte(class))
 			}
 
 		case *ast.Paragraph:
-			node.SetAttribute([]byte("class"), []byte("text-vmax1 font-spectral lh-2 ls-vmin0-04 timl-vmax2 mb-vmin1-6"))
+			node.SetAttribute([]byte("class"), []byte("text-[1vmax]/[2] font-spectral tracking-[0.04vmin] -indent-[2vmax] ml-[2vmax] mb-[1.6vmin]"))
 
 		case *ast.List:
 			if node.IsOrdered() {
-				node.SetAttribute([]byte("class"), []byte("list-decimal list-inside space-y-vmin0-8 mb-vmin1-6 pl-vmax2"))
+				node.SetAttribute([]byte("class"), []byte("list-decimal list-inside space-y-[0.8vmin] mb-[1.6vmin] pl-[2vmax]"))
 			} else {
-				node.SetAttribute([]byte("class"), []byte("list-disc list-inside space-y-vmin0-8 mb-vmin1-6 pl-vmax2"))
+				node.SetAttribute([]byte("class"), []byte("list-disc list-inside space-y-[0.8vmin] mb-[1.6vmin] pl-[2vmax]"))
 			}
 
 		case *ast.ListItem:
-			node.SetAttribute([]byte("class"), []byte("text-vmax1 font-spectral lh-2 ls-vmin0-04"))
+			node.SetAttribute([]byte("class"), []byte("text-[1vmax]/[2] font-spectral tracking-[0.04vmin]"))
 
 		case *ast.Blockquote:
-			node.SetAttribute([]byte("class"), []byte("border-l-vmin0-4 border-main-medium bg-background-dark p-vmin0-8 mb-vmin0-8 italic"))
+			node.SetAttribute([]byte("class"), []byte("border-l-[0.4vmin] border-main-medium bg-background-dark p-[0.8vmin] mb-[0.8vmin] italic"))
 
 		case *ast.CodeSpan:
 			node.SetAttribute([]byte("class"), []byte("bg-background-dark"))
 
 		case *ast.CodeBlock, *ast.FencedCodeBlock:
-			node.SetAttribute([]byte("class"), []byte("bg-background-dark p-vmin0-8 rounded-lg overflow-x-auto mb-vmin1-6"))
+			node.SetAttribute([]byte("class"), []byte("bg-background-dark p-[0.8vmin] rounded-lg overflow-x-auto mb-[1.6vmin]"))
 
 		case *ast.Link:
 			node.SetAttribute([]byte("class"), []byte("text-secondary hover:text-main-dark underline"))
 
 		case *ast.Image:
-			node.SetAttribute([]byte("class"), []byte("max-w-full h-auto rounded-lg shadow-lg mb-vmin1-6"))
+			node.SetAttribute([]byte("class"), []byte("max-w-full h-auto rounded-lg shadow-lg mb-[1.6vmin]"))
 
 		case *ast.Emphasis:
 			switch node.Level {
