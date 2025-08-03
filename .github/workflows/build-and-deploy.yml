@@ -1,0 +1,60 @@
+name: Publish Docker image
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  build-and-push:
+    if: github.repository == 'SayaAndy/saya-today-web'
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/SayaAndy/saya-today-web:latest
+            ghcr.io/SayaAndy/saya-today-web:${{ github.ref_name }}
+
+  deploy:
+    if: github.repository == 'SayaAndy/saya-today-web'
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: [build-and-push]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up SSH private key
+        run: |
+          echo "${{ secrets.SVC_GITHUB_PK }}" > deploy/private_key.pem
+          chmod 600 deploy/private_key.pem
+      - name: Install Ansible
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+      - name: Run Ansible playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+        working-directory: ./deploy
+        run: >
+          ansible-playbook -i inventory.yml -l stage playbook.yml
+            --private-key private_key.pem
+            -e saya_today_web.b2.key_id=${{ secrets.B2_KEY_ID }}
+            -e saya_today_web.b2.application_key=${{ secrets.B2_APPLICATION_KEY }}
+            -e saya_today_web.tag=${{ github.ref_name }}

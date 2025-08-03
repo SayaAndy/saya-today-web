@@ -1,0 +1,15 @@
+prod:
+  hosts:
+    pl.saya.today:
+      saya_today_web:
+        name: sayana-web
+        hostname: sayana-web
+        ipv4_address: 172.16.0.18
+
+stage:
+  hosts:
+    pl.saya.today:
+      saya_today_web:
+        name: sayana-demo
+        hostname: sayana-demo
+        ipv4_address: 172.16.0.17
