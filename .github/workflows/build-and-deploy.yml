@@ -34,8 +34,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/SayaAndy/saya-today-web:latest
-            ghcr.io/SayaAndy/saya-today-web:${{ github.ref_name }}
+            ghcr.io/sayaandy/saya-today-web:latest
+            ghcr.io/sayaandy/saya-today-web:${{ github.ref_name }}
 
   deploy:
     if: github.repository == 'SayaAndy/saya-today-web'
