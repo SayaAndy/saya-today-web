@@ -12,45 +12,33 @@
     <style>
         .menu-outer-body {
             border-radius: 10%;
-            width: 40vh;
-            height: 30vh;
+            width: 60vw;
+            height: 40vh;
         }
 
         .menu-inner-body {
             width: 85%;
         }
 
-        .flex-adaptive {
-            flex-direction: row;
-        }
-
-        .language-icon {
-            max-width: calc(80% / {{ .AvailableLanguages | len }});
-            max-height: 80%;
-        }
-
-        @media (max-aspect-ratio: 0.8/1) {
+        @media (max-aspect-ratio: 1.2/1) {
             .menu-outer-body {
                 border-radius: 5%;
-            }
-
-            .menu-outer-body {
-                width: min(40vh, 100vw);
-                height: 40vh;
-                border-radius: 0;
-            }
-
-            .language-icon {
-                max-width: 40%;
-                max-height: calc(80% / {{ .AvailableLanguages | len }});
             }
 
             .menu-inner-body {
                 width: 92.5%;
             }
+        }
 
-            .flex-adaptive {
-                flex-direction: column;
+        @media (max-aspect-ratio: 0.8/1) {
+            .menu-outer-body {
+                width: 100vw;
+                height: 80vh;
+                border-radius: 0;
+            }
+
+            .menu-inner-body {
+                width: 100%;
             }
         }
     </style>
@@ -103,13 +91,27 @@
     </script>
 
     <div class="menu-outer-body p-4 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
-        <p class="font-patua mx-auto text-[2.5vmax] mt-[0.8vmin] mb-[0.8vmin]">saya.today</p>
-        <div class="menu-inner-body grow bg-background-light flex flex-adaptive mx-auto opacity-100">
-            {{- range .AvailableLanguages }}
-            <img onclick="location.href='/blog/{{ .Name }}';" class="object-scale-down cursor-pointer flex-1 rounded-[20%] language-icon mx-auto my-auto relative" src="{{ .Flag }}" alt="{{ .Alt }}">
+        <p class="font-patua mx-auto text-[2.5vmax] mt-[0.8vmin] mb-[1.6vmin]">saya.today</p>
+        <div class="menu-inner-body grow bg-background-light flex flex-col mx-auto mb-[1.6vmin] overflow-y-auto opacity-100">
+            {{- range .BlogPages }}
+            <div class="m-2 flex flex-row justify-center justify-items-center gap-4">
+                <img onclick="location.href='/blog/{{ .Link }}';" style="flex-grow: 0;" class="flex-1 cursor-pointer object-cover rounded-4xl select-none w-[4vmax] h-[4vmax]" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
+                <div class="flex-5 justify-self-center flex-col border-r-1 border-dashed border-opacity-50 border-main-medium">
+                    <a href="/blog/{{ .Link }}" class="block font-extrabold">{{ .Title }}</a>
+                    <a href="/blog/{{ .Link }}" class="block italic text-[1vmax] text-secondary">{{ .ActionDate }}</a>
+                    <p>{{ .ShortDescription }}</p>
+                </div>
+                <div class="flex-3 justify-self-center flex flex-col text-right">
+                    <p class="grow text-[1vmax]">
+                        {{ .Tags }}
+                    </p>
+                    <p class="italic text-secondary text-[1vmax]">
+                        {{ .PublishedTime }}
+                    </p>
+                </div>
+            </div>
             {{- end }}
         </div>
-        <p class="font-spectral mx-auto text-[1.5vmax] text-secondary mt-[0.8vmin] mb-[0.8vmin]">Choose your language</p>
     </div>
 
     <script>

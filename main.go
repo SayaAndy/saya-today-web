@@ -8,6 +8,7 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -17,6 +18,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/redirect"
 	"github.com/gofiber/template/html/v2"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
@@ -36,8 +38,9 @@ var (
 			gmhtml.WithXHTML(),
 		),
 	)
-	b2Client   *b2.B2Client
-	configPath = flag.String("c", "config.yaml", "Path to the configuration file (in YAML format)")
+	b2Client           *b2.B2Client
+	configPath         = flag.String("c", "config.yaml", "Path to the configuration file (in YAML format)")
+	availableLanguages = make([]string, 0)
 )
 
 func main() {
@@ -60,14 +63,37 @@ func main() {
 		os.Exit(1)
 	}
 
+	for _, lang := range cfg.BlogPages.AvailableLanguages {
+		availableLanguages = append(availableLanguages, lang.Name)
+	}
+
 	engine := html.New("./views", ".html")
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
 
+	app.Use(redirect.New(redirect.Config{
+		Rules: map[string]string{
+			"/blog": "/",
+		},
+		StatusCode: 301,
+	}))
+
 	app.Get("/", func(c *fiber.Ctx) error {
-		pages, err := b2Client.Scan()
+		return c.Status(fiber.StatusOK).Render("index", fiber.Map{
+			"AvailableLanguages": cfg.BlogPages.AvailableLanguages,
+		})
+	})
+
+	app.Get("/blog/:lang", func(c *fiber.Ctx) error {
+		lang := c.Params("lang")
+		if !slices.Contains(availableLanguages, lang) {
+			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
+		}
+
+		pages, err := b2Client.Scan(lang + "/")
 		status := fiber.StatusOK
 		if err != nil {
 			status = fiber.StatusPartialContent
@@ -88,14 +114,20 @@ func main() {
 			})
 		}
 
-		return c.Status(status).Render("index", fiber.Map{
+		return c.Status(status).Render("layouts/blog-main", fiber.Map{
 			"PublishedYear": "2025",
 			"BlogPages":     pageMeta,
 		})
 	})
 
 	app.Get("/blog/:lang/:title", func(c *fiber.Ctx) error {
-		metadata, parsedMarkdownDesktop, parsedMarkdownMobile, err := readBlogPost(c.Params("lang") + "/" + c.Params("title"))
+		lang := c.Params("lang")
+		if !slices.Contains(availableLanguages, lang) {
+			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
+		}
+
+		metadata, parsedMarkdownDesktop, parsedMarkdownMobile, err := readBlogPost(lang + "/" + c.Params("title"))
 		if err != nil {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("failed to find '%s' post", c.Params("title")))

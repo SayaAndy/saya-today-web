@@ -36,10 +36,10 @@ type BlogPage struct {
 	Metadata *frontmatter.Metadata
 }
 
-func (c *B2Client) Scan() ([]*BlogPage, error) {
+func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 	filePaths := []*BlogPage{}
 
-	iter := c.bucket.List(context.Background(), b2.ListPrefix(c.prefix))
+	iter := c.bucket.List(context.Background(), b2.ListPrefix(c.prefix+prefix))
 
 	for iter.Next() {
 		obj := iter.Object()

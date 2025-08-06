@@ -4,18 +4,18 @@
   remote_user: svc_github
 
   tasks:
-  - name: Deploy saya-today-web Docker Container
-    community.docker.docker_container:
-      name: "{{ saya_today_web_name }}"
-      hostname: "{{ saya_today_web_hostname }}"
-      image: "ghcr.io/sayaandy/saya-today-web:{{ saya_today_web_tag }}"
-      env:
-        B2_KEY_ID: "{{ saya_today_web_b2_key_id }}"
-        B2_APPLICATION_KEY: "{{ saya_today_web_b2_application_key }}"
-      network_mode: caddy
-      networks:
-        - name: caddy
-          ipv4_address: "{{ saya_today_web_ipv4_address }}"
-      restart_policy: unless-stopped
-    no_log: false
+    - name: Deploy saya-today-web Docker Container
+      community.docker.docker_container:
+        name: "{{ saya_today_web_name }}"
+        hostname: "{{ saya_today_web_hostname }}"
+        image: "ghcr.io/sayaandy/saya-today-web:{{ saya_today_web_tag }}"
+        env:
+          B2_KEY_ID: "{{ saya_today_web_b2_key_id }}"
+          B2_APPLICATION_KEY: "{{ saya_today_web_b2_application_key }}"
+        network_mode: caddy
+        networks:
+          - name: caddy
+            ipv4_address: "{{ saya_today_web_ipv4_address }}"
+        restart_policy: unless-stopped
+      no_log: true
 ...
