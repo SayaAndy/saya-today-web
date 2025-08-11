@@ -30,7 +30,8 @@
     --interlocked-hexagons-background-size: 10vh;
     --squares-and-triangles-background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%234a5139%22%2F%3E%3Cpath%20fill%3D%22%23b2b285%22%20d%3D%22M0%200v6.77L6.72%200zm8.91%200L0%208.96v3.86L12.83%200zm6.11%200L0%2015.06v3.87L18.9%200zm6.11%200L0%2021.12v3.92L25%200zM25%200l25%2024.99v-3.87L28.87%200zm25%2024.99%2025%2024.98L100%2025%2075%200zm-50%20.05v3.87l21.13%2021.12H25l-25-25zm25%2024.99h3.87L50%2028.9v-3.87zm0%200L0%2075l25%2025%2025-24.99zM50%2075l25-24.98h-3.87L50%2071.14v3.87zm0%200v3.87L71.13%20100H75L50%2075.01zm25%2025h3.87L100%2078.88v-3.87zm25-24.99v-3.87L78.87%2050.03H75L100%2075zM31.1%200%2050%2018.93v-3.87L34.98%200h-3.87zm6.07%200L50%2012.82V8.96L41.04%200zm6.1%200L50%206.77V0h-6.72zM25%202.19%202.14%2025.04H25zm0%2022.85v22.8l22.81-22.8zM75%203.92l21.13%2021.12L75%2046.16%2053.87%2025.04zm0%202.19L56.06%2025.04l18.89%2018.88%2018.94-18.88L75%206.1zm0%203.92%2015.07%2015L75%2040.06%2059.98%2025.04zm0%202.18L62.17%2025.04%2075%2037.86l12.83-12.82L75%2012.2zm0%203.82%208.96%209L75%2033.95%2066.04%2025zm0%202.24-6.72%206.77L75%2031.76l6.77-6.72h-.05zM0%2031.09v3.87l15.02%2015.07h3.87zm50%200L31.1%2050.03h3.88L50%2034.96V31.1zM0%2037.2v3.87l8.91%208.96h3.92zm50%200L37.17%2050.03h3.87L50%2041.07zM0%2043.3v6.73h6.72zm50%200-6.72%206.73H50zm0%206.73v6.71l6.72-6.71zm8.96%200L50%2058.93v3.92l12.83-12.82zm6.06%200L50%2065.03v3.88l18.94-18.88zm16.09%200L100%2068.9v-3.87l-15.02-15zm6.11%200L100%2062.85v-3.92l-8.91-8.9zm6.06%200%206.72%206.71v-6.71zM75%2052.2%2052.19%2075H75zM75%2075v22.8L97.81%2075zM25%2053.9l21.13%2021.12L25%2096.13%203.87%2075.01zm0%202.2L6.1%2074.95l18.95%2018.88%2018.9-18.88L25%2056.08zm0%203.9%2015.02%2015.01L25%2090.03%209.98%2075zm0%202.19L12.17%2075%2025%2087.84%2037.83%2075%2025%2062.2zm0%203.87L33.96%2075%2025%2083.97%2016.04%2075zm0%202.23-6.72%206.72L25%2081.73l6.72-6.72L25%2068.3zm25%2012.83v3.87L65.02%20100h3.87zm50%200L81.1%20100h3.88L100%2084.99zm-50%206.06v3.86l8.96%208.96h3.87zm50%200L87.22%20100h3.87l8.91-8.96zm-50%206.1V100h6.72zm50%200L93.28%20100H100z%22%2F%3E%3C%2Fsvg%3E");
     --squares-and-triangles-background-repeat: repeat;
-    --squares-and-triangles-background-size: 10;
+    --squares-and-triangles-background-width-coef: 10;
+    --squares-and-triangles-background-height-coef: 10;
 }
 
 [data-theme="lettuce"] {
@@ -47,7 +48,8 @@
     --interlocked-hexagons-background-size: 10vh;
     --squares-and-triangles-background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23bbd095%22%2F%3E%3Cpath%20fill%3D%22%23f5ede1%22%20d%3D%22M0%200v6.77L6.72%200zm8.91%200L0%208.96v3.86L12.83%200zm6.11%200L0%2015.06v3.87L18.9%200zm6.11%200L0%2021.12v3.92L25%200zM25%200l25%2024.99v-3.87L28.87%200zm25%2024.99%2025%2024.98L100%2025%2075%200zm-50%20.05v3.87l21.13%2021.12H25l-25-25zm25%2024.99h3.87L50%2028.9v-3.87zm0%200L0%2075l25%2025%2025-24.99zM50%2075l25-24.98h-3.87L50%2071.14v3.87zm0%200v3.87L71.13%20100H75L50%2075.01zm25%2025h3.87L100%2078.88v-3.87zm25-24.99v-3.87L78.87%2050.03H75L100%2075zM31.1%200%2050%2018.93v-3.87L34.98%200h-3.87zm6.07%200L50%2012.82V8.96L41.04%200zm6.1%200L50%206.77V0h-6.72zM25%202.19%202.14%2025.04H25zm0%2022.85v22.8l22.81-22.8zM75%203.92l21.13%2021.12L75%2046.16%2053.87%2025.04zm0%202.19L56.06%2025.04l18.89%2018.88%2018.94-18.88L75%206.1zm0%203.92%2015.07%2015L75%2040.06%2059.98%2025.04zm0%202.18L62.17%2025.04%2075%2037.86l12.83-12.82L75%2012.2zm0%203.82%208.96%209L75%2033.95%2066.04%2025zm0%202.24-6.72%206.77L75%2031.76l6.77-6.72h-.05zM0%2031.09v3.87l15.02%2015.07h3.87zm50%200L31.1%2050.03h3.88L50%2034.96V31.1zM0%2037.2v3.87l8.91%208.96h3.92zm50%200L37.17%2050.03h3.87L50%2041.07zM0%2043.3v6.73h6.72zm50%200-6.72%206.73H50zm0%206.73v6.71l6.72-6.71zm8.96%200L50%2058.93v3.92l12.83-12.82zm6.06%200L50%2065.03v3.88l18.94-18.88zm16.09%200L100%2068.9v-3.87l-15.02-15zm6.11%200L100%2062.85v-3.92l-8.91-8.9zm6.06%200%206.72%206.71v-6.71zM75%2052.2%2052.19%2075H75zM75%2075v22.8L97.81%2075zM25%2053.9l21.13%2021.12L25%2096.13%203.87%2075.01zm0%202.2L6.1%2074.95l18.95%2018.88%2018.9-18.88L25%2056.08zm0%203.9%2015.02%2015.01L25%2090.03%209.98%2075zm0%202.19L12.17%2075%2025%2087.84%2037.83%2075%2025%2062.2zm0%203.87L33.96%2075%2025%2083.97%2016.04%2075zm0%202.23-6.72%206.72L25%2081.73l6.72-6.72L25%2068.3zm25%2012.83v3.87L65.02%20100h3.87zm50%200L81.1%20100h3.88L100%2084.99zm-50%206.06v3.86l8.96%208.96h3.87zm50%200L87.22%20100h3.87l8.91-8.96zm-50%206.1V100h6.72zm50%200L93.28%20100H100z%22%2F%3E%3C%2Fsvg%3E");
     --squares-and-triangles-background-repeat: repeat;
-    --squares-and-triangles-background-size: 10;
+    --squares-and-triangles-background-width-coef: 10;
+    --squares-and-triangles-background-height-coef: 10;
 }
 
 [data-theme="night"] {
@@ -64,7 +66,26 @@
     --interlocked-hexagons-background-size: 100vw 100vh;
     --squares-and-triangles-background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%2313131b%22%2F%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23363645%22%20stroke-width%3D%22.5%22%20d%3D%22M10%2050H0m60-40H50m0%2040v10M10%200v10m21%2030v20m0-60v20m9%2010h20M0%2030h20m0%2010h20V20H20v10zM10%2010h40v40H10zM0%200h60v60H0z%22%2F%3E%3C%2Fsvg%3E");
     --squares-and-triangles-background-repeat: repeat;
-    --squares-and-triangles-background-size: 5;
+    --squares-and-triangles-background-width-coef: 5;
+    --squares-and-triangles-background-height-coef: 5;
+}
+
+[data-theme="ram"] {
+    --main-dark-color: #fefad8;
+    --main-medium-color: #f6e4c5;
+    --main-light-color: #e8d4b8;
+    --background-dark-color: #413b34;
+    --background-light-color: #6d6258;
+    --sidebar-text-color: var(--main-dark-color);
+    --sidebar-stroke-color: var(--background-light-color);
+    --secondary-color: var(--main-light-color);
+    --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/ram/ram-background.webp');
+    --interlocked-hexagons-background-repeat: repeat;
+    --interlocked-hexagons-background-size: auto;
+    --squares-and-triangles-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/ram/ram-sidebar.webp');
+    --squares-and-triangles-background-repeat: repeat;
+    --squares-and-triangles-background-width-coef: 5;
+    --squares-and-triangles-background-height-coef: 15;
 }
 
 .bg-interlocked-hexagons {
@@ -127,6 +148,12 @@
     background-size: calc(var(--squares-and-triangles-background-size) * 1vw);
 }
 
+.bg-sidebar {
+    background-image: var(--squares-and-triangles-background);
+    background-repeat: var(--squares-and-triangles-background-repeat);
+    background-size: calc(var(--squares-and-triangles-background-width-coef) * 1vw) calc(var(--squares-and-triangles-background-height-coef) * 1vw);
+}
+
 body:has(.lg-container:not([class~="lg-inline"])) .desktop-sidebar-custom {
     display: none !important;
 }
@@ -165,10 +192,6 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
     font-size: 4vw;
 }
 
-.content-square {
-    width: 100vh;
-}
-
 .border-left-custom {
     width: 0.5vw;
     border-right: 0.3vh dashed var(--main-dark-color);
@@ -186,12 +209,12 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
         inset 0vh -0.5vh rgba(75, 81, 58, 0.5);
 }
 
-.desktop {
-    display: flex;
+.text-stroke-\(--sidebar-stroke-color\) {
+    -webkit-text-stroke-color: var(--sidebar-stroke-color);
 }
 
-.mobile {
-    display: none;
+.text-stroke-\[0\.1vw\] {
+    -webkit-text-stroke-width: 0.1vw;
 }
 
 .lg-backdrop {
@@ -313,25 +336,43 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
     }
 }
 
-/* Mobile responsive styles */
-@media (max-aspect-ratio: 1.1/1) {
-    .desktop {
-        display: none;
+@media (min-aspect-ratio: 0.8/1) {
+    .ar-gt-0\.8\:mr-\[1\.2vmin\] {
+        margin-right: 1.2vmin;
     }
 
-    .mobile {
-        display: flex;
+    .ar-gt-0\.8\:w-fit {
+        width: fit-content;
+    }
+
+    .ar-gt-0\.8\:min-w-fit {
+        min-width: fit-content;
+    }
+
+    .ar-gt-0\.8\:min-w-\[10vh\] {
+        min-width: 10vh;
+    }
+
+    .ar-gt-0\.8\:max-w-\[20vh\] {
+        max-width: 20vh;
+    }
+
+    .ar-gt-0\.8\:max-w-\[100vh\] {
+        max-width: 100vh;
+    }
+
+    .ar-gt-0\.8\:items-center {
+        align-items: center;
+    }
+}
+
+@media (max-aspect-ratio: 0.8/1) {
+    .bg-sidebar {
+        background-size: calc(var(--squares-and-triangles-background-width-coef) * 1.6vh) calc(var(--squares-and-triangles-background-height-coef) * 1.6vh);
     }
 
     .inline-gallery-container {
         width: 100%;
-    }
-
-    .desktop-sidebar-custom {
-        width: 90%;
-        margin-left: 5vw;
-        height: 10vh;
-        background-size: 20vh;
     }
 
     .logo-custom {
@@ -355,20 +396,65 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
         background-size: 10vh;
     }
 
-    .border-left-custom {
-        width: 1%;
-        border-right: 0.3vw dashed var(--main-dark-color);
+    .ar-lt-0\.8\:grid {
+        display: grid;
     }
 
-    .border-right-custom {
-        width: 1.5%;
-        border-left: 0.5vw dotted var(--main-dark-color);
+    .ar-lt-0\.8\:flex-col {
+        flex-direction: column;
+    }
+
+    .ar-lt-0\.8\:flex-row {
+        flex-direction: row;
+    }
+
+    .ar-lt-0\.8\:h-\[8vh\] {
+        height: 8vh;
+    }
+
+    .ar-lt-0\.8\:h-\[10vh\] {
+        height: 10vh;
+    }
+
+    .ar-lt-0\.8\:h-\[90vh\] {
+        height: 90vh;
+    }
+
+    .ar-lt-0\.8\:w-\[8vh\] {
+        width: 8vh;
+    }
+
+    .ar-lt-0\.8\:w-\[90vw\] {
+        width: 90vw;
+    }
+
+    .ar-lt-0\.8\:w-screen {
+        width: 100vw;
+    }
+
+    .ar-lt-0\.8\:max-h-\[80\%\] {
+        max-height: 80%;
+    }
+
+    .ar-lt-0\.8\:text-\[5vh\] {
+        font-size: 5vh;
+    }
+
+    .ar-lt-0\.8\:ml-\[5vw\] {
+        margin-left: 5vw;
+    }
+
+    .ar-lt-0\.8\:hidden {
+        display: none;
     }
 }
 
 @media (max-aspect-ratio: 0.4/1) {
-    .desktop-sidebar-custom {
-        width: 100%;
+    .ar-lt-0\.4\:w-\[100vw\] {
+        width: 100vw;
+    }
+
+    .ar-lt-0\.4\:ml-0 {
         margin-left: 0;
     }
 }

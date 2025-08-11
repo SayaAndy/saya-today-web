@@ -1,0 +1,140 @@
+{{ define "body" }}
+<div class="flex flex-row ar-lt-0.8:flex-col flex-1 text-[1vmax]">
+    <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
+        class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] flex shrink-0 flex-col ar-gt-0.8:mr-[1.2vmin]">
+        <fieldset>
+            <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
+            <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense gap-[5%]">
+                <div>
+                    <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
+                </div>
+                {{- range .Tags }}
+                <div>
+                    <label><input type="checkbox" id="tag{{ . }}Checkbox" name="tags[]" value="{{ . }}" onclick="contextAll();" {{ if contains $.QueryTags . }}checked{{ end }}> {{ . }}</label>
+                </div>
+                {{- end }}
+            </div>
+        </fieldset>
+        <fieldset class="mt-[0.8vmin]">
+            <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
+            <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col gap-[5%]">
+                <div>
+                    <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
+                </div>
+                <div>
+                    <label><input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-z-a"></i></label>
+                </div>
+                <div>
+                    <label><input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
+                </div>
+                <div>
+                    <label><input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
+                </div>
+                <div>
+                    <label><input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
+                </div>
+                <div>
+                    <label><input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="flex flex-row bg-background-light my-[2vmin] p-[0.4vmin] rounded-[0.4vmin] justify-items-center">
+            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-[1.5vmax] hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
+            <div class="w-[0.5vmin] bg-background-dark grow-0"></div>
+            <button class="flex-1" type="submit">
+                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-[1.5vmax] hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="w-[0.5vh] border-r-[0.3vh] border-dotted border-main-dark bg-background-dark"></div>
+
+    <div hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
+        class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-[2.4vmin]">
+        Loading...
+    </div>
+</div>
+{{ end }}
+
+{{ define "footer" }}
+<script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
+
+<script>
+    const tagsContainers = document.querySelectorAll('form.tags-list');
+    tagsContainers.forEach(tagsContainer => {
+        const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+        anyChecked = false;
+        checkboxes.forEach(checkbox => {
+            anyChecked = checkbox.checked ? true : anyChecked;
+        });
+        if (!anyChecked) {
+            selectAll();
+        }
+    });
+</script>
+
+<script>
+    function selectAll() {
+        const tagsContainers = document.querySelectorAll('form.tags-list');
+        tagsContainers.forEach(tagsContainer => {
+            const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
+            const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]:not([id="tagsAllCheckbox"])');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+    }
+
+    function contextAll() {
+        const tagsContainers = document.querySelectorAll('form.tags-list');
+        tagsContainers.forEach(tagsContainer => {
+            const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
+            const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]:not([id="tagsAllCheckbox"])');
+            var areAllChecked = true;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) areAllChecked = false;
+            });
+            selectAllCheckbox.checked = areAllChecked;
+        });
+    }
+
+    function defaultSearchParams() {
+        const tagsContainers = document.querySelectorAll('form.tags-list');
+        tagsContainers.forEach(tagsContainer => {
+            const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            const sortRadio = tagsContainer.querySelector('#sortTitleAsc');
+            sortRadio.checked = true;
+        });
+    }
+
+    function cleanHrefParams() {
+        const url = new URL(window.location.href);
+        url.search = '';
+        window.history.pushState({}, '', url.toString());
+    }
+
+    function setHrefParams() {
+        const url = new URL(window.location.href);
+        url.search = '';
+
+        const tagsContainers = document.querySelectorAll('form.tags-list');
+        tagsContainers.forEach(tagsContainer => {
+            const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked)
+                    url.searchParams.append('tags[]', checkbox.value);
+            });
+            const sortRadio = tagsContainer.querySelector('input[type="radio"]:checked');
+            url.searchParams.set('sort', sortRadio.value);
+        });
+
+        window.history.pushState({}, '', url.toString());
+    }
+
+    document.addEventListener('DOMContentLoaded', contextAll);
+</script>
+
+{{ end }}

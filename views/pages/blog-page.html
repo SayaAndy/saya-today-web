@@ -1,0 +1,70 @@
+{{ define "header" }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
+{{- if .MapLocationX }}
+<link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+{{- end }}
+
+<style>
+    .map-container .leaflet-container {
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+{{ end }}
+
+{{ define "body" }}
+<div class="bg-background-light flex flex-col grow overflow-y-auto inset-shadow p-[2.4vmin] ar-lt-0.8:max-h-[80%]">
+    {{ .ParsedMarkdown }}
+{{- if .MapLocationX }}
+    <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
+    <div id="location-map" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[60%] h-[40vh]"></div>
+    <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
+{{- end }}
+</div>
+{{ end }}
+
+{{ define "footer" }}
+<script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
+<script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
+<script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
+{{- if .MapLocationX }}
+<script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+
+<script>
+    function initLocationMap(id, x, y, relativeErrorMeters = 0) {
+        var map = L.map(id).setView([x, y], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        if (relativeErrorMeters != 0) {
+            var circle = L.circle([x, y], {
+                color: '#8a9d8a',
+                fillColor: '#8a9d8a',
+                fillOpacity: 0.15,
+                radius: relativeErrorMeters
+            }).addTo(map);
+        }
+
+        var marker = L.marker([x, y]).addTo(map);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {initLocationMap(
+        'location-map',
+        {{ .MapLocationX }},
+        {{ .MapLocationY }},
+        {{ .MapLocationAreaMeters }}
+    )});
+
+    window.addEventListener('resize', function() {
+        setTimeout(() => {
+            if (window.location-map) window.location-map.invalidateSize();
+        }, 100);
+    });
+</script>
+{{- end }}
+{{ end }}

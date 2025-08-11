@@ -1,0 +1,9 @@
+TagsLabel: 'Тэги:'
+BlogSearch:
+  Header: 'Поиск по блогу'
+  TagsHeader: 'Тэги'
+  OrderByHeader: 'Упорядочить по...'
+  TitleOrdered: 'названию'
+  ActionDateOrdered: 'дате действия'
+  PublicationDateOrdered: 'времени публикации'
+  ChooseAllTags: 'Выбрать все'

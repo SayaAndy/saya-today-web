@@ -8,10 +8,13 @@ blogPages:
       prefix: ''
       keyID: '${B2_KEY_ID}'
       applicationKey: '${B2_APPLICATION_KEY}'
-  availableLanguages:
-    - name: ru
-      alt: Русский
-      flag: https://f003.backblazeb2.com/file/sayana-static/flags/ru.svg
-    - name: en
-      alt: English
-      flag: https://f003.backblazeb2.com/file/sayana-static/flags/gb.svg
+localePath: ./locale/
+availableLanguages:
+  - name: ru
+    alt: Русский
+    flag: https://f003.backblazeb2.com/file/sayana-static/flags/ru.svg
+    locFile: localization.ru.yaml
+  - name: en
+    alt: English
+    flag: https://f003.backblazeb2.com/file/sayana-static/flags/gb.svg
+    locFile: localization.en.yaml

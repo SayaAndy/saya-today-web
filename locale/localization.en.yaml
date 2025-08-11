@@ -1,0 +1,9 @@
+TagsLabel: 'Tags:'
+BlogSearch:
+  Header: 'Blog Search'
+  TagsHeader: 'Tags'
+  OrderByHeader: 'Order by...'
+  TitleOrdered: 'Title'
+  ActionDateOrdered: 'Action Date'
+  PublicationDateOrdered: 'Publication Date'
+  ChooseAllTags: 'Choose All'
