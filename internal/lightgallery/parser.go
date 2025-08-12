@@ -40,7 +40,7 @@ func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser
 
 	loc, err := time.LoadLocation(string(parts[1]))
 	if err != nil {
-		slog.Warn("invalid location specified for a gallery", slog.String("line", string(trimmed)), slog.String("location", string(parts[1])))
+		slog.Warn("invalid location specified for a gallery", slog.String("error", err.Error()), slog.String("line", string(trimmed)), slog.String("location", string(parts[1])))
 		return nil, parser.NoChildren
 	}
 

@@ -16,4 +16,6 @@ COPY --from=build-stage /builddir/views /app/views
 COPY --from=build-stage /builddir/locale/*.yaml /app/locale/
 COPY --from=build-stage /builddir/config/config.yaml /app/config.yaml
 
+RUN apk add --no-cache tzdata
+
 ENTRYPOINT [ "/app/sayana-demo", "-c", "/app/config.yaml" ]
