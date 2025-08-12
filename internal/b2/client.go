@@ -33,6 +33,7 @@ func NewB2Client(cfg *config.B2Config) (*B2Client, error) {
 
 type BlogPage struct {
 	Link     string
+	FileName string
 	Metadata *frontmatter.Metadata
 }
 
@@ -69,10 +70,13 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 			return nil, fmt.Errorf("failed to parse published time metadata field: %w", err)
 		}
 
-		linkParts := strings.Split(obj.Name(), ".")
+		linkParts := strings.Split(obj.Name(), "/")
+		nameParts := strings.Split(linkParts[len(linkParts)-1], ".")
+		fileName := strings.Join(nameParts[:len(linkParts)-1], ".")
 
 		filePaths = append(filePaths, &BlogPage{
-			Link: strings.Join(linkParts[:len(linkParts)-1], "."),
+			Link:     obj.Name(),
+			FileName: fileName,
 			Metadata: &frontmatter.Metadata{
 				Title:            attrs.Info["title"],
 				ShortDescription: attrs.Info["short-description"],

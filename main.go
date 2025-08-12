@@ -93,7 +93,8 @@ func main() {
 
 	app.Use(redirect.New(redirect.Config{
 		Rules: map[string]string{
-			"/blog": "/",
+			"/ru": "/",
+			"/en": "/",
 		},
 		StatusCode: 301,
 	}))
@@ -111,7 +112,7 @@ func main() {
 		return c.Type("html").Send(content)
 	})
 
-	app.Get("/blog/:lang", func(c *fiber.Ctx) error {
+	app.Get("/:lang/blog", func(c *fiber.Ctx) error {
 		lang := c.Params("lang")
 		if !slices.Contains(availableLanguages, lang) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
@@ -169,7 +170,7 @@ func main() {
 			"Title":         localization[lang].BlogSearch.Header,
 		})
 		if err != nil {
-			slog.Warn("failed to generate page", slog.String("page", "/blog/"+lang), slog.String("error", err.Error()))
+			slog.Warn("failed to generate page", slog.String("page", "/"+lang+"/blog"), slog.String("error", err.Error()))
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate page")
 		}
@@ -177,7 +178,7 @@ func main() {
 		return c.Type("html").Status(status).Send(content)
 	})
 
-	app.Get("/blog/:lang/:title", func(c *fiber.Ctx) error {
+	app.Get("/:lang/blog/:title", func(c *fiber.Ctx) error {
 		lang := c.Params("lang")
 		if !slices.Contains(availableLanguages, lang) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
@@ -211,7 +212,7 @@ func main() {
 			"Lang":                  lang,
 		})
 		if err != nil {
-			slog.Warn("failed to generate page", slog.String("page", "/blog/"+lang+c.Params("title")), slog.String("error", err.Error()))
+			slog.Warn("failed to generate page", slog.String("page", "/"+lang+"/blog/"+c.Params("title")), slog.String("error", err.Error()))
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate page")
 		}
@@ -255,6 +256,7 @@ func main() {
 				if len(tags) == 0 || slices.Contains(tags, tag) {
 					pageMeta = append(pageMeta, map[string]string{
 						"Link":             page.Link,
+						"ArticleLink":      "/" + lang + "/blog/" + page.FileName,
 						"Title":            page.Metadata.Title,
 						"PublishedTime":    page.Metadata.PublishedTime.Format("2006-01-02 15:04:05 -0700"),
 						"ActionDate":       page.Metadata.ActionDate,
@@ -294,7 +296,7 @@ func main() {
 			"L":         localization[lang],
 		})
 		if err != nil {
-			slog.Warn("failed to generate div", slog.String("page", "/blog/"+lang), slog.String("error", err.Error()))
+			slog.Warn("failed to generate div", slog.String("page", "/"+lang+"/blog"), slog.String("error", err.Error()))
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")
 		}

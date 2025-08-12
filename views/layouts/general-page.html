@@ -39,7 +39,7 @@
         </div>
         <div class="text-[3vw] ar-lt-0.8:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
             <i onclick="location.href='/';" class="fas fa-home w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="location.href='/blog/{{ .Lang }}';" class="fas fa-search w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="location.href='/{{ .Lang }}/blog';" class="fas fa-search w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <!-- <i class="fas fa-images w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i> -->
             <i onclick="switchTheme('')" class="fas fa-swatchbook w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
         </div>
@@ -50,7 +50,7 @@
 
         <div class="ar-gt-0.8:min-w-fit ar-gt-0.8:max-w-[100vh] flex flex-col bg-background-dark relative mt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
             <div class="flex flex-row mb-[0.4vmin]">
-                <i onclick="location.pathname+='/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
+                <i onclick="location.pathname += location.pathname.endsWith('/') ? '../' : '/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
                 <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
                 <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
                 {{- if .PublishedDate }}
