@@ -146,19 +146,26 @@ func main() {
 			pages = []*b2.BlogPage{}
 		}
 
-		tagsSet := make(map[string]struct{})
+		tagsMap := make(map[string]int)
 		for _, page := range pages {
 			slog.Debug("enlist page for catalogue", slog.Any("page", page), slog.String("endpoint", "/"))
 			for _, tag := range page.Metadata.Tags {
-				tagsSet[tag] = struct{}{}
+				tagsMap[tag]++
 			}
 		}
 
-		tagsArray := make([]string, 0, len(tagsSet))
-		for tag := range tagsSet {
-			tagsArray = append(tagsArray, tag)
+		type Tag struct {
+			Name  string `json:"Name" yaml:"name"`
+			Count int    `json:"Count" yaml:"count"`
 		}
-		slices.Sort(tagsArray)
+
+		tagsArray := make([]Tag, 0, len(tagsMap))
+		for tag, count := range tagsMap {
+			tagsArray = append(tagsArray, Tag{tag, count})
+		}
+		slices.SortFunc(tagsArray, func(a Tag, b Tag) int {
+			return strings.Compare(a.Name, b.Name)
+		})
 
 		content, err := tm.Render("blog-catalogue", fiber.Map{
 			"QuerySort":     querySort,

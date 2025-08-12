@@ -1,7 +1,7 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-0.8:flex-col flex-1 text-[1vmax]">
+<div class="flex flex-row ar-lt-0.8:flex-col max-h-[calc(100%-6vmax)] ar-lt-0.8:max-h-[80%] flex-1 text-[1vmax]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] flex shrink-0 flex-col ar-gt-0.8:mr-[1.2vmin]">
+        class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] flex shrink-0 flex-col overflow-y-auto ar-gt-0.8:mr-[1.2vmin]">
         <fieldset>
             <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
             <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense gap-[5%]">
@@ -10,7 +10,7 @@
                 </div>
                 {{- range .Tags }}
                 <div>
-                    <label><input type="checkbox" id="tag{{ . }}Checkbox" name="tags[]" value="{{ . }}" onclick="contextAll();" {{ if contains $.QueryTags . }}checked{{ end }}> {{ . }}</label>
+                    <label><input type="checkbox" id="tag{{ .Name }}Checkbox" name="tags[]" value="{{ .Name }}" onclick="contextAll();" {{ if contains $.QueryTags .Name }}checked{{ end }}> {{ .Name }}  <span class="text-secondary italic">{{ .Count }}</span></label>
                 </div>
                 {{- end }}
             </div>
@@ -58,20 +58,6 @@
 
 {{ define "footer" }}
 <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-
-<script>
-    const tagsContainers = document.querySelectorAll('form.tags-list');
-    tagsContainers.forEach(tagsContainer => {
-        const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
-        anyChecked = false;
-        checkboxes.forEach(checkbox => {
-            anyChecked = checkbox.checked ? true : anyChecked;
-        });
-        if (!anyChecked) {
-            selectAll();
-        }
-    });
-</script>
 
 <script>
     function selectAll() {
@@ -135,6 +121,22 @@
     }
 
     document.addEventListener('DOMContentLoaded', contextAll);
+</script>
+
+<script>
+    const tagsContainers = document.querySelectorAll('form.tags-list');
+    tagsContainers.forEach(tagsContainer => {
+        const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+        anyChecked = false;
+        checkboxes.forEach(checkbox => {
+            anyChecked = checkbox.checked ? true : anyChecked;
+        });
+        if (!anyChecked) {
+            const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
+            selectAllCheckbox.checked = true;
+            selectAll();
+        }
+    });
 </script>
 
 {{ end }}

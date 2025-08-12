@@ -1,13 +1,15 @@
 {{- range .BlogPages }}
 <hr class="first-of-type:hidden border-t-[0.3vh] my-[0.8vmin] border-dotted border-main-dark w-[80%] mx-auto">
 <div class="m-[0.4vmin] flex flex-row justify-center justify-items-center">
-    <img onclick="location.href='{{ .ArticleLink }}}';" class="cursor-pointer object-cover rounded-[10%] select-none w-[10vmin] h-[10vmin] aspect-square my-[0.4vmin] mr-[0.8vmin]" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
+    <img onclick="location.href='{{ .ArticleLink }}';" class="cursor-pointer object-cover rounded-[10%] select-none w-[10vmin] h-[10vmin] aspect-square my-[0.4vmin] mr-[0.8vmin]" src="https://f003.backblazeb2.com/file/sayana-photos/thumbnails/{{ .Thumbnail }}.webp">
     <div class="grow my-[0.4vmin] mx-[0.8vmin] flex flex-col justify-center">
-        <div class="flex flex-row">
-            <a href="{{ .ArticleLink }}" class="block text-[1vmax] font-extrabold">{{ .Title }}</a>
-            <a href="{{ .ArticleLink }}" class="block text-[1vmax] font-extrabold pl-[0.4vmin] pr-[0.4vmin] select-none cursor-pointer text-secondary">//</a>
-            <a href="{{ .ArticleLink }}" class="block text-[1vmax] italic text-secondary">{{ .ActionDate }}</a>
-            <p class="text-[1vmax] italic text-secondary text-right grow">{{ .PublishedTime }}</p>
+        <div class="flex flex-row gap-[5%] max-w-[100%]">
+            <a href="{{ .ArticleLink }}" class="flex-9/12 grow-0 block text-[1vmax] cursor-pointer">
+                <span class="font-extrabold">{{ .Title }}</span>
+                <span class="font-extrabold select-none text-secondary">//</span>
+                <span class="italic text-secondary">{{ .ActionDate }}</span>
+            </a>
+            <p class="flex-3/12 grow-0 text-[1vmax] italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
         <p class="text-[1vmax] text-main-dark">{{ .ShortDescription }}</p>
         <p class="text-[1vmax] text-secondary">{{ .L.TagsLabel }} {{ .Tags }}</p>
