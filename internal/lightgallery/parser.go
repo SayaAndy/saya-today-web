@@ -2,7 +2,9 @@ package lightgallery
 
 import (
 	"bytes"
+	"regexp"
 	"strings"
+	"time"
 
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/parser"
@@ -22,16 +24,24 @@ func (p *LightGalleryParser) Trigger() []byte {
 func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser.Context) (ast.Node, parser.State) {
 	line, _ := reader.PeekLine()
 
-	if !bytes.HasPrefix(line, []byte("{Gallery}")) {
+	if !bytes.HasPrefix(line, []byte("{Gallery")) {
 		return nil, parser.NoChildren
 	}
+
+	r := regexp.MustCompile(`^\{Gallery:([A-Za-z0-9\+\-/]+)\}$`)
 
 	trimmed := bytes.TrimSpace(line)
-	if !bytes.Equal(trimmed, []byte("{Gallery}")) {
+	parts := r.FindSubmatch(trimmed)
+	if len(parts) < 2 {
 		return nil, parser.NoChildren
 	}
 
-	return &LightGalleryBlock{}, parser.NoChildren
+	loc, err := time.LoadLocation(string(parts[1]))
+	if err != nil {
+		return nil, parser.NoChildren
+	}
+
+	return &LightGalleryBlock{Location: loc}, parser.NoChildren
 }
 
 func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc parser.Context) parser.State {

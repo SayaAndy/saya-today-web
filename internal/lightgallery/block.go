@@ -1,11 +1,16 @@
 package lightgallery
 
-import "github.com/yuin/goldmark/ast"
+import (
+	"time"
+
+	"github.com/yuin/goldmark/ast"
+)
 
 // LightGalleryBlock represents a light gallery block in the AST
 type LightGalleryBlock struct {
 	ast.BaseBlock
-	Images []LightGalleryImage
+	Images   []LightGalleryImage
+	Location *time.Location
 }
 
 type LightGalleryImage struct {

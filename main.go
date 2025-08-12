@@ -121,7 +121,7 @@ func main() {
 
 		querySort := c.Query("sort")
 		if querySort == "" {
-			querySort = "titleAsc"
+			querySort = "publicationDateDesc"
 		}
 
 		encodedQuery := c.Request().URI().QueryString()
@@ -148,7 +148,7 @@ func main() {
 
 		tagsMap := make(map[string]int)
 		for _, page := range pages {
-			slog.Debug("enlist page for catalogue", slog.Any("page", page), slog.String("endpoint", "/"))
+			slog.Debug("enlist page for catalogue", slog.Any("page", page), slog.String("endpoint", "/"+lang+"/blog"))
 			for _, tag := range page.Metadata.Tags {
 				tagsMap[tag]++
 			}

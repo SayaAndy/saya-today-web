@@ -54,6 +54,7 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 			imageNameParts := strings.Split(imageUrlWithoutExt, "-")
 
 			dayDate, _ := time.Parse("20060102 150405", imageNameParts[len(imageNameParts)-2]+" "+imageNameParts[len(imageNameParts)-1])
+			dayDate = dayDate.In(gallery.Location)
 			dynamicElements = append(dynamicElements, fmt.Sprintf(`{
 				src:
 					"https://f003.backblazeb2.com/file/sayana-photos/full/%s",
@@ -70,7 +71,7 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
 								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
-			}`, img.URL, img.URL, img.Caption, imageUrlWithoutExt, imageUrlWithoutExt, img.Caption, dayDate.Format("2006-01-02 15:04:05 -07:00")))
+			}`, img.URL, img.URL, escapeHTML(img.Caption), imageUrlWithoutExt, imageUrlWithoutExt, escapeHTML(img.Caption), dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}
 
 		w.WriteString(fmt.Sprintf(`

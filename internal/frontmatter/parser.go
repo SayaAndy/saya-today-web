@@ -16,6 +16,7 @@ type Metadata struct {
 	Thumbnail        string    `yaml:"thumbnail"`
 	Tags             []string  `yaml:"tags"`
 	Geolocation      string    `yaml:"geolocation"`
+	Timezone         string    `yaml:"timezone"`
 }
 
 func ParseFrontmatter(content []byte) (metadata *Metadata, markdown []byte, err error) {
