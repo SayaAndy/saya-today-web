@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"log/slog"
 	"regexp"
-	"strings"
 	"time"
 
 	"github.com/yuin/goldmark/ast"
@@ -25,7 +24,7 @@ func (p *LightGalleryParser) Trigger() []byte {
 func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser.Context) (ast.Node, parser.State) {
 	line, _ := reader.PeekLine()
 
-	if !bytes.HasPrefix(line, []byte("{Gallery")) {
+	if !bytes.HasPrefix(line, []byte("{Gallery:")) {
 		return nil, parser.NoChildren
 	}
 
@@ -50,28 +49,27 @@ func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser
 func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc parser.Context) parser.State {
 	line, segment := reader.PeekLine()
 	if len(line) == 0 || segment.Len() == 0 {
-		return parser.Close
+		return parser.Continue | parser.NoChildren
 	}
 
 	trimmed := bytes.TrimSpace(line)
-	if bytes.Equal(trimmed, []byte("{Gallery}")) {
+	if bytes.Equal(trimmed, []byte("{Gallery}")) || bytes.Equal(trimmed, []byte("{/Gallery}")) {
 		reader.AdvanceLine()
 		return parser.Close
 	}
 
 	gallery := node.(*LightGalleryBlock)
-	lineStr := string(trimmed)
 
-	parts := strings.SplitN(lineStr, "|", 2)
-	url := strings.TrimSpace(parts[0])
-	caption := ""
+	parts := bytes.SplitN(trimmed, []byte{'|'}, 2)
+	url := bytes.TrimSpace(parts[0])
 
+	caption := make([]byte, 0)
 	if len(parts) > 1 {
-		caption = strings.TrimSpace(parts[1])
+		caption = bytes.TrimSpace(parts[1])
 	}
 
 	gallery.Images = append(gallery.Images, LightGalleryImage{
-		URL:     url,
+		URL:     string(url),
 		Caption: caption,
 	})
 

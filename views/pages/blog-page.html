@@ -34,10 +34,10 @@
 
 <script>
     function initLocationMap(id, x, y, relativeErrorMeters = 0) {
-        var map = L.map(id).setView([x, y], 13);
+        var map = L.map(id).setView([x, y], 8);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 18,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
@@ -50,7 +50,11 @@
             }).addTo(map);
         }
 
-        var marker = L.marker([x, y]).addTo(map);
+        var marker = L.marker([x, y], {
+            title: '{{ .Title }}',
+        }).addTo(map)
+            .bindPopup('<span><b>{{ .Title }}</b><br><a href="https://www.openstreetmap.org/#map=13/{{ .MapLocationX }}/{{ .MapLocationY }}">{{ .MapLocationX }}, {{ .MapLocationY }}</a></span>')
+            .openPopup();
     }
 
     document.addEventListener('DOMContentLoaded', () => {initLocationMap(

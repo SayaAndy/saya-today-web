@@ -1,11 +1,13 @@
 package lightgallery
 
 import (
+	"bytes"
 	"fmt"
 	"math/rand"
 	"strings"
 	"time"
 
+	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
@@ -14,11 +16,18 @@ import (
 
 type LightGalleryHTMLRenderer struct {
 	html.Config
+	md goldmark.Markdown
 }
 
 func NewLightGalleryHTMLRenderer(opts ...html.Option) renderer.NodeRenderer {
 	r := &LightGalleryHTMLRenderer{
 		Config: html.NewConfig(),
+		md: goldmark.New(
+			goldmark.WithRendererOptions(
+				html.WithHardWraps(),
+				html.WithXHTML(),
+			),
+		),
 	}
 	for _, opt := range opts {
 		opt.SetHTMLOption(&r.Config)
@@ -53,6 +62,15 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 			imageUrlWithoutExt := strings.Join(imageUrlSegments[:len(imageUrlSegments)-1], ".")
 			imageNameParts := strings.Split(imageUrlWithoutExt, "-")
 
+			var captionBuf bytes.Buffer
+			captionHTML := img.Caption
+			if err := r.md.Convert(img.Caption, &captionBuf); err == nil {
+				captionHTML = captionBuf.Bytes()
+				captionHTML = bytes.TrimPrefix(captionHTML, []byte("<p>"))
+				captionHTML = bytes.TrimSuffix(captionHTML, []byte("</p>\n"))
+				captionHTML = bytes.TrimSuffix(captionHTML, []byte("</p>"))
+			}
+
 			dayDate, _ := time.Parse("20060102 150405", imageNameParts[len(imageNameParts)-2]+" "+imageNameParts[len(imageNameParts)-1])
 			dayDate = dayDate.In(gallery.Location)
 			dynamicElements = append(dynamicElements, fmt.Sprintf(`{
@@ -71,7 +89,7 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
 								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
-			}`, img.URL, img.URL, escapeHTML(img.Caption), imageUrlWithoutExt, imageUrlWithoutExt, escapeHTML(img.Caption), dayDate.Format("2006-01-02 15:04:05 -07:00")))
+			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}
 
 		w.WriteString(fmt.Sprintf(`
@@ -116,15 +134,6 @@ window.addEventListener("resize", () => {
 	}
 
 	return ast.WalkContinue, nil
-}
-
-func escapeHTML(s string) string {
-	s = strings.ReplaceAll(s, "&", "&amp;")
-	s = strings.ReplaceAll(s, "<", "&lt;")
-	s = strings.ReplaceAll(s, ">", "&gt;")
-	s = strings.ReplaceAll(s, "\"", "&quot;")
-	s = strings.ReplaceAll(s, "'", "&#39;")
-	return s
 }
 
 func generateDivId(length int) string {

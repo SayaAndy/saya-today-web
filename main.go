@@ -265,7 +265,7 @@ func main() {
 						"Link":             page.Link,
 						"ArticleLink":      "/" + lang + "/blog/" + page.FileName,
 						"Title":            page.Metadata.Title,
-						"PublishedTime":    page.Metadata.PublishedTime.Format("2006-01-02 15:04:05 -0700"),
+						"PublishedTime":    page.Metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00"),
 						"ActionDate":       page.Metadata.ActionDate,
 						"ShortDescription": page.Metadata.ShortDescription,
 						"Thumbnail":        page.Metadata.Thumbnail,
@@ -287,12 +287,12 @@ func main() {
 			case "actionDateDesc":
 				return strings.Compare(b["ActionDate"], a["ActionDate"])
 			case "publicationDateAsc":
-				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -0700", a["PublishedTime"])
-				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -0700", b["PublishedTime"])
+				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"])
+				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"])
 				return publishedTimeA.Compare(publishedTimeB)
 			case "publicationDateDesc":
-				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -0700", a["PublishedTime"])
-				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -0700", b["PublishedTime"])
+				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"])
+				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"])
 				return publishedTimeB.Compare(publishedTimeA)
 			}
 			return 0

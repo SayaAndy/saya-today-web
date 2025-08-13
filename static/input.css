@@ -88,6 +88,15 @@
     --squares-and-triangles-background-height-coef: 15;
 }
 
+a {
+    color: var(--main-medium-color) !important;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--main-light-color) !important;
+}
+
 .bg-interlocked-hexagons {
     background-image: var(--interlocked-hexagons-background);
     background-repeat: var(--interlocked-hexagons-background-repeat);
@@ -330,6 +339,11 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
             }
         }
     }
+}
+
+body[data-theme~="night"] .leaflet-tile,
+body[data-theme~="ram"] .leaflet-tile {
+    filter: invert(1) hue-rotate(190deg) contrast(1.1) brightness(1.2) !important;
 }
 
 @media (min-aspect-ratio: 0.8/1) {

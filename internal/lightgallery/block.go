@@ -15,7 +15,7 @@ type LightGalleryBlock struct {
 
 type LightGalleryImage struct {
 	URL     string
-	Caption string
+	Caption []byte
 }
 
 var KindLightGalleryBlock = ast.NewNodeKind("LightGalleryBlock")
