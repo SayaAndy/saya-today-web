@@ -15,7 +15,7 @@
 {{ end }}
 
 {{ define "body" }}
-<div class="bg-background-light flex flex-col grow overflow-y-auto inset-shadow p-[2.4vmin] max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[80%]">
+<div class="bg-background-light flex flex-col grow overflow-y-auto inset-shadow p-[2.4vmin] max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)]">
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
     <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">

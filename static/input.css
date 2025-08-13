@@ -154,10 +154,6 @@
     background-size: calc(var(--squares-and-triangles-background-width-coef) * 1vw) calc(var(--squares-and-triangles-background-height-coef) * 1vw);
 }
 
-body:has(.lg-container:not([class~="lg-inline"])) .desktop-sidebar-custom {
-    display: none !important;
-}
-
 .mobile-topbar-custom {
     width: 90vw;
     height: 8%;
@@ -165,7 +161,7 @@ body:has(.lg-container:not([class~="lg-inline"])) .desktop-sidebar-custom {
     margin-left: 5vw;
 }
 
-body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
+body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     display: none !important;
 }
 
@@ -442,6 +438,10 @@ body:has(.lg-container:not([class~="lg-inline"])) .mobile-topbar-custom {
 
     .ar-lt-0\.8\:max-h-\[80\%\] {
         max-height: 80%;
+    }
+
+    .ar-lt-0\.8\:max-h-\[calc\(100\%-25vh\)\] {
+        max-height: calc(100% - 25vh);
     }
 
     .ar-lt-0\.8\:text-\[5vh\] {

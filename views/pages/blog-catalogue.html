@@ -1,5 +1,5 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-0.8:flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[80%] flex-1 text-[1vmax]">
+<div class="flex flex-row ar-lt-0.8:flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] flex-1 text-[1vmax]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
         class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] flex shrink-0 flex-col overflow-y-auto ar-gt-0.8:mr-[1.2vmin]">
         <fieldset>
