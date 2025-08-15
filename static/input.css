@@ -25,6 +25,9 @@
     --sidebar-text-color: var(--background-dark-color);
     --sidebar-stroke-color: var(--main-dark-color);
     --secondary-color: var(--main-light-color);
+    --leaflet-text-color: var(--main-dark-color);
+    --leaflet-link-color: var(--main-medium-color);
+    --leaflet-link-hover-color: var(--main-light-color);
     --interlocked-hexagons-background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23ffffdb%22%2F%3E%3Cpath%20fill%3D%22%23777e63%22%20d%3D%22m33.64%200-.17.25h-33L4.3%206h33.07l4-6zm8.33%200-4.33%206.5h-33l3.83%205.75h33.06L49.7%200zm8.34%200-8.5%2012.75h-33l3.83%205.75H45.7L58.03%200zm8.33%200L45.97%2019h-33l3.83%205.75h33.06L66.36%200zm-8.5%2025.25L33.63%2050l3.86%205.8L54.03%2031h33l-3.83-5.75zm4.16%206.25L37.8%2056.25l3.87%205.8%2016.53-24.8h33l-3.84-5.75zm4.17%206.25L41.97%2062.5l3.86%205.8%2016.54-24.8h33l-3.84-5.75zM62.63%2044l-16.5%2024.75%203.87%205.8%2016.53-24.8h33L95.7%2044zM100%2050.45l-3.87%205.8%203.87%205.81v-11.6zM0%2050.46v11.6L12.5%2080.8l3.86-5.8zm95.83%206.25-3.87%205.8L100%2074.55v-11.6zm-4.17%206.24-3.86%205.8%2012.2%2018.3v-11.6zM0%2062.96v11.6l8.33%2012.49%203.86-5.8zm87.5%206.24L83.63%2075%20100%2099.54V87.96zM50%2075.45%2033.64%20100h7.72l12.5-18.75zm-50%200v11.6l4.16%206.24%203.87-5.8zm54.17%206.25L41.97%20100h7.73l8.33-12.5zm4.17%206.25L50.3%20100h7.73l4.17-6.25zM0%2087.95v11.59l3.86-5.8zm62.5%206.25-3.87%205.8h7.73z%22%2F%3E%3Cpath%20fill%3D%22%23a0a182%22%20d%3D%22M66.8.25%2062.97%206h33l4.03%206.05V.45l-.14-.2zM0%20.45v11.61L12.5%2030.8l3.86-5.8zM62.63%206.5l-3.83%205.75h33l8.2%2012.3v-11.6L95.7%206.5zm-4.16%206.25-3.84%205.75h33L100%2037.06v-11.6l-8.47-12.71zM0%2012.96v11.6l8.33%2012.49%203.86-5.8zM54.3%2019l-3.84%205.75h33L100%2049.55l.01-.01V37.96L87.36%2019zm-4.77%206.25H41.8L25.3%2050l16.66%2025-16.5%2024.75h7.74L49.7%2075%2033.03%2050zm-8.33%200h-7.74L16.96%2050l16.67%2025-16.5%2024.75h7.73L41.36%2075%2024.7%2050Zm-8.34%200h-7.73L8.63%2050%2025.3%2075%208.8%2099.75h7.73L33.03%2075%2016.36%2050zm-16.07%200L.3%2050l16.67%2025L.46%2099.75H8.2L24.7%2075%208.02%2050l16.5-24.75zM0%2025.46v11.6l4.16%206.24%203.87-5.8zm0%2012.5v11.58l3.86-5.79zm66.8%2012.29L50.3%2074.99l3.87%205.81%204.16%206.25%204.17%206.25%204.3%206.45h7.73L58.03%2075l16.5-24.75zm16.06%200h-7.73L58.63%2075l16.5%2024.75h7.73L66.36%2075zm.6%200L66.96%2075l16.5%2024.75h7.74L74.7%2075l16.5-24.75zm16.07%200H91.8L75.3%2075l16.5%2024.75h7.73L83.03%2075z%22%2F%3E%3C%2Fsvg%3E");
     --interlocked-hexagons-background-repeat: repeat;
     --interlocked-hexagons-background-size: 10vh;
@@ -43,6 +46,9 @@
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-dark-color);
     --secondary-color: var(--main-medium-color);
+    --leaflet-text-color: var(--main-dark-color);
+    --leaflet-link-color: var(--main-medium-color);
+    --leaflet-link-hover-color: var(--main-light-color);
     --interlocked-hexagons-background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23f5ede1%22%2F%3E%3Cpath%20fill%3D%22%239ab663%22%20d%3D%22m33.64%200-.17.25h-33L4.3%206h33.07l4-6zm8.33%200-4.33%206.5h-33l3.83%205.75h33.06L49.7%200zm8.34%200-8.5%2012.75h-33l3.83%205.75H45.7L58.03%200zm8.33%200L45.97%2019h-33l3.83%205.75h33.06L66.36%200zm-8.5%2025.25L33.63%2050l3.86%205.8L54.03%2031h33l-3.83-5.75zm4.16%206.25L37.8%2056.25l3.87%205.8%2016.53-24.8h33l-3.84-5.75zm4.17%206.25L41.97%2062.5l3.86%205.8%2016.54-24.8h33l-3.84-5.75zM62.63%2044l-16.5%2024.75%203.87%205.8%2016.53-24.8h33L95.7%2044zM100%2050.45l-3.87%205.8%203.87%205.81v-11.6zM0%2050.46v11.6L12.5%2080.8l3.86-5.8zm95.83%206.25-3.87%205.8L100%2074.55v-11.6zm-4.17%206.24-3.86%205.8%2012.2%2018.3v-11.6zM0%2062.96v11.6l8.33%2012.49%203.86-5.8zm87.5%206.24L83.63%2075%20100%2099.54V87.96zM50%2075.45%2033.64%20100h7.72l12.5-18.75zm-50%200v11.6l4.16%206.24%203.87-5.8zm54.17%206.25L41.97%20100h7.73l8.33-12.5zm4.17%206.25L50.3%20100h7.73l4.17-6.25zM0%2087.95v11.59l3.86-5.8zm62.5%206.25-3.87%205.8h7.73z%22%2F%3E%3Cpath%20fill%3D%22%23bbd095%22%20d%3D%22M66.8.25%2062.97%206h33l4.03%206.05V.45l-.14-.2zM0%20.45v11.61L12.5%2030.8l3.86-5.8zM62.63%206.5l-3.83%205.75h33l8.2%2012.3v-11.6L95.7%206.5zm-4.16%206.25-3.84%205.75h33L100%2037.06v-11.6l-8.47-12.71zM0%2012.96v11.6l8.33%2012.49%203.86-5.8zM54.3%2019l-3.84%205.75h33L100%2049.55l.01-.01V37.96L87.36%2019zm-4.77%206.25H41.8L25.3%2050l16.66%2025-16.5%2024.75h7.74L49.7%2075%2033.03%2050zm-8.33%200h-7.74L16.96%2050l16.67%2025-16.5%2024.75h7.73L41.36%2075%2024.7%2050Zm-8.34%200h-7.73L8.63%2050%2025.3%2075%208.8%2099.75h7.73L33.03%2075%2016.36%2050zm-16.07%200L.3%2050l16.67%2025L.46%2099.75H8.2L24.7%2075%208.02%2050l16.5-24.75zM0%2025.46v11.6l4.16%206.24%203.87-5.8zm0%2012.5v11.58l3.86-5.79zm66.8%2012.29L50.3%2074.99l3.87%205.81%204.16%206.25%204.17%206.25%204.3%206.45h7.73L58.03%2075l16.5-24.75zm16.06%200h-7.73L58.63%2075l16.5%2024.75h7.73L66.36%2075zm.6%200L66.96%2075l16.5%2024.75h7.74L74.7%2075l16.5-24.75zm16.07%200H91.8L75.3%2075l16.5%2024.75h7.73L83.03%2075z%22%2F%3E%3C%2Fsvg%3E");
     --interlocked-hexagons-background-repeat: repeat;
     --interlocked-hexagons-background-size: 10vh;
@@ -61,6 +67,9 @@
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-light-color);
     --secondary-color: var(--main-light-color);
+    --leaflet-text-color: var(--background-dark-color);
+    --leaflet-link-color: var(--background-dark-color);
+    --leaflet-link-hover-color: var(--background-light-color);
     --interlocked-hexagons-background: radial-gradient(33.5% 25% at 100% 82%, rgba(190, 227, 248, 0.2) 0%, rgba(197, 179, 246, 0.13) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(54% 25% at 55% 100%, rgba(190, 227, 248, 0.2) 0%, rgba(197, 179, 246, 0.13) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(37% 19.5% at 20% 100%, rgba(176, 220, 248, 0.3) 0%, rgba(197, 172, 247, 0.2) 33.33%, rgba(255, 0, 0, 0) 100%), radial-gradient(63% 34.5% at 66% 77%, rgba(190, 227, 248, 0.15) 0%, rgba(197, 179, 246, 0.1) 33.33%, rgba(255, 0, 0, 0) 100%), linear-gradient(0deg, #2f5883 0%, #2f4e7a 4.75%, #2e4472 9.5%, #2a3065 19%, #272e57 26.5%, #242b4b 34%, #1f2437 49%, #1c2030 57.75%, #1a1b29 66.5%, #13131b 84%);
     --interlocked-hexagons-background-repeat: no-repeat;
     --interlocked-hexagons-background-size: 100vw 100vh;
@@ -79,6 +88,9 @@
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-light-color);
     --secondary-color: var(--main-light-color);
+    --leaflet-text-color: var(--background-dark-color);
+    --leaflet-link-color: var(--background-dark-color);
+    --leaflet-link-hover-color: var(--background-light-color);
     --interlocked-hexagons-background: url('https://f003.backblazeb2.com/file/sayana-static/themes/ram/ram-background.webp');
     --interlocked-hexagons-background-repeat: repeat;
     --interlocked-hexagons-background-size: auto;
@@ -95,6 +107,20 @@ a {
 
 a:hover {
     color: var(--main-light-color) !important;
+}
+
+#location-map {
+    color: var(--leaflet-text-color) !important;
+}
+
+#location-map a {
+    color: var(--leaflet-link-color) !important;
+    text-decoration: underline;
+}
+
+#location-map a:hover {
+    color: var(--leaflet-link-hover-color) !important;
+    text-decoration: underline;
 }
 
 .bg-interlocked-hexagons {
