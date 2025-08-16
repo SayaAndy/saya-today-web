@@ -2,14 +2,16 @@ all:
   children:
     prod:
       hosts:
-        pl.saya.today:
+        node_prod:
+          ansible_host: pl.saya.today
           saya_today_web_name: sayana-web
           saya_today_web_hostname: sayana-web
           saya_today_web_ipv4_address: 172.16.0.18
 
     stage:
       hosts:
-        pl.saya.today:
+        node_stage:
+          ansible_host: pl.saya.today
           saya_today_web_name: sayana-demo
           saya_today_web_hostname: sayana-demo
           saya_today_web_ipv4_address: 172.16.0.17
