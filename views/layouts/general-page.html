@@ -12,7 +12,7 @@
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="night" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
+<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
 
     <script>
         function switchTheme(theme) {
@@ -29,8 +29,12 @@
             document.body.setAttribute('data-theme', theme);
         }
 
-        const savedTheme = localStorage.getItem('theme') || 'night';
+        const savedTheme = localStorage.getItem('theme') || 'ram';
         switchTheme(savedTheme);
+    </script>
+
+    <script>
+        const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
     <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5vw] ar-lt-0.8:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-0.8:h-[8vh] ar-lt-0.8:ml-[5vw] ar-lt-0.4:ml-0">
@@ -49,13 +53,12 @@
         <div class="pl-[0.5vw] bg-background-dark border-r-[0.4vmin] border-dashed border-main-dark"></div>
 
         <div class="ar-gt-0.8:min-w-fit ar-gt-0.8:max-w-[100vh] flex flex-col bg-background-dark relative pt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
-            <div class="flex flex-row mb-[0.4vmin]">
+            <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
+                class="flex flex-row mb-[0.4vmin]">
                 <i onclick="location.pathname += location.pathname.endsWith('/') ? '../' : '/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
                 <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
                 <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
-                {{- if .PublishedDate }}
-                <p class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
-                {{- end }}
+                <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
             </div>
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
@@ -75,6 +78,8 @@
 
         <div class="pr-[0.5vw] bg-background-dark shadow-2xl border-l-[0.4vmin] border-dotted border-main-dark"></div>
     </div>
+
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
 
     {{ block "footer" . }}{{ end }}
 

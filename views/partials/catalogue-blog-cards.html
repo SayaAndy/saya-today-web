@@ -12,7 +12,7 @@
             <p class="flex-3/12 grow-0 text-[1vmax] italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
         <p class="text-[1vmax] text-main-dark">{{ .ShortDescription }}</p>
-        <p class="text-[1vmax] text-secondary">{{ .L.TagsLabel }} {{ .Tags }}</p>
+        <p class="text-[1vmax] text-secondary">{{ $.L.TagsLabel }} {{ template "catalogue-blog-card-tags.html" . }}</p>
     </div>
 </div>
 {{- end }}

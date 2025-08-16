@@ -82,7 +82,7 @@ func main() {
 		{Name: "blog-page", Files: []string{"views/layouts/general-page.html", "views/pages/blog-page.html"}},
 		{Name: "blog-catalogue", Files: []string{"views/layouts/general-page.html", "views/pages/blog-catalogue.html"}},
 		{Name: "index", Files: []string{"views/index.html"}},
-		{Name: "catalogue-blog-cards", Files: []string{"views/partials/catalogue-blog-cards.html"}},
+		{Name: "catalogue-blog-cards", Files: []string{"views/partials/catalogue-blog-cards.html", "views/partials/catalogue-blog-card-tags.html"}},
 	})
 	if err != nil {
 		slog.Error("fail to initialize template manager", slog.String("error", err.Error()))
@@ -227,13 +227,47 @@ func main() {
 		return c.Type("html").Send(content)
 	})
 
+	app.Get("/api/v1/tz", func(c *fiber.Ctx) error {
+		timestampString := c.Query("timestamp")
+		tz := c.Query("tz")
+
+		loc, err := time.LoadLocation(tz)
+		if err != nil {
+			loc = time.UTC
+			slog.Warn("unable to parse a client timezone, defaulting to UTC", slog.String("error", err.Error()), slog.String("tz", tz))
+		}
+
+		var format string
+		var timestamp time.Time
+		for _, format = range []string{"2006-01-02 15:04:05 -07:00", time.RFC3339} {
+			if timestamp, err = time.Parse(format, timestampString); err == nil {
+				break
+			}
+		}
+
+		c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString("invalid timestamp format")
+		}
+
+		return c.Status(fiber.StatusOK).SendString(timestamp.In(loc).Format(format))
+	})
+
 	app.Get("/api/v1/blog-search", func(c *fiber.Ctx) error {
 		sort := c.Query("sort")
 		lang := c.Query("lang")
+		tz := c.Query("tz")
 
 		if !slices.Contains(availableLanguages, lang) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language", lang))
+		}
+
+		loc, err := time.LoadLocation(tz)
+		if err != nil {
+			loc = time.UTC
+			slog.Warn("unable to parse a client timezone, defaulting to UTC", slog.String("error", err.Error()), slog.String("tz", tz))
 		}
 
 		pages, err := b2Client.Scan(lang + "/")
@@ -257,42 +291,42 @@ func main() {
 			tags = append(tags, string(match[1]))
 		}
 
-		pageMeta := make([]map[string]string, 0, len(pages))
+		pageMeta := make([]fiber.Map, 0, len(pages))
 		for _, page := range pages {
 			for _, tag := range page.Metadata.Tags {
 				if len(tags) == 0 || slices.Contains(tags, tag) {
-					pageMeta = append(pageMeta, map[string]string{
+					pageMeta = append(pageMeta, fiber.Map{
 						"Link":             page.Link,
 						"ArticleLink":      "/" + lang + "/blog/" + page.FileName,
 						"Title":            page.Metadata.Title,
-						"PublishedTime":    page.Metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00"),
+						"PublishedTime":    page.Metadata.PublishedTime.In(loc).Format("2006-01-02 15:04:05 -07:00"),
 						"ActionDate":       page.Metadata.ActionDate,
 						"ShortDescription": page.Metadata.ShortDescription,
 						"Thumbnail":        page.Metadata.Thumbnail,
-						"Tags":             strings.Join(page.Metadata.Tags, ", "),
+						"Tags":             page.Metadata.Tags,
 					})
 					break
 				}
 			}
 		}
 
-		slices.SortFunc(pageMeta, func(a, b map[string]string) int {
+		slices.SortFunc(pageMeta, func(a, b fiber.Map) int {
 			switch sort {
 			case "titleAsc":
-				return strings.Compare(a["Title"], b["Title"])
+				return strings.Compare(a["Title"].(string), b["Title"].(string))
 			case "titleDesc":
-				return strings.Compare(b["Title"], a["Title"])
+				return strings.Compare(b["Title"].(string), a["Title"].(string))
 			case "actionDateAsc":
-				return strings.Compare(a["ActionDate"], b["ActionDate"])
+				return strings.Compare(a["ActionDate"].(string), b["ActionDate"].(string))
 			case "actionDateDesc":
-				return strings.Compare(b["ActionDate"], a["ActionDate"])
+				return strings.Compare(b["ActionDate"].(string), a["ActionDate"].(string))
 			case "publicationDateAsc":
-				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"])
-				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"])
+				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"].(string))
+				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"].(string))
 				return publishedTimeA.Compare(publishedTimeB)
 			case "publicationDateDesc":
-				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"])
-				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"])
+				publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"].(string))
+				publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"].(string))
 				return publishedTimeB.Compare(publishedTimeA)
 			}
 			return 0

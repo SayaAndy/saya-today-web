@@ -1,0 +1,1 @@
+{{ range $i, $tag := .Tags }}{{ if ne $i 0 }}, {{ end }}<a hx-trigger="click" hx-get="/api/v1/blog-search" hx-target=".blog-cards" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list" class="hx-anchor cursor-pointer" onclick="pickedTagSetHrefParams({{ $tag }})">{{ $tag }}</a>{{ end }}

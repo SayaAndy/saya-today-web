@@ -49,7 +49,7 @@
 
     <div class="w-[0.5vh] border-r-[0.3vh] border-dotted border-main-dark bg-background-dark"></div>
 
-    <div hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
+    <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
         class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-[2.4vmin]">
         Loading...
     </div>
@@ -57,8 +57,6 @@
 {{ end }}
 
 {{ define "footer" }}
-<script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-
 <script>
     function selectAll() {
         const tagsContainers = document.querySelectorAll('form.tags-list');
@@ -115,6 +113,24 @@
             });
             const sortRadio = tagsContainer.querySelector('input[type="radio"]:checked');
             url.searchParams.set('sort', sortRadio.value);
+        });
+
+        window.history.pushState({}, '', url.toString());
+    }
+
+    function pickedTagSetHrefParams(tag) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('tags[]');
+        url.searchParams.set('tags[]', tag);
+
+        const tagsContainers = document.querySelectorAll('form.tags-list');
+        tagsContainers.forEach(tagsContainer => {
+            const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            chosenCheckbox = tagsContainer.querySelector(`#tag${tag}Checkbox`);
+            chosenCheckbox.checked = true;
         });
 
         window.history.pushState({}, '', url.toString());
