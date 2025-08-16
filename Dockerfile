@@ -19,4 +19,4 @@ COPY --from=build-stage /builddir/config/config*.yaml /app/config/
 
 RUN apk add --no-cache tzdata
 
-ENTRYPOINT [ "/app/sayana-web", "-c", "/app/config/config.${ENVIRONMENT}.yaml" ]
+ENTRYPOINT /app/sayana-web -c /app/config/config.${ENVIRONMENT}.yaml
