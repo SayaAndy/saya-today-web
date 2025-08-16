@@ -1,0 +1,89 @@
+name: Docker image building and publishing onto Stage
+on:
+  push:
+    branches: [stage]
+jobs:
+  build-and-push:
+    if: github.repository == 'SayaAndy/saya-today-web'
+    runs-on: ubuntu-latest
+    environment: Stage
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate output.css with tailwindcss
+        uses: ZoeyVid/tailwindcss-update@main
+        with:
+          input: static/input.css
+          output: static/output.css
+          params: "--minify"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Set github short sha
+        id: ghss_vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ghcr.io/sayaandy/saya-today-web:latest
+            ghcr.io/sayaandy/saya-today-web:commit-${{ steps.ghss_vars.outputs.sha_short }}
+
+  deploy:
+    if: github.repository == 'SayaAndy/saya-today-web'
+    runs-on: ubuntu-latest
+    environment: Stage
+    needs: [build-and-push]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH connection for pl.saya.today
+        run: |
+          mkdir -p ~/.ssh
+          (cat <<EOF
+          ${{ secrets.SVC_GITHUB_PK }}
+          EOF
+          ) > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          sed -i 's/\r$//' ~/.ssh/id_ed25519
+          ssh-keyscan -H pl.saya.today >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          ssh -o ConnectTimeout=10 -i ~/.ssh/id_ed25519 svc_github@pl.saya.today "echo 'SSH connection successful'"
+
+      - name: Install Ansible
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Set github short sha
+        id: ghss_vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Run Ansible playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+        working-directory: ./deploy
+        run: |
+          ansible-playbook -i inventory.yml -l stage playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }} -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }} -e saya_today_web_environment=stage -e saya_today_web_tag=commit-${{ steps.ghss_vars.outputs.sha_short }}

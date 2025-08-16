@@ -12,6 +12,7 @@
         env:
           B2_KEY_ID: "{{ saya_today_web_b2_key_id }}"
           B2_APPLICATION_KEY: "{{ saya_today_web_b2_application_key }}"
+          ENVIRONMENT: "{{ saya_today_web_environment }}"
         network_mode: caddy
         networks:
           - name: caddy
