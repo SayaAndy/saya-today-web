@@ -45,7 +45,13 @@
             <i onclick="location.href='/';" class="fas fa-home w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="location.href='/{{ .Lang }}/blog';" class="fas fa-search w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <!-- <i class="fas fa-images w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i> -->
-            <i onclick="switchTheme('')" class="fas fa-swatchbook w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+        </div>
+        <div class="theme-wheel" id="theme-wheel">
+            <div class="theme-icon" data-theme="olive"></div>
+            <div class="theme-icon" data-theme="lettuce"></div>
+            <div class="theme-icon" data-theme="night"></div>
+            <div class="theme-icon" data-theme="ram"></div>
         </div>
     </div>
 
@@ -80,6 +86,117 @@
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
+
+    <script>
+        const themeWheel = document.getElementById('theme-wheel');
+        const themeButton = document.getElementById('theme-button');
+        const themeIcons = document.querySelectorAll('.theme-icon');
+
+        themeIcons.forEach(icon => {
+            if (icon.getAttribute('data-theme') == savedTheme) {
+                icon.classList.add('active');
+            }
+        });
+
+        function calculateVmax(percent) {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            const largerDimension = Math.max(viewportWidth, viewportHeight);
+
+            const vmaxValue = (largerDimension / 100) * percent;
+
+            return vmaxValue;
+        }
+
+        function positionThemeIcons() {
+            const icons = themeWheel.querySelectorAll('.theme-icon');
+            const iconCount = icons.length;
+            const vmax = calculateVmax(1);
+            const wheelRadius = 7.5*vmax; // Radius of the wheel
+            const iconRadius = 4*vmax; // Distance from center to place icons
+            const iconSize = 3*vmax; // Half of icon size for centering
+
+            icons.forEach((icon, index) => {
+                const angle = (index * 360 / iconCount) - 90;
+                const angleRad = (angle * Math.PI) / 180;
+
+                const x = Math.cos(angleRad) * iconRadius + wheelRadius - iconSize;
+                const y = Math.sin(angleRad) * iconRadius + wheelRadius - iconSize;
+
+                icon.style.left = x + 'px';
+                icon.style.top = y + 'px';
+            });
+        }
+
+        function positionThemeWheel() {
+            const buttonRect = themeButton.getBoundingClientRect();
+            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+            const wheelRadius = calculateVmax(7.5);
+            const margin = calculateVmax(1);
+
+            let wheelX = buttonCenterX - wheelRadius;
+            let wheelY = buttonCenterY - wheelRadius;
+
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            if (wheelX < margin) {
+                wheelX = margin;
+            } else if (wheelX + (wheelRadius * 2) > viewportWidth - margin) {
+                wheelX = viewportWidth - (wheelRadius * 2) - margin;
+            }
+
+            if (wheelY < margin) {
+                wheelY = margin;
+            } else if (wheelY + (wheelRadius * 2) > viewportHeight - margin) {
+                wheelY = viewportHeight - (wheelRadius * 2) - margin;
+            }
+
+            themeWheel.style.left = wheelX + 'px';
+            themeWheel.style.top = wheelY + 'px';
+        }
+
+        function hideThemeWheel() {
+            themeWheel.classList.remove('active');
+        }
+
+        function showThemeWheel() {
+            positionThemeWheel();
+            positionThemeIcons();
+            themeWheel.classList.add('active');
+        }
+
+        function toggleThemeWheel() {
+            if (themeWheel.classList.contains('active')) {
+                hideThemeWheel();
+            } else {
+                showThemeWheel();
+            }
+        }
+
+        themeIcons.forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const theme = icon.getAttribute('data-theme');
+                switchTheme(theme);
+                themeIcons.forEach(icon => {
+                    icon.classList.remove('active');
+                })
+                icon.classList.add('active');
+            });
+        });
+
+        themeWheel.addEventListener('mouseleave', hideThemeWheel);
+
+        document.addEventListener('click', (e) => {
+            if (!themeWheel.contains(e.target) && e.target !== themeButton) {
+                hideThemeWheel();
+            }
+        });
+    </script>
 
     {{ block "footer" . }}{{ end }}
 

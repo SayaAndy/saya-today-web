@@ -248,6 +248,52 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     -webkit-text-stroke-width: 0.1vw;
 }
 
+.theme-wheel {
+    position: fixed;
+    width: 15vmax;
+    height: 15vmax;
+    border-radius: 50%;
+    background: var(--background-light-color);
+    opacity: 0.8;
+    border: 1vmax outset var(--background-dark-color);
+    box-shadow: 0 0 5vmax var(--main-light-color);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1001;
+}
+
+.theme-wheel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.theme-icon {
+    position: absolute;
+    width: 4vmax;
+    height: 4vmax;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 0.1vmax inset var(--background-light-color);
+    background: var(--interlocked-hexagons-background);
+    background-size: contain;
+}
+
+.theme-icon:hover {
+    transform: scale(1.2);
+}
+
+.theme-icon.active {
+    transform: scale(1.2);
+    border: 0.3vmax outset var(--main-light-color);
+}
+
 .lg-backdrop {
     background-color: var(--background-light-color);
     opacity: 0.8 !important;
