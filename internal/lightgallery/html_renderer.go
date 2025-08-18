@@ -79,17 +79,14 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				downloadUrl:
 					"https://f003.backblazeb2.com/file/sayana-photos/full/%s",
 				alt: "%s",
-				sources: [{
-					srcset: "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/%s.webp",
-					media: "(max-width: 800px)"
-				}],
+				responsive: "https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp 600, https://f003.backblazeb2.com/file/sayana-photos/webp-560/%s.webp 900, https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp 1366, https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp 1920, https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp 2560",
 				thumb:
-					"https://f003.backblazeb2.com/file/sayana-photos/thumbnails/%s.webp",
+					"https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
 								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
 								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
-			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
+			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}
 
 		w.WriteString(fmt.Sprintf(`
