@@ -4,12 +4,12 @@
         class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] flex shrink-0 flex-col overflow-y-auto ar-gt-0.8:mr-[1.2vmin]">
         <fieldset>
             <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
-            <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense gap-[5%]">
-                <div>
+            <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense">
+                <div class="m-[0.4vmin]">
                     <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
                 </div>
                 {{- range .Tags }}
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="checkbox" id="tag{{ .Name }}Checkbox" name="tags[]" value="{{ .Name }}" onclick="contextAll();" {{ if contains $.QueryTags .Name }}checked{{ end }}> {{ .Name }}  <span class="text-secondary italic">{{ .Count }}</span></label>
                 </div>
                 {{- end }}
@@ -17,23 +17,23 @@
         </fieldset>
         <fieldset class="mt-[0.8vmin]">
             <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
-            <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col gap-[5%]">
-                <div>
+            <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
                 </div>
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-z-a"></i></label>
                 </div>
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
                 </div>
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
                 </div>
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
                 </div>
-                <div>
+                <div class="m-[0.4vmin]">
                     <label><input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
                 </div>
             </div>
