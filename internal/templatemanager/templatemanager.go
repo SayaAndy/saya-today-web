@@ -22,7 +22,7 @@ type TemplateManagerTemplates struct {
 	Files []string
 }
 
-func NewTemplateManager(templates []TemplateManagerTemplates) (*TemplateManager, error) {
+func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager, error) {
 	templateMap := make(map[string]templateManagerRender)
 
 	for _, tmplStruct := range templates {
@@ -37,7 +37,6 @@ func NewTemplateManager(templates []TemplateManagerTemplates) (*TemplateManager,
 			Main: filepath.Base(tmplStruct.Files[0]),
 			Tmpl: tmpl,
 		}
-
 	}
 
 	return &TemplateManager{
@@ -54,4 +53,25 @@ func (tm *TemplateManager) Render(name string, data interface{}) ([]byte, error)
 	var buf bytes.Buffer
 	err := tmpl.Tmpl.ExecuteTemplate(&buf, tmpl.Main, data)
 	return buf.Bytes(), err
+}
+
+func (tm *TemplateManager) Add(name string, files ...string) error {
+	if len(files) == 0 {
+		return fmt.Errorf("you can't add template without any files")
+	}
+
+	tmpl := template.New("").Funcs(template.FuncMap{
+		"contains": strings.Contains,
+	})
+
+	tmpl, err := tmpl.ParseFiles(files...)
+	if err != nil {
+		return fmt.Errorf("failed to add template into manager: %w", err)
+	}
+
+	tm.templates[name] = templateManagerRender{
+		Main: filepath.Base(files[0]),
+		Tmpl: tmpl,
+	}
+	return nil
 }

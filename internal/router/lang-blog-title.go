@@ -11,13 +11,16 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
-	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
 
-func Lang_Blog_Title(tm *templatemanager.TemplateManager, l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
+func init() {
+	tm.Add("blog-page", "views/layouts/general-page.html", "views/pages/blog-page.html")
+}
+
+func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		lang := c.Params("lang")
 		if !slices.Contains(langs, lang) {

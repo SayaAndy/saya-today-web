@@ -10,12 +10,15 @@ import (
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/b2"
-	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Api_V1_BlogSearch(tm *templatemanager.TemplateManager, l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
+func init() {
+	tm.Add("catalogue-blog-cards", "views/partials/catalogue-blog-cards.html", "views/partials/catalogue-blog-card-tags.html")
+}
+
+func Api_V1_BlogSearch(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		sort := c.Query("sort")
 		lang := c.Query("lang")

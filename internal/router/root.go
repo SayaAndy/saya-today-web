@@ -4,11 +4,14 @@ import (
 	"log/slog"
 
 	"github.com/SayaAndy/saya-today-web/config"
-	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Root(tm *templatemanager.TemplateManager, localeCfg []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
+func init() {
+	tm.Add("index", "views/index.html")
+}
+
+func Root(localeCfg []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		content, err := tm.Render("index", fiber.Map{
 			"AvailableLanguages": localeCfg,
