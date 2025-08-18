@@ -106,7 +106,7 @@ function createLightGallery%s() {
             isMobile: () => false,
 			slideDelay: 0,
 			plugins: [lgZoom, lgThumbnail],
-			thumbWidth: 160,
+			thumbWidth: calculateVmin(10),
 			thumbHeight: "10vmin",
 			thumbMargin: 4
         });

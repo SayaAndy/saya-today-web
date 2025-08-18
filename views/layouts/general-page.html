@@ -98,6 +98,17 @@
             }
         });
 
+        function calculateVmin(percent) {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            const smallerDimension = Math.min(viewportWidth, viewportHeight);
+
+            const vminValue = (smallerDimension / 100) * percent;
+
+            return vminValue;
+        }
+
         function calculateVmax(percent) {
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
