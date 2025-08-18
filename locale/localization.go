@@ -10,6 +10,7 @@ import (
 type LocaleConfig struct {
 	TagsLabel  string           `yaml:"TagsLabel" json:"TagsLabel"`
 	BlogSearch BlogSearchConfig `yaml:"BlogSearch" json:"BlogSearch"`
+	GlobalMap  GlobalMapConfig  `yaml:"GlobalMap" json:"GlobalMap"`
 }
 
 type BlogSearchConfig struct {
@@ -20,6 +21,10 @@ type BlogSearchConfig struct {
 	ActionDateOrdered      string `yaml:"ActionDateOrdered" json:"ActionDateOrdered"`
 	PublicationDateOrdered string `yaml:"PublicationDateOrdered" json:"PublicationDateOrdered"`
 	ChooseAllTags          string `yaml:"ChooseAllTags" json:"ChooseAllTags"`
+}
+
+type GlobalMapConfig struct {
+	Header string `yaml:"Header" json:"Header"`
 }
 
 func LoadConfig(path string, config *LocaleConfig) error {

@@ -7,3 +7,5 @@ BlogSearch:
   ActionDateOrdered: 'дате действия'
   PublicationDateOrdered: 'времени публикации'
   ChooseAllTags: 'Выбрать все'
+GlobalMap:
+  Header: 'Глобальная карта'

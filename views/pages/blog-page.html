@@ -19,7 +19,7 @@
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
     <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
-    <div id="location-map" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[60%] ar-lt-0.8:w-[80%] h-[40vh] ar-lt-0.8:h-[30vh]"></div>
+    <div id="map-container" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[60%] ar-lt-0.8:w-[80%] h-[40vh] ar-lt-0.8:h-[30vh]"></div>
     <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
 {{- end }}
 </div>
@@ -33,8 +33,10 @@
 <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <script>
+    var map;
+
     function initLocationMap(id, x, y, relativeErrorMeters = 0) {
-        var map = L.map(id).setView([x, y], 8);
+        map = L.map(id).setView([x, y], 8);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
@@ -58,7 +60,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {initLocationMap(
-        'location-map',
+        'map-container',
         {{ .MapLocationX }},
         {{ .MapLocationY }},
         {{ .MapLocationAreaMeters }}
@@ -66,7 +68,7 @@
 
     window.addEventListener('resize', function() {
         setTimeout(() => {
-            if (window.location-map) window.location-map.invalidateSize();
+            map.invalidateSize();
         }, 100);
     });
 </script>

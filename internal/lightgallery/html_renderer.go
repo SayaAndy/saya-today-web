@@ -79,22 +79,19 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				downloadUrl:
 					"https://f003.backblazeb2.com/file/sayana-photos/full/%s",
 				alt: "%s",
-				sources: [{
-					srcset: "https://f003.backblazeb2.com/file/sayana-photos/thumbnails/%s.webp",
-					media: "(max-width: 800px)"
-				}],
+				responsive: "https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp 384, https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp 672, https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp 960, https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp 1440, https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp 1920",
 				thumb:
-					"https://f003.backblazeb2.com/file/sayana-photos/thumbnails/%s.webp",
+					"https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
-								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
-								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
+								<p class="grow !text-[1vmax]/[1] text-left font-spectral text-main-dark">%s</p>
+								<p class="!text-[1vmax]/[1] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
-			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
+			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}
 
 		w.WriteString(fmt.Sprintf(`
 <script>
-function createLightLibrary%s() {
+function createLightGallery%s() {
 		const $lgContainer = document.getElementById('lg-%s');
         const inlineGallery = lightGallery($lgContainer, {
 			container: $lgContainer,
@@ -109,7 +106,7 @@ function createLightLibrary%s() {
             isMobile: () => false,
 			slideDelay: 0,
 			plugins: [lgZoom, lgThumbnail],
-			thumbWidth: 160,
+			thumbWidth: calculateVmin(10),
 			thumbHeight: "10vmin",
 			thumbMargin: 4
         });
@@ -119,18 +116,8 @@ function createLightLibrary%s() {
 		}, 200);
 }
 
-document.addEventListener('DOMContentLoaded', createLightLibrary%s);
-
-let resizeTimer%s;
-window.addEventListener("resize", () => {
-	clearTimeout(resizeTimer%s);
-	resizeTimer%s = setTimeout(() => {
-		const $lgContainer = document.getElementById('lg-%s');
-		$lgContainer.innerHTML = "";
-		createLightLibrary%s();
-	}, 1000);
-});
-</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+document.addEventListener('DOMContentLoaded', createLightGallery%s);
+</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID))
 	}
 
 	return ast.WalkContinue, nil

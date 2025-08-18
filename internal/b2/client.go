@@ -84,6 +84,7 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 				PublishedTime:    publishedTime,
 				Thumbnail:        attrs.Info["thumbnail"],
 				Tags:             strings.Split(attrs.Info["tags"], ","),
+				Geolocation:      attrs.Info["geolocation"],
 			},
 		})
 	}

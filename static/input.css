@@ -1,17 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-    --color-olive-dark: #4b513a;
-    --color-olive-medium: #8a9d8a;
-    --color-olive-light: #a5b8a5;
-    --color-cream-dark: #ffffdd;
-    --color-cream-light: #fffff0;
-    --color-lettuce-dark: #384a0c;
-    --color-lettuce-medium: #9bb665;
-    --color-lettuce-light: #bbd095;
-    --color-sunny-dark: #f5eee2;
-    --color-sunny-light: #fff93f;
-
     --font-spectral: Spectral, serif;
     --font-patua: "Patua One", cursive;
 }
@@ -109,16 +98,16 @@ a:hover {
     color: var(--main-light-color) !important;
 }
 
-#location-map {
+#map-container {
     color: var(--leaflet-text-color) !important;
 }
 
-#location-map a {
+#map-container a {
     color: var(--leaflet-link-color) !important;
     text-decoration: underline;
 }
 
-#location-map a:hover {
+#map-container a:hover {
     color: var(--leaflet-link-hover-color) !important;
     text-decoration: underline;
 }
@@ -248,6 +237,52 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     -webkit-text-stroke-width: 0.1vw;
 }
 
+.theme-wheel {
+    position: fixed;
+    width: 15vmax;
+    height: 15vmax;
+    border-radius: 50%;
+    background: var(--background-light-color);
+    opacity: 0.8;
+    border: 1vmax outset var(--background-dark-color);
+    box-shadow: 0 0 5vmax var(--main-light-color);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1001;
+}
+
+.theme-wheel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.theme-icon {
+    position: absolute;
+    width: 4vmax;
+    height: 4vmax;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 0.1vmax inset var(--background-light-color);
+    background: var(--interlocked-hexagons-background);
+    background-size: contain;
+}
+
+.theme-icon:hover {
+    transform: scale(1.2);
+}
+
+.theme-icon.active {
+    transform: scale(1.2);
+    border: 0.3vmax outset var(--main-light-color);
+}
+
 .lg-backdrop {
     background-color: var(--background-light-color);
     opacity: 0.8 !important;
@@ -288,14 +323,21 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
 }
 
 .lg-content {
-    top: 3vmax !important;
+    top: 2.5vmax !important;
+    bottom: calc(10vmin + 5vmax) !important;
+}
+
+.lg-thumb-item {
+    width: 10vmin !important;
+    height: 10vmin !important;
 }
 
 .lg-container:not([class~="lg-inline"]) .lg-content {
     top: 4vmax !important;
 }
 
-.lg-toolbar .lg-icon {
+.lg-toolbar .lg-icon,
+.lg-content .lg-icon {
     padding: 0 0.7vmax;
     font-size: 1.5vmax !important;
     height: 1.5vmax;
@@ -303,9 +345,18 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     color: var(--main-dark-color);
 }
 
-.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon {
+.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon,
+.lg-container:not([class~="lg-inline"]) .lg-content .lg-icon {
     font-size: 3vmax !important;
     height: 3vmax;
+}
+
+.lg-prev {
+    left: 0 !important;
+}
+
+.lg-next {
+    right: 0 !important;
 }
 
 .lg-toolbar .lg-icon:hover {
@@ -327,7 +378,7 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
 
 .inline-gallery-container {
     width: 80%;
-    height: 60vmin;
+    height: 70vmin;
 }
 
 .light-gallery-captions {
