@@ -323,14 +323,21 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
 }
 
 .lg-content {
-    top: 3vmax !important;
+    top: 2.5vmax !important;
+    bottom: calc(10vmin + 5vmax) !important;
+}
+
+.lg-thumb-item {
+    width: 10vmin !important;
+    height: 10vmin !important;
 }
 
 .lg-container:not([class~="lg-inline"]) .lg-content {
     top: 4vmax !important;
 }
 
-.lg-toolbar .lg-icon {
+.lg-toolbar .lg-icon,
+.lg-content .lg-icon {
     padding: 0 0.7vmax;
     font-size: 1.5vmax !important;
     height: 1.5vmax;
@@ -338,9 +345,18 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     color: var(--main-dark-color);
 }
 
-.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon {
+.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon,
+.lg-container:not([class~="lg-inline"]) .lg-content .lg-icon {
     font-size: 3vmax !important;
     height: 3vmax;
+}
+
+.lg-prev {
+    left: 0 !important;
+}
+
+.lg-next {
+    right: 0 !important;
 }
 
 .lg-toolbar .lg-icon:hover {
@@ -362,7 +378,7 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
 
 .inline-gallery-container {
     width: 80%;
-    height: 60vmin;
+    height: 70vmin;
 }
 
 .light-gallery-captions {

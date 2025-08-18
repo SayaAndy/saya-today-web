@@ -83,15 +83,15 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				thumb:
 					"https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
-								<p class="grow !text-[1vmax]/[0.9] text-left font-spectral text-main-dark">%s</p>
-								<p class="!text-[1vmax]/[0.9] text-right font-spectral text-secondary">%s</p>
+								<p class="grow !text-[1vmax]/[1] text-left font-spectral text-main-dark">%s</p>
+								<p class="!text-[1vmax]/[1] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
 			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}
 
 		w.WriteString(fmt.Sprintf(`
 <script>
-function createLightLibrary%s() {
+function createLightGallery%s() {
 		const $lgContainer = document.getElementById('lg-%s');
         const inlineGallery = lightGallery($lgContainer, {
 			container: $lgContainer,
@@ -116,18 +116,8 @@ function createLightLibrary%s() {
 		}, 200);
 }
 
-document.addEventListener('DOMContentLoaded', createLightLibrary%s);
-
-let resizeTimer%s;
-window.addEventListener("resize", () => {
-	clearTimeout(resizeTimer%s);
-	resizeTimer%s = setTimeout(() => {
-		const $lgContainer = document.getElementById('lg-%s');
-		$lgContainer.innerHTML = "";
-		createLightLibrary%s();
-	}, 1000);
-});
-</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+document.addEventListener('DOMContentLoaded', createLightGallery%s);
+</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID))
 	}
 
 	return ast.WalkContinue, nil
