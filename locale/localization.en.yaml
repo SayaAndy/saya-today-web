@@ -7,3 +7,5 @@ BlogSearch:
   ActionDateOrdered: 'Action Date'
   PublicationDateOrdered: 'Publication Date'
   ChooseAllTags: 'Choose All'
+GlobalMap:
+  Header: 'Global Map'

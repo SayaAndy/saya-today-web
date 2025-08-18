@@ -1,17 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-    --color-olive-dark: #4b513a;
-    --color-olive-medium: #8a9d8a;
-    --color-olive-light: #a5b8a5;
-    --color-cream-dark: #ffffdd;
-    --color-cream-light: #fffff0;
-    --color-lettuce-dark: #384a0c;
-    --color-lettuce-medium: #9bb665;
-    --color-lettuce-light: #bbd095;
-    --color-sunny-dark: #f5eee2;
-    --color-sunny-light: #fff93f;
-
     --font-spectral: Spectral, serif;
     --font-patua: "Patua One", cursive;
 }
@@ -109,16 +98,16 @@ a:hover {
     color: var(--main-light-color) !important;
 }
 
-#location-map {
+#map-container {
     color: var(--leaflet-text-color) !important;
 }
 
-#location-map a {
+#map-container a {
     color: var(--leaflet-link-color) !important;
     text-decoration: underline;
 }
 
-#location-map a:hover {
+#map-container a:hover {
     color: var(--leaflet-link-hover-color) !important;
     text-decoration: underline;
 }
