@@ -79,7 +79,7 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				downloadUrl:
 					"https://f003.backblazeb2.com/file/sayana-photos/full/%s",
 				alt: "%s",
-				responsive: "https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp 384, https://f003.backblazeb2.com/file/sayana-photos/webp-560/%s.webp 672, https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp 960, https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp 1440, https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp 1920",
+				responsive: "https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp 384, https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp 672, https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp 960, https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp 1440, https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp 1920",
 				thumb:
 					"https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
