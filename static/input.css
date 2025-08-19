@@ -283,6 +283,20 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     border: 0.3vmax outset var(--main-light-color);
 }
 
+.custom-svg-marker {
+    background: transparent;
+    border: none;
+}
+
+.custom-svg-marker svg {
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+    transition: transform 0.2s;
+}
+
+.custom-svg-marker:hover svg {
+    transform: scale(1.1);
+}
+
 .lg-backdrop {
     background-color: var(--background-light-color);
     opacity: 0.8 !important;
