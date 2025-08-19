@@ -8,12 +8,15 @@ import (
 	"strings"
 
 	"github.com/SayaAndy/saya-today-web/internal/b2"
-	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Lang_Map(tm *templatemanager.TemplateManager, l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
+func init() {
+	tm.Add("global-map", "views/pages/global-map.html")
+}
+
+func Lang_Map(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		lang := c.Params("lang")
 		if !slices.Contains(langs, lang) {

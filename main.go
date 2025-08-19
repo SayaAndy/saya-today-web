@@ -11,7 +11,6 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
-	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/redirect"
@@ -69,18 +68,6 @@ func main() {
 		localization[lang.Name] = localeCfg
 	}
 
-	tm, err := templatemanager.NewTemplateManager([]templatemanager.TemplateManagerTemplates{
-		{Name: "blog-page", Files: []string{"views/layouts/general-page.html", "views/pages/blog-page.html"}},
-		{Name: "blog-catalogue", Files: []string{"views/layouts/general-page.html", "views/pages/blog-catalogue.html"}},
-		{Name: "index", Files: []string{"views/index.html"}},
-		{Name: "catalogue-blog-cards", Files: []string{"views/partials/catalogue-blog-cards.html", "views/partials/catalogue-blog-card-tags.html"}},
-		{Name: "global-map", Files: []string{"views/pages/global-map.html"}},
-	})
-	if err != nil {
-		slog.Error("fail to initialize template manager", slog.String("error", err.Error()))
-		os.Exit(1)
-	}
-
 	app := fiber.New(fiber.Config{})
 
 	app.Use(redirect.New(redirect.Config{
@@ -91,12 +78,12 @@ func main() {
 		StatusCode: 301,
 	}))
 
-	app.Get("/", router.Root(tm, cfg.AvailableLanguages))
-	app.Get("/:lang/map", router.Lang_Map(tm, localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog", router.Lang_Blog(tm, localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(tm, localization, availableLanguages, b2Client, md))
+	app.Get("/", router.Root(cfg.AvailableLanguages))
+	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
+	app.Get("/:lang/blog", router.Lang_Blog(localization, availableLanguages, b2Client))
+	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(localization, availableLanguages, b2Client, md))
 	app.Get("/api/v1/tz", router.Api_V1_TZ())
-	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(tm, localization, availableLanguages, b2Client))
+	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(localization, availableLanguages, b2Client))
 
 	app.Static("/", "./static")
 

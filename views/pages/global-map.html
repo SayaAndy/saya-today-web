@@ -11,6 +11,8 @@
     {{ block "header" . }}{{ end }}
     <link href="/output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
 </head>
 
 <body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
@@ -60,6 +62,7 @@
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
@@ -174,6 +177,7 @@
 
     <script>
         var map;
+        var markers = L.markerClusterGroup();
 
         function initLocationMap() {
             map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], 4);
@@ -182,6 +186,8 @@
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
+
+            map.addLayer(markers);
         }
 
         function stringToColor(str) {
@@ -213,12 +219,13 @@
 
             var marker = L.marker([x, y], {
                 title: title,
-            }).addTo(map)
-                .bindPopup(`
+            }).bindPopup(`
                     <div class="flex flex-row justify-center justify-items-center">
                         <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-[3vmax] h-[3vmax] mr-[0.5vmax]" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/${thumbnail}.webp">
                         <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
                     </div>`);
+
+            markers.addLayer(marker);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
