@@ -341,6 +341,10 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     bottom: calc(10vmin + 5vmax) !important;
 }
 
+.lg-outer[class~="lg-single-item"] .lg-content {
+    bottom: 5vmax !important;
+}
+
 .lg-thumb-item {
     width: 10vmin !important;
     height: 10vmin !important;
