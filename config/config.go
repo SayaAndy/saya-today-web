@@ -13,6 +13,7 @@ type Config struct {
 	BlogPages          BlogPagesConfig           `json:"BlogPages" yaml:"blogPages" validate:"required"`
 	LocalePath         string                    `json:"LocalePath" yaml:"localePath" validate:"required,filepath"`
 	AvailableLanguages []AvailableLanguageConfig `json:"AvailableLanguages" yaml:"availableLanguages" validate:"required"`
+	Auth               AuthConfig                `json:"Auth" yaml:"auth" validate:"required"`
 }
 
 type BlogPagesConfig struct {
@@ -37,6 +38,10 @@ type AvailableLanguageConfig struct {
 	Alt     string `json:"Alt" yaml:"alt"`
 	Flag    string `json:"Flag" yaml:"flag" validate:"url"`
 	LocFile string `json:"LocFile" yaml:"locFile" validate:"required,filepath"`
+}
+
+type AuthConfig struct {
+	Salt string `json:"Salt" yaml:"salt" validate:"required"`
 }
 
 func LoadConfig(path string, config *Config) error {

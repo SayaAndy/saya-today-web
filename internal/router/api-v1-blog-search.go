@@ -48,7 +48,7 @@ func Api_V1_BlogSearch(l map[string]*locale.LocaleConfig, langs []string, b2Clie
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate regex for tags gathering")
 		}
-		decodedQuery, err := url.QueryUnescape(string(encodedQuery))
+		decodedQuery, _ := url.QueryUnescape(string(encodedQuery))
 		matches := re.FindAllStringSubmatch(decodedQuery, -1)
 
 		tags := make([]string, 0, len(matches))

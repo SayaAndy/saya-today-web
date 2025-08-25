@@ -4,6 +4,10 @@
   remote_user: svc_github
 
   tasks:
+    - name: Create a volume
+      community.docker.docker_volume:
+        name: "{{ saya_today_web_name }}-volume"
+
     - name: Deploy saya-today-web Docker Container
       community.docker.docker_container:
         name: "{{ saya_today_web_name }}"
@@ -13,10 +17,13 @@
           B2_KEY_ID: "{{ saya_today_web_b2_key_id }}"
           B2_APPLICATION_KEY: "{{ saya_today_web_b2_application_key }}"
           ENVIRONMENT: "{{ saya_today_web_environment }}"
+          AUTH_SALT: "{{ saya_today_web_auth_salt }}"
         network_mode: caddy
         networks:
           - name: caddy
             ipv4_address: "{{ saya_today_web_ipv4_address }}"
+        volumes:
+          - "{{ saya_today_web_name }}-volume:/data:rw"
         restart_policy: unless-stopped
       no_log: true
 ...

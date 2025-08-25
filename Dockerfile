@@ -7,6 +7,7 @@ RUN go build -o sayana-web .
 FROM alpine:3.22.1 AS runtime-stage
 
 ENV ENVIRONMENT=""
+ENV AUTH_SALT=""
 ENV B2_KEY_ID=""
 ENV B2_APPLICATION_KEY=""
 

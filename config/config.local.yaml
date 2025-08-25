@@ -1,11 +1,11 @@
-logLevel: info
+logLevel: debug
 blogPages:
   storage:
     type: b2
     config:
       bucketName: sayana-pages
       region: eu-central-003
-      prefix: 'prod-'
+      prefix: 'stage-'
       keyID: '${B2_KEY_ID}'
       applicationKey: '${B2_APPLICATION_KEY}'
 localePath: ./locale/
@@ -22,5 +22,5 @@ auth:
   db:
     type: sqlite
     config:
-      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2'
-  salt: '${AUTH_SALT}'
+      dsn: 'file:/data/auth.db?cache=shared&mode=memory'
+  salt: '123'

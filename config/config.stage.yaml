@@ -18,3 +18,9 @@ availableLanguages:
     alt: English
     flag: https://f003.backblazeb2.com/file/sayana-static/flags/gb.svg
     locFile: localization.en.yaml
+auth:
+  db:
+    type: sqlite
+    config:
+      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2'
+  salt: '${AUTH_SALT}'

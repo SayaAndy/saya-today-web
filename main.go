@@ -68,7 +68,9 @@ func main() {
 		localization[lang.Name] = localeCfg
 	}
 
-	app := fiber.New(fiber.Config{})
+	app := fiber.New(fiber.Config{
+		ProxyHeader: "X-Forwarded-For",
+	})
 
 	app.Use(redirect.New(redirect.Config{
 		Rules: map[string]string{
@@ -77,6 +79,8 @@ func main() {
 		},
 		StatusCode: 301,
 	}))
+
+	router.CCache = router.NewClientCache([]byte(cfg.Auth.Salt))
 
 	app.Get("/", router.Root(cfg.AvailableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
