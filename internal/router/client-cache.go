@@ -1,6 +1,7 @@
 package router
 
 import (
+	"encoding/base64"
 	"log/slog"
 	"sync"
 
@@ -24,8 +25,9 @@ func NewClientCache(salt []byte) *ClientCache {
 }
 
 func (c *ClientCache) GetHash(id string) []byte {
+
 	if val, ok := c.hashMap[id]; ok {
-		slog.Debug("gave an old hash", slog.String("hash", string(val)))
+		slog.Debug("gave an old hash", slog.String("hash", base64.RawStdEncoding.EncodeToString(val)))
 		return val
 	}
 
@@ -36,11 +38,11 @@ func (c *ClientCache) GetHash(id string) []byte {
 	defer c.mutexMap[id].Unlock()
 
 	if val, ok := c.hashMap[id]; ok {
-		slog.Debug("gave a newly generated hash", slog.String("hash", string(val)))
+		slog.Debug("gave a newly generated hash", slog.String("hash", base64.RawStdEncoding.EncodeToString(val)))
 		return val
 	}
 
 	c.hashMap[id] = argon2.IDKey([]byte(id), c.salt, 1, 64*1024, 4, 32)
-	slog.Debug("generated hash", slog.String("hash", string(c.hashMap[id])))
+	slog.Debug("generated hash", slog.String("hash", base64.RawStdEncoding.EncodeToString(c.hashMap[id])))
 	return c.hashMap[id]
 }

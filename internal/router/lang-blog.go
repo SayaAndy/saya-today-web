@@ -54,11 +54,11 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 
 		tagsMap := make(map[string]int)
 		for _, page := range pages {
-			slog.Debug("enlist page for catalogue", slog.Any("page", page), slog.String("endpoint", "/"+lang+"/blog"))
 			for _, tag := range page.Metadata.Tags {
 				tagsMap[tag]++
 			}
 		}
+		slog.Debug("enlist pages for catalogue", slog.Int("page_count", len(tagsMap)), slog.String("path", c.Path()))
 
 		type Tag struct {
 			Name  string `json:"Name" yaml:"name"`
