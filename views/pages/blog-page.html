@@ -12,6 +12,10 @@
         height: 100% !important;
     }
 </style>
+
+<script>
+    const galleryMap = new Map();
+</script>
 {{ end }}
 
 {{ define "body" }}
@@ -70,10 +74,18 @@
         {{ .MapLocationAreaMeters }}
     )});
 
+    let resizeTimeout;
     window.addEventListener('resize', function() {
-        setTimeout(() => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
             map.invalidateSize();
-        }, 100);
+            var oldGalleryMap = new Map(galleryMap);
+            oldGalleryMap.forEach((createFunc, g, map) => {
+                galleryMap.delete(g);
+                g.destroy();
+                createFunc();
+            });
+        }, 300);
     });
 </script>
 {{- end }}

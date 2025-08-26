@@ -92,32 +92,35 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 		w.WriteString(fmt.Sprintf(`
 <script>
 function createLightGallery%s() {
-		const $lgContainer = document.getElementById('lg-%s');
-        const inlineGallery = lightGallery($lgContainer, {
-			container: $lgContainer,
-			dynamic: true,
-			dynamicEl: [%s],
-			width: "100%%",
-            height: "50vmin",
-			hash: false,
-			closable: false,
-			showMaximizeIcon: true,
-			appendSubHtmlTo: ".lg-sub-html",
-            isMobile: () => false,
-			slideDelay: 0,
-			plugins: [lgZoom, lgThumbnail],
-			thumbWidth: calculateVmin(10),
-			thumbHeight: "10vmin",
-			thumbMargin: 4
-        });
+	const $lgContainer = document.getElementById('lg-%s');
+	const config = {
+		container: $lgContainer,
+		dynamic: true,
+		dynamicEl: [%s],
+		width: "100%%",
+		height: "50vmin",
+		hash: false,
+		closable: false,
+		showMaximizeIcon: true,
+		appendSubHtmlTo: ".lg-sub-html",
+		isMobile: () => false,
+		slideDelay: 0,
+		plugins: [lgZoom, lgThumbnail],
+		thumbWidth: calculateVmin(10),
+		thumbHeight: "10vmin",
+		thumbMargin: 4
+	};
+	const inlineGallery = lightGallery($lgContainer, config);
 
-		setTimeout(() => {
-			inlineGallery.openGallery();
-		}, 200);
+	setTimeout(() => {
+		inlineGallery.openGallery();
+	}, 200);
+
+	galleryMap.set(inlineGallery, createLightGallery%s);
 }
 
 document.addEventListener('DOMContentLoaded', createLightGallery%s);
-</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID))
+</script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID))
 	}
 
 	return ast.WalkContinue, nil
