@@ -58,7 +58,7 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 				tagsMap[tag]++
 			}
 		}
-		slog.Debug("enlist pages for catalogue", slog.Int("page_count", len(tagsMap)), slog.String("path", c.Path()))
+		slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("path", c.Path()))
 
 		type Tag struct {
 			Name  string `json:"Name" yaml:"name"`
