@@ -24,7 +24,6 @@ func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []string, b2Client
 	return func(c *fiber.Ctx) error {
 		ip := c.IP()
 		slog.Debug("client entering blog page", slog.String("ip", ip), slog.String("page", c.Path()))
-		go CCache.GetHash(ip)
 
 		lang := c.Params("lang")
 		if !slices.Contains(langs, lang) {

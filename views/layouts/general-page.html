@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    {{ block "header" . }}{{ end }}
+    {{ block "top-embeds" . }}{{ end }}
     <link href="/output.css" rel="stylesheet">
 </head>
 
@@ -66,17 +66,19 @@
                 <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
                 <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
             </div>
+            {{ block "header" . }}{{ end }}
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
             {{ block "body" . }}{{ end }}
 
             <div class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
-                <p class="grow text-[0.8vmax]/[0.9] font-spectral italic text-right text-secondary mr-2">
+                {{ block "footer" . }}{{ end }}
+                <p class="grow content-center text-[1vmax]/[1] font-spectral italic text-right text-secondary mr-2">
                     All the photos on <a href="https://saya.today/">saya.today</a> are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> by <a href="https://t.me/EarlInisMona">Saya Andy</a> © {{ .PublishedYear }}
                 </p>
-                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width:1.2vh; max-height:1.2vh;">
+                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
+                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY">
+                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA">
             </div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
@@ -209,7 +211,7 @@
         });
     </script>
 
-    {{ block "footer" . }}{{ end }}
+    {{ block "bottom-embeds" . }}{{ end }}
 
 </body>
 </html>
