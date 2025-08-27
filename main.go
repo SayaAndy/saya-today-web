@@ -88,8 +88,8 @@ func main() {
 	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(localization, availableLanguages, b2Client, md))
 	app.Get("/api/v1/tz", router.Api_V1_TZ())
 	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(localization, availableLanguages, b2Client))
-	app.Get("/api/v1/like", router.Api_V1_Like_Get(b2Client))
-	app.Put("/api/v1/like", router.Api_V1_Like_Put(b2Client))
+	app.Get("/api/v1/like", router.Api_V1_Like_Get(localization, b2Client))
+	app.Put("/api/v1/like", router.Api_V1_Like_Put(localization, b2Client))
 
 	app.Static("/", "./static")
 

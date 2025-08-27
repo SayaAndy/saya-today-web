@@ -58,6 +58,13 @@ func (c *ClientCache) GetLikeStatus(id string, page string) bool {
 	return ok
 }
 
+func (c *ClientCache) GetLikeCount(page string) int {
+	if userSet, ok := c.likePageMap[page]; ok {
+		return len(userSet)
+	}
+	return 0
+}
+
 func (c *ClientCache) LikeOn(id string, page string) (alreadyLiked bool) {
 	if _, ok := c.mutexLikeMap[id]; !ok {
 		c.mutexLikeMap[id] = &sync.Mutex{}
