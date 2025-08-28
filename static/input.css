@@ -626,11 +626,6 @@ body[data-theme~="ram"] .leaflet-tile {
     height: 20vmin;
     user-select: none;
     -webkit-user-select: none;
-    box-shadow:
-        inset 1vmin 1vmin var(--background-dark-color),
-        inset -1vmin -1vmin var(--main-light-color),
-        1vmin 1vmin var(--background-dark-color),
-        -1vmin -1vmin var(--main-dark-color);
 }
 
 @keyframes blink {
