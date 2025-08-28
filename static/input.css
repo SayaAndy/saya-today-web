@@ -612,13 +612,25 @@ body[data-theme~="ram"] .leaflet-tile {
     }
 }
 
-.star {
+.night-star {
     color: var(--color-yellow-100);
     animation-name: blink;
     animation-duration: 5s;
     animation-iteration-count: infinite;
     user-select: none;
     -webkit-user-select: none;
+}
+
+.ram-frame {
+    width: 20vmin;
+    height: 20vmin;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow:
+        inset 1vmin 1vmin var(--background-dark-color),
+        inset -1vmin -1vmin var(--main-light-color),
+        1vmin 1vmin var(--background-dark-color),
+        -1vmin -1vmin var(--main-dark-color);
 }
 
 @keyframes blink {

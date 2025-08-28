@@ -74,10 +74,10 @@
         {{ .MapLocationAreaMeters }}
     )});
 
-    let resizeTimeout;
+    let galleryResizeTimeout;
     window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
+        clearTimeout(galleryResizeTimeout);
+        galleryResizeTimeout = setTimeout(() => {
             map.invalidateSize();
             var oldGalleryMap = new Map(galleryMap);
             oldGalleryMap.forEach((createFunc, g, map) => {
