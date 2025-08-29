@@ -1,6 +1,6 @@
 FROM golang:1.24.6-alpine3.22 AS build-stage
 
-RUN apk add --no-cache sqlite-dev
+RUN apk add --no-cache sqlite-dev musl-dev gcc
 
 WORKDIR /builddir
 COPY . .
