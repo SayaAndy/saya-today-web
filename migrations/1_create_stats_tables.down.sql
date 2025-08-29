@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS blog_views;
+DROP TABLE IF EXISTS blog_likes;

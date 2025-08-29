@@ -20,7 +20,7 @@ availableLanguages:
     locFile: localization.en.yaml
 auth:
   db:
-    type: sqlite
+    type: sqlite3
     config:
       dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2'
   salt: '${AUTH_SALT}'

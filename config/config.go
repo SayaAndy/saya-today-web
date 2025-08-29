@@ -41,7 +41,17 @@ type AvailableLanguageConfig struct {
 }
 
 type AuthConfig struct {
-	Salt string `json:"Salt" yaml:"salt" validate:"required"`
+	Salt string   `json:"Salt" yaml:"salt" validate:"required"`
+	Db   DbConfig `json:"Db" yaml:"db" validate:"required"`
+}
+
+type DbConfig struct {
+	Type string        `json:"Type" yaml:"type" validate:"required,oneof=sqlite3"`
+	Cfg  Sqlite3Config `json:"Config" yaml:"config"`
+}
+
+type Sqlite3Config struct {
+	DSN string `json:"DSN" yaml:"dsn" validate:"required"`
 }
 
 func LoadConfig(path string, config *Config) error {
