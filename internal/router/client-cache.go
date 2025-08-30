@@ -18,11 +18,14 @@ type PageLike struct {
 
 type ClientCache struct {
 	hashMap      map[string]string
-	mutexLikeMap map[string]*sync.Mutex
-	mutexHashMap map[string]*sync.Mutex
-	likePageMap  map[string]map[string]struct{}
-	salt         []byte
-	db           *sql.DB
+	hashMapMutex sync.RWMutex
+
+	likePageMap       map[string]map[string]struct{}
+	pageMutexMap      map[string]*sync.RWMutex
+	pageMutexMapMutex sync.Mutex
+
+	salt []byte
+	db   *sql.DB
 }
 
 var CCache *ClientCache
@@ -40,20 +43,21 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	}
 
 	likePageMap := make(map[string]map[string]struct{})
+	pageMutexMap := make(map[string]*sync.RWMutex)
 
 	for rows.Next() {
-		pageRef := make([]byte, 32)
-		userId := make([]byte, 32)
+		var pageRef string
+		var userId []byte
 		if err = rows.Scan(&pageRef, &userId); err != nil {
 			tx.Rollback()
 			return nil, fmt.Errorf("fail scanning blog_likes to fill cache: %w", err)
 		}
-		pageRefString := string(pageRef)
 		userIdString := base64.RawStdEncoding.EncodeToString(userId)
-		if _, ok := likePageMap[pageRefString]; !ok {
-			likePageMap[pageRefString] = make(map[string]struct{})
+		if _, ok := likePageMap[pageRef]; !ok {
+			likePageMap[pageRef] = make(map[string]struct{})
+			pageMutexMap[pageRef] = &sync.RWMutex{}
 		}
-		likePageMap[pageRefString][userIdString] = struct{}{}
+		likePageMap[pageRef][userIdString] = struct{}{}
 	}
 
 	if err = tx.Commit(); err != nil {
@@ -62,9 +66,8 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 
 	return &ClientCache{
 		hashMap:      make(map[string]string),
-		mutexLikeMap: make(map[string]*sync.Mutex),
-		mutexHashMap: make(map[string]*sync.Mutex),
 		likePageMap:  likePageMap,
+		pageMutexMap: pageMutexMap,
 		salt:         salt,
 		db:           db,
 	}, nil
@@ -87,11 +90,9 @@ func (c *ClientCache) Close() error {
     INSERT OR IGNORE INTO blog_likes (page_ref, user_id)
     VALUES %s(?, ?);
     `, strings.Repeat("(?, ?), ", 99))
-	sqlStatementVars := make([]interface{}, 0, 200)
+	sqlStatementVars := make([]any, 0, 200)
 
 	for pageRef, userSet := range c.likePageMap {
-		pageRefBytes := []byte(pageRef)
-
 		for userId := range userSet {
 			if _, ok := userIdBytes[userId]; !ok {
 				userIdBytes[userId], err = base64.RawStdEncoding.DecodeString(userId)
@@ -101,7 +102,7 @@ func (c *ClientCache) Close() error {
 				}
 			}
 
-			sqlStatementVars = append(sqlStatementVars, interface{}(pageRefBytes), interface{}(userIdBytes[userId]))
+			sqlStatementVars = append(sqlStatementVars, any(pageRef), any(userIdBytes[userId]))
 			if len(sqlStatementVars) < 200 {
 				continue
 			}
@@ -110,7 +111,7 @@ func (c *ClientCache) Close() error {
 				slog.Warn("couldn't insert blog like pairs into db", slog.String("error", err.Error()))
 			}
 
-			sqlStatementVars = make([]interface{}, 0, 200)
+			sqlStatementVars = make([]any, 0, 200)
 		}
 	}
 
@@ -129,16 +130,16 @@ func (c *ClientCache) Close() error {
 }
 
 func (c *ClientCache) GetHash(id string) string {
+	c.hashMapMutex.RLock()
 	if val, ok := c.hashMap[id]; ok {
+		c.hashMapMutex.RUnlock()
 		slog.Debug("gave an old hash", slog.String("hash", val))
 		return val
 	}
+	c.hashMapMutex.RUnlock()
 
-	if _, ok := c.mutexHashMap[id]; !ok {
-		c.mutexHashMap[id] = &sync.Mutex{}
-	}
-	c.mutexHashMap[id].Lock()
-	defer c.mutexHashMap[id].Unlock()
+	c.hashMapMutex.Lock()
+	defer c.hashMapMutex.Unlock()
 
 	if val, ok := c.hashMap[id]; ok {
 		slog.Debug("gave a newly generated hash", slog.String("hash", val))
@@ -150,7 +151,25 @@ func (c *ClientCache) GetHash(id string) string {
 	return c.hashMap[id]
 }
 
+func (c *ClientCache) getPageMutex(page string) *sync.RWMutex {
+	c.pageMutexMapMutex.Lock()
+	defer c.pageMutexMapMutex.Unlock()
+
+	if mutex, ok := c.pageMutexMap[page]; ok {
+		return mutex
+	}
+
+	c.pageMutexMap[page] = &sync.RWMutex{}
+	return c.pageMutexMap[page]
+}
+
 func (c *ClientCache) GetLikeStatus(id string, page string) bool {
+	page = strings.Clone(page)
+
+	mutex := c.getPageMutex(page)
+	mutex.RLock()
+	defer mutex.RUnlock()
+
 	if _, ok := c.likePageMap[page]; !ok {
 		return false
 	}
@@ -159,6 +178,12 @@ func (c *ClientCache) GetLikeStatus(id string, page string) bool {
 }
 
 func (c *ClientCache) GetLikeCount(page string) int {
+	page = strings.Clone(page)
+
+	mutex := c.getPageMutex(page)
+	mutex.RLock()
+	defer mutex.RUnlock()
+
 	if userSet, ok := c.likePageMap[page]; ok {
 		return len(userSet)
 	}
@@ -166,13 +191,12 @@ func (c *ClientCache) GetLikeCount(page string) int {
 }
 
 func (c *ClientCache) LikeOn(id string, page string) (alreadyLiked bool) {
-	if _, ok := c.mutexLikeMap[id]; !ok {
-		c.mutexLikeMap[id] = &sync.Mutex{}
-	}
-	c.mutexLikeMap[id].Lock()
-	defer c.mutexLikeMap[id].Unlock()
-
+	page = strings.Clone(page)
 	hash := c.GetHash(id)
+
+	mutex := c.getPageMutex(page)
+	mutex.Lock()
+	defer mutex.Unlock()
 
 	if userSet, ok := c.likePageMap[page]; ok {
 		_, alreadyLiked = userSet[hash]
@@ -186,16 +210,16 @@ func (c *ClientCache) LikeOn(id string, page string) (alreadyLiked bool) {
 }
 
 func (c *ClientCache) LikeOff(id string, page string) (alreadyUnliked bool) {
-	if _, ok := c.mutexLikeMap[id]; !ok {
-		c.mutexLikeMap[id] = &sync.Mutex{}
-	}
-	c.mutexLikeMap[id].Lock()
-	defer c.mutexLikeMap[id].Unlock()
+	page = strings.Clone(page)
+	hash := c.GetHash(id)
+
+	mutex := c.getPageMutex(page)
+	mutex.Lock()
+	defer mutex.Unlock()
 
 	if _, ok := c.likePageMap[page]; !ok {
 		return true
 	}
-	hash := c.GetHash(id)
 	if _, ok := c.likePageMap[page][hash]; !ok {
 		return true
 	}

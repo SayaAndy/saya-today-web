@@ -83,7 +83,7 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 			"Title":         l[lang].BlogSearch.Header,
 		})
 		if err != nil {
-			slog.Warn("failed to generate page", slog.String("page", "/"+lang+"/blog"), slog.String("error", err.Error()))
+			slog.Warn("failed to generate page", slog.String("path", c.Path()), slog.String("error", err.Error()))
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate page")
 		}
