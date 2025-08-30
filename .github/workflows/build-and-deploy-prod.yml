@@ -75,4 +75,4 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
         working-directory: ./deploy
         run: |
-          ansible-playbook -i inventory.yml -l prod playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }} -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }} -e saya_today_web_environment=prod -e saya_today_web_tag=${{ github.ref_name }}
+          ansible-playbook -i inventory.yml -l prod playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_auth_salt=${{ secrets.AUTH_SALT }} -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }} -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }} -e saya_today_web_environment=prod -e saya_today_web_tag=${{ github.ref_name }}

@@ -22,6 +22,9 @@ func init() {
 
 func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
+		ip := c.IP()
+		slog.Debug("client entering blog page", slog.String("ip", ip), slog.String("page", c.Path()))
+
 		lang := c.Params("lang")
 		if !slices.Contains(langs, lang) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)

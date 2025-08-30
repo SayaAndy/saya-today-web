@@ -22,5 +22,5 @@ auth:
   db:
     type: sqlite3
     config:
-      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2'
-  salt: '${AUTH_SALT}'
+      dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc'
+  salt: '123'

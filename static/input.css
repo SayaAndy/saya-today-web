@@ -139,7 +139,15 @@ a:hover {
     color: var(--main-medium-color);
 }
 
+.text-main-light {
+    color: var(--main-light-color);
+}
+
 .text-background-dark {
+    color: var(--background-dark-color);
+}
+
+.text-background-light {
     color: var(--background-dark-color);
 }
 
@@ -149,6 +157,14 @@ a:hover {
 
 .bg-main-dark {
     background-color: var(--main-dark-color);
+}
+
+.bg-main-medium {
+    background-color: var(--main-medium-color);
+}
+
+.bg-main-light {
+    background-color: var(--main-light-color);
 }
 
 .bg-background-dark {
@@ -165,6 +181,26 @@ a:hover {
 
 .border-main-medium {
     border-color: var(--main-medium-color);
+}
+
+.border-main-light {
+    border-color: var(--main-light-color);
+}
+
+.border-background-dark {
+    border-color: var(--background-dark-color);
+}
+
+.border-background-light {
+    border-color: var(--background-light-color);
+}
+
+.border-inset {
+    border-style: inset;
+}
+
+.border-outset {
+    border-style: outset;
 }
 
 .desktop-sidebar-custom {
@@ -545,6 +581,10 @@ body[data-theme~="ram"] .leaflet-tile {
         width: 100vw;
     }
 
+    .ar-lt-0\.8\:max-h-\[25\%\] {
+        max-height: 25%;
+    }
+
     .ar-lt-0\.8\:max-h-\[80\%\] {
         max-height: 80%;
     }
@@ -576,11 +616,18 @@ body[data-theme~="ram"] .leaflet-tile {
     }
 }
 
-.star {
+.night-star {
     color: var(--color-yellow-100);
     animation-name: blink;
     animation-duration: 5s;
     animation-iteration-count: infinite;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.ram-frame {
+    width: 20vmin;
+    height: 20vmin;
     user-select: none;
     -webkit-user-select: none;
 }

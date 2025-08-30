@@ -37,7 +37,7 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate regex for tags gathering")
 		}
-		decodedQuery, err := url.QueryUnescape(string(encodedQuery))
+		decodedQuery, _ := url.QueryUnescape(string(encodedQuery))
 		matches := re.FindAllStringSubmatch(decodedQuery, -1)
 
 		queryTags := make([]string, 0, len(matches))
@@ -54,11 +54,11 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 
 		tagsMap := make(map[string]int)
 		for _, page := range pages {
-			slog.Debug("enlist page for catalogue", slog.Any("page", page), slog.String("endpoint", "/"+lang+"/blog"))
 			for _, tag := range page.Metadata.Tags {
 				tagsMap[tag]++
 			}
 		}
+		slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("path", c.Path()))
 
 		type Tag struct {
 			Name  string `json:"Name" yaml:"name"`
@@ -83,7 +83,7 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 			"Title":         l[lang].BlogSearch.Header,
 		})
 		if err != nil {
-			slog.Warn("failed to generate page", slog.String("page", "/"+lang+"/blog"), slog.String("error", err.Error()))
+			slog.Warn("failed to generate page", slog.String("path", c.Path()), slog.String("error", err.Error()))
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate page")
 		}

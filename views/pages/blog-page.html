@@ -1,4 +1,4 @@
-{{ define "header" }}
+{{ define "top-embeds" }}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
@@ -12,6 +12,10 @@
         height: 100% !important;
     }
 </style>
+
+<script>
+    const galleryMap = new Map();
+</script>
 {{ end }}
 
 {{ define "body" }}
@@ -26,6 +30,10 @@
 {{ end }}
 
 {{ define "footer" }}
+<div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
+{{ end }}
+
+{{ define "bottom-embeds" }}
 <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
 <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
 <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
@@ -66,10 +74,18 @@
         {{ .MapLocationAreaMeters }}
     )});
 
+    let galleryResizeTimeout;
     window.addEventListener('resize', function() {
-        setTimeout(() => {
+        clearTimeout(galleryResizeTimeout);
+        galleryResizeTimeout = setTimeout(() => {
             map.invalidateSize();
-        }, 100);
+            var oldGalleryMap = new Map(galleryMap);
+            oldGalleryMap.forEach((createFunc, g, map) => {
+                galleryMap.delete(g);
+                g.destroy();
+                createFunc();
+            });
+        }, 300);
     });
 </script>
 {{- end }}
