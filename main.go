@@ -143,7 +143,14 @@ func main() {
 
 	<-sigChan
 	slog.Info("gracefully shutting down...")
-	app.Shutdown()
-	router.CCache.Close()
+	if err = app.Shutdown(); err != nil {
+		slog.Error("fail to shutdown fiber server", slog.String("error", err.Error()))
+	}
+	if err = router.CCache.Close(); err != nil {
+		slog.Error("fail to dump cache", slog.String("error", err.Error()))
+	}
+	if err = db.Close(); err != nil {
+		slog.Error("fail to close db connection", slog.String("error", err.Error()))
+	}
 	db.Close()
 }

@@ -76,6 +76,11 @@ func (c *ClientCache) Close() error {
 		return fmt.Errorf("fail to init transaction with db to dump cache: %w", err)
 	}
 
+	if _, err = tx.Exec("delete from blog_likes;"); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("fail to truncate table blog_likes: %w", err)
+	}
+
 	userIdBytes := make(map[string][]byte)
 
 	sqlStatement := fmt.Sprintf(`
