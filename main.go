@@ -132,6 +132,8 @@ func main() {
 	app.Get("/api/v1/general-page/header", router.Api_V1_GeneralPage_Header(localization, availableLanguages, b2Client))
 	app.Get("/api/v1/general-page/body", router.Api_V1_GeneralPage_Body(localization, availableLanguages, b2Client, md))
 	app.Get("/api/v1/general-page/footer", router.Api_V1_GeneralPage_Footer(localization, availableLanguages))
+	app.Get("/api/v1/general-page/top-embeds", router.Api_V1_GeneralPage_TopEmbeds(localization, availableLanguages))
+	app.Get("/api/v1/general-page/bottom-embeds", router.Api_V1_GeneralPage_BottomEmbeds(localization, availableLanguages, b2Client))
 
 	app.Static("/", "./static")
 

@@ -76,6 +76,7 @@ func Lang_Blog(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B
 		content, err := tm.Render("blog-catalogue", fiber.Map{
 			"QuerySort":     querySort,
 			"QueryTags":     strings.Join(queryTags, ","),
+			"QueryString":   string(c.Request().URI().QueryString()),
 			"Tags":          tagsArray,
 			"Lang":          lang,
 			"L":             l[lang],

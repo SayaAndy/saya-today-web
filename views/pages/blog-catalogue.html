@@ -98,6 +98,7 @@
     function cleanHrefParams() {
         const url = new URL(window.location.href);
         url.search = '';
+
         window.history.pushState({}, '', url.toString());
     }
 
@@ -137,22 +138,27 @@
         window.history.pushState({}, '', url.toString());
     }
 
-    document.addEventListener('DOMContentLoaded', contextAll);
-</script>
-
-<script>
-    const tagsContainers = document.querySelectorAll('form.tags-list');
-    tagsContainers.forEach(tagsContainer => {
-        const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
-        anyChecked = false;
-        checkboxes.forEach(checkbox => {
-            anyChecked = checkbox.checked ? true : anyChecked;
-        });
-        if (!anyChecked) {
-            const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
-            selectAllCheckbox.checked = true;
-            selectAll();
+    document.addEventListener('htmx:afterRequest', (e) => {
+        if (e.detail.xhr.status == 404 || e.detail.successful != true) {
+            return console.error(e);
         }
-    });
+        if (e.detail.target.id == 'general-page-body') {
+            contextAll();
+
+            const tagsContainers = document.querySelectorAll('form.tags-list');
+            tagsContainers.forEach(tagsContainer => {
+                const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+                anyChecked = false;
+                checkboxes.forEach(checkbox => {
+                    anyChecked = checkbox.checked ? true : anyChecked;
+                });
+                if (!anyChecked) {
+                    const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
+                    selectAllCheckbox.checked = true;
+                    selectAll();
+                }
+            });
+        }
+    }, {once: true});
 </script>
 {{ end }}

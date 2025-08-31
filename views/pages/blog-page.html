@@ -1,3 +1,18 @@
+{{ define "top-embeds" }}
+<script>
+    var galleryMap = new Map();
+    var map;
+
+    window.addEventListener('popout', (e) => {
+        map.remove();
+        galleryMap.forEach((_, g, m) => {
+            g.destroy();
+        });
+        galleryMap.clear();
+    }, {once: true});
+</script>
+{{ end }}
+
 {{ define "body" }}
 <div class="bg-background-light flex flex-col inset-shadow p-[2.4vmin] overflow-y-auto">
     {{ .ParsedMarkdown }}
@@ -5,10 +20,74 @@
     <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
     <div id="map-container" class="relative p-[0.8vmin] flex-none ml-auto mr-auto w-[60%] ar-lt-0.8:w-[80%] h-[40vh] ar-lt-0.8:h-[30vh]"></div>
     <hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%] ml-auto mr-auto">
+
+    <script>
+        function initLocationMap(id, x, y, relativeErrorMeters = 0) {
+            map = L.map(id).setView([x, y], 8);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            if (relativeErrorMeters != 0) {
+                var circle = L.circle([x, y], {
+                    color: '#8a9d8a',
+                    fillColor: '#8a9d8a',
+                    fillOpacity: 0.15,
+                    radius: relativeErrorMeters
+                }).addTo(map);
+            }
+
+            var marker = L.marker([x, y], {
+                title: '{{ .Title }}',
+            }).addTo(map)
+                .bindPopup('<span><b>{{ .Title }}</b><br><a href="https://www.openstreetmap.org/#map=13/{{ .MapLocationX }}/{{ .MapLocationY }}">{{ .MapLocationX }}, {{ .MapLocationY }}</a></span>')
+                .openPopup();
+        }
+
+        document.addEventListener('htmx:afterRequest', (e) => {
+            if (e.detail.target.id == 'general-page-body') {
+                initLocationMap(
+                    'map-container',
+                    {{ .MapLocationX }},
+                    {{ .MapLocationY }},
+                    {{ .MapLocationAreaMeters }}
+                );
+            }
+        }, {once: true});
+    </script>
 {{- end }}
 </div>
 {{ end }}
 
 {{ define "footer" }}
 <div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
+{{ end }}
+
+{{ define "bottom-embeds" }}
+<script>
+    let galleryResizeTimeout;
+
+    function resizeCb() {
+        clearTimeout(galleryResizeTimeout);
+        galleryResizeTimeout = setTimeout(() => {
+            if (map !== undefined) {
+                map.invalidateSize();
+            }
+            var oldGalleryMap = new Map(galleryMap);
+            oldGalleryMap.forEach((createFunc, g, map) => {
+                galleryMap.delete(g);
+                g.destroy();
+                createFunc();
+            });
+        }, 300);
+    }
+
+    window.addEventListener('resize', resizeCb);
+
+    document.addEventListener('popout', (e) => {
+        window.removeEventListener('resize', resizeCb, {once: true});
+    });
+</script>
 {{ end }}

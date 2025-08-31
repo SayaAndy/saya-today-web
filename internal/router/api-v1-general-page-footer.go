@@ -40,8 +40,9 @@ func Api_V1_GeneralPage_Footer(l map[string]*locale.LocaleConfig, langs []string
 		}
 
 		values := fiber.Map{
-			"L":    l[lang],
-			"Lang": lang,
+			"L":           l[lang],
+			"Lang":        lang,
+			"QueryString": string(c.Request().URI().QueryString()),
 		}
 		var additionalTemplates []string
 

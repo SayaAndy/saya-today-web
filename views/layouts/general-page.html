@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    {{ block "top-embeds" . }}{{ end }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
@@ -17,6 +16,16 @@
 </head>
 
 <body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
+
+    <script>
+        function changeUrl(path, toAppend = false) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
+            const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
+            history.pushState({}, '', `${newPath}?${urlParams.toString()}`);
+            window.dispatchEvent(new Event('popstate'));
+        };
+    </script>
 
     <script>
         function sfc32(a, b, c, d) {
@@ -144,9 +153,10 @@
         switchTheme(savedTheme);
     </script>
 
-    <script>
-        const galleryMap = new Map();
-    </script>
+    <div id="general-page-top-embeds" class="flex"
+        hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+    </div>
+    <div id="general-page-top-embeds-trigger" hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-top-embeds" hx-swap="innerHTML"></div>
 
     <script>
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -157,8 +167,8 @@
             saya.today
         </div>
         <div class="text-[3vw] ar-lt-0.8:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
-            <i onclick="location.href='/';" class="fas fa-home w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="location.href='/{{ .Lang }}/blog';" class="fas fa-search w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="location.href='/{{ .Lang }}';" class="fas fa-home w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="changeUrl('/{{ .Lang }}/blog');" class="fas fa-search w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5vw] ar-lt-0.8:w-[8vh] h-[5vw] ar-lt-0.8:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
         </div>
@@ -175,18 +185,21 @@
 
         <div class="ar-gt-0.8:min-w-fit ar-gt-0.8:max-w-[100vh] flex flex-col bg-background-dark relative pt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
             <div id="general-page-header" class="flex flex-col"
-                hx-get="/api/v1/general-page/header" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
+            <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
             <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] grow"
-                hx-get="/api/v1/general-page/body" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
+            <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
 
             <div id="general-page-footer" class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]"
-                hx-get="/api/v1/general-page/footer" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
+            <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
         </div>
@@ -199,6 +212,11 @@
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+
+    <div id="general-page-bottom-embeds" class="flex"
+        hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+    </div>
+    <div id="general-page-bottom-embeds-trigger" hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-bottom-embeds" hx-swap="innerHTML"></div>
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
@@ -316,64 +334,6 @@
         window.addEventListener('resize', function() {
             clearTimeout(decorResizeTimeout);
             decorResizeTimeout = setTimeout(switchThemeDecor, 300);
-        });
-    </script>
-
-    <script>
-        var map;
-
-        function initLocationMap(id, x, y, relativeErrorMeters = 0) {
-            map = L.map(id).setView([x, y], 8);
-
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
-            if (relativeErrorMeters != 0) {
-                var circle = L.circle([x, y], {
-                    color: '#8a9d8a',
-                    fillColor: '#8a9d8a',
-                    fillOpacity: 0.15,
-                    radius: relativeErrorMeters
-                }).addTo(map);
-            }
-
-            var marker = L.marker([x, y], {
-                title: '{{ .Title }}',
-            }).addTo(map)
-                .bindPopup('<span><b>{{ .Title }}</b><br><a href="https://www.openstreetmap.org/#map=13/{{ .MapLocationX }}/{{ .MapLocationY }}">{{ .MapLocationX }}, {{ .MapLocationY }}</a></span>')
-                .openPopup();
-        }
-
-        document.addEventListener('htmx:afterRequest', (e) => {
-            if (e.detail.xhr.status == 404 || e.detail.successful != true) {
-                return console.error(e);
-            }
-            if (e.detail.target.id == 'general-page-body') {
-                initLocationMap(
-                    'map-container',
-                    {{ .MapLocationX }},
-                    {{ .MapLocationY }},
-                    {{ .MapLocationAreaMeters }}
-                );
-            }
-        });
-
-        let galleryResizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(galleryResizeTimeout);
-            galleryResizeTimeout = setTimeout(() => {
-                if (map !== undefined) {
-                    map.invalidateSize();
-                }
-                var oldGalleryMap = new Map(galleryMap);
-                oldGalleryMap.forEach((createFunc, g, map) => {
-                    galleryMap.delete(g);
-                    g.destroy();
-                    createFunc();
-                });
-            }, 300);
         });
     </script>
 

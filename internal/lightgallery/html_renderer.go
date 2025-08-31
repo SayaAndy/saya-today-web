@@ -126,7 +126,7 @@ document.addEventListener('htmx:afterRequest', (e) => {
 	if (e.detail.target.id == 'general-page-body') {
 		createLightGallery%s();
 	}
-});
+}, {once: true});
 </script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID))
 	}
 

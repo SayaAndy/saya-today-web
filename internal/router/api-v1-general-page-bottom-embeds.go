@@ -13,10 +13,10 @@ import (
 )
 
 func init() {
-	tm.Add("general-page-header", "views/partials/general-page-header.html")
+	tm.Add("general-page-bottom-embeds", "views/partials/general-page-bottom-embeds.html")
 }
 
-func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
+func Api_V1_GeneralPage_BottomEmbeds(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 
@@ -48,20 +48,12 @@ func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []string
 		var additionalTemplates []string
 
 		if len(pathParts) == 2 && pathParts[1] == "blog" {
-			values["Title"] = l[lang].BlogSearch.Header
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
-			metadata, _, err := b2Client.ReadFrontmatter(lang + "/" + pathParts[2] + ".md")
-			if err != nil {
-				return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("could not read '%s' for content", path))
-			}
-			values["Title"] = metadata.Title
-			values["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
-			values["ActionDate"] = metadata.ActionDate
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
 		}
 
-		content, err := tm.Render("general-page-header", values, additionalTemplates...)
+		content, err := tm.Render("general-page-bottom-embeds", values, additionalTemplates...)
 		if err != nil {
 			slog.Warn("failed to generate div", slog.String("path", path), slog.String("error", err.Error()))
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")

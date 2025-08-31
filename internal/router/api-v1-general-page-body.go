@@ -44,8 +44,9 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 		}
 
 		values := fiber.Map{
-			"L":    l[lang],
-			"Lang": lang,
+			"L":           l[lang],
+			"Lang":        lang,
+			"QueryString": string(c.Request().URI().QueryString()),
 		}
 		var additionalTemplates []string
 
@@ -117,10 +118,11 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 				areaError = geolocationParts[2]
 			}
 
-			values["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 			values["MapLocationX"] = x
 			values["MapLocationY"] = y
 			values["MapLocationAreaMeters"] = areaError
+			values["Title"] = metadata.Title
+			values["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
 		}

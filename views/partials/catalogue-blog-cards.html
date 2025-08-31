@@ -1,10 +1,10 @@
 {{- range .BlogPages }}
 <hr class="first-of-type:hidden border-t-[0.3vh] my-[0.8vmin] border-dotted border-main-dark w-[80%] mx-auto">
 <div class="m-[0.4vmin] flex flex-row justify-center justify-items-center">
-    <img onclick="location.href='{{ .ArticleLink }}';" class="cursor-pointer object-cover rounded-[10%] select-none w-[10vmin] h-[10vmin] aspect-square my-[0.4vmin] mr-[0.8vmin]" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
+    <img onclick="changeUrl('{{ .ArticleLink }}');" class="cursor-pointer object-cover rounded-[10%] select-none w-[10vmin] h-[10vmin] aspect-square my-[0.4vmin] mr-[0.8vmin]" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
     <div class="grow my-[0.4vmin] mx-[0.8vmin] flex flex-col justify-center">
         <div class="flex flex-row gap-[5%] max-w-[100%]">
-            <a href="{{ .ArticleLink }}" class="flex-9/12 grow-0 block text-[1vmax] cursor-pointer">
+            <a onclick="changeUrl('{{ .ArticleLink }}');" class="flex-9/12 grow-0 block text-[1vmax] cursor-pointer">
                 <span class="font-extrabold">{{ .Title }}</span>
                 <span class="font-extrabold select-none text-secondary">//</span>
                 <span class="italic text-secondary">{{ .ActionDate }}</span>
@@ -12,6 +12,7 @@
                 <i class="fas fa-thumbs-up w-[1vmax] h-[1vmax]"></i>
                 <span class="italic text-secondary">{{ .LikeCount }}</span>
             </a>
+            <div hx-trigger="click from:#user_search_bar" hx-get="/endpoint1" hx-target="#users-list"></div>
             <p class="flex-3/12 grow-0 text-[1vmax] italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
         <p class="text-[1vmax] text-main-dark">{{ .ShortDescription }}</p>

@@ -56,6 +56,7 @@ func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []string, b2Client
 			"MapLocationY":          y,
 			"MapLocationAreaMeters": areaError,
 			"Lang":                  lang,
+			"QueryString":           string(c.Request().URI().QueryString()),
 		})
 		if err != nil {
 			slog.Warn("failed to generate page", slog.String("page", "/"+lang+"/blog/"+c.Params("title")), slog.String("error", err.Error()))
