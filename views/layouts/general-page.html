@@ -19,10 +19,10 @@
 
     <script>
         function changeUrl(path, toAppend = false) {
-            const urlParams = new URLSearchParams(window.location.search);
+            const urlParams = new URLSearchParams(window.location.search); 
             const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
-            history.pushState({}, '', `${newPath}?${urlParams.toString()}`);
+            history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
             window.dispatchEvent(new Event('popstate'));
         };
     </script>
