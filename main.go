@@ -15,6 +15,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
+	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/redirect"
 	"github.com/golang-migrate/migrate/v4"
@@ -116,7 +117,17 @@ func main() {
 
 	router.CCache, err = router.NewClientCache(db, []byte(cfg.Auth.Salt))
 	if err != nil {
-		slog.Error("fail to initialize cache", slog.String("error", err.Error()))
+		slog.Error("fail to initialize client cache", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	router.PCache, err = ristretto.NewCache(&ristretto.Config[string, []byte]{
+		NumCounters: 1e6,     // 1,000,000
+		MaxCost:     1 << 29, // 512 MB
+		BufferItems: 64,      // number of keys per Get buffer.
+	})
+	if err != nil {
+		slog.Error("fail to initialize page cache", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
 
@@ -158,5 +169,6 @@ func main() {
 	if err = db.Close(); err != nil {
 		slog.Error("fail to close db connection", slog.String("error", err.Error()))
 	}
+	router.PCache.Close()
 	db.Close()
 }

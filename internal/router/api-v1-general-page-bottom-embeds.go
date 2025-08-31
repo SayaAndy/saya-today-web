@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -30,6 +31,12 @@ func Api_V1_GeneralPage_BottomEmbeds(l map[string]*locale.LocaleConfig, langs []
 		}
 
 		path := urlStruct.EscapedPath()
+		cacheKey := fmt.Sprintf("bottom-embeds.%s", path)
+		if val, ok := PCache.Get(cacheKey); val != nil && ok {
+			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
+			return c.Status(fiber.StatusOK).Type("html").Send(val)
+		}
+
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
 		if len(pathParts) < 2 {
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
@@ -59,6 +66,7 @@ func Api_V1_GeneralPage_BottomEmbeds(l map[string]*locale.LocaleConfig, langs []
 			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")
 		}
 
+		go PCache.SetWithTTL(cacheKey, content, int64(len(content)), 5*time.Minute)
 		c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 		return c.Status(fiber.StatusOK).Type("html").Send(content)
 	}
