@@ -472,6 +472,11 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     }
 }
 
+.map-container .leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 body[data-theme~="night"] .leaflet-tile,
 body[data-theme~="ram"] .leaflet-tile {
     filter: invert(1) hue-rotate(190deg) contrast(1.1) brightness(1.2) !important;

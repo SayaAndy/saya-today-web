@@ -9,6 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
     {{ block "top-embeds" . }}{{ end }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
+    {{- if .MapLocationX }}
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+    {{- end }}
     <link href="/output.css" rel="stylesheet">
 </head>
 
@@ -141,6 +147,10 @@
     </script>
 
     <script>
+        const galleryMap = new Map();
+    </script>
+
+    <script>
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
@@ -200,6 +210,9 @@
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
@@ -320,7 +333,58 @@
         });
     </script>
 
-    {{ block "bottom-embeds" . }}{{ end }}
+    {{- if .MapLocationX }}
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+
+    <script>
+        var map;
+
+        function initLocationMap(id, x, y, relativeErrorMeters = 0) {
+            map = L.map(id).setView([x, y], 8);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            if (relativeErrorMeters != 0) {
+                var circle = L.circle([x, y], {
+                    color: '#8a9d8a',
+                    fillColor: '#8a9d8a',
+                    fillOpacity: 0.15,
+                    radius: relativeErrorMeters
+                }).addTo(map);
+            }
+
+            var marker = L.marker([x, y], {
+                title: '{{ .Title }}',
+            }).addTo(map)
+                .bindPopup('<span><b>{{ .Title }}</b><br><a href="https://www.openstreetmap.org/#map=13/{{ .MapLocationX }}/{{ .MapLocationY }}">{{ .MapLocationX }}, {{ .MapLocationY }}</a></span>')
+                .openPopup();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {initLocationMap(
+            'map-container',
+            {{ .MapLocationX }},
+            {{ .MapLocationY }},
+            {{ .MapLocationAreaMeters }}
+        )});
+
+        let galleryResizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(galleryResizeTimeout);
+            galleryResizeTimeout = setTimeout(() => {
+                map.invalidateSize();
+                var oldGalleryMap = new Map(galleryMap);
+                oldGalleryMap.forEach((createFunc, g, map) => {
+                    galleryMap.delete(g);
+                    g.destroy();
+                    createFunc();
+                });
+            }, 300);
+        });
+    </script>
+    {{- end }}
 
 </body>
 </html>
