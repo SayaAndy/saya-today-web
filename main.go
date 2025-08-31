@@ -124,10 +124,14 @@ func main() {
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
 	app.Get("/:lang/blog", router.Lang_Blog(localization, availableLanguages, b2Client))
 	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(localization, availableLanguages, b2Client, md))
+
 	app.Get("/api/v1/tz", router.Api_V1_TZ())
 	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(localization, availableLanguages, b2Client))
 	app.Get("/api/v1/like", router.Api_V1_Like_Get(localization, b2Client))
 	app.Put("/api/v1/like", router.Api_V1_Like_Put(localization, b2Client))
+	app.Get("/api/v1/general-page/header", router.Api_V1_GeneralPage_Header(localization, availableLanguages, b2Client))
+	app.Get("/api/v1/general-page/body", router.Api_V1_GeneralPage_Body(localization, availableLanguages, b2Client, md))
+	app.Get("/api/v1/general-page/footer", router.Api_V1_GeneralPage_Footer(localization, availableLanguages))
 
 	app.Static("/", "./static")
 

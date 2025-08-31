@@ -55,7 +55,11 @@ func (tm *TemplateManager) Render(name string, data any, files ...string) ([]byt
 	if len(files) == 0 {
 		tempTmpl = tmpl.Tmpl
 	} else {
-		tempTmpl, err = tmpl.Tmpl.ParseFiles(files...)
+		tempTmpl, err = tmpl.Tmpl.Clone()
+		if err != nil {
+			return nil, fmt.Errorf("couldn't clone existing template for rendering: %w", err)
+		}
+		tempTmpl, err = tempTmpl.ParseFiles(files...)
 		if err != nil {
 			return nil, fmt.Errorf("couldn't include additional files in template rendering: %w", err)
 		}

@@ -119,7 +119,14 @@ function createLightGallery%s() {
 	galleryMap.set(inlineGallery, createLightGallery%s);
 }
 
-document.addEventListener('DOMContentLoaded', createLightGallery%s);
+document.addEventListener('htmx:afterRequest', (e) => {
+	if (e.detail.xhr.status == 404 || e.detail.successful != true) {
+		return console.error(e);
+    }
+	if (e.detail.target.id == 'general-page-body') {
+		createLightGallery%s();
+	}
+});
 </script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID))
 	}
 

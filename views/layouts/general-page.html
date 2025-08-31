@@ -12,9 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
-    {{- if .MapLocationX }}
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
-    {{- end }}
     <link href="/output.css" rel="stylesheet">
 </head>
 
@@ -176,31 +174,18 @@
         <div class="pl-[0.5vw] bg-background-dark border-r-[0.4vmin] border-dashed border-main-dark"></div>
 
         <div class="ar-gt-0.8:min-w-fit ar-gt-0.8:max-w-[100vh] flex flex-col bg-background-dark relative pt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
-            <div id="general-page-header" class="flex flex-col">
-                <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
-                    class="flex flex-row mb-[0.4vmin]">
-                    <i onclick="location.pathname += location.pathname.endsWith('/') ? '../' : '/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
-                    <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
-                    <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
-                    <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
-                </div>
-                {{ block "header" . }}{{ end }}
+            <div id="general-page-header" class="flex flex-col"
+                hx-get="/api/v1/general-page/header" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
-            <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] grow">
-                {{ block "body" . }}{{ end }}
+            <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] grow"
+                hx-get="/api/v1/general-page/body" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
 
-            <div id="general-page-footer" class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
-                {{ block "footer" . }}{{ end }}
-                <p class="grow content-center text-[1vmax]/[1] font-spectral italic text-right text-secondary mr-2">
-                    All the photos on <a href="https://saya.today/">saya.today</a> are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> by <a href="https://t.me/EarlInisMona">Saya Andy</a> © {{ .PublishedYear }}
-                </p>
-                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
-                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY">
-                <img class="max-w-[1vmax] max-h-[1vmax] self-center" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA">
+            <div id="general-page-footer" class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]"
+                hx-get="/api/v1/general-page/footer" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
@@ -213,6 +198,7 @@
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
@@ -333,9 +319,6 @@
         });
     </script>
 
-    {{- if .MapLocationX }}
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
-
     <script>
         var map;
 
@@ -363,18 +346,27 @@
                 .openPopup();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {initLocationMap(
-            'map-container',
-            {{ .MapLocationX }},
-            {{ .MapLocationY }},
-            {{ .MapLocationAreaMeters }}
-        )});
+        document.addEventListener('htmx:afterRequest', (e) => {
+            if (e.detail.xhr.status == 404 || e.detail.successful != true) {
+                return console.error(e);
+            }
+            if (e.detail.target.id == 'general-page-body') {
+                initLocationMap(
+                    'map-container',
+                    {{ .MapLocationX }},
+                    {{ .MapLocationY }},
+                    {{ .MapLocationAreaMeters }}
+                );
+            }
+        });
 
         let galleryResizeTimeout;
         window.addEventListener('resize', function() {
             clearTimeout(galleryResizeTimeout);
             galleryResizeTimeout = setTimeout(() => {
-                map.invalidateSize();
+                if (map !== undefined) {
+                    map.invalidateSize();
+                }
                 var oldGalleryMap = new Map(galleryMap);
                 oldGalleryMap.forEach((createFunc, g, map) => {
                     galleryMap.delete(g);
@@ -384,7 +376,6 @@
             }, 300);
         });
     </script>
-    {{- end }}
 
 </body>
 </html>
