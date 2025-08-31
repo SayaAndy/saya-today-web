@@ -166,19 +166,24 @@
         <div class="pl-[0.5vw] bg-background-dark border-r-[0.4vmin] border-dashed border-main-dark"></div>
 
         <div class="ar-gt-0.8:min-w-fit ar-gt-0.8:max-w-[100vh] flex flex-col bg-background-dark relative pt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
-            <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
-                class="flex flex-row mb-[0.4vmin]">
-                <i onclick="location.pathname += location.pathname.endsWith('/') ? '../' : '/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
-                <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
-                <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
-                <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+            <div id="general-page-header" class="flex flex-col">
+                <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
+                    class="flex flex-row mb-[0.4vmin]">
+                    <i onclick="location.pathname += location.pathname.endsWith('/') ? '../' : '/../';" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
+                    <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
+                    <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
+                    <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+                </div>
+                {{ block "header" . }}{{ end }}
             </div>
-            {{ block "header" . }}{{ end }}
+
             <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
 
-            {{ block "body" . }}{{ end }}
+            <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] grow">
+                {{ block "body" . }}{{ end }}
+            </div>
 
-            <div class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
+            <div id="general-page-footer" class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]">
                 {{ block "footer" . }}{{ end }}
                 <p class="grow content-center text-[1vmax]/[1] font-spectral italic text-right text-secondary mr-2">
                     All the photos on <a href="https://saya.today/">saya.today</a> are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> by <a href="https://t.me/EarlInisMona">Saya Andy</a> © {{ .PublishedYear }}

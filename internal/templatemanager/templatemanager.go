@@ -44,14 +44,25 @@ func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager
 	}, nil
 }
 
-func (tm *TemplateManager) Render(name string, data interface{}) ([]byte, error) {
+func (tm *TemplateManager) Render(name string, data any, files ...string) ([]byte, error) {
 	tmpl, exists := tm.templates[name]
 	if !exists {
 		return nil, fmt.Errorf("template %s is not found", name)
 	}
 
+	var err error
+	var tempTmpl *template.Template
+	if len(files) == 0 {
+		tempTmpl = tmpl.Tmpl
+	} else {
+		tempTmpl, err = tmpl.Tmpl.ParseFiles(files...)
+		if err != nil {
+			return nil, fmt.Errorf("couldn't include additional files in template rendering: %w", err)
+		}
+	}
+
 	var buf bytes.Buffer
-	err := tmpl.Tmpl.ExecuteTemplate(&buf, tmpl.Main, data)
+	err = tempTmpl.ExecuteTemplate(&buf, tmpl.Main, data)
 	return buf.Bytes(), err
 }
 
