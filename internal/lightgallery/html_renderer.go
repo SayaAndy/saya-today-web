@@ -60,7 +60,8 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 		for _, img := range gallery.Images {
 			imageUrlSegments := strings.Split(img.URL, ".")
 			imageUrlWithoutExt := strings.Join(imageUrlSegments[:len(imageUrlSegments)-1], ".")
-			imageNameParts := strings.Split(imageUrlWithoutExt, "-")
+			imageUrlParts := strings.Split(imageUrlWithoutExt, "/")
+			imageNameParts := strings.Split(imageUrlParts[len(imageUrlParts)-1], "-")
 
 			var captionBuf bytes.Buffer
 			captionHTML := img.Caption
