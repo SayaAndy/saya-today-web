@@ -133,8 +133,8 @@ func main() {
 
 	app.Get("/", router.Root(cfg.AvailableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog", router.Lang_Blog(localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(localization, availableLanguages, b2Client, md))
+	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))
+	app.Get("/:lang/blog/:title", router.Api_V1_GeneralPage(localization, availableLanguages))
 
 	app.Get("/api/v1/tz", router.Api_V1_TZ())
 	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(localization, availableLanguages, b2Client))

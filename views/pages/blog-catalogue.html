@@ -1,11 +1,11 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-0.8:flex-col text-[1vmax] h-[100%]">
+<div class="flex flex-row ar-lt-1.1:flex-col text-[1vmax] h-[100%]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] ar-lt-0.8:max-h-[25%] flex shrink-0 flex-col ar-gt-0.8:mr-[1.2vmin]">
+        class="tags-list ar-gt-1.1:min-w-[10vh] ar-gt-1.1:max-w-[20vh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-[1.2vmin]">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense">
+                <div class="flex flex-col ar-lt-1.1:grid grid-cols-5 grid-flow-row-dense">
                     <div class="m-[0.4vmin]">
                         <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
                     </div>
@@ -18,7 +18,7 @@
             </fieldset>
             <fieldset class="mt-[0.8vmin]">
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
+                <div class="flex flex-col ar-lt-1.1:grid grid-cols-3 grid-rows-2 grid-flow-col">
                     <div class="m-[0.4vmin]">
                         <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
                     </div>

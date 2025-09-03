@@ -108,6 +108,7 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			values["Tags"] = tagsArray
 			values["QuerySort"] = querySort
 			values["QueryTags"] = strings.Join(queryTags, ",")
+			values["Title"] = l[lang].BlogSearch.Header
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
