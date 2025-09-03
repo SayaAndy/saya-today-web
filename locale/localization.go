@@ -11,7 +11,6 @@ type LocaleConfig struct {
 	TagsLabel  string           `yaml:"TagsLabel" json:"TagsLabel"`
 	BlogSearch BlogSearchConfig `yaml:"BlogSearch" json:"BlogSearch"`
 	GlobalMap  GlobalMapConfig  `yaml:"GlobalMap" json:"GlobalMap"`
-	LikeButton string           `yaml:"LikeButton" json:"LikeButton"`
 }
 
 type BlogSearchConfig struct {
