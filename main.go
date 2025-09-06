@@ -11,12 +11,14 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
+	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/redirect"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/yuin/goldmark"
@@ -106,28 +108,49 @@ func main() {
 		ProxyHeader: "X-Forwarded-For",
 	})
 
-	app.Use(redirect.New(redirect.Config{
-		Rules: map[string]string{
-			"/ru": "/",
-			"/en": "/",
-		},
-		StatusCode: 301,
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "https://f003.backblazeb2.com",
+		AllowMethods: "GET,POST,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
 	router.CCache, err = router.NewClientCache(db, []byte(cfg.Auth.Salt))
 	if err != nil {
-		slog.Error("fail to initialize cache", slog.String("error", err.Error()))
+		slog.Error("fail to initialize client cache", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	router.PCache, err = ristretto.NewCache(&ristretto.Config[string, []byte]{
+		NumCounters: 1e6,     // 1,000,000
+		MaxCost:     1 << 29, // 512 MB
+		BufferItems: 64,      // number of keys per Get buffer.
+	})
+	if err != nil {
+		slog.Error("fail to initialize page cache", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	router.FactGiver, err = factgiver.NewFactGiver(&cfg.FactGiver, availableLanguages)
+	if err != nil {
+		slog.Error("fail to initialize fact giver", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
 
 	app.Get("/", router.Root(cfg.AvailableLanguages))
+	app.Get("/:lang<len(2)>", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog", router.Lang_Blog(localization, availableLanguages, b2Client))
-	app.Get("/:lang/blog/:title", router.Lang_Blog_Title(localization, availableLanguages, b2Client, md))
+	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))
+	app.Get("/:lang/blog/:title", router.Api_V1_GeneralPage(localization, availableLanguages))
+
 	app.Get("/api/v1/tz", router.Api_V1_TZ())
 	app.Get("/api/v1/blog-search", router.Api_V1_BlogSearch(localization, availableLanguages, b2Client))
 	app.Get("/api/v1/like", router.Api_V1_Like_Get(localization, b2Client))
 	app.Put("/api/v1/like", router.Api_V1_Like_Put(localization, b2Client))
+	app.Get("/api/v1/general-page/header", router.Api_V1_GeneralPage_Header(localization, availableLanguages, b2Client))
+	app.Get("/api/v1/general-page/body", router.Api_V1_GeneralPage_Body(localization, availableLanguages, b2Client, md))
+	app.Get("/api/v1/general-page/footer", router.Api_V1_GeneralPage_Footer(localization, availableLanguages))
+	app.Get("/api/v1/general-page/top-embeds", router.Api_V1_GeneralPage_TopEmbeds(localization, availableLanguages))
+	app.Get("/api/v1/general-page/bottom-embeds", router.Api_V1_GeneralPage_BottomEmbeds(localization, availableLanguages, b2Client))
 
 	app.Static("/", "./static")
 
@@ -152,5 +175,6 @@ func main() {
 	if err = db.Close(); err != nil {
 		slog.Error("fail to close db connection", slog.String("error", err.Error()))
 	}
+	router.PCache.Close()
 	db.Close()
 }

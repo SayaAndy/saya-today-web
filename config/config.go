@@ -11,6 +11,7 @@ import (
 type Config struct {
 	LogLevel           slog.Level                `json:"LogLevel" yaml:"logLevel" validate:"required"`
 	BlogPages          BlogPagesConfig           `json:"BlogPages" yaml:"blogPages" validate:"required"`
+	FactGiver          FactGiverConfig           `json:"FactGiver" yaml:"factGiver" validate:"required"`
 	LocalePath         string                    `json:"LocalePath" yaml:"localePath" validate:"required,filepath"`
 	AvailableLanguages []AvailableLanguageConfig `json:"AvailableLanguages" yaml:"availableLanguages" validate:"required"`
 	Auth               AuthConfig                `json:"Auth" yaml:"auth" validate:"required"`
@@ -31,6 +32,11 @@ type B2Config struct {
 	Prefix         string `json:"Prefix" yaml:"prefix"`
 	KeyID          string `json:"KeyID" yaml:"keyID"`
 	ApplicationKey string `json:"ApplicationKey" yaml:"applicationKey"`
+}
+
+type FactGiverConfig struct {
+	Storage       StorageConfig `json:"Storage" yaml:"storage" validate:"required"`
+	FactsFileName string        `json:"FactsFileName" yaml:"factsFileName" validate:"required"`
 }
 
 type AvailableLanguageConfig struct {

@@ -60,7 +60,8 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 		for _, img := range gallery.Images {
 			imageUrlSegments := strings.Split(img.URL, ".")
 			imageUrlWithoutExt := strings.Join(imageUrlSegments[:len(imageUrlSegments)-1], ".")
-			imageNameParts := strings.Split(imageUrlWithoutExt, "-")
+			imageUrlParts := strings.Split(imageUrlWithoutExt, "/")
+			imageNameParts := strings.Split(imageUrlParts[len(imageUrlParts)-1], "-")
 
 			var captionBuf bytes.Buffer
 			captionHTML := img.Caption
@@ -119,7 +120,14 @@ function createLightGallery%s() {
 	galleryMap.set(inlineGallery, createLightGallery%s);
 }
 
-document.addEventListener('DOMContentLoaded', createLightGallery%s);
+document.addEventListener('htmx:afterRequest', (e) => {
+	if (e.detail.xhr.status == 404 || e.detail.successful != true) {
+		return console.error(e);
+    }
+	if (e.detail.target.id == 'general-page-body') {
+		createLightGallery%s();
+	}
+}, {once: true});
 </script>`, galleryID, galleryID, strings.Join(dynamicElements, ","), galleryID, galleryID))
 	}
 

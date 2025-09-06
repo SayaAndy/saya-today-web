@@ -8,6 +8,16 @@ blogPages:
       prefix: 'prod-'
       keyID: '${B2_KEY_ID}'
       applicationKey: '${B2_APPLICATION_KEY}'
+factGiver:
+  storage:
+    type: b2
+    config:
+      bucketName: sayana-pages
+      region: eu-central-003
+      prefix: ''
+      keyID: '${B2_KEY_ID}'
+      applicationKey: '${B2_APPLICATION_KEY}'
+  factsFileName: 'facts-*.txt'
 localePath: ./locale/
 availableLanguages:
   - name: ru

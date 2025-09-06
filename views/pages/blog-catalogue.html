@@ -1,11 +1,11 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-0.8:flex-col max-h-[calc(100%-7vmax)] ar-lt-0.8:max-h-[calc(100%-25vh)] flex-1 text-[1vmax]">
+<div class="flex flex-row ar-lt-1.1:flex-col text-[1vmax] h-[100%]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-0.8:min-w-[10vh] ar-gt-0.8:max-w-[20vh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] ar-lt-0.8:max-h-[25%] flex shrink-0 flex-col ar-gt-0.8:mr-[1.2vmin]">
+        class="tags-list ar-gt-1.1:min-w-[10vh] ar-gt-1.1:max-w-[20vh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-[1.2vmin]">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-5 grid-flow-row-dense">
+                <div class="flex flex-col ar-lt-1.1:grid grid-cols-5 grid-flow-row-dense">
                     <div class="m-[0.4vmin]">
                         <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
                     </div>
@@ -18,7 +18,7 @@
             </fieldset>
             <fieldset class="mt-[0.8vmin]">
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
+                <div class="flex flex-col ar-lt-1.1:grid grid-cols-3 grid-rows-2 grid-flow-col">
                     <div class="m-[0.4vmin]">
                         <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
                     </div>
@@ -57,9 +57,7 @@
         Loading...
     </div>
 </div>
-{{ end }}
 
-{{ define "bottom-embeds" }}
 <script>
     function selectAll() {
         const tagsContainers = document.querySelectorAll('form.tags-list');
@@ -100,6 +98,7 @@
     function cleanHrefParams() {
         const url = new URL(window.location.href);
         url.search = '';
+
         window.history.pushState({}, '', url.toString());
     }
 
@@ -139,23 +138,27 @@
         window.history.pushState({}, '', url.toString());
     }
 
-    document.addEventListener('DOMContentLoaded', contextAll);
-</script>
-
-<script>
-    const tagsContainers = document.querySelectorAll('form.tags-list');
-    tagsContainers.forEach(tagsContainer => {
-        const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
-        anyChecked = false;
-        checkboxes.forEach(checkbox => {
-            anyChecked = checkbox.checked ? true : anyChecked;
-        });
-        if (!anyChecked) {
-            const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
-            selectAllCheckbox.checked = true;
-            selectAll();
+    document.addEventListener('htmx:afterRequest', (e) => {
+        if (e.detail.xhr.status == 404 || e.detail.successful != true) {
+            return console.error(e);
         }
-    });
-</script>
+        if (e.detail.target.id == 'general-page-body') {
+            contextAll();
 
+            const tagsContainers = document.querySelectorAll('form.tags-list');
+            tagsContainers.forEach(tagsContainer => {
+                const checkboxes = tagsContainer.querySelectorAll('input[type="checkbox"]');
+                anyChecked = false;
+                checkboxes.forEach(checkbox => {
+                    anyChecked = checkbox.checked ? true : anyChecked;
+                });
+                if (!anyChecked) {
+                    const selectAllCheckbox = tagsContainer.querySelector('#tagsAllCheckbox');
+                    selectAllCheckbox.checked = true;
+                    selectAll();
+                }
+            });
+        }
+    }, {once: true});
+</script>
 {{ end }}

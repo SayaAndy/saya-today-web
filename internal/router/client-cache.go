@@ -11,11 +11,6 @@ import (
 	"golang.org/x/crypto/argon2"
 )
 
-type PageLike struct {
-	PageRef string
-	UserId  string
-}
-
 type ClientCache struct {
 	hashMap      map[string]string
 	hashMapMutex sync.RWMutex

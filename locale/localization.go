@@ -11,7 +11,7 @@ type LocaleConfig struct {
 	TagsLabel  string           `yaml:"TagsLabel" json:"TagsLabel"`
 	BlogSearch BlogSearchConfig `yaml:"BlogSearch" json:"BlogSearch"`
 	GlobalMap  GlobalMapConfig  `yaml:"GlobalMap" json:"GlobalMap"`
-	LikeButton string           `yaml:"LikeButton" json:"LikeButton"`
+	HomePage   HomePageConfig   `yaml:"HomePage" json:"HomePage"`
 }
 
 type BlogSearchConfig struct {
@@ -26,6 +26,20 @@ type BlogSearchConfig struct {
 
 type GlobalMapConfig struct {
 	Header string `yaml:"Header" json:"Header"`
+}
+
+type HomePageConfig struct {
+	Header                 string `yaml:"Header" json:"Header"`
+	DidYouKnowThat         string `yaml:"DidYouKnowThat" json:"DidYouKnowThat"`
+	SidebarDescription     string `yaml:"SidebarDescription" json:"SidebarDescription"`
+	HomePageDescription    string `yaml:"HomePageDescription" json:"HomePageDescription"`
+	BlogSearchDescription  string `yaml:"BlogSearchDescription" json:"BlogSearchDescription"`
+	MarkerMapDescription   string `yaml:"MarkerMapDescription" json:"MarkerMapDescription"`
+	ThemeSwitchDescription string `yaml:"ThemeSwitchDescription" json:"ThemeSwitchDescription"`
+	Hymn1                  string `yaml:"Hymn1" json:"Hymn1"`
+	Hymn2                  string `yaml:"Hymn2" json:"Hymn2"`
+	Hymn3                  string `yaml:"Hymn3" json:"Hymn3"`
+	Hymn4                  string `yaml:"Hymn4" json:"Hymn4"`
 }
 
 func LoadConfig(path string, config *LocaleConfig) error {

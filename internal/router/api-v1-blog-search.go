@@ -1,6 +1,7 @@
 package router
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/url"
@@ -35,10 +36,17 @@ func Api_V1_BlogSearch(l map[string]*locale.LocaleConfig, langs []string, b2Clie
 			slog.Warn("unable to parse a client timezone, defaulting to UTC", slog.String("error", err.Error()), slog.String("tz", tz))
 		}
 
-		pages, err := b2Client.Scan(lang + "/")
-		if err != nil {
-			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
-			return c.Status(fiber.ErrInternalServerError.Code).SendString(fmt.Sprintf("failed to scan pages for '%s' lang: %v", lang, err))
+		var pages []*b2.BlogPage
+		if pagesBytes, ok := PCache.Get("blog-search.pages-list"); pagesBytes != nil || ok {
+			json.Unmarshal(pagesBytes, &pages)
+		} else {
+			pages, err = b2Client.Scan(lang + "/")
+			if err != nil {
+				c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+				return c.Status(fiber.ErrInternalServerError.Code).SendString(fmt.Sprintf("failed to scan pages for '%s' lang: %v", lang, err))
+			}
+			pagesBytes, _ := json.Marshal(pages)
+			PCache.SetWithTTL("blog-search.pages-list", pagesBytes, int64(len(pagesBytes)), 5*time.Minute)
 		}
 
 		encodedQuery := c.Request().URI().QueryString()
