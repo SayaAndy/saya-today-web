@@ -20,7 +20,7 @@ func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []string) func(
 		path := c.Path()
 
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) < 2 {
+		if len(pathParts) == 0 {
 			return c.Status(fiber.ErrBadRequest.Code).SendString("url path is invalid: expect format '/{lang}/...'")
 		}
 

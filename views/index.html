@@ -106,7 +106,7 @@
         <p class="font-patua mx-auto text-[2.5vmax] mt-[0.8vmin] mb-[0.8vmin]">saya.today</p>
         <div class="menu-inner-body grow bg-background-light flex flex-adaptive mx-auto opacity-100">
             {{- range .AvailableLanguages }}
-            <img onclick="location.href='/{{ .Name }}/blog';" class="object-scale-down cursor-pointer flex-1 rounded-[20%] language-icon mx-auto my-auto relative" src="{{ .Flag }}" alt="{{ .Alt }}">
+            <img onclick="location.href='/{{ .Name }}';" class="object-scale-down cursor-pointer flex-1 rounded-[20%] language-icon mx-auto my-auto relative" src="{{ .Flag }}" alt="{{ .Alt }}">
             {{- end }}
         </div>
         <p class="font-spectral mx-auto text-[1.5vmax] text-secondary mt-[0.8vmin] mb-[0.8vmin]">Choose your language</p>

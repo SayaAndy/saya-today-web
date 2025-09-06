@@ -10,6 +10,7 @@
     --main-medium-color: #8a9d8a;
     --main-light-color: #a5b8a5;
     --background-dark-color: #ffffdd;
+    --background-medium-color: var(--background-dark-color);
     --background-light-color: #fffff0;
     --sidebar-text-color: var(--background-dark-color);
     --sidebar-stroke-color: var(--main-dark-color);
@@ -31,6 +32,7 @@
     --main-medium-color: #9bb665;
     --main-light-color: #bbd095;
     --background-dark-color: #f5eee2;
+    --background-medium-color: var(--background-dark-color);
     --background-light-color: #fff9ef;
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-dark-color);
@@ -52,6 +54,7 @@
     --main-medium-color: var(--color-sky-200);
     --main-light-color: var(--color-sky-300);
     --background-dark-color: #13131b;
+    --background-medium-color: var(--background-dark-color);
     --background-light-color: #222230;
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-light-color);
@@ -73,6 +76,7 @@
     --main-medium-color: #f6e4c5;
     --main-light-color: #e8d4b8;
     --background-dark-color: #413b34;
+    --background-medium-color: #62584f;
     --background-light-color: #6d6258;
     --sidebar-text-color: var(--main-dark-color);
     --sidebar-stroke-color: var(--background-light-color);
@@ -615,6 +619,22 @@ body[data-theme~="ram"] .leaflet-tile {
     }
 }
 
+@media (min-aspect-ratio: 0.6/1) {
+    .ar-gt-0\.6\:flex-3\/5 {
+        flex: 60%;
+    }
+
+    .ar-gt-0\.6\:flex-2\/5 {
+        flex: 40%;
+    }
+}
+
+@media (max-aspect-ratio: 0.6/1) {
+    .ar-lt-0\.6\:flex-col {
+        flex-direction: column;
+    }
+}
+
 @media (max-aspect-ratio: 0.4/1) {
     .ar-lt-0\.4\:w-\[100vw\] {
         width: 100vw;
@@ -623,6 +643,14 @@ body[data-theme~="ram"] .leaflet-tile {
     .ar-lt-0\.4\:ml-0 {
         margin-left: 0;
     }
+}
+
+.home-page-heart {
+    position: absolute;
+    color: var(--color-pink-700);
+    user-select: none;
+    pointer-events: none;
+    font-family: serif;
 }
 
 .night-star {

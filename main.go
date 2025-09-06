@@ -11,13 +11,14 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/redirect"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/yuin/goldmark"
@@ -107,12 +108,10 @@ func main() {
 		ProxyHeader: "X-Forwarded-For",
 	})
 
-	app.Use(redirect.New(redirect.Config{
-		Rules: map[string]string{
-			"/ru": "/",
-			"/en": "/",
-		},
-		StatusCode: 301,
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "https://f003.backblazeb2.com",
+		AllowMethods: "GET,POST,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
 	router.CCache, err = router.NewClientCache(db, []byte(cfg.Auth.Salt))
@@ -131,7 +130,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	router.FactGiver, err = factgiver.NewFactGiver(&cfg.FactGiver, availableLanguages)
+	if err != nil {
+		slog.Error("fail to initialize fact giver", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
 	app.Get("/", router.Root(cfg.AvailableLanguages))
+	app.Get("/:lang<len(2)>", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
 	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/blog/:title", router.Api_V1_GeneralPage(localization, availableLanguages))

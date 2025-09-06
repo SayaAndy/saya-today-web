@@ -1,7 +1,7 @@
 {{ define "top-embeds" }}
 <script>
-    var galleryMap = new Map();
-    var map;
+    let galleryMap = new Map();
+    let map;
 
     window.addEventListener('popout', (e) => {
         map.remove();
@@ -9,6 +9,8 @@
             g.destroy();
         });
         galleryMap.clear();
+        map = null;
+        galleryMap = null;
     }, {once: true});
 </script>
 {{ end }}
@@ -87,7 +89,8 @@
     window.addEventListener('resize', resizeCb);
 
     document.addEventListener('popout', (e) => {
-        window.removeEventListener('resize', resizeCb, {once: true});
+        window.removeEventListener('resize', resizeCb);
+        galleryResizeTimeout = null;
     });
 </script>
 {{ end }}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"log/slog"
+	"math/rand"
 	"net/url"
 	"regexp"
 	"slices"
@@ -11,10 +12,13 @@ import (
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
+
+var FactGiver *factgiver.FactGiver
 
 func init() {
 	tm.Add("general-page-body", "views/partials/general-page-body.html")
@@ -42,7 +46,7 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 		}
 
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) < 2 {
+		if len(pathParts) == 0 {
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
@@ -134,6 +138,13 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			values["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
+		} else if len(pathParts) == 1 {
+			values["Title"] = l[lang].HomePage.Header
+			values["FilledHeartCount"] = uint(40)
+			values["OutlineHeartCount"] = uint(40)
+			values["GifName"] = fmt.Sprintf("otter-%d.gif", rand.Int()%3+1)
+			values["FunFacts"] = FactGiver.Give(lang)
+			additionalTemplates = append(additionalTemplates, "views/pages/home-page.html")
 		}
 
 		content, err := tm.Render("general-page-body", values, additionalTemplates...)

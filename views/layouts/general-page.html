@@ -7,9 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
     <link href="/output.css" rel="stylesheet">
 </head>
@@ -166,7 +166,7 @@
             saya.today
         </div>
         <div class="text-[3vw] ar-lt-1.1:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
-            <i onclick="location.href='/{{ .Lang }}';" class="fas fa-home w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="changeUrl('/{{ .Lang }}');" class="fas fa-home w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="changeUrl('/{{ .Lang }}/blog');" class="fas fa-search w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>

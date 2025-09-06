@@ -9,3 +9,15 @@ BlogSearch:
   ChooseAllTags: 'Choose All'
 GlobalMap:
   Header: 'Global Map'
+HomePage:
+  Header: 'Home Page'
+  DidYouKnowThat: 'Did you know, that...'
+  SidebarDescription: 'Describing the Sidebar'
+  HomePageDescription: 'Home Page -- where we are right now!'
+  BlogSearchDescription: 'Blog Search. You can find my travel notes there and, maybe, something else!'
+  MarkerMapDescription: 'Map with markers of my travel notes -- a convinient way to find an interesting region and find related posts!'
+  ThemeSwitchDescription: 'Theme Palette lets you change the theme of the site -- there are 2 dark and 2 bright themes currently!'
+  Hymn1: 'We welcome you to Sayasite!'
+  Hymn2: "We've been expecting you!"
+  Hymn3: 'You bring such joy in Sayasite!'
+  Hymn4: 'No matter where you roam, know our love is true!~'

@@ -38,7 +38,7 @@ func Api_V1_GeneralPage_BottomEmbeds(l map[string]*locale.LocaleConfig, langs []
 		}
 
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) < 2 {
+		if len(pathParts) == 0 {
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
@@ -58,6 +58,8 @@ func Api_V1_GeneralPage_BottomEmbeds(l map[string]*locale.LocaleConfig, langs []
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
+		} else if len(pathParts) == 1 {
+			additionalTemplates = append(additionalTemplates, "views/pages/home-page.html")
 		}
 
 		content, err := tm.Render("general-page-bottom-embeds", values, additionalTemplates...)

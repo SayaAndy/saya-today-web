@@ -39,7 +39,7 @@ func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []string
 		}
 
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) < 2 {
+		if len(pathParts) == 0 {
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
@@ -67,6 +67,9 @@ func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []string
 			values["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
 			values["ActionDate"] = metadata.ActionDate
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
+		} else if len(pathParts) == 1 {
+			values["Title"] = l[lang].HomePage.Header
+			additionalTemplates = append(additionalTemplates, "views/pages/home-page.html")
 		}
 
 		content, err := tm.Render("general-page-header", values, additionalTemplates...)
