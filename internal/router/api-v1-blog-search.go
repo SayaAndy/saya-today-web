@@ -79,6 +79,7 @@ func Api_V1_BlogSearch(l map[string]*locale.LocaleConfig, langs []string, b2Clie
 						"Thumbnail":        page.Metadata.Thumbnail,
 						"Tags":             page.Metadata.Tags,
 						"LikeCount":        CCache.GetLikeCount(page.FileName),
+						"ViewCount":        CCache.GetViewCount(page.FileName),
 					})
 					break
 				}

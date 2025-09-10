@@ -1,8 +1,8 @@
 <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
     class="flex flex-row mb-[0.4vmin]">
     <i onclick="changeUrl('/../', true);" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-[2vmax] mt-auto mb-auto px-[0.8vmin]"></i>
-    <p class="text-[2vmax] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
-    <p class="text-[2vmax] font-spectral italic text-left mt-auto">{{ .Title }}</p>
-    <p id="published-date" class="grow text-[1.5vmax] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
+    <p class="text-[2.5vmin] font-spectral italic font-extrabold select-none mt-auto pl-[0.8vmin] pr-[1.2vmin]">//</p>
+    <p class="text-[2.5vmin] font-spectral italic text-left mt-auto">{{ .Title }}</p>
+    <p id="published-date" class="grow text-[1.75vmin] font-spectral text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
 </div>
 {{ block "header" . }}{{ end }}
