@@ -16,6 +16,7 @@ type ClientCache struct {
 	hashMapMutex sync.RWMutex
 
 	likePageMap       map[string]map[string]struct{}
+	viewPageMap       map[string]map[string]struct{}
 	pageMutexMap      map[string]*sync.RWMutex
 	pageMutexMapMutex sync.Mutex
 
@@ -38,6 +39,7 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	}
 
 	likePageMap := make(map[string]map[string]struct{})
+	viewPageMap := make(map[string]map[string]struct{})
 	pageMutexMap := make(map[string]*sync.RWMutex)
 
 	for rows.Next() {
@@ -50,9 +52,32 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 		userIdString := base64.RawStdEncoding.EncodeToString(userId)
 		if _, ok := likePageMap[pageRef]; !ok {
 			likePageMap[pageRef] = make(map[string]struct{})
+			viewPageMap[pageRef] = make(map[string]struct{})
 			pageMutexMap[pageRef] = &sync.RWMutex{}
 		}
 		likePageMap[pageRef][userIdString] = struct{}{}
+		viewPageMap[pageRef][userIdString] = struct{}{}
+	}
+
+	rows, err = tx.Query("select * from blog_views;")
+	if err != nil {
+		tx.Rollback()
+		return nil, fmt.Errorf("fail to query db for blog_views to fill cache: %w", err)
+	}
+
+	for rows.Next() {
+		var pageRef string
+		var userId []byte
+		if err = rows.Scan(&pageRef, &userId); err != nil {
+			tx.Rollback()
+			return nil, fmt.Errorf("fail scanning blog_views to fill cache: %w", err)
+		}
+		userIdString := base64.RawStdEncoding.EncodeToString(userId)
+		if _, ok := viewPageMap[pageRef]; !ok {
+			viewPageMap[pageRef] = make(map[string]struct{})
+			pageMutexMap[pageRef] = &sync.RWMutex{}
+		}
+		viewPageMap[pageRef][userIdString] = struct{}{}
 	}
 
 	if err = tx.Commit(); err != nil {
@@ -62,6 +87,7 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	return &ClientCache{
 		hashMap:      make(map[string]string),
 		likePageMap:  likePageMap,
+		viewPageMap:  viewPageMap,
 		pageMutexMap: pageMutexMap,
 		salt:         salt,
 		db:           db,
@@ -74,51 +100,14 @@ func (c *ClientCache) Close() error {
 		return fmt.Errorf("fail to init transaction with db to dump cache: %w", err)
 	}
 
-	if _, err = tx.Exec("delete from blog_likes;"); err != nil {
+	if err = batchSave(tx, "blog_likes", c.likePageMap); err != nil {
 		tx.Rollback()
-		return fmt.Errorf("fail to truncate table blog_likes: %w", err)
+		return fmt.Errorf("fail to save blog_likes: %s", err)
 	}
 
-	userIdBytes := make(map[string][]byte)
-
-	sqlStatement := fmt.Sprintf(`
-    INSERT OR IGNORE INTO blog_likes (page_ref, user_id)
-    VALUES %s(?, ?);
-    `, strings.Repeat("(?, ?), ", 99))
-	sqlStatementVars := make([]any, 0, 200)
-
-	for pageRef, userSet := range c.likePageMap {
-		for userId := range userSet {
-			if _, ok := userIdBytes[userId]; !ok {
-				userIdBytes[userId], err = base64.RawStdEncoding.DecodeString(userId)
-				if err != nil {
-					slog.Warn("couldn't parse one of user hashes into bytes back", slog.String("hash", userId), slog.String("error", err.Error()))
-					continue
-				}
-			}
-
-			sqlStatementVars = append(sqlStatementVars, any(pageRef), any(userIdBytes[userId]))
-			if len(sqlStatementVars) < 200 {
-				continue
-			}
-
-			if _, err := tx.Exec(sqlStatement, sqlStatementVars...); err != nil {
-				slog.Warn("couldn't insert blog like pairs into db", slog.String("error", err.Error()))
-			}
-
-			sqlStatementVars = make([]any, 0, 200)
-		}
-	}
-
-	if len(sqlStatementVars) > 0 {
-		sqlStatement = fmt.Sprintf(`
-		INSERT OR IGNORE INTO blog_likes (page_ref, user_id)
-		VALUES %s(?, ?);
-		`, strings.Repeat("(?, ?), ", len(sqlStatementVars)/2-1))
-
-		if _, err := tx.Exec(sqlStatement, sqlStatementVars...); err != nil {
-			slog.Warn("couldn't insert blog like pairs into db", slog.String("error", err.Error()))
-		}
+	if err = batchSave(tx, "blog_views", c.viewPageMap); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("fail to save blog_views: %s", err)
 	}
 
 	return tx.Commit()
@@ -221,4 +210,95 @@ func (c *ClientCache) LikeOff(id string, page string) (alreadyUnliked bool) {
 
 	delete(c.likePageMap[page], hash)
 	return false
+}
+
+func (c *ClientCache) GetViewStatus(id string, page string) bool {
+	page = strings.Clone(page)
+
+	mutex := c.getPageMutex(page)
+	mutex.RLock()
+	defer mutex.RUnlock()
+
+	if _, ok := c.viewPageMap[page]; !ok {
+		return false
+	}
+	_, ok := c.viewPageMap[page][c.GetHash(id)]
+	return ok
+}
+
+func (c *ClientCache) GetViewCount(page string) int {
+	page = strings.Clone(page)
+
+	mutex := c.getPageMutex(page)
+	mutex.RLock()
+	defer mutex.RUnlock()
+
+	if userSet, ok := c.viewPageMap[page]; ok {
+		return len(userSet)
+	}
+	return 0
+}
+
+func (c *ClientCache) View(id string, page string) {
+	page = strings.Clone(page)
+	hash := c.GetHash(id)
+
+	mutex := c.getPageMutex(page)
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	if _, ok := c.viewPageMap[page]; !ok {
+		c.viewPageMap[page] = make(map[string]struct{})
+	}
+	c.viewPageMap[page][hash] = struct{}{}
+}
+
+func batchSave(tx *sql.Tx, table string, pageMap map[string]map[string]struct{}) (err error) {
+	if _, err = tx.Exec(fmt.Sprintf("delete from %s;", table)); err != nil {
+		return fmt.Errorf("fail to truncate table %s: %w", table, err)
+	}
+
+	userIdBytes := make(map[string][]byte)
+
+	sqlStatement := fmt.Sprintf(`
+    INSERT OR IGNORE INTO %s (page_ref, user_id)
+    VALUES %s(?, ?);
+    `, table, strings.Repeat("(?, ?), ", 99))
+	sqlStatementVars := make([]any, 0, 200)
+
+	for pageRef, userSet := range pageMap {
+		for userId := range userSet {
+			if _, ok := userIdBytes[userId]; !ok {
+				userIdBytes[userId], err = base64.RawStdEncoding.DecodeString(userId)
+				if err != nil {
+					slog.Warn("couldn't parse one of user hashes into bytes back", slog.String("hash", userId), slog.String("error", err.Error()))
+					continue
+				}
+			}
+
+			sqlStatementVars = append(sqlStatementVars, any(pageRef), any(userIdBytes[userId]))
+			if len(sqlStatementVars) < 200 {
+				continue
+			}
+
+			if _, err := tx.Exec(sqlStatement, sqlStatementVars...); err != nil {
+				slog.Warn("couldn't insert blog stat pairs into db", slog.String("table", table), slog.String("error", err.Error()))
+			}
+
+			sqlStatementVars = make([]any, 0, 200)
+		}
+	}
+
+	if len(sqlStatementVars) > 0 {
+		sqlStatement = fmt.Sprintf(`
+		INSERT OR IGNORE INTO %s (page_ref, user_id)
+		VALUES %s(?, ?);
+		`, table, strings.Repeat("(?, ?), ", len(sqlStatementVars)/2-1))
+
+		if _, err := tx.Exec(sqlStatement, sqlStatementVars...); err != nil {
+			slog.Warn("couldn't insert blog stat pairs into db", slog.String("table", table), slog.String("error", err.Error()))
+		}
+	}
+
+	return nil
 }

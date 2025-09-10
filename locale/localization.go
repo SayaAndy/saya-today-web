@@ -30,6 +30,7 @@ type GlobalMapConfig struct {
 
 type HomePageConfig struct {
 	Header                 string `yaml:"Header" json:"Header"`
+	Contacts               string `yaml:"Contacts" json:"Contacts"`
 	DidYouKnowThat         string `yaml:"DidYouKnowThat" json:"DidYouKnowThat"`
 	SidebarDescription     string `yaml:"SidebarDescription" json:"SidebarDescription"`
 	HomePageDescription    string `yaml:"HomePageDescription" json:"HomePageDescription"`

@@ -138,6 +138,8 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			values["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
+
+			go CCache.View(c.IP(), pathParts[2])
 		} else if len(pathParts) == 1 {
 			values["Title"] = l[lang].HomePage.Header
 			values["FilledHeartCount"] = uint(40)

@@ -11,6 +11,7 @@ GlobalMap:
   Header: 'Global Map'
 HomePage:
   Header: 'Home Page'
+  Contacts: 'Contacts'
   DidYouKnowThat: 'Did you know, that...'
   SidebarDescription: 'Describing the Sidebar'
   HomePageDescription: 'Home Page -- where we are right now!'

@@ -11,6 +11,7 @@ GlobalMap:
   Header: 'Глобальная карта'
 HomePage:
   Header: 'Домашняя страница'
+  Contacts: 'Контакты'
   DidYouKnowThat: 'А вы знали, что...'
   SidebarDescription: 'Поясняем за сайдбар'
   HomePageDescription: 'Домашняя страница -- где мы сейчас и находимся!'
