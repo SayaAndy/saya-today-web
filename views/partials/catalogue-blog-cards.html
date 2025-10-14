@@ -1,25 +1,25 @@
 {{- range .BlogPages }}
-<hr class="first-of-type:hidden border-t-[0.3vh] my-[0.8vmin] border-dotted border-main-dark w-[80%] mx-auto">
-<div class="m-[0.4vmin] flex flex-row justify-center justify-items-center">
-    <img onclick="changeUrl('{{ .ArticleLink }}');" class="cursor-pointer object-cover rounded-[10%] select-none w-[10vmin] h-[10vmin] aspect-square my-[0.4vmin] mr-[0.8vmin]" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
-    <div class="grow my-[0.4vmin] mx-[0.8vmin] flex flex-col justify-center">
+<hr class="first-of-type:hidden border-t-[0.3vh] my-2 border-dotted border-main-dark w-[80%] mx-auto">
+<div class="m-1 flex flex-row justify-center justify-items-center">
+    <img onclick="changeUrl('{{ .ArticleLink }}');" class="cursor-pointer object-cover rounded-[10%] select-none w-20 h-20 aspect-square my-1 mr-2" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
+    <div class="grow my-1 mx-2 flex flex-col justify-center">
         <div class="flex flex-row gap-[5%] max-w-[100%]">
-            <a onclick="changeUrl('{{ .ArticleLink }}');" class="flex-9/12 grow-0 block text-[1vmax] cursor-pointer">
+            <a onclick="changeUrl('{{ .ArticleLink }}');" class="flex-9/12 grow-0 block text-base cursor-pointer">
                 <span class="font-extrabold">{{ .Title }}</span>
                 <span class="font-extrabold select-none text-secondary">//</span>
                 <span class="italic text-secondary">{{ .ActionDate }}</span>
             </a>
-            <p class="flex-3/12 grow-0 text-[1vmax] italic text-secondary text-right">{{ .PublishedTime }}</p>
+            <p class="flex-3/12 grow-0 text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
-        <p class="text-[1vmax] text-main-dark">{{ .ShortDescription }}</p>
-        <p class="text-[1vmax] text-secondary italic">
-            <i class="fas fa-thumbs-up w-[1vmax] h-[1vmax]"></i>
+        <p class="text-base text-main-dark">{{ .ShortDescription }}</p>
+        <p class="text-base text-secondary italic">
+            <i class="fas fa-thumbs-up w-4 h-4"></i>
             <span>{{ .LikeCount }}</span>
             <span class="font-extrabold select-none">//</span>
-            <i class="fas fa-eye w-[1vmax] h-[1vmax]"></i>
+            <i class="fas fa-eye w-4 h-4"></i>
             <span>{{ .ViewCount }}</span>
         </p>
-        <p class="text-[1vmax] text-secondary">{{ $.L.TagsLabel }} {{ template "catalogue-blog-card-tags.html" . }}</p>
+        <p class="text-base text-secondary">{{ $.L.TagsLabel }} {{ template "catalogue-blog-card-tags.html" . }}</p>
     </div>
 </div>
 {{- end }}

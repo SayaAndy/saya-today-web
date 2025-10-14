@@ -51,9 +51,9 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 
 		w.WriteString(fmt.Sprintf(`
 <div class="justify-content-center display-block m-2">
-	<hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%%] ml-auto mr-auto">
+	<hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-[80%%] ml-auto mr-auto">
 	<div id="lg-%s" class="inline-gallery-container relative ml-auto mr-auto"></div>
-	<hr class="border-t-4 border-dotted border-main-dark mt-[0.8vmin] mb-[0.8vmin] w-[80%%] ml-auto mr-auto">
+	<hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-[80%%] ml-auto mr-auto">
 </div>`, galleryID))
 
 		var dynamicElements []string
@@ -84,8 +84,8 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 				thumb:
 					"https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp",
 				subHtml: `+"`"+`<div class="flex flex-row light-gallery-captions">
-								<p class="grow !text-[1vmax]/[1] text-left font-spectral text-main-dark">%s</p>
-								<p class="!text-[1vmax]/[1] text-right font-spectral text-secondary">%s</p>
+								<p class="grow !text-base/[1] text-left font-spectral text-main-dark">%s</p>
+								<p class="!text-base/[1] text-right font-spectral text-secondary">%s</p>
 							</div>`+"`"+`
 			}`, img.URL, img.URL, util.EscapeHTML(captionHTML), imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, dayDate.Format("2006-01-02 15:04:05 -07:00")))
 		}

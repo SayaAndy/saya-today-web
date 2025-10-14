@@ -44,7 +44,7 @@
         <div class="logo-custom ar-lt-1.1:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
-        <div class="text-[3vw] ar-lt-1.1:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
+        <div class="text-[3vw] sm:text-2xl ar-lt-1.1:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
             <i onclick="location.href='/{{ .Lang }}';" class="fas fa-home w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="location.href='/{{ .Lang }}/blog';" class="fas fa-search w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
             <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
@@ -242,7 +242,7 @@
                 title: title,
             }).bindPopup(`
                     <div class="flex flex-row justify-center justify-items-center">
-                        <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-[3vmax] h-[3vmax] mr-[0.5vmax]" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/${thumbnail}.webp">
+                        <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-2" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/${thumbnail}.webp">
                         <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
                     </div>`);
 

@@ -1,52 +1,52 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-row ar-lt-0.6:flex-col w-full h-full inset-shadow overflow-y-auto text-[1vmax]/[2] tracking-[0.04vmin]">
+<div class="bg-background-light flex flex-row ar-lt-0.6:flex-col w-full h-full inset-shadow overflow-y-auto text-base/[2] tracking-[.0125rem]">
     <div class="ar-gt-0.6:flex-3/5 justify-center content-start p-[5%]">
-        <div class="flex flex-col justify-start items-start bg-background-dark mb-[2vmax]">
-            <p class="text-[3vmax]/[2] tracking-[0.2vmin] uppercase w-full font-spectral italic text-left
-                border-l-[0.4vmax] border-solid border-(--background-dark-color)
+        <div class="flex flex-col justify-start items-start bg-background-dark mb-8">
+            <p class="text-5xl/[2] tracking-[1px] uppercase w-full font-spectral italic text-left
+                border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Hymn1 }}</p>
-            <hr class="w-full border-t-[0.2vmax] border-dotted border-main-dark mb-[0.8vmin]">
-            <p class="text-[2vmax]/[2] -indent-[2vmax] ml-[2vmax] p-[0.4vmax]">{{ .L.HomePage.Hymn2 }}</p>
-            <p class="text-[2vmax]/[2] -indent-[2vmax] ml-[2vmax] p-[0.4vmax]">{{ .L.HomePage.Hymn3 }}</p>
-            <p class="text-[2vmax]/[2] -indent-[2vmax] ml-[2vmax] p-[0.4vmax]">{{ .L.HomePage.Hymn4 }}</p>
+            <hr class="w-full border-t-1 border-dotted border-main-dark mb-2">
+            <p class="text-3xl/[2] -indent-8 ml-8 p-1.5">{{ .L.HomePage.Hymn2 }}</p>
+            <p class="text-3xl/[2] -indent-8 ml-8 p-1.5">{{ .L.HomePage.Hymn3 }}</p>
+            <p class="text-3xl/[2] -indent-8 ml-8 p-1.5">{{ .L.HomePage.Hymn4 }}</p>
         </div>
 
         <div class="flex flex-col justify-center items-center">
-            <p class="text-[2vmax] w-full font-spectral italic text-left
-                border-l-[0.4vmax] border-solid border-(--background-dark-color)
+            <p class="text-3xl w-full font-spectral italic text-left
+                border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.DidYouKnowThat }}</p>
-            <hr class="w-full border-t-[0.2vmax] border-dotted border-main-dark mb-[0.8vmin]">
+            <hr class="w-full border-t-1 border-dotted border-main-dark mb-2">
             <ul class="w-full text-left list-[circle]">
-                <li class="ml-[2vmax] mb-[0.8vmin]">{{ index .FunFacts 0 }}</li>
-                <li class="ml-[2vmax] mb-[0.8vmin]">{{ index .FunFacts 1 }}</li>
-                <li class="ml-[2vmax]">{{ index .FunFacts 2 }}</li>
+                <li class="ml-8 mb-2">{{ index .FunFacts 0 }}</li>
+                <li class="ml-8 mb-2">{{ index .FunFacts 1 }}</li>
+                <li class="ml-8">{{ index .FunFacts 2 }}</li>
             </ul>
         </div>
     </div>
 
     <div class="ar-gt-0.6:flex-2/5 justify-center content-start p-[5%]">
-        <div class="flex flex-col justify-center items-start mb-[2vmax]">
-            <p class="text-[2vmax] w-full font-spectral italic text-left
-                border-l-[0.4vmax] border-solid border-(--background-dark-color)
+        <div class="flex flex-col justify-center items-start mb-8">
+            <p class="text-3xl w-full font-spectral italic text-left
+                border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Contacts }}</p>
             <a href="https://t.me/EarlInisMona">
-                <i class="fa-brands fa-telegram w-[1vmax] h-[1vmax] mr-[0.4vmax]"></i>
+                <i class="fa-brands fa-telegram w-4 h-4 mr-1.5"></i>
                 <span class="font-bold">Telegram:</span>
                 <span>@EarlInisMona</span>
             </a>
             <a href="https://discord.com/users/356057270951346176">
-                <i class="fa-brands fa-discord w-[1vmax] h-[1vmax] mr-[0.4vmax]"></i>
+                <i class="fa-brands fa-discord w-4 h-4 mr-1.5"></i>
                 <span class="font-bold">Discord:</span>
                 <span>montferrat</span>
             </a>
             <a href="mailto:saya.andy@posteo.com">
-                <i class="fas fa-envelope w-[1vmax] h-[1vmax] mr-[0.4vmax]"></i>
+                <i class="fas fa-envelope w-4 h-4 mr-1.5"></i>
                 <span class="font-bold">E-mail:</span>
                 <span>saya.andy@posteo.com</span>
             </a>
         </div>
 
-        <div class="flex relative aspect-square justify-center content-center mb-[2vmax]">
+        <div class="flex relative aspect-square justify-center content-center mb-8">
             {{- range $_ := iterate .FilledHeartCount }}
                 <div class="home-page-heart z-50">♥</div>
             {{- end }}
@@ -54,7 +54,7 @@
                 <div class="home-page-heart z-50">♡</div>
             {{- end }}
             <img src="https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/{{ .GifName }}"
-                class="home-page-gif z-49 -rotate-12 max-w-[70%] max-h-[70%] border-[1vmin] border-(--background-dark-color) border-inset">
+                class="home-page-gif z-49 -rotate-12 max-w-[70%] max-h-[70%] border-2 border-(--background-dark-color) border-inset">
         </div>
 
         <script>
@@ -100,20 +100,20 @@
         </script>
 
         <div class="flex flex-col justify-center items-center">
-            <p class="text-[2vmax] w-full font-spectral italic text-left
-                border-l-[0.4vmax] border-solid border-(--background-dark-color)
+            <p class="text-3xl w-full font-spectral italic text-left
+                border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.SidebarDescription }}</p>
-            <hr class="w-full border-t-[0.2vmax] border-dotted border-main-dark mb-[0.8vmin]">
+            <hr class="w-full border-t-1 border-dotted border-main-dark mb-2">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
                 [&>*:nth-child(4n+2)]:bg-(--background-medium-color) [&>*:nth-child(4n+3)]:bg-(--background-medium-color)" style="container-type: inline-size;">
                 <i class="fas fa-home w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
-                <p class="p-[0.4vmax]">{{ .L.HomePage.HomePageDescription }}</p>
+                <p class="p-1.5">{{ .L.HomePage.HomePageDescription }}</p>
                 <i class="fas fa-search w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
-                <p class="p-[0.4vmax]">{{ .L.HomePage.BlogSearchDescription }}</p>
+                <p class="p-1.5">{{ .L.HomePage.BlogSearchDescription }}</p>
                 <i class="fas fa-map w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
-                <p class="p-[0.4vmax]">{{ .L.HomePage.MarkerMapDescription }}</p>
+                <p class="p-1.5">{{ .L.HomePage.MarkerMapDescription }}</p>
                 <i class="fas fa-swatchbook w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
-                <p class="p-[0.4vmax]">{{ .L.HomePage.ThemeSwitchDescription }}</p>
+                <p class="p-1.5">{{ .L.HomePage.ThemeSwitchDescription }}</p>
             </div>
         </div>
     </div>

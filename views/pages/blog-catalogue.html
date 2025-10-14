@@ -1,51 +1,51 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-1.1:flex-col text-[1vmax] h-[100%]">
+<div class="flex flex-row ar-lt-1.1:flex-col text-base h-[100%]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-1.1:min-w-[10vh] ar-gt-1.1:max-w-[20vh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-[1.2vmin]">
+        class="tags-list ar-gt-1.1:min-w-[10vh] ar-gt-1.1:max-w-[20vh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-6">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
                 <div class="flex flex-col ar-lt-1.1:grid grid-cols-5 grid-flow-row-dense">
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
                     </div>
                     {{- range .Tags }}
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="checkbox" id="tag{{ .Name }}Checkbox" name="tags[]" value="{{ .Name }}" onclick="contextAll();" {{ if contains $.QueryTags .Name }}checked{{ end }}> {{ .Name }}  <span class="text-secondary italic">{{ .Count }}</span></label>
                     </div>
                     {{- end }}
                 </div>
             </fieldset>
-            <fieldset class="mt-[0.8vmin]">
+            <fieldset class="mt-2">
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
                 <div class="flex flex-col ar-lt-1.1:grid grid-cols-3 grid-rows-2 grid-flow-col">
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
                     </div>
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-z-a"></i></label>
                     </div>
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
                     </div>
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
                     </div>
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
                     </div>
-                    <div class="m-[0.4vmin]">
+                    <div class="m-1">
                         <label><input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
                     </div>
                 </div>
             </fieldset>
         </div>
-        <hr class="border-t-[0.2vmax] border-dotted border-main-dark my-[0.4vmin]">
-        <div class="flex flex-row grow bg-background-light my-[2vmin] p-[0.4vmin] rounded-[0.4vmin] justify-items-center">
-            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-[1.5vmax] hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
-            <div class="w-[0.5vmin] bg-background-dark grow-0"></div>
+        <hr class="border-t-1 border-dotted border-main-dark my-1">
+        <div class="flex flex-row grow bg-background-light my-4 p-1 rounded-1 justify-items-center">
+            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
+            <div class="w-1 bg-background-dark grow-0"></div>
             <button class="flex-1" type="submit">
-                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-[1.5vmax] hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
+                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
             </button>
         </div>
     </form>
@@ -53,7 +53,7 @@
     <div class="w-[0.5vh] border-r-[0.3vh] border-dotted border-main-dark bg-background-dark"></div>
 
     <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
-        class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-[2.4vmin]">
+        class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-12">
         Loading...
     </div>
 </div>
