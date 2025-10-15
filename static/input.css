@@ -246,13 +246,6 @@ a:hover {
     background-size: calc(var(--squares-and-triangles-background-width-coef) * 1vw) calc(var(--squares-and-triangles-background-height-coef) * 1vw);
 }
 
-.mobile-topbar-custom {
-    width: 90vw;
-    height: 8%;
-    background-size: calc(var(--squares-and-triangles-background-size) * 1.6vh);
-    margin-left: 5vw;
-}
-
 body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     display: none !important;
 }
@@ -265,19 +258,6 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     writing-mode: sideways-lr;
     text-orientation: mixed;
     display: block;
-}
-
-.nav-icon-custom {
-    font-size: 3vw !important;
-    -webkit-text-stroke: 0.1vw var(--sidebar-stroke-color);
-    width: 5vw;
-    height: 5vw;
-    align-content: center;
-    text-align: center;
-}
-
-.nav-icon-custom:hover {
-    font-size: 4vw;
 }
 
 .border-left-custom {
@@ -373,7 +353,7 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
 .lg-container:not([class~="lg-inline"]) .lg-outer {
     width: 90%;
     height: 90%;
-    margin: 5vh 5vw;
+    margin: 5dvh 5dvw;
 }
 
 .lg-thumb-outer {
@@ -515,32 +495,33 @@ body[data-theme~="ram"] .leaflet-tile {
 }
 
 @media (min-aspect-ratio: 1.1/1) {
-    .ar-gt-1\.1\:mr-\[1\.2vmin\] {
-        margin-right: 1.2vmin;
+    .ar-gt-1\.1\:mr-6 {
+        margin-right: 1.5rem;
     }
 
     .ar-gt-1\.1\:w-fit {
         width: fit-content;
     }
 
-    .ar-gt-1\.1\:w-\[100vh\] {
-        width: 100vh;
+    .ar-gt-1\.1\:w-\[100dvh\] {
+        width: 100dvh;
+        flex-basis: 100dvh;
     }
 
     .ar-gt-1\.1\:min-w-fit {
         min-width: fit-content;
     }
 
-    .ar-gt-1\.1\:min-w-\[10vh\] {
-        min-width: 10vh;
+    .ar-gt-1\.1\:min-w-\[10dvh\] {
+        min-width: 10dvh;
     }
 
-    .ar-gt-1\.1\:max-w-\[20vh\] {
-        max-width: 20vh;
+    .ar-gt-1\.1\:max-w-\[20dvh\] {
+        max-width: 20dvh;
     }
 
-    .ar-gt-1\.1\:max-w-\[100vh\] {
-        max-width: 100vh;
+    .ar-gt-1\.1\:max-w-\[100dvh\] {
+        max-width: 100dvh;
     }
 
     .ar-gt-1\.1\:items-center {
@@ -561,21 +542,8 @@ body[data-theme~="ram"] .leaflet-tile {
         display: none;
     }
 
-    .nav-icon-custom {
-        font-size: 5vh !important;
-        -webkit-text-stroke: 0.1vh var(--sidebar-stroke-color);
-        width: 8vh;
-        height: 8vh;
-        align-content: center;
-        text-align: center;
-    }
-
-    .nav-icon-custom:hover {
-        font-size: 7vh;
-    }
-
     .bg-pattern-body {
-        background-size: 10vh;
+        background-size: 10dvh;
     }
 
     .ar-lt-1\.1\:grid {
@@ -590,36 +558,36 @@ body[data-theme~="ram"] .leaflet-tile {
         flex-direction: row;
     }
 
-    .ar-lt-1\.1\:h-\[8vh\] {
-        height: 8vh;
+    .ar-lt-1\.1\:h-\[8dvh\] {
+        height: 8dvh;
     }
 
-    .ar-lt-1\.1\:h-\[10vh\] {
-        height: 10vh;
+    .ar-lt-1\.1\:h-\[10dvh\] {
+        height: 10dvh;
     }
 
-    .ar-lt-1\.1\:h-\[30vh\] {
-        height: 30vh;
+    .ar-lt-1\.1\:h-\[30dvh\] {
+        height: 30dvh;
     }
 
-    .ar-lt-1\.1\:h-\[90vh\] {
-        height: 90vh;
+    .ar-lt-1\.1\:h-\[90dvh\] {
+        height: 90dvh;
     }
 
-    .ar-lt-1\.1\:w-\[8vh\] {
-        width: 8vh;
+    .ar-lt-1\.1\:w-\[8dvh\] {
+        width: 8dvh;
     }
 
     .ar-lt-1\.1\:w-\[80\%\] {
         width: 80%;
     }
 
-    .ar-lt-1\.1\:w-\[90vw\] {
-        width: 90vw;
+    .ar-lt-1\.1\:w-\[90dvw\] {
+        width: 90dvw;
     }
 
     .ar-lt-1\.1\:w-screen {
-        width: 100vw;
+        width: 100dvw;
     }
 
     .ar-lt-1\.1\:max-h-\[25\%\] {
@@ -630,16 +598,16 @@ body[data-theme~="ram"] .leaflet-tile {
         max-height: 80%;
     }
 
-    .ar-lt-1\.1\:max-h-\[calc\(100\%-25vh\)\] {
-        max-height: calc(100% - 25vh);
+    .ar-lt-1\.1\:max-h-\[92dvh\] {
+        max-height: 92dvh;
     }
 
-    .ar-lt-1\.1\:text-\[5vh\] {
-        font-size: 5vh;
+    .ar-lt-1\.1\:text-\[5dvh\] {
+        font-size: 5dvh;
     }
 
-    .ar-lt-1\.1\:ml-\[5vw\] {
-        margin-left: 5vw;
+    .ar-lt-1\.1\:ml-\[5dvw\] {
+        margin-left: 5dvw;
     }
 
     .ar-lt-1\.1\:hidden {
@@ -664,8 +632,8 @@ body[data-theme~="ram"] .leaflet-tile {
 }
 
 @media (max-aspect-ratio: 0.4/1) {
-    .ar-lt-0\.4\:w-\[100vw\] {
-        width: 100vw;
+    .ar-lt-0\.4\:w-\[100dvw\] {
+        width: 100dvw;
     }
 
     .ar-lt-0\.4\:ml-0 {

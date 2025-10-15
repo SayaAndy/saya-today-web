@@ -161,15 +161,15 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-1.1:items-center shadow-2xl z-20 w-[5vw] ar-lt-1.1:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-1.1:h-[8vh] ar-lt-1.1:ml-[5vw] ar-lt-0.4:ml-0">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-1.1:items-center shadow-2xl z-20 w-[5dvw] ar-lt-1.1:w-[90dvw] ar-lt-0.4:w-[100dvw] h-screen ar-lt-1.1:h-[8dvh] ar-lt-1.1:ml-[5dvw] ar-lt-0.4:ml-0">
         <div class="logo-custom ar-lt-1.1:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
-        <div class="text-[3vw] ar-lt-1.1:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
-            <i onclick="changeUrl('/{{ .Lang }}');" class="fas fa-home w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="changeUrl('/{{ .Lang }}/blog');" class="fas fa-search w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+        <div class="text-[3dvw] ar-lt-1.1:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
+            <i onclick="changeUrl('/{{ .Lang }}');" class="fas fa-home w-[5dvw] ar-lt-1.1:w-[8dvh] h-[5dvw] ar-lt-1.1:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="changeUrl('/{{ .Lang }}/blog');" class="fas fa-search w-[5dvw] ar-lt-1.1:w-[8dvh] h-[5dvw] ar-lt-1.1:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5dvw] ar-lt-1.1:w-[8dvh] h-[5dvw] ar-lt-1.1:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5dvw] ar-lt-1.1:w-[8dvh] h-[5dvw] ar-lt-1.1:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
         </div>
         <div class="theme-wheel" id="theme-wheel">
             <div class="theme-icon" data-theme="olive"></div>
@@ -179,23 +179,23 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex z-10 ar-lt-1.1:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-1.1:ml-[5vw] ar-lt-0.4:ml-0">
+    <div class="bg-background-dark flex z-10 ar-lt-1.1:w-[90dvw] ar-lt-0.4:w-[100dvw] h-screen ar-lt-1.1:max-h-[92dvh] ar-lt-1.1:ml-[5dvw] ar-lt-0.4:ml-0">
         <div class="pl-[0.5vw] bg-background-dark border-r-2 border-dashed border-main-dark"></div>
 
-        <div class="ar-gt-1.1:w-[100vh] flex flex-col bg-background-dark relative pt-4 ml-8 pr-4">
-            <div id="general-page-header" class="flex flex-col"
+        <div class="ar-gt-1.1:w-[100dvh] max-h-100% flex flex-col bg-background-dark relative pt-4 ml-8 pr-4">
+            <div id="general-page-header" class="flex flex-col basis-8"
                 hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
 
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
 
-            <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-1.1:max-h-[calc(100%-25vh)] grow"
+            <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
                 hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
 
-            <div id="general-page-footer" class="flex flex-row my-1"
+            <div id="general-page-footer" class="flex flex-row basis-4 my-1"
                 hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>

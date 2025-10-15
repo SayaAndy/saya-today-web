@@ -1,7 +1,7 @@
 {{ define "body" }}
 <div class="flex flex-row ar-lt-1.1:flex-col text-base h-[100%]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-1.1:min-w-[10vh] ar-gt-1.1:max-w-[20vh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-6">
+        class="tags-list ar-gt-1.1:min-w-[10dvh] ar-gt-1.1:max-w-[20dvh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-6">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
