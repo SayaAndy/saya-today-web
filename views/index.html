@@ -102,14 +102,14 @@
         switchTheme(savedTheme);
     </script>
 
-    <div class="menu-outer-body p-4 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
-        <p class="font-patua mx-auto text-4xl mt-2 mb-2">saya.today</p>
+    <div class="menu-outer-body p-2 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
+        <p class="font-patua mx-auto text-4xl mt-1 mb-2">saya.today</p>
         <div class="menu-inner-body grow bg-background-light flex flex-adaptive mx-auto opacity-100">
             {{- range .AvailableLanguages }}
             <img onclick="location.href='/{{ .Name }}';" class="object-scale-down cursor-pointer flex-1 rounded-[20%] language-icon mx-auto my-auto relative" src="{{ .Flag }}" alt="{{ .Alt }}">
             {{- end }}
         </div>
-        <p class="font-spectral mx-auto text-2xl text-secondary mt-2 mb-2">Choose your language</p>
+        <p class="font-spectral mx-auto text-2xl text-secondary mt-1 mb-2">Choose your language</p>
     </div>
 
     <script>

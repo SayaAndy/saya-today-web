@@ -180,9 +180,9 @@
     </div>
 
     <div class="bg-background-dark flex z-10 ar-lt-1.1:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-1.1:ml-[5vw] ar-lt-0.4:ml-0">
-        <div class="pl-[0.5vw] bg-background-dark border-r-1 border-dashed border-main-dark"></div>
+        <div class="pl-[0.5vw] bg-background-dark border-r-2 border-dashed border-main-dark"></div>
 
-        <div class="ar-gt-1.1:w-[100vh] flex flex-col bg-background-dark relative pt-8 ml-8 pr-8">
+        <div class="ar-gt-1.1:w-[100vh] flex flex-col bg-background-dark relative pt-4 ml-8 pr-4">
             <div id="general-page-header" class="flex flex-col"
                 hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
@@ -195,7 +195,7 @@
             </div>
             <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
 
-            <div id="general-page-footer" class="flex flex-row mt-2 mb-1"
+            <div id="general-page-footer" class="flex flex-row my-1"
                 hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
@@ -203,7 +203,7 @@
             <hr class="border-t-4 border-dotted border-main-dark mb-2">
         </div>
 
-        <div class="pr-[0.5vw] bg-background-dark shadow-2xl border-l-1 border-dotted border-main-dark"></div>
+        <div class="pr-[0.5vw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-dark"></div>
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>

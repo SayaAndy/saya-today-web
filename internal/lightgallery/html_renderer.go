@@ -50,10 +50,10 @@ func (r *LightGalleryHTMLRenderer) renderLightGallery(w util.BufWriter, source [
 		galleryID := generateDivId(8)
 
 		w.WriteString(fmt.Sprintf(`
-<div class="justify-content-center display-block m-2">
-	<hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-[80%%] ml-auto mr-auto">
+<div class="justify-content-center display-block m-1">
+	<hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%%] ml-auto mr-auto">
 	<div id="lg-%s" class="inline-gallery-container relative ml-auto mr-auto"></div>
-	<hr class="border-t-4 border-dotted border-main-dark mt-2 mb-2 w-[80%%] ml-auto mr-auto">
+	<hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%%] ml-auto mr-auto">
 </div>`, galleryID))
 
 		var dynamicElements []string
