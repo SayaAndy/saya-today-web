@@ -1,11 +1,11 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-1.1:flex-col text-base h-[100%]">
+<div class="flex flex-row ar-lt-0.8:flex-col text-base h-[100%]">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-1.1:min-w-[10dvh] ar-gt-1.1:max-w-[20dvh] ar-gt-1.1:w-fit ar-lt-1.1:w-[100%] ar-lt-1.1:max-h-[25%] flex shrink-0 flex-col ar-gt-1.1:mr-6">
+        class="tags-list ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] ar-lt-0.8:max-h-[30%] flex shrink-0 flex-col ar-gt-0.8:mr-6 bg-background-light inset-shadow">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
-                <div class="flex flex-col ar-lt-1.1:grid grid-cols-5 grid-flow-row-dense">
+                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 grid-flow-row-dense">
                     <div class="m-0.5">
                         <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
                     </div>
@@ -18,7 +18,7 @@
             </fieldset>
             <fieldset class="mt-1">
                 <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
-                <div class="flex flex-col ar-lt-1.1:grid grid-cols-3 grid-rows-2 grid-flow-col">
+                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
                     <div class="m-0.5">
                         <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
                     </div>
@@ -41,11 +41,11 @@
             </fieldset>
         </div>
         <hr class="border-t-2 border-dotted border-main-dark my-0.5">
-        <div class="flex flex-row grow bg-background-light my-2 p-0.5 rounded-1 justify-items-center">
-            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
-            <div class="w-1 bg-background-dark grow-0"></div>
+        <div class="flex flex-row bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
+            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
+            <div class="w-1 bg-background-light grow-0"></div>
             <button class="flex-1" type="submit">
-                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-dark cursor-pointer transition-colors duration-300"></i>
+                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
             </button>
         </div>
     </form>

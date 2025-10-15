@@ -12,6 +12,7 @@ type LocaleConfig struct {
 	BlogSearch BlogSearchConfig `yaml:"BlogSearch" json:"BlogSearch"`
 	GlobalMap  GlobalMapConfig  `yaml:"GlobalMap" json:"GlobalMap"`
 	HomePage   HomePageConfig   `yaml:"HomePage" json:"HomePage"`
+	Metadata   MetadataConfig   `yaml:"Metadata" json:"Metadata"`
 }
 
 type BlogSearchConfig struct {
@@ -41,6 +42,11 @@ type HomePageConfig struct {
 	Hymn2                  string `yaml:"Hymn2" json:"Hymn2"`
 	Hymn3                  string `yaml:"Hymn3" json:"Hymn3"`
 	Hymn4                  string `yaml:"Hymn4" json:"Hymn4"`
+}
+
+type MetadataConfig struct {
+	Action    string `yaml:"Action" json:"Action"`
+	Published string `yaml:"Published" json:"Published"`
 }
 
 func LoadConfig(path string, config *LocaleConfig) error {
