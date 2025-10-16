@@ -247,10 +247,6 @@ a:hover {
     background-size: calc(var(--squares-and-triangles-background-width-coef) * 1vw) calc(var(--squares-and-triangles-background-height-coef) * 1vw);
 }
 
-body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
-    display: none !important;
-}
-
 .logo-custom {
     width: 3.5vw;
     height: 20vw;
@@ -346,142 +342,25 @@ body:has(.lg-container:not([class~="lg-inline"])) #sidebar {
     transform: scale(1.1);
 }
 
-.lg-backdrop {
-    background-color: var(--background-light-color);
-    opacity: 0.8 !important;
+.grid-item, .grid-sizer {
+    width: 50%;
 }
 
-.lg-container:not([class~="lg-inline"]) .lg-outer {
-    width: 90%;
-    height: 90%;
-    margin: 5dvh 5dvw;
-}
-
-.lg-thumb-outer {
-    background-color: var(--background-light-color) !important;
-    opacity: 0.8 !important;
-}
-
-.lg-prev {
-    background-color: var(--background-light-color);
-    color: var(--main-dark-color);
-}
-
-.lg-next {
-    background-color: var(--background-light-color);
-    color: var(--main-dark-color);
-}
-
-.lg-counter {
-    color: var(--main-dark-color);
-    font-family: 'Spectral';
-    font-size: 1vmax;
-    padding-top: 0;
-    height: 1vmax;
-}
-
-.lg-container:not([class~="lg-inline"]) .lg-counter {
-    font-size: 2vmax;
-    height: 2vmax;
-}
-
-.lg-content {
-    top: 2.5vmax !important;
-    bottom: calc(10vmin + 5vmax) !important;
-}
-
-.lg-outer[class~="lg-single-item"] .lg-content {
-    bottom: 5vmax !important;
-}
-
-.lg-thumb-item {
-    width: 10vmin !important;
-    height: 10vmin !important;
-}
-
-.lg-container:not([class~="lg-inline"]) .lg-content {
-    top: 4vmax !important;
-}
-
-.lg-toolbar .lg-icon,
-.lg-content .lg-icon {
-    padding: 0 0.7vmax;
-    font-size: 1.5vmax !important;
-    height: 1.5vmax;
-    width: auto;
-    color: var(--main-dark-color);
-}
-
-.lg-container:not([class~="lg-inline"]) .lg-toolbar .lg-icon,
-.lg-container:not([class~="lg-inline"]) .lg-content .lg-icon {
-    font-size: 3vmax !important;
-    height: 3vmax;
-}
-
-.lg-prev {
-    left: 0 !important;
-}
-
-.lg-next {
-    right: 0 !important;
-}
-
-.lg-toolbar .lg-icon:hover {
-    color: var(--main-medium-color);
-}
-
-.lg-toolbar .lg-icon {
-    font-size: 1.5vmax !important;
-    color: var(--main-dark-color);
-}
-
-.lg-content .lg-icon:hover {
-    color: var(--main-medium-color);
-}
-
-.lg-sub-html {
-    padding: 0.7vmin 1.25vmin !important;
-}
-
-.inline-gallery-container {
-    width: 80%;
-    height: 70vmin;
-}
-
-.light-gallery-captions {
-    p {
-        transform: translate3d(0, 0, 0px);
-        transition-delay: 500ms;
-        opacity: 1;
+@media (width >= 32rem) {
+    .grid-item, .grid-sizer {
+        width: 33%;
     }
 }
 
-.lg-slide-progress {
-    .light-gallery-captions {
-        h4 {
-            transform: translate3d(-60px, 0, 0px);
-        }
-
-        p {
-            transform: translate3d(60px, 0, 0px);
-        }
-
-        h4,
-        p {
-            opacity: 0;
-        }
+@media (width >= 40rem) {
+    .grid-item, .grid-sizer {
+        width: 25%;
     }
 }
 
-.lg-current {
-    &.lg-slide-progress {
-        .light-gallery-captions {
-
-            h4,
-            p {
-                transition-delay: 0ms;
-            }
-        }
+@media (width >= 48rem) {
+    .grid-item, .grid-sizer {
+        width: 20%;
     }
 }
 
@@ -535,8 +414,8 @@ body[data-theme~="ram"] .leaflet-tile {
         background-size: calc(var(--squares-and-triangles-background-width-coef) * 1.6vh) calc(var(--squares-and-triangles-background-height-coef) * 1.6vh);
     }
 
-    .inline-gallery-container {
-        width: 100%;
+    .ar-lt-0\.8\:bg-background-light {
+        background-color: var(--background-light-color);
     }
 
     .logo-custom {

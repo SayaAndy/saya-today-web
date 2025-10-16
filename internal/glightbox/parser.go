@@ -1,4 +1,4 @@
-package lightgallery
+package glightbox
 
 import (
 	"bytes"
@@ -11,17 +11,17 @@ import (
 	"github.com/yuin/goldmark/text"
 )
 
-type LightGalleryParser struct{}
+type GLightboxParser struct{}
 
-func NewLightGalleryParser() parser.BlockParser {
-	return &LightGalleryParser{}
+func NewGLightboxParser() parser.BlockParser {
+	return &GLightboxParser{}
 }
 
-func (p *LightGalleryParser) Trigger() []byte {
+func (p *GLightboxParser) Trigger() []byte {
 	return []byte{'{'}
 }
 
-func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser.Context) (ast.Node, parser.State) {
+func (p *GLightboxParser) Open(parent ast.Node, reader text.Reader, pc parser.Context) (ast.Node, parser.State) {
 	line, _ := reader.PeekLine()
 
 	if !bytes.HasPrefix(line, []byte("{Gallery:")) {
@@ -43,10 +43,10 @@ func (p *LightGalleryParser) Open(parent ast.Node, reader text.Reader, pc parser
 		return nil, parser.NoChildren
 	}
 
-	return &LightGalleryBlock{Location: loc}, parser.NoChildren
+	return &GLightboxBlock{Location: loc}, parser.NoChildren
 }
 
-func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc parser.Context) parser.State {
+func (p *GLightboxParser) Continue(node ast.Node, reader text.Reader, pc parser.Context) parser.State {
 	line, segment := reader.PeekLine()
 	if len(line) == 0 || segment.Len() == 0 {
 		return parser.Continue | parser.NoChildren
@@ -58,7 +58,7 @@ func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc pars
 		return parser.Close
 	}
 
-	gallery := node.(*LightGalleryBlock)
+	gallery := node.(*GLightboxBlock)
 
 	parts := bytes.SplitN(trimmed, []byte{'|'}, 2)
 	url := bytes.TrimSpace(parts[0])
@@ -68,7 +68,7 @@ func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc pars
 		caption = bytes.TrimSpace(parts[1])
 	}
 
-	gallery.Images = append(gallery.Images, LightGalleryImage{
+	gallery.Images = append(gallery.Images, GLightboxImage{
 		URL:     string(url),
 		Caption: caption,
 	})
@@ -76,13 +76,13 @@ func (p *LightGalleryParser) Continue(node ast.Node, reader text.Reader, pc pars
 	return parser.Continue | parser.NoChildren
 }
 
-func (p *LightGalleryParser) Close(node ast.Node, reader text.Reader, pc parser.Context) {
+func (p *GLightboxParser) Close(node ast.Node, reader text.Reader, pc parser.Context) {
 }
 
-func (p *LightGalleryParser) CanInterruptParagraph() bool {
+func (p *GLightboxParser) CanInterruptParagraph() bool {
 	return true
 }
 
-func (p *LightGalleryParser) CanAcceptIndentedLine() bool {
+func (p *GLightboxParser) CanAcceptIndentedLine() bool {
 	return false
 }

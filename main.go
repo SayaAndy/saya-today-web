@@ -12,7 +12,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
-	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
+	"github.com/SayaAndy/saya-today-web/internal/glightbox"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -32,7 +32,7 @@ import (
 var (
 	md = goldmark.New(
 		goldmark.WithExtensions(
-			lightgallery.NewLightGalleryExtension(),
+			glightbox.NewGLightboxExtension(),
 			tailwind.NewTailwindExtension(),
 		),
 		goldmark.WithParserOptions(

@@ -7,10 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/css/glightbox.min.css">
     <link href="/output.css" rel="stylesheet">
 </head>
 
@@ -25,6 +23,8 @@
             window.dispatchEvent(new Event('popstate'));
         };
     </script>
+
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 
     <script>
         function sfc32(a, b, c, d) {
@@ -208,10 +208,9 @@
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/masonry-layout/4.2.2/masonry.pkgd.min.js"></script>
 
     <div id="general-page-bottom-embeds" class="flex"
         hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">

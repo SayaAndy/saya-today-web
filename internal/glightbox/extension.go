@@ -1,4 +1,4 @@
-package lightgallery
+package glightbox
 
 import (
 	"github.com/yuin/goldmark"
@@ -8,21 +8,21 @@ import (
 )
 
 // Extension that combines parser and renderer
-type LightGalleryExtension struct{}
+type GLightboxExtension struct{}
 
-func NewLightGalleryExtension() goldmark.Extender {
-	return &LightGalleryExtension{}
+func NewGLightboxExtension() goldmark.Extender {
+	return &GLightboxExtension{}
 }
 
-func (e *LightGalleryExtension) Extend(m goldmark.Markdown) {
+func (e *GLightboxExtension) Extend(m goldmark.Markdown) {
 	m.Parser().AddOptions(
 		parser.WithBlockParsers(
-			util.Prioritized(NewLightGalleryParser(), 500),
+			util.Prioritized(NewGLightboxParser(), 500),
 		),
 	)
 	m.Renderer().AddOptions(
 		renderer.WithNodeRenderers(
-			util.Prioritized(NewLightGalleryHTMLRenderer(), 500),
+			util.Prioritized(NewGLightboxHTMLRenderer(), 500),
 		),
 	)
 }
