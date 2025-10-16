@@ -367,7 +367,7 @@ a:hover {
     margin-left: -0.25rem;
     border-width: 0.25rem;
     border-style: solid;
-    border-color: transparent transparent black transparent;
+    border-color: transparent transparent var(--background-dark-color) transparent;
 }
 
 .grid-item, .grid-sizer {
