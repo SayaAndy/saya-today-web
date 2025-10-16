@@ -236,35 +236,20 @@ a:hover {
     border-style: outset;
 }
 
-.desktop-sidebar-custom {
-    width: 5vw;
-    background-size: calc(var(--squares-and-triangles-background-size) * 1vw);
-}
-
 .bg-sidebar {
     background-image: var(--squares-and-triangles-background);
     background-repeat: var(--squares-and-triangles-background-repeat);
-    background-size: calc(var(--squares-and-triangles-background-width-coef) * 1vw) calc(var(--squares-and-triangles-background-height-coef) * 1vw);
+    background-size: calc(var(--squares-and-triangles-background-width-coef) * 1dvw) calc(var(--squares-and-triangles-background-height-coef) * 1dvw);
 }
 
 .logo-custom {
-    width: 3.5vw;
-    height: 20vw;
-    font-size: 2.5vw;
-    -webkit-text-stroke: 0.1vw var(--sidebar-stroke-color);
+    width: 3.5dvw;
+    height: 20dvw;
+    font-size: 2.5dvw;
+    -webkit-text-stroke: 0.1dvw var(--sidebar-stroke-color);
     writing-mode: sideways-lr;
     text-orientation: mixed;
     display: block;
-}
-
-.border-left-custom {
-    width: 0.5vw;
-    border-right: 0.3vh dashed var(--main-dark-color);
-}
-
-.border-right-custom {
-    width: 0.5vw;
-    border-left: 0.5vh dotted var(--main-dark-color);
 }
 
 .inset-shadow {
@@ -278,8 +263,8 @@ a:hover {
     -webkit-text-stroke-color: var(--sidebar-stroke-color);
 }
 
-.text-stroke-\[0\.1vw\] {
-    -webkit-text-stroke-width: 0.1vw;
+.text-stroke-\[0\.1dvw\] {
+    -webkit-text-stroke-width: 0.1dvw;
 }
 
 .theme-wheel {
@@ -411,7 +396,7 @@ body[data-theme~="ram"] .leaflet-tile {
 
 @media (max-aspect-ratio: 0.8/1) {
     .bg-sidebar {
-        background-size: calc(var(--squares-and-triangles-background-width-coef) * 1.6vh) calc(var(--squares-and-triangles-background-height-coef) * 1.6vh);
+        background-size: calc(var(--squares-and-triangles-background-width-coef) * 1.6dvh) calc(var(--squares-and-triangles-background-height-coef) * 1.6dvh);
     }
 
     .ar-lt-0\.8\:bg-background-light {

@@ -37,7 +37,7 @@ func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager
 	templateMap := make(map[string]templateManagerRender)
 
 	for _, tmplStruct := range templates {
-		tmpl := template.New("").Funcs(templateFuncMap)
+		tmpl := template.New(tmplStruct.Name).Funcs(templateFuncMap)
 		tmpl, err := tmpl.ParseFiles(tmplStruct.Files...)
 		if err != nil {
 			return nil, err
@@ -84,7 +84,7 @@ func (tm *TemplateManager) Add(name string, files ...string) error {
 		return fmt.Errorf("you can't add template without any files")
 	}
 
-	tmpl := template.New("").Funcs(templateFuncMap)
+	tmpl := template.New(name).Funcs(templateFuncMap)
 
 	tmpl, err := tmpl.ParseFiles(files...)
 	if err != nil {

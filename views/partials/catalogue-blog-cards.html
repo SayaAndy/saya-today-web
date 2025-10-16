@@ -1,10 +1,12 @@
 {{- range .BlogPages }}
-<hr class="first-of-type:hidden border-t-1 mx-auto">
+<hr class="first-of-type:hidden my-1 border-t-2 border-dotted border-main-dark">
 <div class="m-1 flex flex-row justify-center justify-items-center">
-    <img onclick="changeUrl('{{ .ArticleLink }}');" class="cursor-pointer object-cover rounded-lg select-none w-24 h-24 aspect-square my-2.5 mr-2" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
+    <a href="{{ .ArticleLink }}" class="w-24 h-24 basis-24 shrink-0 my-2.5 mr-2">
+        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="w-full h-full aspect-square cursor-pointer object-cover rounded-lg select-none" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
+    </a>
     <div class="grow my-0.5 mx-1 flex flex-col justify-center">
         <div class="flex flex-row gap-2 max-w-[100%]">
-            <a onclick="changeUrl('{{ .ArticleLink }}');" class="grow text-base cursor-pointer">
+            <a href="{{ .ArticleLink }}" onclick="return changeUrl('{{ .ArticleLink }}');" class="grow text-base cursor-pointer">
                 <span class="font-extrabold">{{ .Title }}</span>
                 <span class="font-extrabold select-none text-secondary">//</span>
                 <span class="italic text-secondary">{{ .ActionDate }}</span>

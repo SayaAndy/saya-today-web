@@ -1,20 +1,3 @@
-{{ define "top-embeds" }}
-<script>
-    let galleryMap = new Map();
-    let map;
-
-    window.addEventListener('popout', (e) => {
-        map.remove();
-        galleryMap.forEach((_, g, m) => {
-            g.destroy();
-        });
-        galleryMap.clear();
-        map = null;
-        galleryMap = null;
-    }, {once: true});
-</script>
-{{ end }}
-
 {{ define "body" }}
 <div class="bg-background-light flex flex-col inset-shadow px-8 py-4 overflow-y-auto">
     <p class="xs:hidden font-spectral text-2xl font-bold italic text-main-dark tracking-[.0125rem] mb-1">{{ .Title }}</p>
@@ -52,16 +35,17 @@
                 .openPopup();
         }
 
-        document.addEventListener('htmx:afterRequest', (e) => {
-            if (e.detail.target.id == 'general-page-body') {
-                initLocationMap(
-                    'map-container',
-                    {{ .MapLocationX }},
-                    {{ .MapLocationY }},
-                    {{ .MapLocationAreaMeters }}
-                );
-            }
-        }, {once: true});
+        if (map) {
+            map.remove();
+            map = null;
+        }
+
+        setTimeout(() => initLocationMap(
+            'map-container',
+            {{ .MapLocationX }},
+            {{ .MapLocationY }},
+            {{ .MapLocationAreaMeters }}
+        ), 1000);
     </script>
 {{- end }}
 </div>
@@ -69,32 +53,4 @@
 
 {{ define "footer" }}
 <div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
-{{ end }}
-
-{{ define "bottom-embeds" }}
-<script>
-    let galleryResizeTimeout;
-
-    function resizeCb() {
-        clearTimeout(galleryResizeTimeout);
-        galleryResizeTimeout = setTimeout(() => {
-            if (map !== undefined) {
-                map.invalidateSize();
-            }
-            var oldGalleryMap = new Map(galleryMap);
-            oldGalleryMap.forEach((createFunc, g, map) => {
-                galleryMap.delete(g);
-                g.destroy();
-                createFunc();
-            });
-        }, 300);
-    }
-
-    window.addEventListener('resize', resizeCb);
-
-    document.addEventListener('popout', (e) => {
-        window.removeEventListener('resize', resizeCb);
-        galleryResizeTimeout = null;
-    });
-</script>
 {{ end }}

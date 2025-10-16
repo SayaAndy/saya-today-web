@@ -1,6 +1,9 @@
 package tailwind
 
 import (
+	"bytes"
+	"fmt"
+
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/text"
@@ -51,6 +54,10 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 			node.SetAttribute([]byte("class"), []byte("bg-background-dark p-1 rounded-lg overflow-x-auto mb-4"))
 
 		case *ast.Link:
+			if bytes.HasPrefix(node.Destination, []byte{'.', '/'}) {
+				onclickAttr := fmt.Appendf(make([]byte, 0, 21+len(node.Destination)), "return changeUrl('%s');", node.Destination)
+				node.SetAttribute([]byte("onclick"), onclickAttr)
+			}
 			node.SetAttribute([]byte("class"), []byte("text-secondary hover:text-main-dark underline"))
 
 		case *ast.Image:

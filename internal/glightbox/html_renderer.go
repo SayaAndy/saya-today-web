@@ -81,7 +81,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 			elements = append(elements, fmt.Sprintf(`
 	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item grid-item-%s"
 	    data-gallery="gallery-%s" data-title="%s" %s>
-	    <img src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" class="rounded-md p-0.5" alt="webp thumbnail" />
+	    <img src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" class="rounded-md p-1" alt="webp thumbnail" />
 	</a>`, img.URL, galleryID, galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt))
 
 			if glightboxDescId != "" {
