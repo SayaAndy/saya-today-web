@@ -447,7 +447,7 @@ body[data-theme~="ram"] .leaflet-tile {
         width: 90dvw;
     }
 
-    .ar-lt-0\.8\:w-screen {
+    .ar-lt-0\.8\:w-\[100dvw\] {
         width: 100dvw;
     }
 

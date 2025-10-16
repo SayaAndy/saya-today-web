@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
 </head>
 
-<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
+<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
 
     <script>
         function switchTheme(theme) {
@@ -40,7 +40,7 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-screen h-screen ar-lt-0.8:h-[8dvh]">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
         <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div id="map-container" class="bg-background-dark flex z-10 w-[95dvw] ar-lt-0.8:w-screen h-screen ar-lt-0.8:h-[92dvh]"></div>
+    <div id="map-container" class="bg-background-dark flex z-10 w-[95dvw] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[92dvh]"></div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>

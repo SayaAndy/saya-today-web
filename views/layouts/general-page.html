@@ -12,7 +12,7 @@
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-0.8:flex-col">
+<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
 
     <script>
         let map = null;
@@ -170,7 +170,7 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-screen h-screen ar-lt-0.8:h-[8dvh]">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
         <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
@@ -197,7 +197,7 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex z-10 w-[min(90dvw,100dvh)] grow-0 ar-lt-0.8:w-screen h-screen ar-lt-0.8:max-h-[92dvh]">
+    <div class="bg-background-dark flex z-10 w-[min(90dvw,100dvh)] grow-0 ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:max-h-[92dvh]">
         <div class="pl-[0.5dvw] bg-background-dark border-r-2 border-dashed border-main-dark"></div>
 
         <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
