@@ -50,7 +50,7 @@
         </div>
     </form>
 
-    <div class="w-[0.5vh] border-r-2 border-dotted border-main-dark bg-background-dark"></div>
+    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-dark bg-background-dark"></div>
 
     <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
         class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-6">
