@@ -327,8 +327,72 @@ a:hover {
     transform: scale(1.1);
 }
 
+.grid-tooltip {
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 0rem 0rem 0.5rem var(--main-light-color);
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+.grid-tooltip:hover {
+    box-shadow: none;
+}
+
+.grid-tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+    width: 100%;
+    top: 100%;
+    background-color: var(--background-dark-color);
+    color: var(--main-dark-color);
+    text-align: center;
+    padding: 0.25rem 0.25rem;
+    margin-top: 0.25rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    z-index: 15;
+}
+
+.grid-tooltip:hover .grid-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.grid-tooltip-text::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -0.25rem;
+    border-width: 0.25rem;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
 .grid-item, .grid-sizer {
+    position: relative;
+    display: inline-block;
     width: 50%;
+}
+
+.grid-item-index {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s;
+    top: 0%;
+    left: 0%;
+    background-color: var(--main-light-color);
+    color: var(--background-dark-color);
+    text-align: center;
+    padding: 0.25rem 0.25rem;
+    position: absolute;
+    z-index: 14;
+}
+
+.grid-item:hover .grid-item-index {
+    visibility: hidden;
+    opacity: 0;
 }
 
 .grid-item-2x {

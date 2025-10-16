@@ -86,8 +86,12 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 				}
 			}
 
+			if len(img.Caption) > 0 {
+				tagClassList = append(tagClassList, "grid-tooltip")
+			}
+
 			elements = append(elements, fmt.Sprintf(`
-	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item %s grid-item-%s"
+	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item %s grid-item-%s p-1"
 	    data-gallery="gallery-%s" data-title="%s" %s>
 		<picture>
 			<source media="(width < 640px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" />
@@ -97,7 +101,9 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 			<source media="(width >= 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
 			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
 		</picture>
-	</a>`, img.URL, galleryID, strings.Join(tagClassList, " "), galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt))
+		<span class="grid-tooltip-text">%s</span>
+		<span class="grid-item-index">%d</span>
+	</a>`, img.URL, galleryID, strings.Join(tagClassList, " "), galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, i+1))
 
 			if glightboxDescId != "" {
 				elements = append(elements, fmt.Sprintf(`
