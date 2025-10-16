@@ -385,10 +385,6 @@ body[data-theme~="ram"] .leaflet-tile {
         max-width: 20dvh;
     }
 
-    .ar-gt-0\.8\:max-w-\[100dvh\] {
-        max-width: 100dvh;
-    }
-
     .ar-gt-0\.8\:items-center {
         align-items: center;
     }

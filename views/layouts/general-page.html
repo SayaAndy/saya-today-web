@@ -197,10 +197,10 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex z-10 ar-lt-0.8:w-screen h-screen ar-lt-0.8:max-h-[92dvh]">
+    <div class="bg-background-dark flex z-10 w-[min(90dvw,100dvh)] grow-0 ar-lt-0.8:w-screen h-screen ar-lt-0.8:max-h-[92dvh]">
         <div class="pl-[0.5vw] bg-background-dark border-r-2 border-dashed border-main-dark"></div>
 
-        <div class="ar-gt-0.8:w-[100dvh] max-h-100% flex flex-col bg-background-dark relative pt-4 ml-8 pr-4">
+        <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
             <div id="general-page-header" class="max-xs:hidden flex flex-col basis-8"
                 hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
