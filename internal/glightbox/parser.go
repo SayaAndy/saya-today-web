@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log/slog"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/yuin/goldmark/ast"
@@ -60,16 +61,27 @@ func (p *GLightboxParser) Continue(node ast.Node, reader text.Reader, pc parser.
 
 	gallery := node.(*GLightboxBlock)
 
-	parts := bytes.SplitN(trimmed, []byte{'|'}, 2)
+	parts := bytes.SplitN(trimmed, []byte{'|'}, 3)
 	url := bytes.TrimSpace(parts[0])
 
 	caption := make([]byte, 0)
-	if len(parts) > 1 {
+	tagsRaw := ""
+	if len(parts) == 2 {
 		caption = bytes.TrimSpace(parts[1])
+	}
+	if len(parts) >= 3 {
+		tagsRaw = string(parts[1])
+		caption = bytes.TrimSpace(parts[2])
+	}
+
+	tags := strings.Split(tagsRaw, ",")
+	for i := range tags {
+		tags[i] = strings.TrimSpace(tags[i])
 	}
 
 	gallery.Images = append(gallery.Images, GLightboxImage{
 		URL:     string(url),
+		Tags:    tags,
 		Caption: caption,
 	})
 

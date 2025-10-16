@@ -331,9 +331,17 @@ a:hover {
     width: 50%;
 }
 
+.grid-item-2x {
+    width: 100%;
+}
+
 @media (width >= 32rem) {
     .grid-item, .grid-sizer {
         width: 33%;
+    }
+
+    .grid-item-2x {
+        width: 66%;
     }
 }
 
@@ -341,11 +349,19 @@ a:hover {
     .grid-item, .grid-sizer {
         width: 25%;
     }
+
+    .grid-item-2x {
+        width: 50%;
+    }
 }
 
 @media (width >= 48rem) {
     .grid-item, .grid-sizer {
         width: 20%;
+    }
+
+    .grid-item-2x {
+        width: 40%;
     }
 }
 

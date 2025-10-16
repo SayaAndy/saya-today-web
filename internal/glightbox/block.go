@@ -15,6 +15,7 @@ type GLightboxBlock struct {
 
 type GLightboxImage struct {
 	URL     string
+	Tags    []string
 	Caption []byte
 }
 

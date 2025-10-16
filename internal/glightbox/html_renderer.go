@@ -78,11 +78,26 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 				dataDescriptionAttribute = fmt.Sprintf("data-description=\".%s\"", glightboxDescId)
 			}
 
+			tagClassList := make([]string, 0, len(img.Tags))
+			for _, tag := range img.Tags {
+				switch tag {
+				case "2x":
+					tagClassList = append(tagClassList, "grid-item-2x")
+				}
+			}
+
 			elements = append(elements, fmt.Sprintf(`
-	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item grid-item-%s"
+	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item %s grid-item-%s"
 	    data-gallery="gallery-%s" data-title="%s" %s>
-	    <img src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" class="rounded-md p-1" alt="webp thumbnail" />
-	</a>`, img.URL, galleryID, galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt))
+		<picture>
+			<source media="(width < 640px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" />
+			<source media="(width < 1120px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
+			<source media="(width < 1600px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
+			<source media="(width < 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp" />
+			<source media="(width >= 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
+			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
+		</picture>
+	</a>`, img.URL, galleryID, strings.Join(tagClassList, " "), galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt))
 
 			if glightboxDescId != "" {
 				elements = append(elements, fmt.Sprintf(`
@@ -114,10 +129,14 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		percentPosition: true
 	});
 
-	imagesLoaded('.masonry-grid-%s', function() {
-		msnry_%s.layout();
+	var imgLoad_%s_timer;
+	var imgLoad_%s = imagesLoaded('.masonry-grid-%s', () => msnry_%s.layout());
+
+	imgLoad_%s.on('progress', function() {
+		clearTimeout(imgLoad_%s_timer);
+		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 500);
 	});
-</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
 	}
 
 	return ast.WalkContinue, nil
