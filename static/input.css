@@ -10,25 +10,25 @@ html {
     font-size: 12px;
 }
 
-@media screen and (width >= 640px) {
+@media screen and (min-width: 640px) and (min-height: 640px) {
     html {
         font-size: 14px;
     }
 }
 
-@media screen and (width >= 1200px) {
+@media screen and (min-width: 900px) and (min-height: 900px) {
     html {
         font-size: 16px;
     }
 }
 
-@media screen and (width >= 1920px) {
+@media screen and (min-width: 1400px) and (min-height: 1400px) {
     html {
         font-size: 20px;
     }
 }
 
-@media screen and (width >= 2560px) {
+@media screen and (min-width: 1920px) and (min-height: 1920px) {
     html {
         font-size: 24px;
     }
@@ -409,7 +409,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 40rem) {
+@media (width >= 48rem) {
     .grid-item, .grid-sizer {
         width: 25%;
     }
@@ -419,7 +419,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 48rem) {
+@media (width >= 64rem) {
     .grid-item, .grid-sizer {
         width: 20%;
     }
@@ -432,19 +432,19 @@ a:hover, .linklike:hover {
 .goverlay {
     background: color-mix(in srgb, var(--background-light-color) 50%, transparent) !important;
     backdrop-filter: blur(1rem);
-    -webkit-backdrop-filter: blur(1rem);
 }
 
 .glightbox-clean .gslide-description {
     background: color-mix(in srgb, var(--background-dark-color) 50%, transparent) !important;
     backdrop-filter: blur(1rem);
-    -webkit-backdrop-filter: blur(1rem);
 }
 
 .glightbox-clean .gslide-title {
     font-family: var(--font-spectral) !important;
     font-weight: 600 !important;
     color: var(--main-light-color) !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 0 !important;
 }
 
 .glightbox-clean .gslide-desc {
@@ -452,6 +452,23 @@ a:hover, .linklike:hover {
     font-family: var(--font-spectral) !important;
     font-weight: 400;
     color: var(--main-medium-color) !important;
+}
+
+.glightbox-mobile .glightbox-container .gslide-description {
+    padding: 0 !important;
+}
+
+.glightbox-clean .gdesc-inner {
+    padding: 1rem 1rem !important;
+}
+
+.glightbox-container .ginner-container {
+    height: 100dvh !important;
+}
+
+.gslide-description {
+    flex-grow: 0;
+    flex-shrink: 1;
 }
 
 .map-container .leaflet-container {
