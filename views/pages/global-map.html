@@ -40,21 +40,21 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5rem] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
         <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
-        <div class="text-[3dvw] ar-lt-0.8:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
-            <a href="/{{ .Lang }}" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+        <div class="text-[3rem] ar-lt-0.8:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
+            <a href="/{{ .Lang }}" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
                 <i class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <a href="/{{ .Lang }}/blog" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+            <a href="/{{ .Lang }}/blog" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
                 <i class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <a href="/{{ .Lang }}/map" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+            <a href="/{{ .Lang }}/map" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
                 <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook flex w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
+            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook flex w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
         </div>
         <div class="theme-wheel" id="theme-wheel">
             <div class="theme-icon" data-theme="olive"></div>
