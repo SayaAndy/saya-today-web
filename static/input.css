@@ -239,7 +239,7 @@ a:hover, .linklike:hover {
 .bg-sidebar {
     background-image: var(--squares-and-triangles-background);
     background-repeat: var(--squares-and-triangles-background-repeat);
-    background-size: calc(var(--squares-and-triangles-background-width-coef) * 0.8rem) calc(var(--squares-and-triangles-background-height-coef) * 0.8rem);
+    background-size: calc(var(--squares-and-triangles-background-width-coef) * 1rem) calc(var(--squares-and-triangles-background-height-coef) * 1rem);
 }
 
 .logo-custom {
@@ -268,13 +268,10 @@ a:hover, .linklike:hover {
 
 .theme-wheel {
     position: fixed;
-    width: 15vmax;
-    height: 15vmax;
+    width: 12rem;
+    height: 12rem;
+    box-shadow: 0.25rem 0.25rem 0.25rem var(--main-light-color);
     border-radius: 50%;
-    background: var(--background-light-color);
-    opacity: 0.8;
-    border: 1vmax outset var(--background-dark-color);
-    box-shadow: 0 0 5vmax var(--main-light-color);
     opacity: 0;
     visibility: hidden;
     transform: scale(0.5);
@@ -290,26 +287,56 @@ a:hover, .linklike:hover {
 
 .theme-icon {
     position: absolute;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.3s ease;
-    border: 0.1rem inset var(--background-light-color);
+    color: white;
     background: var(--interlocked-hexagons-background);
-    background-size: contain;
+    background-size: 100% 100%;
+    font-size: 1.5rem;
 }
 
 .theme-icon:hover {
-    transform: scale(1.2);
+    filter: brightness(1.2);
+}
+
+.theme-icon i {
+    position: absolute;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    z-index: 1;
 }
 
 .theme-icon.active {
-    transform: scale(1.2);
-    border: 0.3rem outset var(--main-light-color);
+    filter: brightness(1.3);
+}
+
+.theme-icon.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+    clip-path: inherit;
+}
+
+.theme-pin {
+    position: relative;
+    background: color-mix(in srgb, var(--main-light-color) 75%, transparent);
+    box-shadow: 0rem 0rem 1rem var(--main-dark-color);
+    border: 0.5rem solid color-mix(in srgb, var(--main-light-color) 90%, transparent);
+    backdrop-filter: blur(2px);
+    top: 35%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
+    z-index: 1002;
+    border-radius: 50%;
 }
 
 .custom-svg-marker {
