@@ -122,12 +122,12 @@ html {
     --squares-and-triangles-background-height-coef: 15;
 }
 
-a {
+a, .linklike {
     color: var(--main-medium-color) !important;
     text-decoration: underline;
 }
 
-a:hover {
+a:hover, .linklike:hover {
     color: var(--main-light-color) !important;
 }
 

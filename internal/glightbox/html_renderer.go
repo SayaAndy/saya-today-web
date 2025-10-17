@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"math/rand"
+	"regexp"
 	"strings"
 	"time"
 
+	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
+	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
@@ -16,22 +19,36 @@ import (
 
 type GLightboxHTMLRenderer struct {
 	html.Config
-	md goldmark.Markdown
+	md            goldmark.Markdown
+	anchorMatchRe *regexp.Regexp
 }
 
 func NewGLightboxHTMLRenderer(opts ...html.Option) renderer.NodeRenderer {
 	r := &GLightboxHTMLRenderer{
 		Config: html.NewConfig(),
 		md: goldmark.New(
-			goldmark.WithRendererOptions(
-				html.WithHardWraps(),
-				html.WithXHTML(),
+			goldmark.WithParserOptions(
+				parser.WithAutoHeadingID(),
+				parser.WithAttribute(),
+			),
+			goldmark.WithRenderer(
+				renderer.NewRenderer(
+					renderer.WithNodeRenderers(
+						util.Prioritized(tailwind.NewCustomLinkRenderer(
+							html.WithUnsafe(), html.WithHardWraps(), html.WithXHTML(),
+						), 50),
+						util.Prioritized(html.NewRenderer(
+							html.WithUnsafe(), html.WithHardWraps(), html.WithXHTML(),
+						), 100),
+					),
+				),
 			),
 		),
 	}
 	for _, opt := range opts {
 		opt.SetHTMLOption(&r.Config)
 	}
+	r.anchorMatchRe = regexp.MustCompile(`(?s)<\s*a(\s+[^<]*)(href\s*=\s*["'].*?["'])\s*([^<]*)>(.*?)<\s*\/\s*a\s*>`)
 	return r
 }
 
@@ -90,6 +107,8 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 				tagClassList = append(tagClassList, "grid-tooltip")
 			}
 
+			anchorlessCaptionHTML := r.anchorMatchRe.ReplaceAll(captionHTML, []byte("<span class=\"linklike\" $1 $3>$4</span>"))
+
 			elements = append(elements, fmt.Sprintf(`
 	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item %s grid-item-%s p-1"
 	    data-gallery="gallery-%s" data-title="%s" %s>
@@ -101,9 +120,9 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 			<source media="(width >= 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
 			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
 		</picture>
-		<span class="grid-tooltip-text">%s</span>
+		<span class="grid-tooltip-text"><p>%s</p></span>
 		<span class="grid-item-index">%d</span>
-	</a>`, img.URL, galleryID, strings.Join(tagClassList, " "), galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, captionHTML, i+1))
+	</a>`, img.URL, galleryID, strings.Join(tagClassList, " "), galleryID, galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, anchorlessCaptionHTML, i+1))
 
 			if glightboxDescId != "" {
 				elements = append(elements, fmt.Sprintf(`
@@ -116,7 +135,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		w.WriteString(fmt.Sprintf(`
 <div class="justify-content-center display-block m-1">
 	<hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%%] ml-auto mr-auto">
-	<div class="grid masonry-grid-%s">
+	<div class="grid masonry-grid-%s mx-auto">
 		<div class="grid-sizer grid-sizer-%s"></div>
 		%s
 	</div>
@@ -132,17 +151,26 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 	var msnry_%s = new Masonry('.masonry-grid-%s', {
 		itemSelector: '.grid-item-%s',
 		columnWidth: '.grid-sizer-%s',
-		percentPosition: true
+		percentPosition: true,
+		horizontalOrder: true
 	});
 
 	var imgLoad_%s_timer;
-	var imgLoad_%s = imagesLoaded('.masonry-grid-%s', () => msnry_%s.layout());
+	var imgLoad_%s = imagesLoaded('.masonry-grid-%s');
 
-	imgLoad_%s.on('progress', function() {
+	function initMasonryLayout_%s() {
 		clearTimeout(imgLoad_%s_timer);
 		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 500);
+	}
+
+	imgLoad_%s.on('progress', initMasonryLayout_%s);
+
+	document.addEventListener('popout', (e) => {
+		imgLoad_%s.off('progress', initMasonryLayout_%s);
+		initMasonryLayout_%s = null;
+		imgLoad_%s = null;
 	});
-</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
 	}
 
 	return ast.WalkContinue, nil
