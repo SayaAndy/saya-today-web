@@ -1,9 +1,9 @@
 {{ define "body" }}
 <div class="bg-background-light flex flex-col inset-shadow px-8 py-4 overflow-y-auto">
-    <p class="xs:hidden font-spectral text-2xl font-bold italic text-main-dark tracking-[.0125rem] mb-1">{{ .Title }}</p>
-    <p class="xs:hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Published }}: {{ .PublishedDate }}</p>
-    <p class="xs:hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Action }}: {{ .ActionDate }}</p>
-    <hr class="xs:hidden border-t-2 border-dotted border-main-dark mt-1 mb-2 w-full ml-auto mr-auto">
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-spectral text-2xl font-bold italic text-main-dark tracking-[.0125rem] mb-1">{{ .Title }}</p>
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Published }}: {{ .PublishedDate }}</p>
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Action }}: {{ .ActionDate }}</p>
+    <hr class="max-xs:block [@media(max-height:32rem)]:block hidden border-t-2 border-dotted border-main-dark mt-1 mb-2 w-full ml-auto mr-auto">
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
     <hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%] ml-auto mr-auto">

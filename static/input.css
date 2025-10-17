@@ -239,17 +239,16 @@ a:hover, .linklike:hover {
 .bg-sidebar {
     background-image: var(--squares-and-triangles-background);
     background-repeat: var(--squares-and-triangles-background-repeat);
-    background-size: calc(var(--squares-and-triangles-background-width-coef) * 1dvw) calc(var(--squares-and-triangles-background-height-coef) * 1dvw);
+    background-size: calc(var(--squares-and-triangles-background-width-coef) * 0.8rem) calc(var(--squares-and-triangles-background-height-coef) * 0.8rem);
 }
 
 .logo-custom {
-    width: 3.5dvw;
-    height: 20dvw;
-    font-size: 2.5dvw;
-    -webkit-text-stroke: 0.1dvw var(--sidebar-stroke-color);
+    width: 3.5rem;
+    height: 20rem;
+    font-size: 2.5rem;
+    -webkit-text-stroke: 0.1rem var(--sidebar-stroke-color);
     writing-mode: sideways-lr;
     text-orientation: mixed;
-    display: block;
 }
 
 .inset-shadow {
@@ -291,15 +290,15 @@ a:hover, .linklike:hover {
 
 .theme-icon {
     position: absolute;
-    width: 4vmax;
-    height: 4vmax;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    border: 0.1vmax inset var(--background-light-color);
+    border: 0.1rem inset var(--background-light-color);
     background: var(--interlocked-hexagons-background);
     background-size: contain;
 }
@@ -310,7 +309,7 @@ a:hover, .linklike:hover {
 
 .theme-icon.active {
     transform: scale(1.2);
-    border: 0.3vmax outset var(--main-light-color);
+    border: 0.3rem outset var(--main-light-color);
 }
 
 .custom-svg-marker {
@@ -399,7 +398,7 @@ a:hover, .linklike:hover {
     width: 100%;
 }
 
-@media (width >= 32rem) {
+@container main (width >= 32rem) {
     .grid-item, .grid-sizer {
         width: 33%;
     }
@@ -409,7 +408,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 48rem) {
+@container main (width >= 48rem) {
     .grid-item, .grid-sizer {
         width: 25%;
     }
@@ -419,7 +418,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 64rem) {
+@container main (width >= 64rem) {
     .grid-item, .grid-sizer {
         width: 20%;
     }
@@ -519,10 +518,6 @@ body[data-theme~="ram"] .leaflet-tile {
 
     .ar-lt-0\.8\:bg-background-light {
         background-color: var(--background-light-color);
-    }
-
-    .logo-custom {
-        display: none;
     }
 
     .bg-pattern-body {
