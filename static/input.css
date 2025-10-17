@@ -432,13 +432,11 @@ a:hover, .linklike:hover {
 .goverlay {
     background: color-mix(in srgb, var(--background-light-color) 50%, transparent) !important;
     backdrop-filter: blur(1rem);
-    -webkit-backdrop-filter: blur(1rem);
 }
 
 .glightbox-clean .gslide-description {
     background: color-mix(in srgb, var(--background-dark-color) 50%, transparent) !important;
     backdrop-filter: blur(1rem);
-    -webkit-backdrop-filter: blur(1rem);
 }
 
 .glightbox-clean .gslide-title {
