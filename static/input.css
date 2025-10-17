@@ -429,6 +429,31 @@ a:hover, .linklike:hover {
     }
 }
 
+.goverlay {
+    background: color-mix(in srgb, var(--background-light-color) 50%, transparent) !important;
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
+}
+
+.glightbox-clean .gslide-description {
+    background: color-mix(in srgb, var(--background-dark-color) 50%, transparent) !important;
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
+}
+
+.glightbox-clean .gslide-title {
+    font-family: var(--font-spectral) !important;
+    font-weight: 600 !important;
+    color: var(--main-light-color) !important;
+}
+
+.glightbox-clean .gslide-desc {
+    font-size: 1rem !important;
+    font-family: var(--font-spectral) !important;
+    font-weight: 400;
+    color: var(--main-medium-color) !important;
+}
+
 .map-container .leaflet-container {
     width: 100% !important;
     height: 100% !important;
