@@ -409,7 +409,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 40rem) {
+@media (width >= 48rem) {
     .grid-item, .grid-sizer {
         width: 25%;
     }
@@ -419,7 +419,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@media (width >= 48rem) {
+@media (width >= 64rem) {
     .grid-item, .grid-sizer {
         width: 20%;
     }
@@ -444,6 +444,7 @@ a:hover, .linklike:hover {
     font-weight: 600 !important;
     color: var(--main-light-color) !important;
     padding-bottom: 1rem !important;
+    margin-bottom: 0 !important;
 }
 
 .glightbox-clean .gslide-desc {
@@ -459,6 +460,15 @@ a:hover, .linklike:hover {
 
 .glightbox-clean .gdesc-inner {
     padding: 1rem 1rem !important;
+}
+
+.glightbox-container .ginner-container {
+    height: 100dvh !important;
+}
+
+.gslide-description {
+    flex-grow: 0;
+    flex-shrink: 1;
 }
 
 .map-container .leaflet-container {
