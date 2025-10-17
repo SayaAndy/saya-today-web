@@ -145,7 +145,8 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		w.WriteString(fmt.Sprintf(`
 <script>
 	var lightbox_%s = GLightbox({
-		selector: '.glightbox-%s'
+		selector: '.glightbox-%s',
+		moreLength: 0
 	});
 
 	var msnry_%s = new Masonry('.masonry-grid-%s', {
