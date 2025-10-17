@@ -1,6 +1,6 @@
 <button 
     hx-put="/api/v1/like" hx-vals='{"like": {{ not .Liked }}}' hx-target="this" hx-swap="outerHTML" hx-trigger="click"
-    class="text-[0.8vmax]/[0.9] font-spectral text-left px-[0.4vmax] py-[0.2vmax] {{ if .Liked }}bg-main-light hover:bg-main-medium text-background-dark border-inset{{ else }}bg-main-dark hover:bg-main-medium text-background-light border-outset{{ end }} cursor-pointer border-[0.2vmax] border-background-dark">
-    <i class="fas fa-thumbs-up w-[0.8vmax] h-[0.8vmax]"></i>
-    <span class="italic ml-[0.2vmax] text-background-light">({{ .LikedCount }})</span>
+    class="text-sm/[0.9] shrink-0 font-spectral text-left px-1 py-0.5 {{ if .Liked }}bg-main-light hover:bg-main-medium text-background-dark border-inset{{ else }}bg-main-dark hover:bg-main-medium text-background-light border-outset{{ end }} cursor-pointer border-2 border-background-dark">
+    <i class="fas fa-thumbs-up w-3 h-3"></i>
+    <span class="italic ml-0.5 text-background-light">({{ .LikedCount }})</span>
 </button>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAYA TODAY // Заглавная</title>
+    <title>Choose Language // SAYA TODAY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,8 @@
     <style>
         .menu-outer-body {
             border-radius: 10%;
-            width: 40vh;
-            height: 30vh;
+            width: 40dvh;
+            height: 30dvh;
         }
 
         .menu-inner-body {
@@ -35,8 +35,8 @@
             }
 
             .menu-outer-body {
-                width: min(40vh, 100vw);
-                height: 40vh;
+                width: min(40dvh, 100dvw);
+                height: 40dvh;
                 border-radius: 0;
             }
 
@@ -56,7 +56,7 @@
     </style>
 </head>
 
-<body data-theme="night" class="font-spectral text-main-dark text-[1.5vmax] overflow-hidden bg-interlocked-hexagons h-screen flex flex-col">
+<body data-theme="night" class="font-spectral text-main-dark text-2xl overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-col">
 
     <div class="absolute star z-0">*</div>
     <div class="absolute star z-0">*</div>
@@ -102,14 +102,14 @@
         switchTheme(savedTheme);
     </script>
 
-    <div class="menu-outer-body p-4 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
-        <p class="font-patua mx-auto text-[2.5vmax] mt-[0.8vmin] mb-[0.8vmin]">saya.today</p>
+    <div class="menu-outer-body p-2 z-1 bg-background-dark flex flex-col mx-auto my-auto opacity-70">
+        <p class="font-patua mx-auto text-4xl mt-1 mb-2">saya.today</p>
         <div class="menu-inner-body grow bg-background-light flex flex-adaptive mx-auto opacity-100">
             {{- range .AvailableLanguages }}
             <img onclick="location.href='/{{ .Name }}';" class="object-scale-down cursor-pointer flex-1 rounded-[20%] language-icon mx-auto my-auto relative" src="{{ .Flag }}" alt="{{ .Alt }}">
             {{- end }}
         </div>
-        <p class="font-spectral mx-auto text-[1.5vmax] text-secondary mt-[0.8vmin] mb-[0.8vmin]">Choose your language</p>
+        <p class="font-spectral mx-auto text-2xl text-secondary mt-1 mb-2">Choose your language</p>
     </div>
 
     <script>

@@ -136,6 +136,8 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			values["MapLocationAreaMeters"] = areaError
 			values["Title"] = metadata.Title
 			values["ParsedMarkdown"] = template.HTML(parsedMarkdown)
+			values["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
+			values["ActionDate"] = metadata.ActionDate
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
 

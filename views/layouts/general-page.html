@@ -7,24 +7,33 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-zoom.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/css/lg-thumbnail.min.css">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/css/glightbox.min.css">
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-screen flex flex-row ar-lt-1.1:flex-col">
+<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
+
+    <script>
+        let map = null;
+    </script>
 
     <script>
         function changeUrl(path, toAppend = false) {
             const urlParams = new URLSearchParams(window.location.search); 
             const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
+            
             history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
+            if (location.pathname == "" || location.pathname == "/") {
+                return true;
+            }
             window.dispatchEvent(new Event('popstate'));
+            return false;
         };
     </script>
+
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 
     <script>
         function sfc32(a, b, c, d) {
@@ -161,15 +170,24 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-1.1:items-center shadow-2xl z-20 w-[5vw] ar-lt-1.1:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-1.1:h-[8vh] ar-lt-1.1:ml-[5vw] ar-lt-0.4:ml-0">
-        <div class="logo-custom ar-lt-1.1:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5dvw] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
+        <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
             saya.today
         </div>
-        <div class="text-[3vw] ar-lt-1.1:text-[5vh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1vw] flex flex-col ar-lt-1.1:flex-row gap-0 relative z-20">
-            <i onclick="changeUrl('/{{ .Lang }}');" class="fas fa-home w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="changeUrl('/{{ .Lang }}/blog');" class="fas fa-search w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="location.href='/{{ .Lang }}/map';" class="fas fa-map w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
-            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook w-[5vw] ar-lt-1.1:w-[8vh] h-[5vw] ar-lt-1.1:h-[8vh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 flex rounded-lg"></i>
+        <div class="text-[3dvw] ar-lt-0.8:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
+            <a href="/{{ .Lang }}" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+                <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+            </a>
+            <a href="/{{ .Lang }}/blog" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+                <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+            </a>
+            <a href="/{{ .Lang }}/map" class="w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+                <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+            </a>
+            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook flex w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
+            <a href="./" class="xs:!hidden w-[5dvw] ar-lt-0.8:w-[8dvh] h-[5dvw] ar-lt-0.8:h-[8dvh]">
+                <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+            </a>
         </div>
         <div class="theme-wheel" id="theme-wheel">
             <div class="theme-icon" data-theme="olive"></div>
@@ -179,38 +197,37 @@
         </div>
     </div>
 
-    <div class="bg-background-dark flex z-10 ar-lt-1.1:w-[90vw] ar-lt-0.4:w-[100vw] h-screen ar-lt-1.1:ml-[5vw] ar-lt-0.4:ml-0">
-        <div class="pl-[0.5vw] bg-background-dark border-r-[0.4vmin] border-dashed border-main-dark"></div>
+    <div class="bg-background-dark flex z-10 w-[min(90dvw,100dvh)] grow-0 ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:max-h-[92dvh]">
+        <div class="pl-[0.5dvw] bg-background-dark border-r-2 border-dashed border-main-dark"></div>
 
-        <div class="ar-gt-1.1:w-[100vh] flex flex-col bg-background-dark relative pt-[1.6vmin] ml-[1.6vmin] pr-[1.6vmin]">
-            <div id="general-page-header" class="flex flex-col"
+        <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+            <div id="general-page-header" class="max-xs:hidden flex flex-col basis-8"
                 hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
+            <hr class="max-xs:hidden border-t-4 border-dotted border-main-dark mb-2">
 
-            <div id="general-page-body" class="flex flex-col max-h-[calc(100%-7vmax)] ar-lt-1.1:max-h-[calc(100%-25vh)] grow"
+            <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
                 hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
 
-            <div id="general-page-footer" class="flex flex-row mt-[0.8vmin] mb-[0.4vmin]"
+            <div id="general-page-footer" class="flex flex-row basis-4 my-1"
                 hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
             </div>
             <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-[0.8vmin]">
+            <hr class="border-t-4 border-dotted border-main-dark mb-2">
         </div>
 
-        <div class="pr-[0.5vw] bg-background-dark shadow-2xl border-l-[0.4vmin] border-dotted border-main-dark"></div>
+        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-dark"></div>
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/lightgallery.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-zoom.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/lightgallery/2.8.3/plugins/lg-thumbnail.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/masonry-layout/4.2.2/masonry.pkgd.min.js"></script>
 
     <div id="general-page-bottom-embeds" class="flex"
         hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">

@@ -12,7 +12,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
-	"github.com/SayaAndy/saya-today-web/internal/lightgallery"
+	"github.com/SayaAndy/saya-today-web/internal/glightbox"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -23,7 +23,9 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
-	gmhtml "github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/renderer"
+	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/util"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
@@ -32,14 +34,20 @@ import (
 var (
 	md = goldmark.New(
 		goldmark.WithExtensions(
-			lightgallery.NewLightGalleryExtension(),
+			glightbox.NewGLightboxExtension(),
 			tailwind.NewTailwindExtension(),
 		),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
+			parser.WithAttribute(),
 		),
-		goldmark.WithRendererOptions(
-			gmhtml.WithXHTML(),
+		goldmark.WithRenderer(
+			renderer.NewRenderer(
+				renderer.WithNodeRenderers(
+					util.Prioritized(tailwind.NewCustomLinkRenderer(html.WithUnsafe(), html.WithXHTML()), 50),
+					util.Prioritized(html.NewRenderer(html.WithXHTML()), 100),
+				),
+			),
 		),
 	)
 	b2Client           *b2.B2Client
