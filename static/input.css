@@ -377,7 +377,7 @@ a:hover, .linklike:hover {
     margin-top: 0.25rem;
     border-radius: 0.5rem;
     position: absolute;
-    z-index: 401;
+    z-index: 801;
 }
 
 .grid-tooltip:hover .grid-tooltip-text {
