@@ -377,7 +377,7 @@ a:hover, .linklike:hover {
     margin-top: 0.25rem;
     border-radius: 0.5rem;
     position: absolute;
-    z-index: 801;
+    z-index: 1001;
 }
 
 .grid-tooltip:hover .grid-tooltip-text {
@@ -495,6 +495,7 @@ a:hover, .linklike:hover {
 .gslide-description {
     flex-grow: 0;
     flex-shrink: 1;
+    flex-basis: 0;
 }
 
 .map-container .leaflet-container {
