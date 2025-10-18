@@ -38,6 +38,10 @@
 
     <script>
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        function convertRemToPixels(rem) {    
+            return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        }
     </script>
 
     <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5rem] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
@@ -61,6 +65,7 @@
             <div class="theme-icon" data-theme="lettuce"></div>
             <div class="theme-icon" data-theme="night"></div>
             <div class="theme-icon" data-theme="ram"></div>
+            <div class="theme-pin"></div>
         </div>
     </div>
 
@@ -74,6 +79,7 @@
         const themeWheel = document.getElementById('theme-wheel');
         const themeButton = document.getElementById('theme-button');
         const themeIcons = document.querySelectorAll('.theme-icon');
+        const themeWheelRadius = convertRemToPixels(6);
 
         themeIcons.forEach(icon => {
             if (icon.getAttribute('data-theme') == savedTheme) {
@@ -93,23 +99,36 @@
         }
 
         function positionThemeIcons() {
-            const icons = themeWheel.querySelectorAll('.theme-icon');
-            const iconCount = icons.length;
-            const vmax = calculateVmax(1);
-            const wheelRadius = 7.5*vmax; // Radius of the wheel
-            const iconRadius = 4*vmax; // Distance from center to place icons
-            const iconSize = 3*vmax; // Half of icon size for centering
+            const sliceAngle = 360 / themeIcons.length;
 
-            icons.forEach((icon, index) => {
-                const angle = (index * 360 / iconCount) - 90;
-                const angleRad = (angle * Math.PI) / 180;
+            themeIcons.forEach((icon, index) => {
+                const startAngle = index * sliceAngle;
+                const endAngle = (index + 1) * sliceAngle;
 
-                const x = Math.cos(angleRad) * iconRadius + wheelRadius - iconSize;
-                const y = Math.sin(angleRad) * iconRadius + wheelRadius - iconSize;
-
-                icon.style.left = x + 'px';
-                icon.style.top = y + 'px';
+                const clipPath = createSliceClipPath(startAngle, endAngle, themeWheelRadius);
+                icon.style.clipPath = clipPath;
             });
+        }
+
+        function createSliceClipPath(startAngle, endAngle, radius) {
+            const centerX = radius;
+            const centerY = radius;
+
+            let points = `${centerX}px ${centerY}px`;
+
+            const segments = Math.max(2, Math.ceil(Math.abs(endAngle - startAngle) / 5));
+            const angleStep = (endAngle - startAngle) / segments;
+
+            for (let i = 0; i <= segments; i++) {
+                const angle = ((startAngle + angleStep * i - 90) * Math.PI) / 180;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                points += `, ${x}px ${y}px`;
+            }
+
+            points += `, ${centerX}px ${centerY}px`;
+            
+            return `polygon(${points})`;
         }
 
         function positionThemeWheel() {
@@ -117,25 +136,24 @@
             const buttonCenterX = buttonRect.left + buttonRect.width / 2;
             const buttonCenterY = buttonRect.top + buttonRect.height / 2;
 
-            const wheelRadius = calculateVmax(7.5);
-            const margin = calculateVmax(1);
+            const margin = 0;
 
-            let wheelX = buttonCenterX - wheelRadius;
-            let wheelY = buttonCenterY - wheelRadius;
+            let wheelX = buttonCenterX - themeWheelRadius;
+            let wheelY = buttonCenterY - themeWheelRadius;
 
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
 
             if (wheelX < margin) {
                 wheelX = margin;
-            } else if (wheelX + (wheelRadius * 2) > viewportWidth - margin) {
-                wheelX = viewportWidth - (wheelRadius * 2) - margin;
+            } else if (wheelX + (themeWheelRadius * 2) > viewportWidth - margin) {
+                wheelX = viewportWidth - (themeWheelRadius * 2) - margin;
             }
 
             if (wheelY < margin) {
                 wheelY = margin;
-            } else if (wheelY + (wheelRadius * 2) > viewportHeight - margin) {
-                wheelY = viewportHeight - (wheelRadius * 2) - margin;
+            } else if (wheelY + (themeWheelRadius * 2) > viewportHeight - margin) {
+                wheelY = viewportHeight - (themeWheelRadius * 2) - margin;
             }
 
             themeWheel.style.left = wheelX + 'px';
