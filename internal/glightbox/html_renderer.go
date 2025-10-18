@@ -113,12 +113,12 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox-%s grid-item %s grid-item-%s p-1"
 	    data-gallery="gallery-%s" data-title="%s" %s>
 		<picture>
-			<source media="(width < 640px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" />
-			<source media="(width < 1120px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
-			<source media="(width < 1600px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
-			<source media="(width < 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp" />
-			<source media="(width >= 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
-			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
+			<source media="(width < 800px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" />
+			<source media="(width < 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
+			<source media="(width < 3200px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
+			<source media="(width < 4000px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp" />
+			<source media="(width >= 4000px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
+			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
 		</picture>
 		<span class="grid-tooltip-text"><p>%s</p></span>
 		<span class="grid-item-index">%d</span>
@@ -152,8 +152,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 	var msnry_%s = new Masonry('.masonry-grid-%s', {
 		itemSelector: '.grid-item-%s',
 		columnWidth: '.grid-sizer-%s',
-		percentPosition: true,
-		horizontalOrder: true
+		percentPosition: true
 	});
 
 	var imgLoad_%s_timer;

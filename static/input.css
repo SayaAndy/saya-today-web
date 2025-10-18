@@ -435,7 +435,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@container main (width >= 48rem) {
+@container main (width >= 56rem) {
     .grid-item, .grid-sizer {
         width: 25%;
     }
@@ -445,7 +445,7 @@ a:hover, .linklike:hover {
     }
 }
 
-@container main (width >= 64rem) {
+@container main (width >= 96rem) {
     .grid-item, .grid-sizer {
         width: 20%;
     }
