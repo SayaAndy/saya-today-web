@@ -193,21 +193,32 @@
             <div class="theme-pin"></div>
         </div>
         <script>
-            function hideButtonsOnRoot() {
+            sidebarHomeButton = document.getElementById("sidebar-home-button");
+            sidebarMapButton = document.getElementById("sidebar-map-button");
+            sidebarBlogButton = document.getElementById("sidebar-blog-button");
+            sidebarBackButton = document.getElementById("sidebar-back-button");
+
+            function updateSidebar() {
                 if (location.pathname == "" || location.pathname == "/") {
-                    document.getElementById("sidebar-home-button").classList.add('hidden');
-                    document.getElementById("sidebar-map-button").classList.add('hidden');
-                    document.getElementById("sidebar-blog-button").classList.add('hidden');
-                    document.getElementById("sidebar-back-button").classList.add('hidden');
+                    sidebarHomeButton.classList.add('hidden');
+                    sidebarMapButton.classList.add('hidden');
+                    sidebarBlogButton.classList.add('hidden');
+                    sidebarBackButton.classList.add('hidden');
                 } else {
-                    document.getElementById("sidebar-home-button").classList.remove('hidden');
-                    document.getElementById("sidebar-map-button").classList.remove('hidden');
-                    document.getElementById("sidebar-blog-button").classList.remove('hidden');
-                    document.getElementById("sidebar-back-button").classList.remove('hidden');
+                    sidebarHomeButton.classList.remove('hidden');
+                    sidebarMapButton.classList.remove('hidden');
+                    sidebarBlogButton.classList.remove('hidden');
+                    sidebarBackButton.classList.remove('hidden');
+                    lang = location.pathname.split("/")[1];
+                    sidebarHomeButton.setAttribute('href', `/${lang}`);
+                    sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
+                    sidebarMapButton.setAttribute('href', `/${lang}/map`);
+                    sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
+                    sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
                 }
             }
-            window.addEventListener("popstate", hideButtonsOnRoot)
-            window.addEventListener("load", hideButtonsOnRoot, {once: true});
+            window.addEventListener("popstate", updateSidebar);
+            window.addEventListener("load", updateSidebar, {once: true});
         </script>
     </div>
 
