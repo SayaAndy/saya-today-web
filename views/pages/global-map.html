@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .L.GlobalMap.Header }} // SAYA TODAY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
     {{ block "header" . }}{{ end }}
     <link href="/output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
@@ -15,7 +12,7 @@
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
 </head>
 
-<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
+<body data-theme="ram" class="font-andika text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
 
     <script>
         function switchTheme(theme) {
@@ -45,7 +42,7 @@
     </script>
 
     <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5rem] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
-        <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
+        <div class="logo-custom ar-lt-0.8:hidden text-sidebar font-andika font-extrabold text-center relative z-20">
             saya.today
         </div>
         <div class="text-[3rem] ar-lt-0.8:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">

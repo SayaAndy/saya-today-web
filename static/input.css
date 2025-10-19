@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @import "tailwindcss";
 
 @theme {
-    --font-spectral: Spectral, serif;
-    --font-patua: "Patua One", cursive;
+    --font-andika: "Andika", sans-serif;
     --breakpoint-xs: 32rem;
 }
 
@@ -242,15 +243,6 @@ a:hover, .linklike:hover {
     background-size: calc(var(--squares-and-triangles-background-width-coef) * 1rem) calc(var(--squares-and-triangles-background-height-coef) * 1rem);
 }
 
-.logo-custom {
-    width: 3.5rem;
-    height: 20rem;
-    font-size: 2.5rem;
-    -webkit-text-stroke: 0.1rem var(--sidebar-stroke-color);
-    writing-mode: sideways-lr;
-    text-orientation: mixed;
-}
-
 .inset-shadow {
     box-shadow: inset 0dvh 1dvh 1dvh -1dvh rgba(75, 81, 58, 0.5),
         inset 1dvh 0dvh 1dvh -1dvh rgba(75, 81, 58, 0.5),
@@ -399,7 +391,7 @@ a:hover, .linklike:hover {
 .grid-item, .grid-sizer {
     position: relative;
     display: inline-block;
-    width: 50%;
+    width: 10rem;
 }
 
 .grid-item-index {
@@ -422,36 +414,36 @@ a:hover, .linklike:hover {
 }
 
 .grid-item-2x {
-    width: 100%;
+    width: 20rem;
 }
 
-@container main (width >= 32rem) {
+@container main (width >= 40rem) {
     .grid-item, .grid-sizer {
-        width: 33%;
+        width: 12rem;
     }
 
     .grid-item-2x {
-        width: 66%;
+        width: 24rem;
     }
 }
 
-@container main (width >= 56rem) {
+@container main (width >= 76rem) {
     .grid-item, .grid-sizer {
-        width: 25%;
+        width: 18rem;
     }
 
     .grid-item-2x {
-        width: 50%;
+        width: 36rem;
     }
 }
 
-@container main (width >= 96rem) {
+@container main (width >= 128rem) {
     .grid-item, .grid-sizer {
-        width: 20%;
+        width: 24rem;
     }
 
     .grid-item-2x {
-        width: 40%;
+        width: 48rem;
     }
 }
 
@@ -466,7 +458,7 @@ a:hover, .linklike:hover {
 }
 
 .glightbox-clean .gslide-title {
-    font-family: var(--font-spectral) !important;
+    font-family: var(--font-andika) !important;
     font-weight: 600 !important;
     color: var(--main-light-color) !important;
     padding-bottom: 1rem !important;
@@ -475,7 +467,7 @@ a:hover, .linklike:hover {
 
 .glightbox-clean .gslide-desc {
     font-size: 1rem !important;
-    font-family: var(--font-spectral) !important;
+    font-family: var(--font-andika) !important;
     font-weight: 400;
     color: var(--main-medium-color) !important;
 }
@@ -540,10 +532,6 @@ body[data-theme~="ram"] .leaflet-tile {
 }
 
 @media (max-aspect-ratio: 0.8/1) {
-    .bg-sidebar {
-        background-size: calc(var(--squares-and-triangles-background-width-coef) * 1.6dvh) calc(var(--squares-and-triangles-background-height-coef) * 1.6dvh);
-    }
-
     .ar-lt-0\.8\:bg-background-light {
         background-color: var(--background-light-color);
     }
