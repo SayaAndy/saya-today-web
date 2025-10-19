@@ -1,11 +1,10 @@
 package router
 
 import (
-	"fmt"
 	"log/slog"
-	"slices"
 	"strings"
 
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,21 +13,27 @@ func init() {
 	tm.Add("general-page", "views/layouts/general-page.html")
 }
 
-func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []string) func(c *fiber.Ctx) error {
+func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 		path := c.Path()
 
+		lang := ""
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) == 0 {
-			return c.Status(fiber.ErrBadRequest.Code).SendString("url path is invalid: expect format '/{lang}/...'")
+		if len(pathParts) == 1 && pathParts[0] == "" {
+			pathParts = []string{}
+		}
+		if len(pathParts) > 0 {
+			lang = pathParts[0]
+			for _, availableLang := range langs {
+				if availableLang.Name == lang {
+					goto langIsAvailable
+				}
+			}
+			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
-		lang := pathParts[0]
-		if !slices.Contains(langs, lang) {
-			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
-		}
-
+	langIsAvailable:
 		cacheKey := "general-page." + lang
 		if val, ok := PCache.Get(cacheKey); val != nil && ok {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)

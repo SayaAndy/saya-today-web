@@ -14,13 +14,13 @@ import (
 type FactGiver struct {
 	b2Client      *b2.B2Client
 	cache         map[string][]string
-	langs         []string
+	langs         []config.AvailableLanguageConfig
 	factsFileName string
 	nlRe          *regexp.Regexp
 	randGen       *rand.Rand
 }
 
-func NewFactGiver(cfg *config.FactGiverConfig, langs []string) (*FactGiver, error) {
+func NewFactGiver(cfg *config.FactGiverConfig, langs []config.AvailableLanguageConfig) (*FactGiver, error) {
 	b2Client, err := b2.NewB2Client(&cfg.Storage.Config)
 	if err != nil {
 		return nil, fmt.Errorf("fail to init b2 client for a new fact giver: %s", err.Error())
@@ -52,15 +52,15 @@ func (g *FactGiver) Give(lang string) [3]string {
 
 func (g *FactGiver) initCache() error {
 	for _, lang := range g.langs {
-		localFacts := strings.Replace(g.factsFileName, "*", lang, 1)
+		localFacts := strings.Replace(g.factsFileName, "*", lang.Name, 1)
 		factsContentBytes, err := g.b2Client.ReadAll(localFacts)
 		if err != nil {
-			return fmt.Errorf("fail to read '%s' facts file: %s", lang, err.Error())
+			return fmt.Errorf("fail to read '%s' facts file: %s", lang.Name, err.Error())
 		}
 		factsContent := string(factsContentBytes)
-		g.cache[lang] = g.nlRe.Split(factsContent, -1)
-		if g.cache[lang][len(g.cache[lang])-1] == "" {
-			g.cache[lang] = g.cache[lang][:len(g.cache[lang])-1]
+		g.cache[lang.Name] = g.nlRe.Split(factsContent, -1)
+		if g.cache[lang.Name][len(g.cache[lang.Name])-1] == "" {
+			g.cache[lang.Name] = g.cache[lang.Name][:len(g.cache[lang.Name])-1]
 		}
 	}
 	return nil

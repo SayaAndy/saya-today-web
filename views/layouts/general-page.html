@@ -22,9 +22,6 @@
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
             
             history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
-            if (location.pathname == "" || location.pathname == "/") {
-                return true;
-            }
             window.dispatchEvent(new Event('popstate'));
             return false;
         };

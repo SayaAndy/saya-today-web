@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"html/template"
 	"log/slog"
-	"slices"
 	"strconv"
 	"strings"
 
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -20,17 +20,20 @@ func init() {
 	tm.Add("blog-page", "views/layouts/general-page.html", "views/pages/blog-page.html")
 }
 
-func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
+func Lang_Blog_Title(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		ip := c.IP()
 		slog.Debug("client entering blog page", slog.String("ip", ip), slog.String("page", c.Path()))
 
 		lang := c.Params("lang")
-		if !slices.Contains(langs, lang) {
-			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
-			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
+		for _, availableLang := range langs {
+			if availableLang.Name == lang {
+				goto langIsAvailable
+			}
 		}
+		return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language", lang))
 
+	langIsAvailable:
 		metadata, parsedMarkdown, err := readBlogPost(md, b2Client, lang+"/"+c.Params("title"))
 		if err != nil {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
