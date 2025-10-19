@@ -9,7 +9,7 @@
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-andika text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-col [@media(max-height:32rem)]:flex-row">
+<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-col [@media(max-height:32rem)]:flex-row">
 
     <script>
         let map = null;
@@ -197,7 +197,7 @@
     </div>
 
     <div class="bg-background-dark @container/main flex z-10 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-[100dvh] mx-auto [@media(max-height:32rem)]:mx-0">
-        <div class="bg-background-dark border-r-2 border-dashed border-main-dark"></div>
+        <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
         <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
             <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
@@ -205,7 +205,7 @@
             </div>
             <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
 
-            <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-dark mb-2">
+            <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
 
             <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
                 hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
@@ -217,10 +217,10 @@
             </div>
             <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-2">
+            <hr class="border-t-4 border-dotted border-main-hard mb-2">
         </div>
 
-        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-dark"></div>
+        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>

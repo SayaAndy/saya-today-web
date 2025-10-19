@@ -1,7 +1,7 @@
 <div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
     class="flex flex-row mb-2">
     <a href="./" class="w-(--text-4xl) h-(--text-4xl) mx-1 my-auto">
-        <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left hover:bg-main-dark hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-4xl"></i>
+        <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left hover:bg-main-hard hover:bg-opacity-10 cursor-pointer transition-colors duration-300 rounded-md text-4xl"></i>
     </a>
     <p class="text-4xl font-andika italic font-extrabold select-none my-auto pl-3 pr-3">//</p>
     <p class="text-4xl font-andika italic text-left mt-auto">{{ .Title }}</p>

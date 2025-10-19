@@ -40,7 +40,7 @@
                 </div>
             </fieldset>
         </div>
-        <hr class="border-t-2 border-dotted border-main-dark my-0.5">
+        <hr class="border-t-2 border-dotted border-main-hard my-0.5">
         <div class="flex flex-row bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
             <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
             <div class="w-1 bg-background-light grow-0"></div>
@@ -50,7 +50,7 @@
         </div>
     </form>
 
-    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-dark bg-background-dark"></div>
+    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-hard bg-background-dark"></div>
 
     <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
         class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow p-6">

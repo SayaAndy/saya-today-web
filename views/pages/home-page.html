@@ -5,7 +5,7 @@
             <p class="text-3xl/[2] sm:text-4xl/[2] lg:text-5xl/[2] ml-4 tracking-widest uppercase w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Hymn1 }}</p>
-            <hr class="w-full border-t-2 border-dotted border-main-dark mb-1">
+            <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn2 }}</p>
             <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn3 }}</p>
             <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn4 }}</p>
@@ -15,7 +15,7 @@
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.DidYouKnowThat }}</p>
-            <hr class="w-full border-t-2 border-dotted border-main-dark mb-1">
+            <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <ul class="w-full text-left list-[circle]">
                 <li class="ml-4 mb-1">{{ index .FunFacts 0 }}</li>
                 <li class="ml-4 mb-1">{{ index .FunFacts 1 }}</li>
@@ -103,16 +103,16 @@
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.SidebarDescription }}</p>
-            <hr class="w-full border-t-2 border-dotted border-main-dark mb-1">
+            <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
                 [&>*:nth-child(4n+2)]:bg-(--background-medium-color) [&>*:nth-child(4n+3)]:bg-(--background-medium-color)" style="container-type: inline-size;">
-                <i class="fas fa-home w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
+                <i class="fas fa-home w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
                 <p class="p-1">{{ .L.HomePage.HomePageDescription }}</p>
-                <i class="fas fa-search w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
+                <i class="fas fa-search w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
                 <p class="p-1">{{ .L.HomePage.BlogSearchDescription }}</p>
-                <i class="fas fa-map w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
+                <i class="fas fa-map w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
                 <p class="p-1">{{ .L.HomePage.MarkerMapDescription }}</p>
-                <i class="fas fa-swatchbook w-full h-full text-[10cqi] content-center text-center text-main-dark"></i>
+                <i class="fas fa-swatchbook w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
                 <p class="p-1">{{ .L.HomePage.ThemeSwitchDescription }}</p>
             </div>
         </div>

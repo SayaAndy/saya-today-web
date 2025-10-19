@@ -20,9 +20,9 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 		switch node := n.(type) {
 		case *ast.Heading:
 			classes := map[int]string{
-				1: "font-andika text-4xl font-bold text-main-dark mb-3 tracking-[.0125rem]",
-				2: "font-andika text-3xl font-bold text-main-dark mb-1 tracking-[.0125rem]",
-				3: "font-andika text-2xl font-medium text-main-dark mb-0.8 tracking-[.0125rem]",
+				1: "font-andika text-4xl font-bold text-main-hard mb-3 tracking-[.0125rem]",
+				2: "font-andika text-3xl font-bold text-main-hard mb-1 tracking-[.0125rem]",
+				3: "font-andika text-2xl font-medium text-main-hard mb-0.8 tracking-[.0125rem]",
 				4: "font-andika text-xl font-medium text-main-medium mb-0.5 tracking-[.0125rem]",
 				5: "font-andika text-base font-medium text-main-medium mb-0.5 italic tracking-[.0125rem]",
 				6: "font-andika text-base font-medium text-secondary mb-0.5",
@@ -58,7 +58,7 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 				onclickAttr := fmt.Appendf(make([]byte, 0, 21+len(node.Destination)), "return changeUrl('%s');", node.Destination)
 				node.SetAttribute([]byte("onclick"), onclickAttr)
 			}
-			node.SetAttribute([]byte("class"), []byte("text-secondary hover:text-main-dark underline"))
+			node.SetAttribute([]byte("class"), []byte("text-secondary hover:text-main-hard underline"))
 
 		case *ast.Image:
 			node.SetAttribute([]byte("class"), []byte("max-w-full h-auto rounded-lg shadow-lg mb-4"))
