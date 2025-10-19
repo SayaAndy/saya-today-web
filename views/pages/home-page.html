@@ -29,6 +29,7 @@
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Contacts }}</p>
+            <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <a href="https://t.me/EarlInisMona">
                 <i class="fa-brands fa-telegram w-4 h-4 mr-1"></i>
                 <span class="font-bold">Telegram:</span>
@@ -105,7 +106,7 @@
                 bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.SidebarDescription }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
-                [&>*:nth-child(4n+2)]:bg-(--background-medium-color) [&>*:nth-child(4n+3)]:bg-(--background-medium-color)" style="container-type: inline-size;">
+                [&>*:nth-child(4n+2)]:bg-(--background-medium-color)/50 [&>*:nth-child(4n+3)]:bg-(--background-medium-color)/50" style="container-type: inline-size;">
                 <i class="fas fa-home w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
                 <p class="p-1">{{ .L.HomePage.HomePageDescription }}</p>
                 <i class="fas fa-search w-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
