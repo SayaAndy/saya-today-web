@@ -1,0 +1,16 @@
+{{ define "body" }}
+<div class="flex flex-col justify-center text-3xl h-[100%]">
+    {{- range .AvailableLanguages }}
+    <hr class="border-t-2 border-dotted border-main-hard">
+    <div class="nth-[2n+1_of_div]:bg-(--background-medium-color)/50 nth-[2n_of_div]:bg-(--background-light-color)/50 p-2.5 flex flex-row justify-center justify-items-center">
+        <a href="/{{ .Name }}" class="w-12 h-12 basis-12 shrink-0 mr-4">
+            <img onclick="return changeUrl('{{ .Name }}');" class="w-full h-full aspect-square cursor-pointer object-cover rounded-md select-none" src="{{ .Flag }}">
+        </a>
+        <a href="/{{ .Name }}" onclick="return changeUrl('{{ .Name }}');" class="cursor-pointer">
+            {{ .Alt }}
+        </a>
+    </div>
+    {{- end }}
+    <hr class="border-t-2 border-dotted border-main-hard">
+</div>
+{{ end }}

@@ -1,5 +1,5 @@
 {{- range .BlogPages }}
-<hr class="first-of-type:hidden my-1 border-t-2 border-dotted border-main-dark">
+<hr class="first-of-type:hidden my-1 border-t-2 border-dotted border-main-hard">
 <div class="m-1 flex flex-row justify-center justify-items-center">
     <a href="{{ .ArticleLink }}" class="w-24 h-24 basis-24 shrink-0 my-2.5 mr-2">
         <img onclick="return changeUrl('{{ .ArticleLink }}');" class="w-full h-full aspect-square cursor-pointer object-cover rounded-lg select-none" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
@@ -13,7 +13,7 @@
             </a>
             <p class="basis-56 text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
-        <p class="text-base text-main-dark">{{ .ShortDescription }}</p>
+        <p class="text-base text-main-hard">{{ .ShortDescription }}</p>
         <p class="text-base text-secondary italic">
             <i class="fas fa-thumbs-up w-4 h-4"></i>
             <span>{{ .LikeCount }}</span>

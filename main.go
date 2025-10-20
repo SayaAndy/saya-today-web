@@ -52,7 +52,7 @@ var (
 	)
 	b2Client           *b2.B2Client
 	configPath         = flag.String("c", "config.yaml", "Path to the configuration file (in YAML format)")
-	availableLanguages = make([]string, 0)
+	availableLanguages = make([]config.AvailableLanguageConfig, 0)
 	localization       = make(map[string]*locale.LocaleConfig)
 )
 
@@ -108,7 +108,7 @@ func main() {
 			slog.Warn("fail to initialize a locale", slog.String("locale", lang.Name), slog.String("error", err.Error()))
 			continue
 		}
-		availableLanguages = append(availableLanguages, lang.Name)
+		availableLanguages = append(availableLanguages, lang)
 		localization[lang.Name] = localeCfg
 	}
 
@@ -144,7 +144,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	app.Get("/", router.Root(cfg.AvailableLanguages))
+	app.Get("/", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang<len(2)>", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
 	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))

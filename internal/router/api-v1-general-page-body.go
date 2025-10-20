@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -24,7 +25,7 @@ func init() {
 	tm.Add("general-page-body", "views/partials/general-page-body.html")
 }
 
-func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
+func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 
@@ -45,19 +46,26 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			return c.Status(fiber.StatusOK).Type("html").Send(val)
 		}
 
+		lang := ""
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) == 0 {
+		if len(pathParts) == 1 && pathParts[0] == "" {
+			pathParts = []string{}
+		}
+		if len(pathParts) > 0 {
+			lang = pathParts[0]
+			for _, availableLang := range langs {
+				if availableLang.Name == lang {
+					goto langIsAvailable
+				}
+			}
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
-		lang := pathParts[0]
-		if !slices.Contains(langs, lang) {
-			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
-		}
-
+	langIsAvailable:
 		values := fiber.Map{
 			"L":           l[lang],
 			"Lang":        lang,
+			"Path":        strings.Trim(path, "/"),
 			"QueryString": string(c.Request().URI().QueryString()),
 		}
 		var additionalTemplates []string
@@ -149,6 +157,10 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []string, 
 			values["GifName"] = fmt.Sprintf("otter-%d.gif", rand.Int()%3+1)
 			values["FunFacts"] = FactGiver.Give(lang)
 			additionalTemplates = append(additionalTemplates, "views/pages/home-page.html")
+		} else if len(pathParts) == 0 {
+			values["Title"] = "Choose Your Language"
+			values["AvailableLanguages"] = langs
+			additionalTemplates = append(additionalTemplates, "views/pages/language-pick.html")
 		}
 
 		content, err := tm.Render("general-page-body", values, additionalTemplates...)

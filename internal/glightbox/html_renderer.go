@@ -134,12 +134,12 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 		w.WriteString(fmt.Sprintf(`
 <div class="justify-content-center display-block m-1">
-	<hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%%] ml-auto mr-auto">
+	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
 	<div class="grid masonry-grid-%s mx-auto">
 		<div class="grid-sizer grid-sizer-%s"></div>
 		%s
 	</div>
-	<hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%%] ml-auto mr-auto">
+	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
 </div>`, galleryID, galleryID, strings.Join(elements, "\n")))
 
 		w.WriteString(fmt.Sprintf(`
@@ -147,25 +147,29 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 	var msnry_%s = new Masonry('.masonry-grid-%s', {
 		itemSelector: '.grid-item-%s',
 		columnWidth: '.grid-sizer-%s',
-		percentPosition: true
+		percentPosition: false,
+		fitWidth: true
 	});
 
 	var imgLoad_%s_timer;
 	var imgLoad_%s = imagesLoaded('.masonry-grid-%s');
 
-	function initMasonryLayout_%s() {
+	function initMasonryLayout_%s(tm) {
 		clearTimeout(imgLoad_%s_timer);
-		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 500);
+		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 300);
 	}
 
 	imgLoad_%s.on('progress', initMasonryLayout_%s);
 
+	window.addEventListener('resize', initMasonryLayout_%s);
+
 	document.addEventListener('popout', (e) => {
+		window.removeEventListener('resize', initMasonryLayout_%s);
 		imgLoad_%s.off('progress', initMasonryLayout_%s);
 		initMasonryLayout_%s = null;
 		imgLoad_%s = null;
-	});
-</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+	}, {once: true});
+</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
 	}
 
 	return ast.WalkContinue, nil

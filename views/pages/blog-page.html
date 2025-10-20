@@ -1,14 +1,14 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-col inset-shadow px-8 py-4 overflow-y-auto">
-    <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-spectral text-2xl font-bold italic text-main-dark tracking-[.0125rem] mb-1">{{ .Title }}</p>
-    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Published }}: {{ .PublishedDate }}</p>
-    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-spectral text-secondary">{{ .L.Metadata.Action }}: {{ .ActionDate }}</p>
-    <hr class="max-xs:block [@media(max-height:32rem)]:block hidden border-t-2 border-dotted border-main-dark mt-1 mb-2 w-full ml-auto mr-auto">
+<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-andika text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">{{ .Title }}</p>
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-andika text-secondary">{{ .L.Metadata.Published }}: {{ .PublishedDate }}</p>
+    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-andika text-secondary">{{ .L.Metadata.Action }}: {{ .ActionDate }}</p>
+    <hr class="max-xs:block [@media(max-height:32rem)]:block hidden border-t-2 border-dotted border-main-hard mt-1 mb-2 w-full ml-auto mr-auto">
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
-    <hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%] ml-auto mr-auto">
+    <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
     <div id="map-container" class="relative p-1 flex-none ml-auto mr-auto w-[60%] ar-lt-0.8:w-[80%] h-[40dvh] ar-lt-0.8:h-[30dvh]"></div>
-    <hr class="border-t-3 border-dotted border-main-dark mt-1 mb-2 w-[80%] ml-auto mr-auto">
+    <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
 
     <script>
         function initLocationMap(id, x, y, relativeErrorMeters = 0) {

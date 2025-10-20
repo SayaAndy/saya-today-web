@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log/slog"
 	"net/url"
-	"slices"
 	"strings"
 	"time"
 
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +16,7 @@ func init() {
 	tm.Add("general-page-footer", "views/partials/general-page-footer.html")
 }
 
-func Api_V1_GeneralPage_Footer(l map[string]*locale.LocaleConfig, langs []string) func(c *fiber.Ctx) error {
+func Api_V1_GeneralPage_Footer(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 
@@ -37,19 +37,26 @@ func Api_V1_GeneralPage_Footer(l map[string]*locale.LocaleConfig, langs []string
 			return c.Status(fiber.StatusOK).Type("html").Send(val)
 		}
 
+		lang := ""
 		pathParts := strings.Split(strings.Trim(path, "/"), "/")
-		if len(pathParts) == 0 {
+		if len(pathParts) == 1 && pathParts[0] == "" {
+			pathParts = []string{}
+		}
+		if len(pathParts) > 0 {
+			lang = pathParts[0]
+			for _, availableLang := range langs {
+				if availableLang.Name == lang {
+					goto langIsAvailable
+				}
+			}
 			return c.Status(fiber.ErrBadRequest.Code).SendString("'Referer' header is invalid: expect format '/{lang}/...'")
 		}
 
-		lang := pathParts[0]
-		if !slices.Contains(langs, lang) {
-			return c.Status(fiber.ErrNotFound.Code).SendString(fmt.Sprintf("server does not support '%s' language... yet??", lang))
-		}
-
+	langIsAvailable:
 		values := fiber.Map{
 			"L":           l[lang],
 			"Lang":        lang,
+			"Path":        strings.Trim(path, "/"),
 			"QueryString": string(c.Request().URI().QueryString()),
 		}
 		var additionalTemplates []string
@@ -60,6 +67,8 @@ func Api_V1_GeneralPage_Footer(l map[string]*locale.LocaleConfig, langs []string
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
 		} else if len(pathParts) == 1 {
 			additionalTemplates = append(additionalTemplates, "views/pages/home-page.html")
+		} else if len(pathParts) == 0 {
+			additionalTemplates = append(additionalTemplates, "views/pages/language-pick.html")
 		}
 
 		content, err := tm.Render("general-page-footer", values, additionalTemplates...)

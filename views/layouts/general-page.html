@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Patua+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/css/glightbox.min.css">
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-spectral text-main-dark overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row ar-lt-0.8:flex-col">
+<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-col [@media(max-height:32rem)]:flex-row">
 
     <script>
         let map = null;
@@ -20,14 +17,11 @@
 
     <script>
         function changeUrl(path, toAppend = false) {
-            const urlParams = new URLSearchParams(window.location.search); 
+            const urlParams = new URLSearchParams(window.location.search);
             const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
-            
+
             history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
-            if (location.pathname == "" || location.pathname == "/") {
-                return true;
-            }
             window.dispatchEvent(new Event('popstate'));
             return false;
         };
@@ -174,22 +168,20 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col ar-gt-0.8:items-center shadow-2xl z-20 w-[5rem] ar-lt-0.8:w-[100dvw] h-[100dvh] ar-lt-0.8:h-[8dvh]">
-        <div class="logo-custom block ar-lt-0.8:hidden [@media(max-height:32rem)]:hidden text-sidebar font-patua font-extrabold text-center relative z-20">
-            saya.today
-        </div>
-        <div class="text-[3rem] ar-lt-0.8:text-[5dvh] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-col ar-lt-0.8:flex-row gap-0 relative z-20">
-            <a href="/{{ .Lang }}" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
+    <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-[5rem] h-[5rem] [@media(max-height:32rem)]:h-[100dvh] mx-auto [@media(max-height:32rem)]:mx-0
+        shadow-[0_0_1rem_black]">
+        <div class="text-[3rem] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
+            <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-[5rem] h-[5rem]">
                 <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <a href="/{{ .Lang }}/blog" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
+            <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-[5rem] h-[5rem]">
                 <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <a href="/{{ .Lang }}/map" class="w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
+            <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-[5rem] h-[5rem]">
                 <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
-            <i onclick="toggleThemeWheel();" id="theme-button" class="fas fa-swatchbook flex w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
-            <a href="./" class="hidden max-xs:block [@media(max-height:32rem)]:block w-[5rem] ar-lt-0.8:w-[8dvh] h-[5rem] ar-lt-0.8:h-[8dvh]">
+            <i onclick="toggleThemeWheel();" id="sidebar-theme-button" class="fas fa-swatchbook flex w-[5rem] h-[5rem] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
+            <a href="./" id="sidebar-back-button" class="w-[5rem] h-[5rem]">
                 <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
             </a>
         </div>
@@ -200,10 +192,39 @@
             <div class="theme-icon" data-theme="ram"></div>
             <div class="theme-pin"></div>
         </div>
+        <script>
+            sidebarHomeButton = document.getElementById("sidebar-home-button");
+            sidebarMapButton = document.getElementById("sidebar-map-button");
+            sidebarBlogButton = document.getElementById("sidebar-blog-button");
+            sidebarBackButton = document.getElementById("sidebar-back-button");
+
+            function updateSidebar() {
+                if (location.pathname == "" || location.pathname == "/") {
+                    sidebarHomeButton.classList.add('hidden');
+                    sidebarMapButton.classList.add('hidden');
+                    sidebarBlogButton.classList.add('hidden');
+                    sidebarBackButton.classList.add('hidden');
+                } else {
+                    sidebarHomeButton.classList.remove('hidden');
+                    sidebarMapButton.classList.remove('hidden');
+                    sidebarBlogButton.classList.remove('hidden');
+                    sidebarBackButton.classList.remove('hidden');
+                    lang = location.pathname.split("/")[1];
+                    sidebarHomeButton.setAttribute('href', `/${lang}`);
+                    sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
+                    sidebarMapButton.setAttribute('href', `/${lang}/map`);
+                    sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
+                    sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+                }
+            }
+            window.addEventListener("popstate", updateSidebar);
+            window.addEventListener("load", updateSidebar, {once: true});
+        </script>
     </div>
 
-    <div class="bg-background-dark @container/main flex z-10 ar-lt-0.8:w-[100dvw] w-[90dvw] xs:w-[85dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[100dvh] ar-lt-0.8:max-h-[92dvh]">
-        <div class="bg-background-dark border-r-2 border-dashed border-main-dark"></div>
+    <div class="bg-background-dark @container/main flex z-10 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-[100dvh] mx-auto [@media(max-height:32rem)]:mx-0
+        shadow-[0_0_1rem_black]">
+        <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
         <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
             <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
@@ -211,7 +232,7 @@
             </div>
             <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
 
-            <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-dark mb-2">
+            <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
 
             <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
                 hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
@@ -223,10 +244,10 @@
             </div>
             <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
 
-            <hr class="border-t-4 border-dotted border-main-dark mb-2">
+            <hr class="border-t-4 border-dotted border-main-hard mb-2">
         </div>
 
-        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-dark"></div>
+        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
     </div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
@@ -241,7 +262,7 @@
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
-        const themeButton = document.getElementById('theme-button');
+        const themeButton = document.getElementById('sidebar-theme-button');
         const themeIcons = document.querySelectorAll('.theme-icon');
         const themeWheelRadius = convertRemToPixels(6);
 
