@@ -133,7 +133,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		}
 
 		w.WriteString(fmt.Sprintf(`
-<div class="justify-content-center display-block m-1">
+<div class="justify-content-center display-block">
 	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
 	<div class="grid masonry-grid-%s mx-auto">
 		<div class="grid-sizer grid-sizer-%s"></div>
@@ -156,7 +156,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 	function initMasonryLayout_%s(tm) {
 		clearTimeout(imgLoad_%s_timer);
-		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 300);
+		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 100);
 	}
 
 	imgLoad_%s.on('progress', initMasonryLayout_%s);

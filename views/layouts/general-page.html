@@ -9,7 +9,7 @@
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-col [@media(max-height:32rem)]:flex-row">
+<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row">
 
     <script>
         let map = null;
@@ -147,7 +147,8 @@
                     case "olive": theme = "lettuce"; break;
                     case "lettuce": theme = "night"; break;
                     case "night": theme = "ram"; break;
-                    case "ram": theme = "olive"; break;
+                    case "ram": theme = "lilac"; break;
+                    case "lilac": theme = "olive"; break;
                 }
             }
             localStorage.setItem('theme', theme);
@@ -155,7 +156,7 @@
             switchThemeDecor(theme);
         }
 
-        const savedTheme = localStorage.getItem('theme') || 'ram';
+        const savedTheme = localStorage.getItem('theme') || 'lilac';
         switchTheme(savedTheme);
     </script>
 
@@ -168,87 +169,92 @@
         const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     </script>
 
-    <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-[5rem] h-[5rem] [@media(max-height:32rem)]:h-[100dvh] mx-auto [@media(max-height:32rem)]:mx-0
-        shadow-[0_0_1rem_black]">
-        <div class="text-[3rem] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
-            <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-[5rem] h-[5rem]">
-                <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
-            </a>
-            <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-[5rem] h-[5rem]">
-                <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
-            </a>
-            <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-[5rem] h-[5rem]">
-                <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
-            </a>
-            <i onclick="toggleThemeWheel();" id="sidebar-theme-button" class="fas fa-swatchbook flex w-[5rem] h-[5rem] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
-            <a href="./" id="sidebar-back-button" class="w-[5rem] h-[5rem]">
-                <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
-            </a>
-        </div>
-        <div class="theme-wheel" id="theme-wheel">
-            <div class="theme-icon" data-theme="olive"></div>
-            <div class="theme-icon" data-theme="lettuce"></div>
-            <div class="theme-icon" data-theme="night"></div>
-            <div class="theme-icon" data-theme="ram"></div>
-            <div class="theme-pin"></div>
-        </div>
-        <script>
-            sidebarHomeButton = document.getElementById("sidebar-home-button");
-            sidebarMapButton = document.getElementById("sidebar-map-button");
-            sidebarBlogButton = document.getElementById("sidebar-blog-button");
-            sidebarBackButton = document.getElementById("sidebar-back-button");
+    <div class="grow bg-split-left"></div>
 
-            function updateSidebar() {
-                if (location.pathname == "" || location.pathname == "/") {
-                    sidebarHomeButton.classList.add('hidden');
-                    sidebarMapButton.classList.add('hidden');
-                    sidebarBlogButton.classList.add('hidden');
-                    sidebarBackButton.classList.add('hidden');
-                } else {
-                    sidebarHomeButton.classList.remove('hidden');
-                    sidebarMapButton.classList.remove('hidden');
-                    sidebarBlogButton.classList.remove('hidden');
-                    sidebarBackButton.classList.remove('hidden');
-                    lang = location.pathname.split("/")[1];
-                    sidebarHomeButton.setAttribute('href', `/${lang}`);
-                    sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
-                    sidebarMapButton.setAttribute('href', `/${lang}/map`);
-                    sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
-                    sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+    <div class="flex flex-col [@media(max-height:32rem)]:flex-row">
+        <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-[5rem] h-[5rem] [@media(max-height:32rem)]:h-[100dvh] shadow-[0_0_1rem_black]">
+            <div class="text-[3rem] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
+                <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-[5rem] h-[5rem]">
+                    <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                </a>
+                <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-[5rem] h-[5rem]">
+                    <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                </a>
+                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-[5rem] h-[5rem]">
+                    <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                </a>
+                <i onclick="toggleThemeWheel();" id="sidebar-theme-button" class="fas fa-swatchbook flex w-[5rem] h-[5rem] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
+                <a href="./" id="sidebar-back-button" class="w-[5rem] h-[5rem]">
+                    <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                </a>
+            </div>
+            <div class="theme-wheel" id="theme-wheel">
+                <div class="theme-icon" data-theme="olive"></div>
+                <div class="theme-icon" data-theme="lettuce"></div>
+                <div class="theme-icon" data-theme="night"></div>
+                <div class="theme-icon" data-theme="ram"></div>
+                <div class="theme-icon" data-theme="lilac"></div>
+                <div class="theme-pin"></div>
+            </div>
+            <script>
+                sidebarHomeButton = document.getElementById("sidebar-home-button");
+                sidebarMapButton = document.getElementById("sidebar-map-button");
+                sidebarBlogButton = document.getElementById("sidebar-blog-button");
+                sidebarBackButton = document.getElementById("sidebar-back-button");
+
+                function updateSidebar() {
+                    if (location.pathname == "" || location.pathname == "/") {
+                        sidebarHomeButton.classList.add('hidden');
+                        sidebarMapButton.classList.add('hidden');
+                        sidebarBlogButton.classList.add('hidden');
+                        sidebarBackButton.classList.add('hidden');
+                    } else {
+                        sidebarHomeButton.classList.remove('hidden');
+                        sidebarMapButton.classList.remove('hidden');
+                        sidebarBlogButton.classList.remove('hidden');
+                        sidebarBackButton.classList.remove('hidden');
+                        lang = location.pathname.split("/")[1];
+                        sidebarHomeButton.setAttribute('href', `/${lang}`);
+                        sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
+                        sidebarMapButton.setAttribute('href', `/${lang}/map`);
+                        sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
+                        sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+                    }
                 }
-            }
-            window.addEventListener("popstate", updateSidebar);
-            window.addEventListener("load", updateSidebar, {once: true});
-        </script>
-    </div>
-
-    <div class="bg-background-dark @container/main flex z-10 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-[100dvh] mx-auto [@media(max-height:32rem)]:mx-0
-        shadow-[0_0_1rem_black]">
-        <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
-
-        <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
-            <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
-                hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-            </div>
-            <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
-
-            <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
-
-            <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
-                hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-            </div>
-            <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
-
-            <div id="general-page-footer" class="flex flex-row basis-4 my-1"
-                hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-            </div>
-            <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
-
-            <hr class="border-t-4 border-dotted border-main-hard mb-2">
+                window.addEventListener("popstate", updateSidebar);
+                window.addEventListener("load", updateSidebar, {once: true});
+            </script>
         </div>
 
-        <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
+        <div class="bg-background-dark @container/main flex z-10 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-[100dvh] shadow-[0_0_1rem_black]">
+            <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
+
+            <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+                <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
+                    hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                </div>
+                <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
+
+                <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
+
+                <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
+                    hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                </div>
+                <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
+
+                <div id="general-page-footer" class="flex flex-row basis-4 my-1"
+                    hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                </div>
+                <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
+
+                <hr class="border-t-4 border-dotted border-main-hard mb-2">
+            </div>
+
+            <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
+        </div>
     </div>
+
+    <div class="grow bg-split-right"></div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
