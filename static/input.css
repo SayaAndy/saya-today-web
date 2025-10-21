@@ -445,10 +445,16 @@ a:hover, .linklike:hover {
     border-color: transparent transparent var(--background-dark-color) transparent;
 }
 
-.grid-item, .grid-sizer {
+.grid-item {
     position: relative;
     display: inline-block;
     width: 10rem;
+}
+
+.grid-sizer {
+    position: relative;
+    display: inline-block;
+    width: 10.1rem;
 }
 
 .grid-item-index {
@@ -475,8 +481,12 @@ a:hover, .linklike:hover {
 }
 
 @container main (width >= 40rem) {
-    .grid-item, .grid-sizer {
+    .grid-item {
         width: 12rem;
+    }
+
+    .grid-sizer {
+        width: 12.1rem;
     }
 
     .grid-item-2x {
@@ -485,8 +495,12 @@ a:hover, .linklike:hover {
 }
 
 @container main (width >= 76rem) {
-    .grid-item, .grid-sizer {
+    .grid-item {
         width: 18rem;
+    }
+
+    .grid-sizer {
+        width: 18.1rem;
     }
 
     .grid-item-2x {
@@ -495,8 +509,12 @@ a:hover, .linklike:hover {
 }
 
 @container main (width >= 128rem) {
-    .grid-item, .grid-sizer {
+    .grid-item {
         width: 24rem;
+    }
+
+    .grid-sizer {
+        width: 24.1rem;
     }
 
     .grid-item-2x {
