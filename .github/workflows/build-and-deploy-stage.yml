@@ -31,7 +31,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: "${{ secrets.GHCR_TOKEN }}"
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Set github short sha
         id: ghss_vars
@@ -60,7 +60,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           (cat <<EOF
-          "${{ secrets.SVC_GITHUB_PK }}"
+          ${{ secrets.SVC_GITHUB_PK }}
           EOF
           ) > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
