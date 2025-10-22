@@ -31,7 +31,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: "${{ secrets.GHCR_TOKEN }}"
 
       - name: Set github short sha
         id: ghss_vars
@@ -60,7 +60,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           (cat <<EOF
-          ${{ secrets.SVC_GITHUB_PK }}
+          "${{ secrets.SVC_GITHUB_PK }}"
           EOF
           ) > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
@@ -86,4 +86,4 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
         working-directory: ./deploy
         run: |
-          ansible-playbook -i inventory.yml -l stage playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_auth_salt=${{ secrets.AUTH_SALT }} -e saya_today_web_b2_key_id=${{ secrets.B2_KEY_ID }} -e saya_today_web_b2_application_key=${{ secrets.B2_APPLICATION_KEY }} -e saya_today_web_environment=stage -e saya_today_web_tag=commit-${{ steps.ghss_vars.outputs.sha_short }} -e saya_today_web_mail_salt=${{ secrets.MAIL_SALT }} -e saya_today_web_mail_host=${{ secrets.MAIL_HOST }} -e saya_today_web_mail_address=${{ secrets.MAIL_ADDRESS }} -e saya_today_web_mail_username=${{ secrets.MAIL_USERNAME }} -e saya_today_web_mail_password=${{ secrets.MAIL_PASSWORD }}
+          ansible-playbook -i inventory.yml -l stage playbook.yml --private-key ~/.ssh/id_ed25519 -u svc_github -e saya_today_web_auth_salt="${{ secrets.AUTH_SALT }}" -e saya_today_web_b2_key_id="${{ secrets.B2_KEY_ID }}" -e saya_today_web_b2_application_key="${{ secrets.B2_APPLICATION_KEY }}" -e saya_today_web_environment=stage -e saya_today_web_tag=commit-${{ steps.ghss_vars.outputs.sha_short }} -e saya_today_web_mail_salt="${{ secrets.MAIL_SALT }}" -e saya_today_web_mail_host="${{ secrets.MAIL_HOST }}" -e saya_today_web_mail_address="${{ secrets.MAIL_ADDRESS }}" -e saya_today_web_mail_username="${{ secrets.MAIL_USERNAME }}" -e saya_today_web_mail_password="${{ secrets.MAIL_PASSWORD }}"
