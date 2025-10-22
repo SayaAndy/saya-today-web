@@ -17,7 +17,7 @@ import (
 )
 
 func init() {
-	tm.Add("catalogue-blog-cards", "views/partials/catalogue-blog-cards.html", "views/partials/catalogue-blog-card-tags.html")
+	assert(0, tm.Add("catalogue-blog-cards", "views/partials/catalogue-blog-cards.html", "views/partials/catalogue-blog-card-tags.html"))
 }
 
 func Api_V1_BlogSearch(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client) func(c *fiber.Ctx) error {

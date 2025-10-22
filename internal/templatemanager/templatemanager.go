@@ -31,6 +31,7 @@ var templateFuncMap = template.FuncMap{
 		}
 		return items
 	},
+	"replace": strings.ReplaceAll,
 }
 
 func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager, error) {

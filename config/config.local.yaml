@@ -34,3 +34,11 @@ auth:
     config:
       dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc'
   salt: '123'
+mail:
+  clientHost: '127.0.0.1:3000'
+  mailHost: '${MAIL_HOST}'
+  publicName: 'LOCAL.SAYA.TODAY'
+  mailAddress: '${MAIL_ADDRESS}'
+  username: '${MAIL_USERNAME}'
+  password: '${MAIL_PASSWORD}'
+  salt: '${MAIL_SALT}'

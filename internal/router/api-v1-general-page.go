@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"log/slog"
 	"strings"
 
@@ -10,7 +11,7 @@ import (
 )
 
 func init() {
-	tm.Add("general-page", "views/layouts/general-page.html")
+	assert(0, tm.Add("general-page", "views/layouts/general-page.html"))
 }
 
 func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
@@ -34,7 +35,8 @@ func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []config.Availa
 		}
 
 	langIsAvailable:
-		cacheKey := "general-page." + lang
+		queryString := string(c.Request().URI().QueryString())
+		cacheKey := fmt.Sprintf("general-page.%s?%s", lang, queryString)
 		if val, ok := PCache.Get(cacheKey); val != nil && ok {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 			return c.Status(fiber.StatusOK).Type("html").Send(val)
@@ -43,7 +45,7 @@ func Api_V1_GeneralPage(l map[string]*locale.LocaleConfig, langs []config.Availa
 		content, err := tm.Render("general-page", fiber.Map{
 			"L":           l[lang],
 			"Lang":        lang,
-			"QueryString": string(c.Request().URI().QueryString()),
+			"QueryString": queryString,
 		})
 		if err != nil {
 			slog.Warn("failed to generate div", slog.String("path", path), slog.String("error", err.Error()))

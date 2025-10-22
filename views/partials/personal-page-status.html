@@ -1,0 +1,12 @@
+<div id="{{ .StatusId }}" class='z-26 w-full inset-shadow-[0_0_0.4rem_black]
+    {{if eq .Status "OK"}}bg-green-700 text-green-100
+    {{else if eq .Status "Failed"}}bg-red-700 text-red-100
+    {{else}}bg-background-dark text-main-soft{{end}}
+    {{if eq .Message ""}}hidden{{end}}
+    py-2 px-4 text-center'
+    {{- range $_, $val := .DataAttributes }}
+    {{ $val }}
+    {{- end }}
+    >
+    {{ .Message }}
+</div>

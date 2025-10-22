@@ -25,3 +25,30 @@ HomePage:
 Metadata:
   Published: 'Published'
   Action: 'Took place on'
+Mail:
+  VerifyEmail:
+    Subject: 'Verification Link for SAYA.TODAY is waiting for you!'
+    Welcome: 'Greetings!'
+    Intro: 'There are 2 ways for us to validate your profile:'
+    GotoLink: 'Go by this link:'
+    InputCode: "Or input this code on the personal page:"
+    IfRandom: 'If you are unsure what this letter this, you can ignore it, and also, if you are interested, you may visit my site :)'
+  NewPost:
+    Subject: 'New post arrived at SAYA.TODAY!'
+UserProfile:
+  Header: 'Personal Settings'
+  EmailHeader: 'E-Mail'
+  VerificationCodeHeader: 'Verification Code'
+  TypeEmail: 'Please type your email'
+  SendCodeButton: 'Send Code'
+  VerifyButton: 'Verify'
+  VerificationCodeSent: 'Verification code sent! Please check your e-mail. Your next verification attempt will be possible on {}.'
+  DelayTilVerification: 'You have already requested the verification before! Please wait until {} for a new verification request.'
+  FailedEmailRender: 'Failed to render the email status message, please ask administrator for a more detailed cause.'
+  VerificationCodeSendingError: 'Failed to send a verification code, please ask administrator for a more detailed cause.'
+  EmailAlreadyValidated: 'You already have this E-Mail validated.'
+  EmailTaken: 'This E-Mail is already taken.'
+  EmailEmpty: 'E-Mail is unset or empty.'
+  VerificationSuccess: 'Success! You are now able to subscribe with your new e-mail.'
+  VerificationFailed: 'Verification code is invalid, please ask administrator for a more detailed cause.'
+  VerificationEmpty: 'Verification code is unset or empty.'

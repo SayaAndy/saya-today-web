@@ -1,0 +1,10 @@
+{{ define "body" }}
+<p>{{ .L.Mail.VerifyEmail.Welcome }}</p>
+<p>{{ .L.Mail.VerifyEmail.Intro }}</p>
+<ol>
+    <li>{{ .L.Mail.VerifyEmail.GotoLink }} <a href="https://{{ .ClientHost }}/{{ .Lang }}/user?email_code={{ .VerificationCode }}" class="outlier">&gt;&gt;&gt;</a></li>
+    <li>{{ .L.Mail.VerifyEmail.InputCode }} <span class="outlier">{{ .VerificationCode }}</span><span></li>
+</ol>
+<p>{{ .L.Mail.VerifyEmail.IfRandom }}</p>
+<a href="https://{{ .ClientHost }}" class="outlier">{{ .ClientHost }}</a>
+{{ end }}

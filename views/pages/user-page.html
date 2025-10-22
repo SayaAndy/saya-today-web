@@ -1,0 +1,96 @@
+{{ define "body" }}
+<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
+    <form id="email-form" class="w-full mb-2 flex flex-col relative"
+        hx-get="/api/v1/email/is-in-verification" hx-target="#email-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this">
+        <div class="flex flex-row w-full mb-4 z-21">
+            <div class="flex flex-col flex-3/5 grow-0">
+                <label class="block text-main-medium font-bold mb-1 z-22">
+                    {{ .L.UserProfile.EmailHeader }}
+                </label>
+                <input class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                id="email-input" name="email" type="text" value="{{ .Email }}" placeholder="{{ .L.UserProfile.TypeEmail }}" maxlength="64"
+                data-validated-email="{{ .Email }}" onchange="checkIfValidated(this);">
+            </div>
+        </div>
+        <button class="w-1/3 mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+            hx-post="/api/v1/email/send-verification-code" hx-target="#email-message" hx-swap="outerHTML" hx-indicator="#email-form">
+            {{ .L.UserProfile.SendCodeButton }}
+        </button>
+    </form>
+    <div id="email-message"></div>
+    <hr class="my-2 border-t-4 border-dotted border-main-hard">
+    <form id="email-verification-form" class="w-full mb-2 flex flex-col relative hidden"
+        {{ if .EmailCode }}hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this"{{ end }}>
+        <div class="flex flex-row w-full mb-4 z-21">
+            <div class="flex flex-col flex-2/5 grow-0">
+                <label class="block text-main-medium font-bold ml-1 z-22">
+                    {{ .L.UserProfile.VerificationCodeHeader }}
+                </label>
+                <input class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16">
+            </div>
+        </div>
+        <button class="w-1/3 mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+            hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-indicator="#email-verification-form">
+            {{ .L.UserProfile.VerifyButton }}
+        </button>
+    </form>
+    <div id="verification-message"></div>
+</div>
+
+<script>
+htmx.on("htmx:beforeSwap", (e) => {
+    if (e.detail.xhr.status === 422) {
+        e.detail.shouldSwap = true;
+        e.detail.isError = false;
+    }
+});
+
+var formAllowTimeout;
+var verificationHideTimeout;
+
+var url = new URL(window.location.href);
+url.searchParams.delete('email_code');
+window.history.pushState({}, '', url.toString());
+
+htmx.on("htmx:afterSwap", (e) => {
+    emailMessage = htmx.find("#email-message");
+    verificationMessage = htmx.find("#verification-message");
+    emailForm = htmx.find("#email-form");
+    emailVerificationForm = htmx.find("#email-verification-form");
+    tryAgainTimeDiff = parseInt(emailMessage.dataset.strikedEndTime || "0") - new Date().getTime();
+    verificationWaitingTimeDiff = parseInt(emailMessage.dataset.codeExpiryTime || "0") - new Date().getTime();
+
+    if (tryAgainTimeDiff > 0) {
+        emailForm.classList.add("disabled");
+        formAllowTimeout = setTimeout(() => {
+            emailForm.classList.remove("disabled");
+            emailMessage.classList.add("hidden");
+        }, tryAgainTimeDiff);
+    } else {
+        emailForm.classList.remove("disabled");
+    }
+
+    if (verificationWaitingTimeDiff > 0) {
+        verificationHideTimeout = setTimeout(() => emailVerificationForm.classList.add("hidden"), verificationWaitingTimeDiff);
+        emailVerificationForm.classList.remove("hidden");
+    } else {
+        emailVerificationForm.classList.add("hidden");
+    }
+
+    if ((verificationMessage.dataset.hideVerificationPanel || "false") == "true") {
+        emailVerificationForm.classList.add("hidden");
+    }
+});
+
+function checkIfValidated(elem) {
+    if ((elem.dataset.validatedEmail != "") && (elem.value == elem.dataset.validatedEmail)) {
+        elem.classList.add("!bg-green-300/20");
+    } else {
+        elem.classList.remove("!bg-green-300/20");
+    }
+}
+
+checkIfValidated(htmx.find("#email-input"));
+</script>
+{{ end }}

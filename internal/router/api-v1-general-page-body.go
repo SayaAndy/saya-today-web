@@ -1,6 +1,7 @@
 package router
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"log/slog"
@@ -14,15 +15,18 @@ import (
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
+	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
+	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
 
 var FactGiver *factgiver.FactGiver
+var Mailer *mailer.Mailer
 
 func init() {
-	tm.Add("general-page-body", "views/partials/general-page-body.html")
+	assert(0, tm.Add("general-page-body", "views/partials/general-page-body.html"))
 }
 
 func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
@@ -39,15 +43,16 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 		}
 
 		path := urlStruct.EscapedPath()
+		trimmedPath := strings.Trim(path, "/")
 
-		cacheKey := fmt.Sprintf("body.%s", path)
-		if val, ok := PCache.Get(cacheKey); val != nil && ok {
+		cacheKey := fmt.Sprintf("body.%s", trimmedPath)
+		if val, ok := PCache.Get(cacheKey); !strings.HasSuffix(trimmedPath, "user") && val != nil && ok {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 			return c.Status(fiber.StatusOK).Type("html").Send(val)
 		}
 
 		lang := ""
-		pathParts := strings.Split(strings.Trim(path, "/"), "/")
+		pathParts := strings.Split(trimmedPath, "/")
 		if len(pathParts) == 1 && pathParts[0] == "" {
 			pathParts = []string{}
 		}
@@ -123,6 +128,17 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 			values["Title"] = l[lang].BlogSearch.Header
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
+		} else if len(pathParts) == 2 && pathParts[1] == "user" {
+			values["Title"] = l[lang].UserProfile.Header
+
+			email, _, err := Mailer.GetInfo(c.IP())
+			if err != nil {
+				slog.Error("get info from mailer about a client", slog.String("error", err.Error()))
+			}
+			values["Email"] = email
+			values["EmailCode"] = c.Query("email_code")
+
+			additionalTemplates = append(additionalTemplates, "views/pages/user-page.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
 			metadata, parsedMarkdown, err := readBlogPost(md, b2Client, lang+"/"+pathParts[2])
 			if err != nil {
@@ -173,4 +189,18 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 		c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 		return c.Status(fiber.StatusOK).Type("html").Send(content)
 	}
+}
+
+func readBlogPost(md goldmark.Markdown, b2Client *b2.B2Client, sourceName string) (metadata *frontmatter.Metadata, html string, err error) {
+	metadata, markdown, err := b2Client.ReadFrontmatter(sourceName + ".md")
+	if err != nil {
+		return nil, "", fmt.Errorf("failed to read a frontmatter file: %w", err)
+	}
+
+	var buf bytes.Buffer
+	if err := md.Convert(markdown, &buf); err != nil {
+		return nil, "", fmt.Errorf("convert source context from md to html: %w", err)
+	}
+
+	return metadata, buf.String(), nil
 }

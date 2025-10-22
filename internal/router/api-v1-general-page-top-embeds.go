@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	tm.Add("general-page-top-embeds", "views/partials/general-page-top-embeds.html")
+	assert(0, tm.Add("general-page-top-embeds", "views/partials/general-page-top-embeds.html"))
 }
 
 func Api_V1_GeneralPage_TopEmbeds(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig) func(c *fiber.Ctx) error {
@@ -63,6 +63,8 @@ func Api_V1_GeneralPage_TopEmbeds(l map[string]*locale.LocaleConfig, langs []con
 
 		if len(pathParts) == 2 && pathParts[1] == "blog" {
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
+		} else if len(pathParts) == 2 && pathParts[1] == "user" {
+			additionalTemplates = append(additionalTemplates, "views/pages/user-page.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-page.html")
 		} else if len(pathParts) == 1 {

@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	tm.Add("general-page-header", "views/partials/general-page-header.html")
+	assert(0, tm.Add("general-page-header", "views/partials/general-page-header.html"))
 }
 
 func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
@@ -65,6 +65,9 @@ func Api_V1_GeneralPage_Header(l map[string]*locale.LocaleConfig, langs []config
 		if len(pathParts) == 2 && pathParts[1] == "blog" {
 			values["Title"] = l[lang].BlogSearch.Header
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
+		} else if len(pathParts) == 2 && pathParts[1] == "user" {
+			values["Title"] = l[lang].UserProfile.Header
+			additionalTemplates = append(additionalTemplates, "views/pages/user-page.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
 			metadata, _, err := b2Client.ReadFrontmatter(lang + "/" + pathParts[2] + ".md")
 			if err != nil {
