@@ -43,6 +43,14 @@ type Mailer struct {
 	l map[string]*locale.LocaleConfig
 }
 
+type SubscriptionType int
+
+const (
+	All SubscriptionType = iota
+	None
+	Specific
+)
+
 func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string, mailAddress string, username string, password string, salt []byte, localization map[string]*locale.LocaleConfig) (*Mailer, error) {
 	verificationCodes, err := ristretto.NewCache(&ristretto.Config[uint64, string]{
 		NumCounters:            10000,
@@ -277,5 +285,73 @@ func (m *Mailer) Verify(verificationCodeEncoded string, lang string) error {
 
 	m.verificationCodes.Del(verificationCode)
 	delete(m.lostMailMap, verificationSegments[0])
+	return nil
+}
+
+func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionType, tags []string, err error) {
+	tx, err := m.db.Begin()
+	if err != nil {
+		return None, nil, fmt.Errorf("failed to initialize transaction with db: %s", err)
+	}
+
+	hash := m.GetHash(userId)
+
+	var rows *sql.Rows
+	if rows, err = tx.Query(`SELECT tags FROM subscription_user_to_tags_table WHERE user_id=? LIMIT 1;`, hash); err != nil {
+		tx.Rollback()
+		return None, nil, fmt.Errorf("failed to query user-to-tags table in db for the user: %s", err)
+	}
+	defer tx.Commit()
+	defer rows.Close()
+
+	if !rows.Next() {
+		return None, nil, nil
+	}
+
+	tagsString := ""
+	if err = rows.Scan(&tagsString); err != nil {
+		return None, nil, fmt.Errorf("failed to scan the result from user-to-tags query: %s", err)
+	}
+
+	switch tagsString {
+	case "":
+		return None, nil, nil
+	case "_all":
+		return All, nil, nil
+	default:
+		return Specific, strings.Split(tagsString, ","), nil
+	}
+}
+
+func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tags ...string) error {
+	tx, err := m.db.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to initialize transaction with db: %s", err)
+	}
+
+	tagsOutput := ""
+	switch subscriptionType {
+	case All:
+		tagsOutput = "_all"
+	case None:
+		tagsOutput = ""
+	case Specific:
+		tagsOutput = strings.Join(tags, ",")
+	}
+
+	hash := m.GetHash(userId)
+
+	if _, err = tx.Exec(`INSERT INTO subscription_user_to_tags_table(user_id, tags) VALUES(?, ?)
+  ON CONFLICT(user_id) DO UPDATE SET
+  	tags=excluded.tags;`, hash, tagsOutput); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("failed to configure user-to-tags table in db for the user: %s", err)
+	}
+
+	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("failed to commit transaction to db: %s", err)
+	}
+
 	return nil
 }

@@ -1,9 +1,9 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
+<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
     <form id="email-form" class="w-full mb-2 flex flex-col relative"
         hx-get="/api/v1/email/is-in-verification" hx-target="#email-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this">
         <div class="flex flex-row w-full mb-4 z-21">
-            <div class="flex flex-col flex-3/5 grow-0">
+            <div class="flex flex-col w-full sm:flex-3/5 grow-0">
                 <label class="block text-main-medium font-bold mb-1 z-22">
                     {{ .L.UserProfile.EmailHeader }}
                 </label>
@@ -12,30 +12,78 @@
                 data-validated-email="{{ .Email }}" onchange="checkIfValidated(this);">
             </div>
         </div>
-        <button class="w-1/3 mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/send-verification-code" hx-target="#email-message" hx-swap="outerHTML" hx-indicator="#email-form">
             {{ .L.UserProfile.SendCodeButton }}
         </button>
     </form>
-    <div id="email-message"></div>
+    <div id="email-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
+
     <hr class="my-2 border-t-4 border-dotted border-main-hard">
+
     <form id="email-verification-form" class="w-full mb-2 flex flex-col relative hidden"
         {{ if .EmailCode }}hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this"{{ end }}>
         <div class="flex flex-row w-full mb-4 z-21">
-            <div class="flex flex-col flex-2/5 grow-0">
+            <div class="flex flex-col w-full sm:flex-2/5 grow-0">
                 <label class="block text-main-medium font-bold ml-1 z-22">
                     {{ .L.UserProfile.VerificationCodeHeader }}
                 </label>
                 <input class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
-                name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16">
+                name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16" autocapitalize="characters">
             </div>
         </div>
-        <button class="w-1/3 mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-indicator="#email-verification-form">
             {{ .L.UserProfile.VerifyButton }}
         </button>
     </form>
-    <div id="verification-message"></div>
+    <div id="verification-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
+</div>
+
+<hr class="my-4 border-t-4 border-dotted border-main-hard">
+
+<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
+    <form id="subs-form" class="w-full mb-2 flex flex-col relative">
+        <div class="flex flex-col w-full mb-4 z-21">
+            <label class="block text-main-medium font-bold mb-1 z-22">
+                {{ .L.UserProfile.SubscriptionHeader }}
+            </label>
+            <div class="flex flex-col sm:flex-row w-full">
+                <div class="m-1 w-1/3">
+                    <label><input class="mr-1" type="radio" id="tagsNone" name="tags" value="none" {{ if eq .TagsPicked "none" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsNone }}</label>
+                </div>
+                <div class="m-1 w-1/3">
+                    <label><input class="mr-1" type="radio" id="tagsAll" name="tags" value="all" {{ if eq .TagsPicked "all" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsAll }}</label>
+                </div>
+                <div class="m-1 w-1/3">
+                    <label><input class="mr-1" type="radio" id="tagsSpecific" name="tags" value="specific" {{ if eq .TagsPicked "specific" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsSpecific }}</label>
+                </div>
+            </div>
+            <div id="pick-tags-form" class="flex flex-col w-full relative">
+                <input type="text" class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                    list="existing-tags" onchange="addTag(this.value);" onkeydown="if (event.keyCode === 13) {addTag(this.value); this.value=''; return false;}">
+                <datalist id="existing-tags">
+                    {{- range .ExistingTags }}
+                    <option value="{{ .Name }}">
+                    {{- end }}
+                </datalist>
+                <div id="tags-picked-list" class="bg-background-dark flex flex-wrap inset-shadow-[0_0_0.4rem_black] p-2 m-4 w-full">
+                    {{- range .TagsPickedList }}
+                    <div id="tagPicked{{ . }}" class="bg-main-hard text-background-light m-2 flex flex-row">
+                        <p class="py-1 px-2">{{ . }}</p>
+                        <p class="py-1 px-2 bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked{{ . }}'));">✘</p>
+                        <input type="hidden" name="tags_picked" value="{{ . }}">
+                    </div>
+                    {{- end }}
+                </div>
+            </div>
+            <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+                hx-put="/api/v1/subs" hx-target="#subs-message" hx-swap="outerHTML" hx-indicator="#subs-form">
+                {{ .L.UserProfile.SaveButton }}
+            </button>
+        </div>
+    </form>
+    <div id="subs-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
 </div>
 
 <script>
@@ -92,5 +140,58 @@ function checkIfValidated(elem) {
 }
 
 checkIfValidated(htmx.find("#email-input"));
+
+function toggleTagsPick(elem) {
+    const pickTagsForm = htmx.find("#pick-tags-form");
+    if (elem.value === "specific" && elem.checked) {
+        pickTagsForm.classList.remove("disabled");
+    } else {
+        pickTagsForm.classList.add("disabled");
+    }
+}
+
+toggleTagsPick(htmx.find("#tagsSpecific"));
+
+function addTag(name) {
+    name = name.trim();
+    const subsMessage = htmx.find("#subs-message");
+    const existingTags = htmx.findAll(htmx.find("#existing-tags"), "option");
+    found = [...existingTags].find(opt => opt.value===name);
+    if (!found) {
+        subsMessage.classList.remove("hidden");
+        subsMessage.innerHTML = "{{ .L.UserProfile.TagDoesNotExist }}".replace("{}", name);
+        return;
+    }
+
+    const tagsPickedList = htmx.find("#tags-picked-list");
+    const subscribedTags = htmx.findAll(tagsPickedList, "div input");
+    found = [...subscribedTags].find(opt => opt.value===name);
+    if (found) {
+        subsMessage.classList.remove("hidden");
+        subsMessage.innerHTML = "{{ .L.UserProfile.TagAlreadyAdded }}".replace("{}", name);
+        return;
+    }
+
+    tagsPickedList.innerHTML += `
+    <div id="tagPicked${name}" class="bg-main-hard text-background-light m-2 flex flex-row">
+        <p class="py-1 px-2">${name}</p>
+        <p class="py-1 px-2 bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked${name}'));">✘</p>
+        <input type="hidden" name="tags_picked" value="${name}">
+    </div>
+    `;
+}
+
+htmx.on("htmx:configRequest", (e) => {
+    const params = e.detail.parameters;
+
+    if (Array.isArray(params.tags_picked)) {
+        tags_join = params.tags_picked[0] || "";
+        for (i = 1; i < params.tags_picked.length; i++) {
+            tags_join += ",";
+            tags_join += params.tags_picked[i];
+        }
+        params.tags_picked = tags_join;
+    }
+})
 </script>
 {{ end }}

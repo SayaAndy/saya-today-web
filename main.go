@@ -171,6 +171,7 @@ func main() {
 	app.Post("/api/v1/email/send-verification-code", router.Api_V1_Email_SendVerificationCode(localization))
 	app.Post("/api/v1/email/verify", router.Api_V1_Email_Verify(localization))
 	app.Get("/api/v1/email/is-in-verification", router.Api_V1_Email_IsInVerification(localization))
+	app.Put("/api/v1/subs", router.Api_V1_Subs_Put(localization))
 
 	app.Static("/", "./static")
 

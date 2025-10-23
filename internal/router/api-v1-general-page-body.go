@@ -95,32 +95,11 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 				queryTags = append(queryTags, string(match[1]))
 			}
 
-			pages, err := b2Client.Scan(lang + "/")
+			tagsArray, err := getTags(b2Client, lang)
 			if err != nil {
-				slog.Warn("failed to scan pages via b2", slog.String("error", err.Error()))
-				return c.Status(fiber.ErrInternalServerError.Code).SendString(fmt.Sprintf("failed to scan pages via b2: %s", slog.String("error", err.Error())))
+				slog.Warn("failed to get the available tags", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to gather available tags")
 			}
-
-			tagsMap := make(map[string]int)
-			for _, page := range pages {
-				for _, tag := range page.Metadata.Tags {
-					tagsMap[tag]++
-				}
-			}
-			slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("path", c.Path()))
-
-			type Tag struct {
-				Name  string `json:"Name" yaml:"name"`
-				Count int    `json:"Count" yaml:"count"`
-			}
-
-			tagsArray := make([]Tag, 0, len(tagsMap))
-			for tag, count := range tagsMap {
-				tagsArray = append(tagsArray, Tag{tag, count})
-			}
-			slices.SortFunc(tagsArray, func(a Tag, b Tag) int {
-				return strings.Compare(a.Name, b.Name)
-			})
 
 			values["Tags"] = tagsArray
 			values["QuerySort"] = querySort
@@ -135,8 +114,33 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 			if err != nil {
 				slog.Error("get info from mailer about a client", slog.String("error", err.Error()))
 			}
+
+			tagsArray, err := getTags(b2Client, lang)
+			if err != nil {
+				slog.Warn("failed to get the available tags", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to gather available tags")
+			}
+
+			subscriptionType, tags, err := Mailer.GetSubscriptions(c.IP())
+			if err != nil {
+				slog.Warn("failed to get the user subscriptions", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to get the user subscriptions")
+			}
+
+			switch subscriptionType {
+			case mailer.None:
+				values["TagsPicked"] = "none"
+			case mailer.All:
+				values["TagsPicked"] = "all"
+			case mailer.Specific:
+				values["TagsPicked"] = "specific"
+			}
+
+			values["TagsPickedList"] = tags
+
 			values["Email"] = email
 			values["EmailCode"] = c.Query("email_code")
+			values["ExistingTags"] = tagsArray
 
 			additionalTemplates = append(additionalTemplates, "views/pages/user-page.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
@@ -203,4 +207,35 @@ func readBlogPost(md goldmark.Markdown, b2Client *b2.B2Client, sourceName string
 	}
 
 	return metadata, buf.String(), nil
+}
+
+type Tag struct {
+	Name  string `json:"Name" yaml:"name"`
+	Count int    `json:"Count" yaml:"count"`
+}
+
+func getTags(b2Client *b2.B2Client, lang string) (tags []Tag, err error) {
+	pages, err := b2Client.Scan(lang + "/")
+	if err != nil {
+		slog.Warn("failed to scan pages via b2", slog.String("error", err.Error()))
+		return nil, fmt.Errorf("failed to scan pages via b2: %w", err)
+	}
+
+	tagsMap := make(map[string]int)
+	for _, page := range pages {
+		for _, tag := range page.Metadata.Tags {
+			tagsMap[tag]++
+		}
+	}
+	slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("lang", lang))
+
+	tagsArray := make([]Tag, 0, len(tagsMap))
+	for tag, count := range tagsMap {
+		tagsArray = append(tagsArray, Tag{tag, count})
+	}
+	slices.SortFunc(tagsArray, func(a Tag, b Tag) int {
+		return strings.Compare(a.Name, b.Name)
+	})
+
+	return tagsArray, nil
 }

@@ -180,8 +180,8 @@ a:hover, .linklike:hover {
     text-decoration: underline;
 }
 
-form.disabled::before,
-form.htmx-request::before {
+.disabled::before,
+.htmx-request::before {
     content: '';
     position: absolute;
     top: 0;

@@ -86,6 +86,16 @@ type UserProfileConfig struct {
 	VerificationSuccess          string `yaml:"VerificationSuccess" json:"VerificationSuccess"`
 	VerificationFailed           string `yaml:"VerificationFailed" json:"VerificationFailed"`
 	VerificationEmpty            string `yaml:"VerificationEmpty" json:"VerificationEmpty"`
+	SubscriptionHeader           string `yaml:"SubscriptionHeader" json:"SubscriptionHeader"`
+	TagsNone                     string `yaml:"TagsNone" json:"TagsNone"`
+	TagsAll                      string `yaml:"TagsAll" json:"TagsAll"`
+	TagsSpecific                 string `yaml:"TagsSpecific" json:"TagsSpecific"`
+	TagDoesNotExist              string `yaml:"TagDoesNotExist" json:"TagDoesNotExist"`
+	TagAlreadyAdded              string `yaml:"TagAlreadyAdded" json:"TagAlreadyAdded"`
+	SaveButton                   string `yaml:"SaveButton" json:"SaveButton"`
+	SubscribeInvalidType         string `yaml:"SubscribeInvalidType" json:"SubscribeInvalidType"`
+	FailedToSubscribe            string `yaml:"FailedToSubscribe" json:"FailedToSubscribe"`
+	SubscribedSuccessfully       string `yaml:"SubscribedSuccessfully" json:"SubscribedSuccessfully"`
 }
 
 func LoadConfig(path string, config *LocaleConfig) error {
