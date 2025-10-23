@@ -1,6 +1,6 @@
 {{ define "body" }}
 <div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
-    <form id="email-form" class="w-full mb-2 flex flex-col relative"
+    <form id="email-form" class="w-full mb-2 flex flex-col relative crossable"
         hx-get="/api/v1/email/is-in-verification" hx-target="#email-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this">
         <div class="flex flex-row w-full mb-4 z-21">
             <div class="flex flex-col w-full sm:flex-3/5 grow-0">
@@ -21,7 +21,7 @@
 
     <hr class="my-2 border-t-4 border-dotted border-main-hard">
 
-    <form id="email-verification-form" class="w-full mb-2 flex flex-col relative hidden"
+    <form id="email-verification-form" class="w-full mb-2 flex flex-col relative hidden crossable"
         {{ if .EmailCode }}hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this"{{ end }}>
         <div class="flex flex-row w-full mb-4 z-21">
             <div class="flex flex-col w-full sm:flex-2/5 grow-0">
@@ -43,7 +43,7 @@
 <hr class="my-4 border-t-4 border-dotted border-main-hard">
 
 <div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
-    <form id="subs-form" class="w-full mb-2 flex flex-col relative">
+    <form id="subs-form" class="w-full mb-2 flex flex-col relative crossable">
         <div class="flex flex-col w-full mb-4 z-21">
             <label class="block text-main-medium font-bold mb-1 z-22">
                 {{ .L.UserProfile.SubscriptionHeader }}
@@ -59,7 +59,7 @@
                     <label><input class="mr-1" type="radio" id="tagsSpecific" name="tags" value="specific" {{ if eq .TagsPicked "specific" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsSpecific }}</label>
                 </div>
             </div>
-            <div id="pick-tags-form" class="flex flex-col w-full relative">
+            <div id="pick-tags-form" class="flex flex-col w-full relative crossable">
                 <input type="text" class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
                     list="existing-tags" onchange="addTag(this.value);" onkeydown="if (event.keyCode === 13) {addTag(this.value); this.value=''; return false;}">
                 <datalist id="existing-tags">

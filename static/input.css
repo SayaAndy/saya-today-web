@@ -180,8 +180,8 @@ a:hover, .linklike:hover {
     text-decoration: underline;
 }
 
-.disabled::before,
-.htmx-request::before {
+.crossable.disabled::before,
+.crossable.htmx-request::before {
     content: '';
     position: absolute;
     top: 0;
@@ -196,8 +196,8 @@ a:hover, .linklike:hover {
     z-index: 25;
 }
 
-form.disabled input,
-form.htmx-request input {
+form.crossable.disabled input,
+form.crossable.htmx-request input {
     filter: grayscale(1);
 }
 
