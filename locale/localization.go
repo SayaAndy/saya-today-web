@@ -52,8 +52,9 @@ type MetadataConfig struct {
 }
 
 type MailConfig struct {
-	VerifyEmail VerifyEmailConfig `yaml:"VerifyEmail" json:"VerifyEmail"`
-	NewPost     NewPostConfig     `yaml:"NewPost" json:"NewPost"`
+	UnsubscribeFooter string            `yaml:"UnsubscribeFooter" json:"UnsubscribeFooter"`
+	VerifyEmail       VerifyEmailConfig `yaml:"VerifyEmail" json:"VerifyEmail"`
+	NewPost           NewPostConfig     `yaml:"NewPost" json:"NewPost"`
 }
 
 type VerifyEmailConfig struct {
@@ -66,7 +67,9 @@ type VerifyEmailConfig struct {
 }
 
 type NewPostConfig struct {
-	Subject string `yaml:"Subject" json:"Subject"`
+	Subject    string `yaml:"Subject" json:"Subject"`
+	CapturedOn string `yaml:"CapturedOn" json:"CapturedOn"`
+	Intro      string `yaml:"Intro" json:"Intro"`
 }
 
 type UserProfileConfig struct {

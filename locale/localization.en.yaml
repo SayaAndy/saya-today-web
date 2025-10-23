@@ -26,6 +26,7 @@ Metadata:
   Published: 'Published'
   Action: 'Took place on'
 Mail:
+  UnsubscribeFooter: 'If this letter got you in a bad mood, you can unsubscribe from my blog by this link.'
   VerifyEmail:
     Subject: 'Verification Link for SAYA.TODAY is waiting for you!'
     Welcome: 'Greetings!'
@@ -34,7 +35,9 @@ Mail:
     InputCode: "Or input this code on the personal page:"
     IfRandom: 'If you are unsure what this letter this, you can ignore it, and also, if you are interested, you may visit my site :)'
   NewPost:
-    Subject: 'New post arrived at SAYA.TODAY!'
+    Subject: 'A new post arrived at SAYA.TODAY!'
+    Intro: 'A new post came!'
+    CapturedOn: 'Captured on'
 UserProfile:
   Header: 'Personal Settings'
   EmailHeader: 'E-Mail'

@@ -14,6 +14,7 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/SayaAndy/saya-today-web/internal/mailer"
@@ -24,6 +25,7 @@ import (
 
 var FactGiver *factgiver.FactGiver
 var Mailer *mailer.Mailer
+var BlogTrigger *blogtrigger.BlogTriggerScheduler
 
 func init() {
 	assert(0, tm.Add("general-page-body", "views/partials/general-page-body.html"))
@@ -110,7 +112,7 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 		} else if len(pathParts) == 2 && pathParts[1] == "user" {
 			values["Title"] = l[lang].UserProfile.Header
 
-			email, _, err := Mailer.GetInfo(c.IP())
+			email, _, err := Mailer.GetInfo(Mailer.GetHash(c.IP()))
 			if err != nil {
 				slog.Error("get info from mailer about a client", slog.String("error", err.Error()))
 			}

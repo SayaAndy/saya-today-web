@@ -7,11 +7,13 @@ import (
 	"encoding/binary"
 	"fmt"
 	"log/slog"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/SayaAndy/saya-today-web/internal/b2"
 	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
@@ -149,16 +151,14 @@ func (m *Mailer) MailIsTaken(email string) (bool, error) {
 	return isTaken, nil
 }
 
-func (m *Mailer) GetInfo(userId string) (email string, lang string, err error) {
-	hash := m.GetHash(userId)
-
+func (m *Mailer) GetInfo(userIdHash []byte) (email string, lang string, err error) {
 	tx, err := m.db.Begin()
 	if err != nil {
 		return "", "", fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
 
 	var rows *sql.Rows
-	if rows, err = tx.Query(`SELECT email, lang FROM user_email_table WHERE user_id=? LIMIT 1;`, hash); err != nil {
+	if rows, err = tx.Query(`SELECT email, lang FROM user_email_table WHERE user_id=? LIMIT 1;`, userIdHash); err != nil {
 		tx.Rollback()
 		return "", "", fmt.Errorf("failed to query user-email settings in db: %s", err)
 	}
@@ -330,6 +330,7 @@ func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tag
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
 
+	slices.Sort(tags)
 	tagsOutput := ""
 	switch subscriptionType {
 	case All:
@@ -357,6 +358,98 @@ func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tag
 	return nil
 }
 
-func SendNewPost() {
+func (m *Mailer) NewPost(post *b2.BlogPage) error {
+	tx, err := m.db.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to initialize transaction with db: %s", err)
+	}
 
+	var rows *sql.Rows
+	if rows, err = tx.Query(`SELECT user_id, tags FROM subscription_user_to_tags_table;`); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("failed to query user-to-tags table in db: %s", err)
+	}
+
+	var userId []byte
+	usersToSend := make([]string, 0)
+	var tagsString string
+	i := -1
+
+rowLoop:
+	for rows.Next() {
+		i++
+		if err = rows.Scan(&userId, &tagsString); err != nil {
+			slog.Warn("failed to scan a row in user-to-tags table", slog.String("error", err.Error()), slog.Int("index", i), slog.String("user_id", base64.RawStdEncoding.EncodeToString(userId)))
+			continue
+		}
+
+		if tagsString == "" {
+			continue
+		}
+
+		email, lang, err := m.GetInfo(userId)
+		if err != nil {
+			slog.Warn("failed to get info about the user", slog.String("error", err.Error()), slog.Int("index", i), slog.String("user_id", base64.RawStdEncoding.EncodeToString(userId)))
+			continue
+		}
+
+		if lang != post.Lang {
+			continue
+		}
+
+		if tagsString == "_all" {
+			usersToSend = append(usersToSend, email)
+			continue
+		}
+
+		pageTags := strings.Split(tagsString, ",")
+		for _, tag := range pageTags {
+			if _, found := slices.BinarySearch(post.Metadata.Tags, tag); found {
+				usersToSend = append(usersToSend, email)
+				continue rowLoop
+			}
+		}
+	}
+
+	tx.Commit()
+	rows.Close()
+
+	msgBody, err := m.tm.Render("new-post", fiber.Map{
+		"L":          m.l[post.Lang],
+		"Lang":       post.Lang,
+		"Post":       post,
+		"ClientHost": m.clientHost,
+	})
+
+	messages := make([]*mail.Msg, 0, len(usersToSend))
+	for _, user := range usersToSend {
+		if err != nil {
+			return fmt.Errorf("failed to render message body: %w", err)
+		}
+
+		message := mail.NewMsg()
+
+		if err := message.EnvelopeFrom(m.mailAddress); err != nil {
+			return fmt.Errorf("failed to set ENVELOPE FROM address: %w", err)
+		}
+		if err := message.FromFormat(m.publicName, m.mailAddress); err != nil {
+			return fmt.Errorf("failed to set formatted FROM address: %w", err)
+		}
+		if err := message.To(user); err != nil {
+			return fmt.Errorf("failed to set TO address: %w", err)
+		}
+
+		message.SetMessageID()
+		message.SetDate()
+		message.SetBulk()
+		message.Subject(m.l[post.Lang].Mail.NewPost.Subject)
+		message.SetBodyString(mail.TypeTextHTML, string(msgBody))
+
+		messages = append(messages, message)
+	}
+
+	if err := m.mailClient.DialAndSend(messages...); err != nil {
+		return fmt.Errorf("failed to send new post notifications: %w", err)
+	}
+	return nil
 }

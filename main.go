@@ -11,6 +11,7 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/glightbox"
 	"github.com/SayaAndy/saya-today-web/internal/mailer"
@@ -149,6 +150,19 @@ func main() {
 		cfg.Mail.PublicName, cfg.Mail.MailAddress, cfg.Mail.Username, cfg.Mail.Password, []byte(cfg.Mail.Salt), localization)
 	if err != nil {
 		slog.Error("fail to initialize mailer", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	router.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(b2Client, cfg.AvailableLanguages, func(bp []*b2.BlogPage) error {
+		for _, post := range bp {
+			if err := router.Mailer.NewPost(post); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		slog.Error("fail to initialize blog trigger", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
 

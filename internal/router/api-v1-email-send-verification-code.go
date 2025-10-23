@@ -58,7 +58,7 @@ func Api_V1_Email_SendVerificationCode(l map[string]*locale.LocaleConfig) func(c
 			})
 		}
 
-		if previousEmail, _, _ := Mailer.GetInfo(id); previousEmail == email {
+		if previousEmail, _, _ := Mailer.GetInfo(Mailer.GetHash(id)); previousEmail == email {
 			return api_v1_email_sendStatusHtml(c, "email-message", l, "Failed", fiber.ErrUnprocessableEntity.Code, lang, l[lang].UserProfile.EmailAlreadyValidated, map[string]string{})
 		}
 

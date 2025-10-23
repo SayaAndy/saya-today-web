@@ -3,6 +3,7 @@ package b2
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 
@@ -34,6 +35,7 @@ func NewB2Client(cfg *config.B2Config) (*B2Client, error) {
 type BlogPage struct {
 	Link     string
 	FileName string
+	Lang     string
 	Metadata *frontmatter.Metadata
 }
 
@@ -74,6 +76,9 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 		nameParts := strings.Split(linkParts[len(linkParts)-1], ".")
 		fileName := strings.Join(nameParts[:len(linkParts)-1], ".")
 
+		tags := strings.Split(attrs.Info["tags"], ",")
+		slices.Sort(tags)
+
 		filePaths = append(filePaths, &BlogPage{
 			Link:     obj.Name(),
 			FileName: fileName,
@@ -83,7 +88,7 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 				ActionDate:       attrs.Info["action-date"],
 				PublishedTime:    publishedTime,
 				Thumbnail:        attrs.Info["thumbnail"],
-				Tags:             strings.Split(attrs.Info["tags"], ","),
+				Tags:             tags,
 				Geolocation:      attrs.Info["geolocation"],
 			},
 		})
