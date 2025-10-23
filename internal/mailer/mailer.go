@@ -145,7 +145,8 @@ func (m *Mailer) MailIsTaken(email string) (bool, error) {
 	defer tx.Commit()
 	defer rows.Close()
 
-	return rows.Next(), nil
+	isTaken := rows.Next()
+	return isTaken, nil
 }
 
 func (m *Mailer) GetInfo(userId string) (email string, lang string, err error) {
@@ -354,4 +355,8 @@ func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tag
 	}
 
 	return nil
+}
+
+func SendNewPost() {
+
 }

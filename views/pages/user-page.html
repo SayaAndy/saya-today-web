@@ -105,7 +105,9 @@ htmx.on("htmx:afterSwap", (e) => {
     emailMessage = htmx.find("#email-message");
     verificationMessage = htmx.find("#verification-message");
     emailForm = htmx.find("#email-form");
+    emailInput = htmx.find("#email-input");
     emailVerificationForm = htmx.find("#email-verification-form");
+    subsForm = htmx.find("#subs-form");
     tryAgainTimeDiff = parseInt(emailMessage.dataset.strikedEndTime || "0") - new Date().getTime();
     verificationWaitingTimeDiff = parseInt(emailMessage.dataset.codeExpiryTime || "0") - new Date().getTime();
 
@@ -128,6 +130,12 @@ htmx.on("htmx:afterSwap", (e) => {
 
     if ((verificationMessage.dataset.hideVerificationPanel || "false") == "true") {
         emailVerificationForm.classList.add("hidden");
+    }
+
+    if (emailInput.dataset.validatedEmail != "") {
+        subsForm.classList.remove("disabled");
+    } else {
+        subsForm.classList.add("disabled");
     }
 });
 

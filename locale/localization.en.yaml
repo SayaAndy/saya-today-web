@@ -62,3 +62,4 @@ UserProfile:
   SubscribeInvalidType: 'Invalid subscription type.'
   FailedToSubscribe: 'Failed to subscribe by new settings, please ask administrator for a more detailed cause.'
   SubscribedSuccessfully: 'Successfully subscribed you by new settings!'
+  RefreshPage: 'Please refresh the profile page on the device, where you requested the code.'

@@ -96,6 +96,7 @@ type UserProfileConfig struct {
 	SubscribeInvalidType         string `yaml:"SubscribeInvalidType" json:"SubscribeInvalidType"`
 	FailedToSubscribe            string `yaml:"FailedToSubscribe" json:"FailedToSubscribe"`
 	SubscribedSuccessfully       string `yaml:"SubscribedSuccessfully" json:"SubscribedSuccessfully"`
+	RefreshPage                  string `yaml:"RefreshPage" json:"RefreshPage"`
 }
 
 func LoadConfig(path string, config *LocaleConfig) error {

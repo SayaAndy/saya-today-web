@@ -45,7 +45,7 @@ func Api_V1_Email_Verify(l map[string]*locale.LocaleConfig) func(c *fiber.Ctx) e
 			slog.Error("verification code is invalid", slog.String("verification_code", verificationCode), slog.String("error", err.Error()))
 			return api_v1_email_sendStatusHtml(c, "verification-message", l, "Failed", fiber.ErrUnprocessableEntity.Code, lang, l[lang].UserProfile.VerificationFailed, map[string]string{})
 		}
-		return api_v1_email_sendStatusHtml(c, "verification-message", l, "OK", fiber.StatusOK, lang, l[lang].UserProfile.VerificationSuccess, map[string]string{
+		return api_v1_email_sendStatusHtml(c, "verification-message", l, "OK", fiber.StatusOK, lang, l[lang].UserProfile.VerificationSuccess+"\n\n"+l[lang].UserProfile.RefreshPage, map[string]string{
 			"hide-verification-panel": "true",
 		})
 	}
