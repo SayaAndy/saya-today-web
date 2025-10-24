@@ -8,13 +8,14 @@ import (
 )
 
 type LocaleConfig struct {
-	TagsLabel   string            `yaml:"TagsLabel" json:"TagsLabel"`
-	BlogSearch  BlogSearchConfig  `yaml:"BlogSearch" json:"BlogSearch"`
-	GlobalMap   GlobalMapConfig   `yaml:"GlobalMap" json:"GlobalMap"`
-	HomePage    HomePageConfig    `yaml:"HomePage" json:"HomePage"`
-	Metadata    MetadataConfig    `yaml:"Metadata" json:"Metadata"`
-	Mail        MailConfig        `yaml:"Mail" json:"Mail"`
-	UserProfile UserProfileConfig `yaml:"UserProfile" json:"UserProfile"`
+	TagsLabel       string                `yaml:"TagsLabel" json:"TagsLabel"`
+	BlogSearch      BlogSearchConfig      `yaml:"BlogSearch" json:"BlogSearch"`
+	GlobalMap       GlobalMapConfig       `yaml:"GlobalMap" json:"GlobalMap"`
+	HomePage        HomePageConfig        `yaml:"HomePage" json:"HomePage"`
+	UnsubscribePage UnsubscribePageConfig `yaml:"UnsubscribePage" json:"UnsubscribePage"`
+	Metadata        MetadataConfig        `yaml:"Metadata" json:"Metadata"`
+	Mail            MailConfig            `yaml:"Mail" json:"Mail"`
+	UserProfile     UserProfileConfig     `yaml:"UserProfile" json:"UserProfile"`
 }
 
 type BlogSearchConfig struct {
@@ -44,6 +45,14 @@ type HomePageConfig struct {
 	Hymn2                  string `yaml:"Hymn2" json:"Hymn2"`
 	Hymn3                  string `yaml:"Hymn3" json:"Hymn3"`
 	Hymn4                  string `yaml:"Hymn4" json:"Hymn4"`
+}
+
+type UnsubscribePageConfig struct {
+	Header        string `yaml:"Header" json:"Header"`
+	UnsetCode     string `yaml:"UnsetCode" json:"UnsetCode"`
+	InvalidCode   string `yaml:"InvalidCode" json:"InvalidCode"`
+	OnServerError string `yaml:"OnServerError" json:"OnServerError"`
+	Success       string `yaml:"Success" json:"Success"`
 }
 
 type MetadataConfig struct {

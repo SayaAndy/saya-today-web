@@ -170,6 +170,7 @@ func main() {
 	app.Get("/:lang<len(2)>", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
 	app.Get("/:lang/user", router.Api_V1_GeneralPage(localization, availableLanguages))
+	app.Get("/:lang/user/unsubscribe", router.Lang_User_Unsubscribe(localization, availableLanguages))
 	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/blog/:title", router.Api_V1_GeneralPage(localization, availableLanguages))
 

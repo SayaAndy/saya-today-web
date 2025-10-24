@@ -3,7 +3,7 @@
 <table>
     <tr>
         <td rowspan="3"><a href="https://{{ .ClientHost }}/{{ .Lang }}/blog/{{ .Post.FileName }}"><img src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Post.Metadata.Thumbnail }}.webp"></a></td>
-        <td class="darkened" style="font-size: 24px"><a href="https://{{ .ClientHost }}/{{ .Lang }}/blog/{{ .Post.FileName }}">{{ .Post.Metadata.Title }}</a></td>
+        <td class="darkened" style="font-size: 24px"><a style="color: #273de1 !important;" href="https://{{ .ClientHost }}/{{ .Lang }}/blog/{{ .Post.FileName }}">{{ .Post.Metadata.Title }}</a></td>
     </tr>
     <tr>
         <td class="darkened" style="font-size: 16px">{{ .Post.Metadata.ShortDescription }}</td>
@@ -15,5 +15,5 @@
 {{ end }}
 
 {{ define "footer" }}
-<p>{{ .L.Mail.UnsubscribeFooter }}</p>
+<p>{{ .UnsubscribeFooter }}</p>
 {{ end }}

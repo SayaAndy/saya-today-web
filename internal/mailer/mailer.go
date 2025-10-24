@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"fmt"
+	"html/template"
 	"log/slog"
 	"slices"
 	"strconv"
@@ -24,6 +25,7 @@ import (
 
 type Mailer struct {
 	verificationCodes *ristretto.Cache[uint64, string]
+	unsubscribeCodes  *ristretto.Cache[uint64, []byte]
 	db                *sql.DB
 	tm                *templatemanager.TemplateManager
 	mailClient        *mail.Client
@@ -58,7 +60,17 @@ func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string
 		NumCounters:            10000,
 		MaxCost:                1 << 20, // 1 MB
 		BufferItems:            64,
-		TtlTickerDurationInSec: 3600,
+		TtlTickerDurationInSec: 3600, // 1 hour
+	})
+	if err != nil {
+		return nil, fmt.Errorf("fail to initialize cache for verification codes: %w", err)
+	}
+
+	unsubscribeCodes, err := ristretto.NewCache(&ristretto.Config[uint64, []byte]{
+		NumCounters:            10000,
+		MaxCost:                1 << 20, // 1 MB
+		BufferItems:            64,
+		TtlTickerDurationInSec: 86400, // 1 day
 	})
 	if err != nil {
 		return nil, fmt.Errorf("fail to initialize cache for verification codes: %w", err)
@@ -85,6 +97,7 @@ func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string
 
 	return &Mailer{
 		verificationCodes: verificationCodes,
+		unsubscribeCodes:  unsubscribeCodes,
 		db:                db,
 		clientHost:        clientHost,
 		tm:                tm,
@@ -173,6 +186,24 @@ func (m *Mailer) GetInfo(userIdHash []byte) (email string, lang string, err erro
 		return "", "", fmt.Errorf("failed to scan the result from user-email settings query: %s", err)
 	}
 	return
+}
+
+func (m *Mailer) Unsubscribe(unsubscribeCodeString string) (clientError error, serverError error) {
+	unsubscribeCode, err := strconv.ParseUint(unsubscribeCodeString, 16, 64)
+	if err != nil {
+		return fmt.Errorf("invalid unsubscribe code: %s", err), nil
+	}
+
+	userId, _ := m.unsubscribeCodes.Get(unsubscribeCode)
+	if len(userId) == 0 {
+		return fmt.Errorf("invalid unsubscribe code: have no information about it"), nil
+	}
+
+	if err = m.Subscribe(userId, None); err != nil {
+		return nil, fmt.Errorf("failed to unsubscribe: %s", err)
+	}
+
+	return nil, nil
 }
 
 func (m *Mailer) SendVerificationCode(userId string, address string, lang string) error {
@@ -324,7 +355,7 @@ func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionT
 	}
 }
 
-func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tags ...string) error {
+func (m *Mailer) Subscribe(userIdHash []byte, subscriptionType SubscriptionType, tags ...string) error {
 	tx, err := m.db.Begin()
 	if err != nil {
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)
@@ -341,11 +372,9 @@ func (m *Mailer) Subscribe(userId string, subscriptionType SubscriptionType, tag
 		tagsOutput = strings.Join(tags, ",")
 	}
 
-	hash := m.GetHash(userId)
-
 	if _, err = tx.Exec(`INSERT INTO subscription_user_to_tags_table(user_id, tags) VALUES(?, ?)
   ON CONFLICT(user_id) DO UPDATE SET
-  	tags=excluded.tags;`, hash, tagsOutput); err != nil {
+  	tags=excluded.tags;`, userIdHash, tagsOutput); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("failed to configure user-to-tags table in db for the user: %s", err)
 	}
@@ -371,7 +400,10 @@ func (m *Mailer) NewPost(post *b2.BlogPage) error {
 	}
 
 	var userId []byte
-	usersToSend := make([]string, 0)
+	usersToSend := make([]struct {
+		userId []byte
+		email  string
+	}, 0)
 	var tagsString string
 	i := -1
 
@@ -398,14 +430,20 @@ rowLoop:
 		}
 
 		if tagsString == "_all" {
-			usersToSend = append(usersToSend, email)
+			usersToSend = append(usersToSend, struct {
+				userId []byte
+				email  string
+			}{userId, email})
 			continue
 		}
 
 		pageTags := strings.Split(tagsString, ",")
 		for _, tag := range pageTags {
 			if _, found := slices.BinarySearch(post.Metadata.Tags, tag); found {
-				usersToSend = append(usersToSend, email)
+				usersToSend = append(usersToSend, struct {
+					userId []byte
+					email  string
+				}{userId, email})
 				continue rowLoop
 			}
 		}
@@ -414,15 +452,23 @@ rowLoop:
 	tx.Commit()
 	rows.Close()
 
-	msgBody, err := m.tm.Render("new-post", fiber.Map{
-		"L":          m.l[post.Lang],
-		"Lang":       post.Lang,
-		"Post":       post,
-		"ClientHost": m.clientHost,
-	})
-
 	messages := make([]*mail.Msg, 0, len(usersToSend))
 	for _, user := range usersToSend {
+		unsubscribeCodeBytes := make([]byte, 8)
+		rand.Read(unsubscribeCodeBytes)
+		unsubscribeCode := binary.LittleEndian.Uint64(unsubscribeCodeBytes)
+
+		unsubscribeFooter := strings.Replace(m.l[post.Lang].Mail.UnsubscribeFooter, "{}", fmt.Sprintf(`<a style="color: #273de1 !important;" href="https://%s/%s/user/unsubscribe?code=%X">`, m.clientHost, post.Lang, unsubscribeCode), 1)
+		unsubscribeFooter = strings.Replace(unsubscribeFooter, "{/}", "</a>", 1)
+
+		msgBody, err := m.tm.Render("new-post", fiber.Map{
+			"L":                 m.l[post.Lang],
+			"Lang":              post.Lang,
+			"Post":              post,
+			"ClientHost":        m.clientHost,
+			"UnsubscribeFooter": template.HTML(unsubscribeFooter),
+		})
+
 		if err != nil {
 			return fmt.Errorf("failed to render message body: %w", err)
 		}
@@ -435,7 +481,7 @@ rowLoop:
 		if err := message.FromFormat(m.publicName, m.mailAddress); err != nil {
 			return fmt.Errorf("failed to set formatted FROM address: %w", err)
 		}
-		if err := message.To(user); err != nil {
+		if err := message.To(user.email); err != nil {
 			return fmt.Errorf("failed to set TO address: %w", err)
 		}
 
@@ -444,6 +490,8 @@ rowLoop:
 		message.SetBulk()
 		message.Subject(m.l[post.Lang].Mail.NewPost.Subject)
 		message.SetBodyString(mail.TypeTextHTML, string(msgBody))
+
+		m.unsubscribeCodes.Set(unsubscribeCode, user.userId, 40)
 
 		messages = append(messages, message)
 	}

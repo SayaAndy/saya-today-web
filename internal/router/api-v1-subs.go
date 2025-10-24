@@ -58,7 +58,7 @@ func Api_V1_Subs_Put(l map[string]*locale.LocaleConfig) func(c *fiber.Ctx) error
 		}
 
 		specificTags := c.FormValue("tags_picked")
-		if err = Mailer.Subscribe(id, subscriptionTypeEnum, specificTags); err != nil {
+		if err = Mailer.Subscribe(Mailer.GetHash(id), subscriptionTypeEnum, specificTags); err != nil {
 			return api_v1_email_sendStatusHtml(c, "subs-message", l, "Failed", fiber.StatusUnprocessableEntity, lang, l[lang].UserProfile.FailedToSubscribe, map[string]string{})
 		}
 
