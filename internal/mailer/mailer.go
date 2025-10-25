@@ -151,13 +151,17 @@ func (m *Mailer) MailIsTaken(email string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+	defer func(tx *sql.Tx) {
+		if err = tx.Commit(); err != nil {
+			tx.Rollback()
+		}
+	}(tx)
 
 	var rows *sql.Rows
 	if rows, err = tx.Query(`SELECT email FROM user_email_table WHERE email=? LIMIT 1;`, email); err != nil {
 		tx.Rollback()
 		return false, fmt.Errorf("failed to query user-email settings in db: %s", err)
 	}
-	defer tx.Commit()
 	defer rows.Close()
 
 	isTaken := rows.Next()
@@ -169,13 +173,17 @@ func (m *Mailer) GetInfo(userIdHash []byte) (email string, lang string, err erro
 	if err != nil {
 		return "", "", fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+	defer func(tx *sql.Tx) {
+		if err = tx.Commit(); err != nil {
+			tx.Rollback()
+		}
+	}(tx)
 
 	var rows *sql.Rows
 	if rows, err = tx.Query(`SELECT email, lang FROM user_email_table WHERE user_id=? LIMIT 1;`, userIdHash); err != nil {
 		tx.Rollback()
 		return "", "", fmt.Errorf("failed to query user-email settings in db: %s", err)
 	}
-	defer tx.Commit()
 	defer rows.Close()
 
 	if !rows.Next() {
@@ -325,6 +333,11 @@ func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionT
 	if err != nil {
 		return None, nil, fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+	defer func(tx *sql.Tx) {
+		if err = tx.Commit(); err != nil {
+			tx.Rollback()
+		}
+	}(tx)
 
 	hash := m.GetHash(userId)
 
@@ -333,7 +346,6 @@ func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionT
 		tx.Rollback()
 		return None, nil, fmt.Errorf("failed to query user-to-tags table in db for the user: %s", err)
 	}
-	defer tx.Commit()
 	defer rows.Close()
 
 	if !rows.Next() {

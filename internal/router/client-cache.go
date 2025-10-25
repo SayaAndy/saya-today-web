@@ -110,7 +110,11 @@ func (c *ClientCache) Close() error {
 		return fmt.Errorf("fail to save blog_views: %s", err)
 	}
 
-	return tx.Commit()
+	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		return fmt.Errorf("fail to commit all the changes related to cache: %s", err)
+	}
+	return nil
 }
 
 func (c *ClientCache) GetHash(id string) string {
