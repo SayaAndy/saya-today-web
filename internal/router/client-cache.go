@@ -31,10 +31,12 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	if err != nil {
 		return nil, fmt.Errorf("fail to init transaction with db to fill cache: %w", err)
 	}
+	slog.Debug("began db transaction", slog.String("method", "NewClientCache"))
 
 	rows, err := tx.Query("select * from blog_likes;")
 	if err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "NewClientCache"))
 		return nil, fmt.Errorf("fail to query db for blog_likes to fill cache: %w", err)
 	}
 
@@ -62,6 +64,7 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	rows, err = tx.Query("select * from blog_views;")
 	if err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "NewClientCache"))
 		return nil, fmt.Errorf("fail to query db for blog_views to fill cache: %w", err)
 	}
 
@@ -81,8 +84,11 @@ func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	}
 
 	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "NewClientCache"))
 		return nil, fmt.Errorf("fail to commit transaction in db: %w", err)
 	}
+	slog.Debug("ended db transaction", slog.String("method", "NewClientCache"))
 
 	return &ClientCache{
 		hashMap:      make(map[string]string),
@@ -99,21 +105,27 @@ func (c *ClientCache) Close() error {
 	if err != nil {
 		return fmt.Errorf("fail to init transaction with db to dump cache: %w", err)
 	}
+	slog.Debug("began db transaction in ClientCache.Close")
 
 	if err = batchSave(tx, "blog_likes", c.likePageMap); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction in ClientCache.Close")
 		return fmt.Errorf("fail to save blog_likes: %s", err)
 	}
 
 	if err = batchSave(tx, "blog_views", c.viewPageMap); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction in ClientCache.Close")
 		return fmt.Errorf("fail to save blog_views: %s", err)
 	}
 
 	if err = tx.Commit(); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction in ClientCache.Close")
 		return fmt.Errorf("fail to commit all the changes related to cache: %s", err)
 	}
+
+	slog.Debug("ended db transaction in ClientCache.Close")
 	return nil
 }
 

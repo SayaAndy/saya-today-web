@@ -151,15 +151,19 @@ func (m *Mailer) MailIsTaken(email string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+
+	slog.Debug("began db transaction", slog.String("method", "MailIsTaken"))
 	defer func(tx *sql.Tx) {
 		if err = tx.Commit(); err != nil {
 			tx.Rollback()
 		}
+		slog.Debug("ended db transaction", slog.String("method", "MailIsTaken"))
 	}(tx)
 
 	var rows *sql.Rows
 	if rows, err = tx.Query(`SELECT email FROM user_email_table WHERE email=? LIMIT 1;`, email); err != nil {
 		tx.Rollback()
+
 		return false, fmt.Errorf("failed to query user-email settings in db: %s", err)
 	}
 	defer rows.Close()
@@ -173,10 +177,13 @@ func (m *Mailer) GetInfo(userIdHash []byte) (email string, lang string, err erro
 	if err != nil {
 		return "", "", fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+
+	slog.Debug("began db transaction", slog.String("method", "GetInfo"))
 	defer func(tx *sql.Tx) {
 		if err = tx.Commit(); err != nil {
 			tx.Rollback()
 		}
+		slog.Debug("ended db transaction", slog.String("method", "GetInfo"))
 	}(tx)
 
 	var rows *sql.Rows
@@ -310,18 +317,22 @@ func (m *Mailer) Verify(verificationCodeEncoded string, lang string) error {
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
 
+	slog.Debug("began db transaction", slog.String("method", "Verify"))
 	if _, err = tx.Exec(`INSERT INTO user_email_table(user_id, email, lang) VALUES(?, ?, ?)
   ON CONFLICT(user_id) DO UPDATE SET
   	email=excluded.email,
 	lang=excluded.lang;`, m.GetHash(string(userId)), address, lang); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "Verify"))
 		return fmt.Errorf("failed to configure user-email settings in db: %s", err)
 	}
 
 	if err = tx.Commit(); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "Verify"))
 		return fmt.Errorf("failed to commit transaction to db: %s", err)
 	}
+	slog.Debug("ended db transaction", slog.String("method", "Verify"))
 
 	m.verificationCodes.Del(verificationCode)
 	delete(m.lostMailMap, verificationSegments[0])
@@ -333,9 +344,12 @@ func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionT
 	if err != nil {
 		return None, nil, fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
+
+	slog.Debug("began db transaction", slog.String("method", "GetSubscriptions"))
 	defer func(tx *sql.Tx) {
 		if err = tx.Commit(); err != nil {
 			tx.Rollback()
+			slog.Debug("ended db transaction", slog.String("method", "GetSubscriptions"))
 		}
 	}(tx)
 
@@ -373,6 +387,8 @@ func (m *Mailer) Subscribe(userIdHash []byte, subscriptionType SubscriptionType,
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
 
+	slog.Debug("began db transaction", slog.String("method", "Subscribe"))
+
 	slices.Sort(tags)
 	tagsOutput := ""
 	switch subscriptionType {
@@ -388,13 +404,16 @@ func (m *Mailer) Subscribe(userIdHash []byte, subscriptionType SubscriptionType,
   ON CONFLICT(user_id) DO UPDATE SET
   	tags=excluded.tags;`, userIdHash, tagsOutput); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "Subscribe"))
 		return fmt.Errorf("failed to configure user-to-tags table in db for the user: %s", err)
 	}
 
 	if err = tx.Commit(); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "Subscribe"))
 		return fmt.Errorf("failed to commit transaction to db: %s", err)
 	}
+	slog.Debug("ended db transaction", slog.String("method", "Subscribe"))
 
 	return nil
 }
@@ -405,9 +424,11 @@ func (m *Mailer) NewPost(post *b2.BlogPage) error {
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)
 	}
 
+	slog.Debug("began db transaction", slog.String("method", "NewPost"))
 	var rows *sql.Rows
 	if rows, err = tx.Query(`SELECT user_id, tags FROM subscription_user_to_tags_table;`); err != nil {
 		tx.Rollback()
+		slog.Debug("ended db transaction", slog.String("method", "NewPost"))
 		return fmt.Errorf("failed to query user-to-tags table in db: %s", err)
 	}
 
@@ -463,6 +484,7 @@ rowLoop:
 
 	tx.Commit()
 	rows.Close()
+	slog.Debug("ended db transaction", slog.String("method", "NewPost"))
 
 	messages := make([]*mail.Msg, 0, len(usersToSend))
 	for _, user := range usersToSend {
