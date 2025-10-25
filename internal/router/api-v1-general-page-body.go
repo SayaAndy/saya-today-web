@@ -1,6 +1,7 @@
 package router
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"log/slog"
@@ -13,16 +14,21 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
+	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
+	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
 
 var FactGiver *factgiver.FactGiver
+var Mailer *mailer.Mailer
+var BlogTrigger *blogtrigger.BlogTriggerScheduler
 
 func init() {
-	tm.Add("general-page-body", "views/partials/general-page-body.html")
+	assert(0, tm.Add("general-page-body", "views/partials/general-page-body.html"))
 }
 
 func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client, md goldmark.Markdown) func(c *fiber.Ctx) error {
@@ -39,15 +45,16 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 		}
 
 		path := urlStruct.EscapedPath()
+		trimmedPath := strings.Trim(path, "/")
 
-		cacheKey := fmt.Sprintf("body.%s", path)
-		if val, ok := PCache.Get(cacheKey); val != nil && ok {
+		cacheKey := fmt.Sprintf("body.%s", trimmedPath)
+		if val, ok := PCache.Get(cacheKey); !strings.HasSuffix(trimmedPath, "user") && val != nil && ok {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 			return c.Status(fiber.StatusOK).Type("html").Send(val)
 		}
 
 		lang := ""
-		pathParts := strings.Split(strings.Trim(path, "/"), "/")
+		pathParts := strings.Split(trimmedPath, "/")
 		if len(pathParts) == 1 && pathParts[0] == "" {
 			pathParts = []string{}
 		}
@@ -90,32 +97,11 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 				queryTags = append(queryTags, string(match[1]))
 			}
 
-			pages, err := b2Client.Scan(lang + "/")
+			tagsArray, err := getTags(b2Client, lang)
 			if err != nil {
-				slog.Warn("failed to scan pages via b2", slog.String("error", err.Error()))
-				return c.Status(fiber.ErrInternalServerError.Code).SendString(fmt.Sprintf("failed to scan pages via b2: %s", slog.String("error", err.Error())))
+				slog.Warn("failed to get the available tags", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to gather available tags")
 			}
-
-			tagsMap := make(map[string]int)
-			for _, page := range pages {
-				for _, tag := range page.Metadata.Tags {
-					tagsMap[tag]++
-				}
-			}
-			slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("path", c.Path()))
-
-			type Tag struct {
-				Name  string `json:"Name" yaml:"name"`
-				Count int    `json:"Count" yaml:"count"`
-			}
-
-			tagsArray := make([]Tag, 0, len(tagsMap))
-			for tag, count := range tagsMap {
-				tagsArray = append(tagsArray, Tag{tag, count})
-			}
-			slices.SortFunc(tagsArray, func(a Tag, b Tag) int {
-				return strings.Compare(a.Name, b.Name)
-			})
 
 			values["Tags"] = tagsArray
 			values["QuerySort"] = querySort
@@ -123,6 +109,42 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 			values["Title"] = l[lang].BlogSearch.Header
 
 			additionalTemplates = append(additionalTemplates, "views/pages/blog-catalogue.html")
+		} else if len(pathParts) == 2 && pathParts[1] == "user" {
+			values["Title"] = l[lang].UserProfile.Header
+
+			email, _, err := Mailer.GetInfo(Mailer.GetHash(c.IP()))
+			if err != nil {
+				slog.Error("get info from mailer about a client", slog.String("error", err.Error()))
+			}
+
+			tagsArray, err := getTags(b2Client, lang)
+			if err != nil {
+				slog.Warn("failed to get the available tags", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to gather available tags")
+			}
+
+			subscriptionType, tags, err := Mailer.GetSubscriptions(c.IP())
+			if err != nil {
+				slog.Warn("failed to get the user subscriptions", slog.String("error", err.Error()))
+				return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to get the user subscriptions")
+			}
+
+			switch subscriptionType {
+			case mailer.None:
+				values["TagsPicked"] = "none"
+			case mailer.All:
+				values["TagsPicked"] = "all"
+			case mailer.Specific:
+				values["TagsPicked"] = "specific"
+			}
+
+			values["TagsPickedList"] = tags
+
+			values["Email"] = email
+			values["EmailCode"] = c.Query("email_code")
+			values["ExistingTags"] = tagsArray
+
+			additionalTemplates = append(additionalTemplates, "views/pages/user-page.html")
 		} else if len(pathParts) == 3 && pathParts[1] == "blog" {
 			metadata, parsedMarkdown, err := readBlogPost(md, b2Client, lang+"/"+pathParts[2])
 			if err != nil {
@@ -173,4 +195,49 @@ func Api_V1_GeneralPage_Body(l map[string]*locale.LocaleConfig, langs []config.A
 		c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
 		return c.Status(fiber.StatusOK).Type("html").Send(content)
 	}
+}
+
+func readBlogPost(md goldmark.Markdown, b2Client *b2.B2Client, sourceName string) (metadata *frontmatter.Metadata, html string, err error) {
+	metadata, markdown, err := b2Client.ReadFrontmatter(sourceName + ".md")
+	if err != nil {
+		return nil, "", fmt.Errorf("failed to read a frontmatter file: %w", err)
+	}
+
+	var buf bytes.Buffer
+	if err := md.Convert(markdown, &buf); err != nil {
+		return nil, "", fmt.Errorf("convert source context from md to html: %w", err)
+	}
+
+	return metadata, buf.String(), nil
+}
+
+type Tag struct {
+	Name  string `json:"Name" yaml:"name"`
+	Count int    `json:"Count" yaml:"count"`
+}
+
+func getTags(b2Client *b2.B2Client, lang string) (tags []Tag, err error) {
+	pages, err := b2Client.Scan(lang + "/")
+	if err != nil {
+		slog.Warn("failed to scan pages via b2", slog.String("error", err.Error()))
+		return nil, fmt.Errorf("failed to scan pages via b2: %w", err)
+	}
+
+	tagsMap := make(map[string]int)
+	for _, page := range pages {
+		for _, tag := range page.Metadata.Tags {
+			tagsMap[tag]++
+		}
+	}
+	slog.Debug("enlist pages for catalogue", slog.Int("tag_count", len(tagsMap)), slog.Int("page_count", len(pages)), slog.String("lang", lang))
+
+	tagsArray := make([]Tag, 0, len(tagsMap))
+	for tag, count := range tagsMap {
+		tagsArray = append(tagsArray, Tag{tag, count})
+	}
+	slices.SortFunc(tagsArray, func(a Tag, b Tag) int {
+		return strings.Compare(a.Name, b.Name)
+	})
+
+	return tagsArray, nil
 }

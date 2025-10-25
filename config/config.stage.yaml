@@ -32,5 +32,15 @@ auth:
   db:
     type: sqlite3
     config:
-      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2'
+      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2&_journal_mode=WAL'
   salt: '${AUTH_SALT}'
+mail:
+  clientHost: '${FQDN}'
+  mailHost: '${MAIL_HOST}'
+  publicName: 'DEMO.SAYA.TODAY'
+  mailAddress: '${MAIL_ADDRESS}'
+  username: '${MAIL_USERNAME}'
+  password: '${MAIL_PASSWORD}'
+  salt: '${MAIL_SALT}'
+  trigger:
+    onNewPost: "0/3 * * * *"

@@ -11,8 +11,10 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/glightbox"
+	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/locale"
@@ -144,9 +146,31 @@ func main() {
 		os.Exit(1)
 	}
 
+	router.Mailer, err = mailer.NewMailer(db, cfg.Mail.ClientHost, cfg.Mail.MailHost,
+		cfg.Mail.PublicName, cfg.Mail.MailAddress, cfg.Mail.Username, cfg.Mail.Password, []byte(cfg.Mail.Salt), localization)
+	if err != nil {
+		slog.Error("fail to initialize mailer", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
+	router.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(b2Client, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost, func(bp []*b2.BlogPage) error {
+		for _, post := range bp {
+			if err := router.Mailer.NewPost(post); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		slog.Error("fail to initialize blog trigger", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
 	app.Get("/", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang<len(2)>", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/map", router.Lang_Map(localization, availableLanguages, b2Client))
+	app.Get("/:lang/user", router.Api_V1_GeneralPage(localization, availableLanguages))
+	app.Get("/:lang/user/unsubscribe", router.Lang_User_Unsubscribe(localization, availableLanguages))
 	app.Get("/:lang/blog", router.Api_V1_GeneralPage(localization, availableLanguages))
 	app.Get("/:lang/blog/:title", router.Api_V1_GeneralPage(localization, availableLanguages))
 
@@ -159,6 +183,10 @@ func main() {
 	app.Get("/api/v1/general-page/footer", router.Api_V1_GeneralPage_Footer(localization, availableLanguages))
 	app.Get("/api/v1/general-page/top-embeds", router.Api_V1_GeneralPage_TopEmbeds(localization, availableLanguages))
 	app.Get("/api/v1/general-page/bottom-embeds", router.Api_V1_GeneralPage_BottomEmbeds(localization, availableLanguages, b2Client))
+	app.Post("/api/v1/email/send-verification-code", router.Api_V1_Email_SendVerificationCode(localization))
+	app.Post("/api/v1/email/verify", router.Api_V1_Email_Verify(localization))
+	app.Get("/api/v1/email/is-in-verification", router.Api_V1_Email_IsInVerification(localization))
+	app.Put("/api/v1/subs", router.Api_V1_Subs_Put(localization))
 
 	app.Static("/", "./static")
 
@@ -174,6 +202,9 @@ func main() {
 
 	<-sigChan
 	slog.Info("gracefully shutting down...")
+	if err = router.BlogTrigger.Close(); err != nil {
+		slog.Error("fail to shutdown blog trigger scheduler", slog.String("error", err.Error()))
+	}
 	if err = app.Shutdown(); err != nil {
 		slog.Error("fail to shutdown fiber server", slog.String("error", err.Error()))
 	}

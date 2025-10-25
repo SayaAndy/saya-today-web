@@ -22,6 +22,53 @@ HomePage:
   Hymn2: "We've been expecting you!"
   Hymn3: 'You bring such joy in Sayasite!'
   Hymn4: 'No matter where you roam, know our love is true!~'
+UnsubscribePage:
+  Header: 'Cancelling the Subscription'
+  UnsetCode: 'Your cancel code is not set. You just having a walk around the site?'
+  InvalidCode: "Your cancel code could not be verified. Maybe, the code expired after a day. Or maybe, you've already unsubscribed."
+  OnServerError: "We couldn't unsubscribe you, the problem is on our side! We will solve this problem as soon as possible."
+  Success: 'Cancelled your subscription successfully! We do hope we will engage you again someday.'
 Metadata:
   Published: 'Published'
   Action: 'Took place on'
+Mail:
+  UnsubscribeFooter: 'If this letter got you in a bad mood, you can unsubscribe from my blog by {}this link{/}.'
+  VerifyEmail:
+    Subject: 'Verification Link for SAYA.TODAY is waiting for you!'
+    Welcome: 'Greetings!'
+    Intro: 'There are 2 ways for us to validate your profile:'
+    GotoLink: 'Go by this link:'
+    InputCode: "Or input this code on the personal page:"
+    IfRandom: 'If you are unsure what this letter this, you can ignore it, and also, if you are interested, you may visit my site :)'
+  NewPost:
+    Subject: 'A new post arrived at SAYA.TODAY!'
+    Intro: 'A new post came!'
+    CapturedOn: 'Captured on'
+UserProfile:
+  Header: 'Personal Settings'
+  EmailHeader: 'E-Mail'
+  VerificationCodeHeader: 'Verification Code'
+  TypeEmail: 'Please type your email'
+  SendCodeButton: 'Send Code'
+  VerifyButton: 'Verify'
+  VerificationCodeSent: 'Verification code sent! Please check your e-mail. Your next verification attempt will be possible on {}.'
+  DelayTilVerification: 'You have already requested the verification before! Please wait until {} for a new verification request.'
+  FailedEmailRender: 'Failed to render the email status message, please ask administrator for a more detailed cause.'
+  VerificationCodeSendingError: 'Failed to send a verification code, please ask administrator for a more detailed cause.'
+  EmailAlreadyValidated: 'You already have this E-Mail validated.'
+  EmailTaken: 'This E-Mail is already taken.'
+  EmailEmpty: 'E-Mail is unset or empty.'
+  VerificationSuccess: 'Success! You are now able to subscribe with your new e-mail.'
+  VerificationFailed: 'Verification code is invalid, please ask administrator for a more detailed cause.'
+  VerificationEmpty: 'Verification code is unset or empty.'
+  SubscriptionHeader: 'Subscribe to...'
+  TagsNone: 'None'
+  TagsAll: 'All'
+  TagsSpecific: 'Specific'
+  TagDoesNotExist: 'The tag "{}" does not exist on the site.'
+  TagAlreadyAdded: 'The tag "{}" is already in your subscribed list.'
+  SaveButton: 'Save'
+  SubscribeInvalidType: 'Invalid subscription type.'
+  FailedToSubscribe: 'Failed to subscribe by new settings, please ask administrator for a more detailed cause.'
+  SubscribedSuccessfully: 'Successfully subscribed you by new settings!'
+  RefreshPage: 'Please refresh the profile page on the device, where you requested the code.'

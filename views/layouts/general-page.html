@@ -9,7 +9,7 @@
     <link href="/output.css" rel="stylesheet">
 </head>
 
-<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-[100dvh] flex flex-row">
+<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
 
     <script>
         let map = null;
@@ -172,20 +172,23 @@
     <div class="grow bg-split-left"></div>
 
     <div class="flex flex-col [@media(max-height:32rem)]:flex-row">
-        <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-[5rem] h-[5rem] [@media(max-height:32rem)]:h-[100dvh] shadow-[0_0_1rem_black]">
+        <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-[5rem] h-[5rem] [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
             <div class="text-[3rem] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
-                <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-[5rem] h-[5rem]">
+                <a href="./" id="sidebar-back-button" class="w-[5rem] h-[5rem] hidden">
+                    <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                </a>
+                <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-[5rem] h-[5rem] hidden">
                     <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
                 </a>
-                <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-[5rem] h-[5rem]">
+                <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-[5rem] h-[5rem] hidden">
                     <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
                 </a>
-                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-[5rem] h-[5rem]">
+                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-[5rem] h-[5rem] hidden">
                     <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
                 </a>
                 <i onclick="toggleThemeWheel();" id="sidebar-theme-button" class="fas fa-swatchbook flex w-[5rem] h-[5rem] content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
-                <a href="./" id="sidebar-back-button" class="w-[5rem] h-[5rem]">
-                    <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                <a href="/{{ .Lang }}/user" id="sidebar-user-button" class="w-[5rem] h-[5rem] hidden">
+                    <i onclick="return changeUrl('/{{ .Lang }}/user');" class="fas fa-user flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
                 </a>
             </div>
             <div class="theme-wheel" id="theme-wheel">
@@ -201,6 +204,7 @@
                 sidebarMapButton = document.getElementById("sidebar-map-button");
                 sidebarBlogButton = document.getElementById("sidebar-blog-button");
                 sidebarBackButton = document.getElementById("sidebar-back-button");
+                sidebarUserButton = document.getElementById("sidebar-user-button");
 
                 function updateSidebar() {
                     if (location.pathname == "" || location.pathname == "/") {
@@ -208,17 +212,21 @@
                         sidebarMapButton.classList.add('hidden');
                         sidebarBlogButton.classList.add('hidden');
                         sidebarBackButton.classList.add('hidden');
+                        sidebarUserButton.classList.add('hidden');
                     } else {
                         sidebarHomeButton.classList.remove('hidden');
                         sidebarMapButton.classList.remove('hidden');
                         sidebarBlogButton.classList.remove('hidden');
                         sidebarBackButton.classList.remove('hidden');
+                        sidebarUserButton.classList.remove('hidden');
                         lang = location.pathname.split("/")[1];
                         sidebarHomeButton.setAttribute('href', `/${lang}`);
                         sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
                         sidebarMapButton.setAttribute('href', `/${lang}/map`);
                         sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
                         sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+                        sidebarUserButton.setAttribute('href', `/${lang}/user`);
+                        sidebarUserButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
                     }
                 }
                 window.addEventListener("popstate", updateSidebar);
@@ -226,7 +234,7 @@
             </script>
         </div>
 
-        <div class="bg-background-dark @container/main flex z-10 w-[100dvw] xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-[100dvh] shadow-[0_0_1rem_black]">
+        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
             <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
             <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">

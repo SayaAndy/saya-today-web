@@ -1,10 +1,10 @@
 {{ define "body" }}
-<div class="flex flex-row ar-lt-0.8:flex-col text-base h-[100%]">
+<div class="flex flex-row ar-lt-0.8:flex-col text-base h-full">
     <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-[100%] ar-lt-0.8:max-h-[30%] flex shrink-0 flex-col ar-gt-0.8:mr-6 bg-background-light inset-shadow-[0_0_0.4rem_black]">
+        class="tags-list ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-full ar-lt-0.8:max-h-[30%] flex shrink-0 flex-col ar-gt-0.8:mr-6 bg-background-light inset-shadow-[0_0_0.4rem_black]">
         <div class="flex flex-col overflow-y-auto">
             <fieldset>
-                <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
+                <legend class="font-bold w-full text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
                 <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 grid-flow-row-dense">
                     <div class="m-1">
                         <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
@@ -17,7 +17,7 @@
                 </div>
             </fieldset>
             <fieldset class="mt-1">
-                <legend class="font-bold w-[100%] text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
+                <legend class="font-bold w-full text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
                 <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
                     <div class="m-1">
                         <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>

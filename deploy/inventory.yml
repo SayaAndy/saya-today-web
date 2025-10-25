@@ -7,6 +7,7 @@ all:
           saya_today_web_name: sayana-web
           saya_today_web_hostname: sayana-web
           saya_today_web_ipv4_address: 172.16.0.18
+          saya_today_web_listen_address: saya.today
 
     stage:
       hosts:
@@ -15,3 +16,4 @@ all:
           saya_today_web_name: sayana-demo
           saya_today_web_hostname: sayana-demo
           saya_today_web_ipv4_address: 172.16.0.17
+          saya_today_web_listen_address: demo.saya.today

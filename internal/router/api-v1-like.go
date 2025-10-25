@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	tm.Add("blog-page-like-button", "views/partials/blog-page-like-button.html")
+	assert(0, tm.Add("blog-page-like-button", "views/partials/blog-page-like-button.html"))
 }
 
 func Api_V1_Like_Put(l map[string]*locale.LocaleConfig, b2 *b2.B2Client) func(c *fiber.Ctx) error {

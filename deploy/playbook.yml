@@ -18,6 +18,12 @@
           B2_APPLICATION_KEY: "{{ saya_today_web_b2_application_key }}"
           ENVIRONMENT: "{{ saya_today_web_environment }}"
           AUTH_SALT: "{{ saya_today_web_auth_salt }}"
+          MAIL_HOST: "{{ saya_today_web_mail_host }}"
+          MAIL_ADDRESS: "{{ saya_today_web_mail_address }}"
+          MAIL_USERNAME: "{{ saya_today_web_mail_username }}"
+          MAIL_PASSWORD: "{{ saya_today_web_mail_password }}"
+          MAIL_SALT: "{{ saya_today_web_mail_salt }}"
+          FQDN: "{{ saya_today_web_listen_address }}"
         network_mode: caddy
         networks:
           - name: caddy

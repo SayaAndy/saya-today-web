@@ -32,5 +32,16 @@ auth:
   db:
     type: sqlite3
     config:
-      dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc'
+      # dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc&_journal_mode=WAL'
+      dsn: 'file:/tmp/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2&_journal_mode=WAL'
   salt: '123'
+mail:
+  clientHost: '127.0.0.1:3000'
+  mailHost: '${MAIL_HOST}'
+  publicName: 'LOCAL.SAYA.TODAY'
+  mailAddress: '${MAIL_ADDRESS}'
+  username: '${MAIL_USERNAME}'
+  password: '${MAIL_PASSWORD}'
+  salt: '${MAIL_SALT}'
+  trigger:
+    onNewPost: "* * * * *"

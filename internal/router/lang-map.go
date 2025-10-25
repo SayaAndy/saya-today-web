@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	tm.Add("global-map", "views/pages/global-map.html")
+	assert(0, tm.Add("global-map", "views/pages/global-map.html"))
 }
 
 func Lang_Map(l map[string]*locale.LocaleConfig, langs []config.AvailableLanguageConfig, b2Client *b2.B2Client) func(c *fiber.Ctx) error {
