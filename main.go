@@ -202,6 +202,9 @@ func main() {
 
 	<-sigChan
 	slog.Info("gracefully shutting down...")
+	if err = router.BlogTrigger.Close(); err != nil {
+		slog.Error("fail to shutdown blog trigger scheduler", slog.String("error", err.Error()))
+	}
 	if err = app.Shutdown(); err != nil {
 		slog.Error("fail to shutdown fiber server", slog.String("error", err.Error()))
 	}

@@ -49,6 +49,10 @@ func NewBlogTriggerScheduler(b2Client *b2.B2Client, availableLanguages []config.
 	return bts, nil
 }
 
+func (bts *BlogTriggerScheduler) Close() error {
+	return bts.s.Shutdown()
+}
+
 func (bts *BlogTriggerScheduler) scan() (newPages []*b2.BlogPage, err error) {
 	newPages = make([]*b2.BlogPage, 0)
 	for lang := range bts.knownBlogPages {

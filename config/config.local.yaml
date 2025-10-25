@@ -32,7 +32,7 @@ auth:
   db:
     type: sqlite3
     config:
-      dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc'
+      dsn: 'file:/tmp/auth.db?cache=shared&mode=rwc&_journal_mode=WAL'
   salt: '123'
 mail:
   clientHost: '127.0.0.1:3000'

@@ -45,7 +45,7 @@ func Lang_User_Unsubscribe(l map[string]*locale.LocaleConfig, langs []config.Ava
 			statusText = l[lang].UnsubscribePage.OnServerError
 			status = fiber.ErrInternalServerError.Code
 		} else {
-			statusColor = "0, 255, 0,"
+			statusColor = "0, 255, 0"
 			statusEmoji = "♡⸜(˶˃ ᵕ ˂˶)⸝♡"
 			statusText = l[lang].UnsubscribePage.Success
 			status = fiber.StatusOK
