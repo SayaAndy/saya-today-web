@@ -349,8 +349,8 @@ func (m *Mailer) GetSubscriptions(userId string) (subscriptionType SubscriptionT
 	defer func(tx *sql.Tx) {
 		if err = tx.Commit(); err != nil {
 			tx.Rollback()
-			slog.Debug("ended db transaction", slog.String("method", "GetSubscriptions"))
 		}
+		slog.Debug("ended db transaction", slog.String("method", "GetSubscriptions"))
 	}(tx)
 
 	hash := m.GetHash(userId)
@@ -452,21 +452,11 @@ rowLoop:
 			continue
 		}
 
-		email, lang, err := m.GetInfo(userId)
-		if err != nil {
-			slog.Warn("failed to get info about the user", slog.String("error", err.Error()), slog.Int("index", i), slog.String("user_id", base64.RawStdEncoding.EncodeToString(userId)))
-			continue
-		}
-
-		if lang != post.Lang {
-			continue
-		}
-
 		if tagsString == "_all" {
 			usersToSend = append(usersToSend, struct {
 				userId []byte
 				email  string
-			}{userId, email})
+			}{userId, ""})
 			continue
 		}
 
@@ -476,7 +466,7 @@ rowLoop:
 				usersToSend = append(usersToSend, struct {
 					userId []byte
 					email  string
-				}{userId, email})
+				}{userId, ""})
 				continue rowLoop
 			}
 		}
@@ -486,8 +476,25 @@ rowLoop:
 	rows.Close()
 	slog.Debug("ended db transaction", slog.String("method", "NewPost"))
 
+	for i := range usersToSend {
+		email, lang, err := m.GetInfo(usersToSend[i].userId)
+		if err != nil {
+			slog.Warn("failed to get info about the user", slog.String("error", err.Error()), slog.Int("index", i), slog.String("user_id", base64.RawStdEncoding.EncodeToString(userId)))
+			continue
+		}
+
+		if lang != post.Lang {
+			continue
+		}
+
+		usersToSend[i].email = email
+	}
+
 	messages := make([]*mail.Msg, 0, len(usersToSend))
 	for _, user := range usersToSend {
+		if user.email == "" {
+			continue
+		}
 		unsubscribeCodeBytes := make([]byte, 8)
 		rand.Read(unsubscribeCodeBytes)
 		unsubscribeCode := binary.LittleEndian.Uint64(unsubscribeCodeBytes)

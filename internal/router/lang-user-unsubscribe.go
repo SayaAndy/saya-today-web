@@ -35,11 +35,13 @@ func Lang_User_Unsubscribe(l map[string]*locale.LocaleConfig, langs []config.Ava
 			statusText = l[lang].UnsubscribePage.UnsetCode
 			status = fiber.ErrBadRequest.Code
 		} else if clientError, serverError := Mailer.Unsubscribe(unsubscribeCode); clientError != nil {
+			slog.Info("got a client error when unsubscribing", slog.String("error", clientError.Error()))
 			statusColor = "255, 0, 0"
 			statusEmoji = "(͠≖~≖  ͡ )"
 			statusText = l[lang].UnsubscribePage.InvalidCode
 			status = fiber.ErrBadRequest.Code
 		} else if serverError != nil {
+			slog.Error("got a server error when unsubscribing", slog.String("error", serverError.Error()))
 			statusColor = "255, 128, 0"
 			statusEmoji = "( ˶°ㅁ°) !!"
 			statusText = l[lang].UnsubscribePage.OnServerError
