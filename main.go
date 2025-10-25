@@ -153,7 +153,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	router.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(b2Client, cfg.AvailableLanguages, func(bp []*b2.BlogPage) error {
+	router.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(b2Client, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost, func(bp []*b2.BlogPage) error {
 		for _, post := range bp {
 			if err := router.Mailer.NewPost(post); err != nil {
 				return err

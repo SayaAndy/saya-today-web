@@ -16,7 +16,7 @@ type BlogTriggerScheduler struct {
 	onTrigger      func([]*b2.BlogPage) error
 }
 
-func NewBlogTriggerScheduler(b2Client *b2.B2Client, availableLanguages []config.AvailableLanguageConfig, onTrigger func([]*b2.BlogPage) error) (*BlogTriggerScheduler, error) {
+func NewBlogTriggerScheduler(b2Client *b2.B2Client, availableLanguages []config.AvailableLanguageConfig, cron string, onTrigger func([]*b2.BlogPage) error) (*BlogTriggerScheduler, error) {
 	s, err := gocron.NewScheduler()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new scheduler: %w", err)
@@ -30,7 +30,7 @@ func NewBlogTriggerScheduler(b2Client *b2.B2Client, availableLanguages []config.
 	bts := &BlogTriggerScheduler{s, knownBlogPages, b2Client, onTrigger}
 	defer bts.s.Start()
 
-	bts.s.NewJob(gocron.CronJob("0/5 * * * *", false), gocron.NewTask(func(bts *BlogTriggerScheduler) {
+	bts.s.NewJob(gocron.CronJob(cron, false), gocron.NewTask(func(bts *BlogTriggerScheduler) {
 		posts, err := bts.scan()
 		if err != nil {
 			slog.Error("failed to execute scanning new blog pages cron job", slog.String("error", err.Error()))

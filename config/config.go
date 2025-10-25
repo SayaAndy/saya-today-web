@@ -62,13 +62,18 @@ type Sqlite3Config struct {
 }
 
 type MailConfig struct {
-	ClientHost  string `json:"ClientHost" yaml:"clientHost" validate:"required"`
-	MailHost    string `json:"MailHost" yaml:"mailHost" validate:"required"`
-	PublicName  string `json:"PublicName" yaml:"publicName" validate:"required"`
-	MailAddress string `json:"MailAddress" yaml:"mailAddress" validate:"required"`
-	Username    string `json:"Username" yaml:"username" validate:"required"`
-	Password    string `json:"Password" yaml:"password" validate:"required"`
-	Salt        string `json:"Salt" yaml:"salt" validate:"required"`
+	ClientHost  string        `json:"ClientHost" yaml:"clientHost" validate:"required"`
+	MailHost    string        `json:"MailHost" yaml:"mailHost" validate:"required"`
+	PublicName  string        `json:"PublicName" yaml:"publicName" validate:"required"`
+	MailAddress string        `json:"MailAddress" yaml:"mailAddress" validate:"required"`
+	Username    string        `json:"Username" yaml:"username" validate:"required"`
+	Password    string        `json:"Password" yaml:"password" validate:"required"`
+	Salt        string        `json:"Salt" yaml:"salt" validate:"required"`
+	Trigger     TriggerConfig `json:"Trigger" yaml:"trigger" validate:"required"`
+}
+
+type TriggerConfig struct {
+	OnNewPost string `json:"OnNewPost" yaml:"onNewPost" validate:"cron,required"`
 }
 
 func LoadConfig(path string, config *Config) error {
