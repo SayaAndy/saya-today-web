@@ -1,4 +1,4 @@
-FROM golang:1.24.6-alpine3.22 AS build-stage
+FROM golang:1.25.3-alpine3.22 AS build-stage
 
 RUN apk add --no-cache sqlite-dev musl-dev gcc
 
@@ -6,7 +6,7 @@ WORKDIR /builddir
 COPY . .
 RUN CGO_ENABLED=1 go build -o sayana-web .
 
-FROM alpine:3.22.1 AS runtime-stage
+FROM alpine:3.22.2 AS runtime-stage
 
 ENV ENVIRONMENT=""
 ENV AUTH_SALT=""

@@ -24,8 +24,6 @@ type ClientCache struct {
 	db   *sql.DB
 }
 
-var CCache *ClientCache
-
 func NewClientCache(db *sql.DB, salt []byte) (*ClientCache, error) {
 	tx, err := db.Begin()
 	if err != nil {
