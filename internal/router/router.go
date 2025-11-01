@@ -484,6 +484,10 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 		return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")
 	}
 
+	if statusCode == fiber.StatusNoContent && len(content) != 0 {
+		statusCode = fiber.StatusOK
+	}
+
 	if statusCode >= 200 && statusCode < 300 && route.ToCache() != Disabled {
 		go r.supplements.PageCache.SetWithTTL(cacheKey, content, int64(len(content)), route.CacheDuration())
 	}
