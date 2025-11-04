@@ -468,15 +468,11 @@ form.crossable.htmx-request input {
 }
 
 .grid-item {
-    position: relative;
-    display: inline-block;
     width: 10rem;
 }
 
 .grid-sizer {
-    position: relative;
-    display: inline-block;
-    width: 10.1rem;
+    width: 10.5rem;
 }
 
 .grid-item-index {
@@ -508,7 +504,7 @@ form.crossable.htmx-request input {
     }
 
     .grid-sizer {
-        width: 12.1rem;
+        width: 12.5rem;
     }
 
     .grid-item-2x {
@@ -517,12 +513,8 @@ form.crossable.htmx-request input {
 }
 
 @container main (width >= 76rem) {
-    .grid-item {
+    .grid-item, .grid-sizer {
         width: 18rem;
-    }
-
-    .grid-sizer {
-        width: 18.1rem;
     }
 
     .grid-item-2x {
@@ -536,7 +528,7 @@ form.crossable.htmx-request input {
     }
 
     .grid-sizer {
-        width: 24.1rem;
+        width: 24.5rem;
     }
 
     .grid-item-2x {

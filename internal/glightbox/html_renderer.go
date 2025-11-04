@@ -133,9 +133,9 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		}
 
 		w.WriteString(fmt.Sprintf(`
-<div class="justify-content-center display-block">
+<div class="items-center flex flex-col">
 	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
-	<div class="grid masonry-grid-%s mx-auto">
+	<div class="grid masonry-grid-%s">
 		<div class="grid-sizer grid-sizer-%s"></div>
 		%s
 	</div>
@@ -144,11 +144,10 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 		w.WriteString(fmt.Sprintf(`
 <script>
-	var msnry_%s = new Masonry('.masonry-grid-%s', {
+	var pckry_%s = new Packery('.masonry-grid-%s', {
 		itemSelector: '.grid-item-%s',
 		columnWidth: '.grid-sizer-%s',
-		percentPosition: false,
-		fitWidth: true
+		percentPosition: false
 	});
 
 	var imgLoad_%s_timer;
@@ -156,7 +155,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 	function initMasonryLayout_%s(tm) {
 		clearTimeout(imgLoad_%s_timer);
-		imgLoad_%s_timer = setTimeout(() => msnry_%s.layout(), 100);
+		imgLoad_%s_timer = setTimeout(() => pckry_%s.layout(), 100);
 	}
 
 	imgLoad_%s.on('progress', initMasonryLayout_%s);

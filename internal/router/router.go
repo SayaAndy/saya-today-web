@@ -340,18 +340,23 @@ func (r *Router) Listen(endpoint string) error {
 
 func (r *Router) Close() (err error) {
 	allErrors := make([]error, 0)
+	slog.Debug("shutting down blog trigger scheduler")
 	if err = r.supplements.BlogTrigger.Close(); err != nil {
 		allErrors = append(allErrors, fmt.Errorf("fail to shutdown blog trigger scheduler: %w", err))
 	}
+	slog.Debug("shutting down fiber server")
 	if err = r.app.Shutdown(); err != nil {
 		allErrors = append(allErrors, fmt.Errorf("fail to shutdown fiber server: %w", err))
 	}
+	slog.Debug("dumping cache")
 	if err = r.supplements.ClientCache.Close(); err != nil {
 		allErrors = append(allErrors, fmt.Errorf("fail to dump cache: %w", err))
 	}
+	slog.Debug("closing db connection")
 	if err = r.supplements.DB.Close(); err != nil {
 		allErrors = append(allErrors, fmt.Errorf("fail to close db connection: %w", err))
 	}
+	slog.Debug("closing page cache")
 	r.supplements.PageCache.Close()
 	return errors.Join(allErrors...)
 }
