@@ -268,7 +268,7 @@
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/packery/3.0.0/dist/packery.pkgd.js"></script>
+    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
 
     <script>
         // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz
@@ -277,7 +277,7 @@
             __resetLayout.call( this );
             var parentSize = getSize( this.element.parentNode );
             var colW = this.columnWidth + this.gutter;
-            this.fitWidth = Math.floor( ( ( parentSize.innerWidth + this.gutter ) / colW ) * 1.01 ) * colW;
+            this.fitWidth = Math.floor( ( parentSize.innerWidth + this.gutter ) / colW ) * colW;
             this.packer.width = this.fitWidth;
             this.packer.height = Number.POSITIVE_INFINITY;
             this.packer.reset();
