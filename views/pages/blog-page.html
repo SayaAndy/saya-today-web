@@ -1,9 +1,15 @@
 {{ define "body" }}
 <div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
     <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-andika text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">{{ .Title }}</p>
-    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-andika text-secondary">{{ .L.Metadata.Published }}: {{ .PublishedDate }}</p>
-    <p class="max-xs:block [@media(max-height:32rem)]:block hidden grow text-lg font-andika text-secondary">{{ .L.Metadata.Action }}: {{ .ActionDate }}</p>
-    <hr class="max-xs:block [@media(max-height:32rem)]:block hidden border-t-2 border-dotted border-main-hard mt-1 mb-2 w-full ml-auto mr-auto">
+    <p class="block grow text-lg font-andika text-secondary">
+        <b>{{ .L.Metadata.Published }}</b>: 
+        <span hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
+            {{ .PublishedDate }}
+        </span>
+    </p>
+    <p class="block grow text-lg font-andika text-secondary"><b>{{ .L.Metadata.Action }}</b>: {{ .ActionDate }}</p>
+    <p class="block grow text-md font-andika italic text-main-hard">{{ .ShortDescription }}</p>
+    <hr class="block border-t-2 border-dotted border-main-hard mt-1 mb-2 w-full ml-auto mr-auto">
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
     <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">

@@ -74,6 +74,7 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	templateMap["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 	templateMap["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
 	templateMap["ActionDate"] = metadata.ActionDate
+	templateMap["ShortDescription"] = metadata.ShortDescription
 
 	go supplements.ClientCache.View(c.IP(), pathParts[2])
 
@@ -92,8 +93,6 @@ func (r *BlogPageHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplem
 	}
 
 	templateMap["Title"] = metadata.Title
-	templateMap["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
-	templateMap["ActionDate"] = metadata.ActionDate
 
 	return fiber.StatusOK, nil
 }

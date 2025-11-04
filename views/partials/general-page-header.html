@@ -1,7 +1,5 @@
 <title>{{ .Title }} // SAYA TODAY</title>
-<div {{ if .PublishedDate }} hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="#published-date" hx-swap="innerHTML" hx-trigger="load" {{ end }}
-    class="flex flex-row mb-2">
+<div class="flex flex-row mb-2">
     <p class="text-4xl font-andika font-light italic text-shadow-[0_2px_2px_var(--main-soft-color)] text-left mt-auto">{{ .Title }}</p>
-    <p id="published-date" class="grow text-2xl font-andika italic text-secondary text-right mt-auto">{{ .PublishedDate }}</p>
 </div>
 {{ block "header" . }}{{ end }}
