@@ -1,5 +1,6 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
+<div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+<div class="relative bg-background-light flex flex-col px-8 py-4 overflow-y-auto">
     <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-andika text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">{{ .Title }}</p>
     <p class="block grow text-lg font-andika text-secondary">
         <b>{{ .L.Metadata.Published }}</b>: 

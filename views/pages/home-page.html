@@ -1,20 +1,21 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-row ar-lt-0.6:flex-col w-full h-full inset-shadow-[0_0_0.4rem_black] overflow-y-auto text-base/[2] tracking-wide">
+<div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+<div class="relative bg-background-light flex flex-row ar-lt-0.6:flex-col w-full h-full overflow-y-auto text-base/loose tracking-wide z-10">
     <div class="ar-gt-0.6:flex-3/5 justify-center content-start p-8">
         <div class="flex flex-col justify-start items-start bg-background-dark mb-8 shadow-[0.4rem_0.4rem_0.4rem_black]">
-            <p class="text-3xl/[2] sm:text-4xl/[2] lg:text-5xl/[2] tracking-widest uppercase w-full font-andika italic text-left
+            <p class="text-3xl/loose sm:text-4xl/loose lg:text-5xl/loose tracking-widest uppercase w-full font-andika italic text-left
                 border-l-4 border-solid border-(--background-dark-color)
-                bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Hymn1 }}</p>
+                bg-linear-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Hymn1 }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
-            <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn2 }}</p>
-            <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn3 }}</p>
-            <p class="text-xl/[2] sm:text-2xl/[2] lg:text-3xl/[2] -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn4 }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn2 }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn3 }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn4 }}</p>
         </div>
 
         <div class="flex flex-col justify-center items-center">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
-                bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.DidYouKnowThat }}</p>
+                bg-linear-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.DidYouKnowThat }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <ul class="w-full text-left list-[circle]">
                 <li class="ml-4 mb-1">{{ index .FunFacts 0 }}</li>
@@ -28,7 +29,7 @@
         <div class="flex flex-col justify-center items-start mb-4">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
-                bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Contacts }}</p>
+                bg-linear-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.Contacts }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <a href="https://t.me/EarlInisMona">
                 <i class="fa-brands fa-telegram w-4 h-4 mr-1"></i>
@@ -103,7 +104,7 @@
         <div class="flex flex-col justify-center items-center">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-andika italic text-left
                 border-l-1.5 border-solid border-(--background-dark-color)
-                bg-gradient-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.SidebarDescription }}</p>
+                bg-linear-to-r from-(--background-dark-color) to-(--background-light-color)">{{ .L.HomePage.SidebarDescription }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
                 [&>*:nth-child(4n+2)]:bg-(--background-medium-color)/50 [&>*:nth-child(4n+3)]:bg-(--background-medium-color)/50" style="container-type: inline-size;">

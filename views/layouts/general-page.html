@@ -248,7 +248,7 @@
 
                 <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
 
-                <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
+                <div id="general-page-body" class="relative flex flex-col grow overflow-y-auto"
                     hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </div>
                 <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
