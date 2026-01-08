@@ -482,7 +482,7 @@ form.crossable.htmx-request input {
 }
 
 .themed-button.themed-button-sidebar {
-    --border-size: 0.3rem;
+    --border-size: 0.25rem;
     background-image: var(--squares-and-triangles-background);
     background-repeat: var(--squares-and-triangles-background-repeat);
     background-size: calc(var(--squares-and-triangles-background-width-coef) * 0.9rem) calc(var(--squares-and-triangles-background-height-coef) * 0.9rem);
