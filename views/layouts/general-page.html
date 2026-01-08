@@ -172,9 +172,12 @@
 
     <div class="grow bg-split-left"></div>
 
-    <div class="flex flex-col [@media(max-height:32rem)]:flex-row">
-        <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-fit h-fit [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
-            <div class="text-[3rem] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
+    <div class="flex flex-col sm:flex-row">
+        <div id="sidebar" class="bg-sidebar flex
+            flex-row sticky w-dvw h-fit xs:w-[90dvw]
+            sm:left-0 sm:flex-col sm:fixed sm:w-fit
+            z-20 shadow-[0_0_1rem_black]">
+            <div class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20">
                 <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
@@ -237,10 +240,10 @@
             </script>
         </div>
 
-        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5.1rem)] [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
+        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
             <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
-            <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+            <div class="max-h-full max-w-full flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
                 <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
                     hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </div>
