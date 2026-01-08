@@ -175,22 +175,22 @@
     <div class="flex flex-col [@media(max-height:32rem)]:flex-row">
         <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-fit h-fit [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
             <div class="text-[3rem] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
-                <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="toolbar-button w-fit h-fit hidden" draggable="false">
+                <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="toolbar-button w-fit h-fit hidden" draggable="false">
+                <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-home flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a onclick="return changeUrl('/{{ .Lang }}/blog');" href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="toolbar-button w-fit h-fit hidden" draggable="false">
+                <a onclick="return changeUrl('/{{ .Lang }}/blog');" href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-search flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="toolbar-button w-fit h-fit hidden" draggable="false">
+                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-map flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="toolbar-button w-fit h-fit" draggable="false">
+                <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                     <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </div>
-                <a onclick="return changeUrl('/{{ .Lang }}/user');" href="/{{ .Lang }}/user" id="sidebar-user-button" class="toolbar-button w-fit h-fit hidden" draggable="false">
+                <a onclick="return changeUrl('/{{ .Lang }}/user');" href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-user flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
             </div>

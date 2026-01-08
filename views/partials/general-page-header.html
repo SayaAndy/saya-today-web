@@ -1,5 +1,5 @@
 <title>{{ .Title }} // SAYA TODAY</title>
 <div class="flex flex-row mb-2">
-    <p class="text-4xl font-andika font-light italic text-shadow-[0_2px_2px_var(--main-soft-color)] text-left mt-auto">{{ .Title }}</p>
+    {{ block "header" . }}{{ end }}
+    <p class="text-4xl font-andika font-light italic text-shadow-[0_2px_2px_var(--main-soft-color)] text-left my-auto">{{ .Title }}</p>
 </div>
-{{ block "header" . }}{{ end }}

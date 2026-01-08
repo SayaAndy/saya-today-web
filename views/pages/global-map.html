@@ -44,22 +44,22 @@
 
     <div id="sidebar" class="bg-sidebar block fixed shadow-[0_0_0.4rem_black] z-1001 w-fit h-auto">
         <div class="text-[3rem] flex flex-col gap-0 relative z-1001">
-            <a href="./" class="toolbar-button w-fit h-fit" draggable="false">
+            <a href="./" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
             </a>
-            <a href="/{{ .Lang }}" class="toolbar-button w-fit h-fit" draggable="false">
+            <a href="/{{ .Lang }}" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i class="fas fa-home flex w-18 h-18 content-center text-center text-sidebar"></i>
             </a>
-            <a href="/{{ .Lang }}/blog" class="toolbar-button w-fit h-fit" draggable="false">
+            <a href="/{{ .Lang }}/blog" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i class="fas fa-search flex w-18 h-18 content-center text-center text-sidebar"></i>
             </a>
-            <a href="/{{ .Lang }}/map" class="toolbar-button w-fit h-fit" draggable="false">
+            <a href="/{{ .Lang }}/map" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i class="fas fa-map flex w-18 h-18 content-center text-center text-sidebar"></i>
             </a>
-            <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="toolbar-button w-fit h-fit" draggable="false">
+            <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex w-18 h-18 content-center text-center text-sidebar"></i>
             </div>
-            <a href="/{{ .Lang }}/user" id="sidebar-user-button" class="toolbar-button w-fit h-fit" draggable="false">
+            <a href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
                 <i onclick="return changeUrl('/{{ .Lang }}/user');" class="fas fa-user flex w-18 h-18 content-center text-center text-sidebar"></i>
             </a>
         </div>
