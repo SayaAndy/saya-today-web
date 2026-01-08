@@ -1,61 +1,68 @@
 {{ define "body" }}
 <div class="flex flex-row ar-lt-0.8:flex-col text-base h-full">
-    <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-        class="tags-list ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-full ar-lt-0.8:max-h-[30%] flex shrink-0 flex-col ar-gt-0.8:mr-6 bg-background-light inset-shadow-[0_0_0.4rem_black]">
-        <div class="flex flex-col overflow-y-auto">
-            <fieldset>
-                <legend class="font-bold w-full text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 grid-flow-row-dense">
-                    <div class="m-1">
-                        <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
+    <div class="relative flex shrink-0 ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-full ar-lt-0.8:max-h-[30%] ar-gt-0.8:mr-6">
+        <div class="absolute w-full h-full inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+        <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
+            class="tags-list relative flex flex-col w-full bg-background-light">
+            <div class="flex flex-col overflow-y-auto">
+                <fieldset>
+                    <legend class="font-bold w-full text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
+                    <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 grid-flow-row-dense">
+                        <div class="m-1">
+                            <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();"> {{ .L.BlogSearch.ChooseAllTags }}</label>
+                        </div>
+                        {{- range .Tags }}
+                        <div class="m-1">
+                            <label><input type="checkbox" id="tag{{ .Name }}Checkbox" name="tags[]" value="{{ .Name }}" onclick="contextAll();" {{ if contains $.QueryTags .Name }}checked{{ end }}> {{ .Name }}  <span class="text-secondary italic">{{ .Count }}</span></label>
+                        </div>
+                        {{- end }}
                     </div>
-                    {{- range .Tags }}
-                    <div class="m-1">
-                        <label><input type="checkbox" id="tag{{ .Name }}Checkbox" name="tags[]" value="{{ .Name }}" onclick="contextAll();" {{ if contains $.QueryTags .Name }}checked{{ end }}> {{ .Name }}  <span class="text-secondary italic">{{ .Count }}</span></label>
+                </fieldset>
+                <fieldset class="mt-1">
+                    <legend class="font-bold w-full text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
+                    <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
+                        <div class="m-1">
+                            <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
+                        </div>
+                        <div class="m-1">
+                            <label><input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-z-a"></i></label>
+                        </div>
+                        <div class="m-1">
+                            <label><input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
+                        </div>
+                        <div class="m-1">
+                            <label><input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
+                        </div>
+                        <div class="m-1">
+                            <label><input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
+                        </div>
+                        <div class="m-1">
+                            <label><input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
+                        </div>
                     </div>
-                    {{- end }}
-                </div>
-            </fieldset>
-            <fieldset class="mt-1">
-                <legend class="font-bold w-full text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
-                <div class="flex flex-col ar-lt-0.8:grid grid-cols-3 grid-rows-2 grid-flow-col">
-                    <div class="m-1">
-                        <label><input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-a-z"></i></label>
-                    </div>
-                    <div class="m-1">
-                        <label><input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}> {{ .L.BlogSearch.TitleOrdered }} <i class="fas fa-arrow-down-z-a"></i></label>
-                    </div>
-                    <div class="m-1">
-                        <label><input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
-                    </div>
-                    <div class="m-1">
-                        <label><input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.ActionDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
-                    </div>
-                    <div class="m-1">
-                        <label><input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-1-9"></i></label>
-                    </div>
-                    <div class="m-1">
-                        <label><input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}> {{ .L.BlogSearch.PublicationDateOrdered }} <i class="fas fa-arrow-down-9-1"></i></label>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <hr class="border-t-2 border-dotted border-main-hard my-0.5">
-        <div class="flex flex-row bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
-            <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
-            <div class="w-1 bg-background-light grow-0"></div>
-            <button class="flex-1" type="submit">
-                <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
-            </button>
-        </div>
-    </form>
+                </fieldset>
+            </div>
+            <hr class="border-t-2 border-dotted border-main-hard my-0.5">
+            <div class="flex flex-row bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
+                <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
+                <div class="w-1 bg-background-light grow-0"></div>
+                <button class="flex-1" type="submit">
+                    <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
+                </button>
+            </div>
+        </form>
+    </div>
 
     <div class="w-[0.5dvh] border-r-2 border-dotted border-main-hard bg-background-dark"></div>
 
-    <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
-        class="blog-cards grow flex flex-col overflow-y-auto bg-background-light inset-shadow-[0_0_0.4rem_black] p-6">
-        Loading...
+    <div class="relative flex grow h-full">
+        <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+        <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
+            class="blog-cards relative grow flex flex-col overflow-y-auto bg-background-light p-6">
+            Loading...
+        </div>
     </div>
+
 </div>
 
 <script>

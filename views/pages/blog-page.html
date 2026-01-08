@@ -1,5 +1,6 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4 overflow-y-auto">
+<div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+<div class="relative bg-background-light flex flex-col px-8 py-4 overflow-y-auto">
     <p class="max-xs:block [@media(max-height:32rem)]:block hidden font-andika text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">{{ .Title }}</p>
     <p class="block grow text-lg font-andika text-secondary">
         <b>{{ .L.Metadata.Published }}</b>: 
@@ -20,9 +21,9 @@
         function initLocationMap(id, x, y, relativeErrorMeters = 0) {
             map = L.map(id).setView([x, y], 8);
 
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+                maxZoom: 20,
+                attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
             if (relativeErrorMeters != 0) {
@@ -62,6 +63,6 @@
 </div>
 {{ end }}
 
-{{ define "footer" }}
+{{ define "header" }}
 <div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
 {{ end }}

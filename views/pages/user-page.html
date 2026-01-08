@@ -1,5 +1,6 @@
 {{ define "body" }}
-<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
+<div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+<div class="relative bg-background-light flex flex-col px-8 py-4">
     <form id="email-form" class="w-full mb-2 flex flex-col relative crossable"
         hx-get="/api/v1/email/is-in-verification" hx-target="#email-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this">
         <div class="flex flex-row w-full mb-4 z-21">

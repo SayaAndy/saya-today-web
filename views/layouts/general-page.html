@@ -172,24 +172,29 @@
 
     <div class="grow bg-split-left"></div>
 
-    <div class="flex flex-col [@media(max-height:32rem)]:flex-row">
-        <div id="sidebar" class="bg-sidebar flex sticky flex-col z-20 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] [@media(max-height:32rem)]:w-20 h-20 [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
-            <div class="text-[3rem] text-stroke-(--sidebar-stroke-color) text-stroke-[0.1dvw] flex flex-row [@media(max-height:32rem)]:flex-col gap-0 relative z-20">
-                <a href="./" id="sidebar-back-button" class="w-20 h-20 hidden">
-                    <i onclick="return changeUrl('/../', true);" class="fas fa-circle-left flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+    <div class="flex flex-col sm:flex-row">
+        <div id="sidebar" class="bg-sidebar flex
+            flex-row sticky w-dvw h-fit xs:w-[90dvw]
+            sm:left-0 sm:flex-col sm:fixed sm:w-fit
+            z-20 shadow-[0_0_1rem_black]">
+            <div class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20">
+                <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a href="/{{ .Lang }}" id="sidebar-home-button" class="w-20 h-20 hidden">
-                    <i onclick="return changeUrl('/{{ .Lang }}');" class="fas fa-home flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-home flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="w-20 h-20 hidden">
-                    <i onclick="return changeUrl('/{{ .Lang }}/blog');" class="fas fa-search flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                <a onclick="return changeUrl('/{{ .Lang }}/blog');" href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-search flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="w-20 h-20 hidden">
-                    <i class="fas fa-map flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-map flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
-                <i onclick="toggleThemeWheel();" id="sidebar-theme-button" class="fas fa-swatchbook flex w-20 h-20 content-center text-center text-sidebar hover:bg-background-dark cursor-pointer transition-colors duration-300 rounded-lg"></i>
-                <a href="/{{ .Lang }}/user" id="sidebar-user-button" class="w-20 h-20 hidden">
-                    <i onclick="return changeUrl('/{{ .Lang }}/user');" class="fas fa-user flex w-full h-full content-center text-center text-sidebar hover:bg-background-dark transition-colors duration-300 rounded-lg"></i>
+                <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
+                    <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex w-18 h-18 content-center text-center text-sidebar"></i>
+                </div>
+                <a onclick="return changeUrl('/{{ .Lang }}/user');" href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-user flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
             </div>
             <div class="theme-wheel" id="theme-wheel">
@@ -235,10 +240,10 @@
             </script>
         </div>
 
-        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[80dvw] md:w-[75dvw] lg:w-[70dvw] xl:w-[65dvw] 2xl:w-[60dvw] grow-0 h-[calc(100dvh-5rem)] [@media(max-height:32rem)]:h-dvh shadow-[0_0_1rem_black]">
+        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
             <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
-            <div class="max-h-100% flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+            <div class="max-h-full max-w-full flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
                 <div id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
                     hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </div>
@@ -246,7 +251,7 @@
 
                 <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
 
-                <div id="general-page-body" class="flex flex-col grow overflow-y-auto"
+                <div id="general-page-body" class="relative flex flex-col grow overflow-y-auto"
                     hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </div>
                 <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
@@ -310,7 +315,7 @@
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
-        const themeButton = document.getElementById('sidebar-theme-button');
+        const themeButton = document.getElementById('toolbar-theme-button');
         const themeIcons = document.querySelectorAll('.theme-icon');
         const themeWheelRadius = convertRemToPixels(6);
 
@@ -426,7 +431,7 @@
         themeWheel.addEventListener('mouseleave', hideThemeWheel);
 
         document.addEventListener('click', (e) => {
-            if (!themeWheel.contains(e.target) && e.target !== themeButton) {
+            if (!themeWheel.contains(e.target) && e.target !== themeButton && !e.target.classList.contains("toolbar-theme-button-content")) {
                 hideThemeWheel();
             }
         });
