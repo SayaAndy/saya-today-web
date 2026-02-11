@@ -21,6 +21,11 @@ html {
     --split-right-position: left;
 }
 
+body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--background-light-color) var(--main-soft-color);
+}
+
 @media screen and (min-width: 640px) and (min-height: 640px) {
     html {
         font-size: 14px;
