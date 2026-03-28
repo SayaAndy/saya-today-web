@@ -37,6 +37,13 @@ func (r *UserHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *UserHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+	return map[string]string{
+		"og:title":       supplements.Localization[lang].BlogSearch.Header,
+		"og:description": supplements.Localization[lang].BlogSearch.Description,
+	}, nil
+}
+
 func (r *UserHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	templateMap["Title"] = supplements.Localization[lang].UserProfile.Header
 

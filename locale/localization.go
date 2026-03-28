@@ -20,6 +20,7 @@ type LocaleConfig struct {
 
 type BlogSearchConfig struct {
 	Header                 string `yaml:"Header" json:"Header"`
+	Description            string `yaml:"Description" json:"Description"`
 	TagsHeader             string `yaml:"TagsHeader" json:"TagsHeader"`
 	OrderByHeader          string `yaml:"OrderByHeader" json:"OrderByHeader"`
 	TitleOrdered           string `yaml:"TitleOrdered" json:"TitleOrdered"`
@@ -29,7 +30,8 @@ type BlogSearchConfig struct {
 }
 
 type GlobalMapConfig struct {
-	Header string `yaml:"Header" json:"Header"`
+	Header      string `yaml:"Header" json:"Header"`
+	Description string `yaml:"Description" json:"Description"`
 }
 
 type HomePageConfig struct {

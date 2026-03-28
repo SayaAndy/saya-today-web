@@ -35,6 +35,13 @@ func (r *RootHandler) CacheDuration() time.Duration {
 	return 24 * time.Hour
 }
 
+func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+	return map[string]string{
+		"og:title":       "Saya Blog",
+		"og:description": "The blog of a 25 years old, travelling God knows where, proud to be not mainstream // Личный блог 25-летки, странствующего по ебеням, зато не мейнстрим",
+	}, nil
+}
+
 func (r *RootHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, _ string, templateMap fiber.Map) (statusCode int, err error) {
 	templateMap["Title"] = "Choose Your Language"
 	templateMap["AvailableLanguages"] = supplements.AvailableLanguages

@@ -9,15 +9,16 @@ import (
 )
 
 type Metadata struct {
-	Title            string    `yaml:"title"`
-	ShortDescription string    `yaml:"shortDescription"`
-	ActionDate       string    `yaml:"actionDate"`
-	PublishedTime    time.Time `yaml:"publishedTime"`
-	Thumbnail        string    `yaml:"thumbnail"`
-	Tags             []string  `yaml:"tags"`
-	Geolocation      string    `yaml:"geolocation"`
-	Medley           string    `yaml:"medley"`
-	MedleyPart       int       `yaml:"medleyPart"`
+	Title            string            `yaml:"title"`
+	ShortDescription string            `yaml:"shortDescription"`
+	ActionDate       string            `yaml:"actionDate"`
+	PublishedTime    time.Time         `yaml:"publishedTime"`
+	Thumbnail        string            `yaml:"thumbnail"`
+	Tags             []string          `yaml:"tags"`
+	Geolocation      string            `yaml:"geolocation"`
+	Medley           string            `yaml:"medley"`
+	MedleyPart       int               `yaml:"medleyPart"`
+	ContentSettings  map[string]string `yaml:"contentSettings"`
 }
 
 func ParseFrontmatter(content []byte) (metadata *Metadata, markdown []byte, err error) {

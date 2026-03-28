@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log/slog"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -41,6 +42,9 @@ func (r *MapHandler) ToValidateLang() router.LangSetting {
 
 func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	pages, err := supplements.B2Client.Scan(lang + "/")
+	slices.SortFunc(pages, func(a *b2.BlogPage, b *b2.BlogPage) int {
+		return a.Metadata.PublishedTime.Compare(b.Metadata.PublishedTime)
+	})
 	status := fiber.StatusOK
 	if err != nil {
 		slog.Error("received an error while scanning b2 pages",
@@ -52,6 +56,7 @@ func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang 
 	}
 
 	type MapMarker struct {
+		Index          int     `json:"Index"`
 		Title          string  `json:"Title"`
 		PageLink       string  `json:"PageLink"`
 		Lat            float64 `json:"Lat"`
@@ -61,7 +66,7 @@ func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang 
 	}
 
 	mapMarkers := make([]*MapMarker, 0, len(pages))
-	for _, page := range pages {
+	for i, page := range pages {
 		geolocationParts := strings.Split(page.Metadata.Geolocation, " ")
 		if len(geolocationParts) < 2 {
 			continue
@@ -78,6 +83,7 @@ func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang 
 		}
 
 		mapMarkers = append(mapMarkers, &MapMarker{
+			Index:          i,
 			Title:          page.Metadata.Title,
 			PageLink:       fmt.Sprintf("/%s/blog/%s", lang, page.FileName),
 			Lat:            x,
