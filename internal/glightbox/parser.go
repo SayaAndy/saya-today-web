@@ -29,7 +29,7 @@ func (p *GLightboxParser) Open(parent ast.Node, reader text.Reader, pc parser.Co
 		return nil, parser.NoChildren
 	}
 
-	r := regexp.MustCompile(`^\{Gallery:([A-Za-z0-9\+\-/]+)\}$`)
+	r := regexp.MustCompile(`^\{Gallery:([A-Za-z0-9\+\-/]+)(:([A-Za-z0-9\+\-/]+))?\}$`)
 
 	trimmed := bytes.TrimSpace(line)
 	parts := r.FindSubmatch(trimmed)
@@ -44,7 +44,12 @@ func (p *GLightboxParser) Open(parent ast.Node, reader text.Reader, pc parser.Co
 		return nil, parser.NoChildren
 	}
 
-	return &GLightboxBlock{Location: loc}, parser.NoChildren
+	ns := ""
+	if len(parts) >= 4 {
+		ns = string(parts[3])
+	}
+
+	return &GLightboxBlock{Location: loc, Namespace: ns}, parser.NoChildren
 }
 
 func (p *GLightboxParser) Continue(node ast.Node, reader text.Reader, pc parser.Context) parser.State {
