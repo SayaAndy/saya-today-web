@@ -9,8 +9,9 @@ import (
 // GLightboxBlock represents a light gallery block in the AST
 type GLightboxBlock struct {
 	ast.BaseBlock
-	Images   []GLightboxImage
-	Location *time.Location
+	Images    []GLightboxImage
+	Location  *time.Location
+	Namespace string
 }
 
 type GLightboxImage struct {

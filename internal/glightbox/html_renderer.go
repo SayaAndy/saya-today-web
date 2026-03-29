@@ -68,7 +68,8 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 		var elements []string
 		for i, img := range gallery.Images {
-			imageUrlSegments := strings.Split(img.URL, ".")
+			fullImageUrl := gallery.Namespace + img.URL
+			imageUrlSegments := strings.Split(fullImageUrl, ".")
 			imageUrlWithoutExt := strings.Join(imageUrlSegments[:len(imageUrlSegments)-1], ".")
 			imageUrlParts := strings.Split(imageUrlWithoutExt, "/")
 			imageNameParts := strings.Split(imageUrlParts[len(imageUrlParts)-1], "-")
@@ -122,7 +123,7 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 		</picture>
 		<span class="grid-tooltip-text"><p>%s</p></span>
 		<span class="grid-item-index">%d</span>
-	</a>`, img.URL, strings.Join(tagClassList, " "), galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, anchorlessCaptionHTML, i+1))
+	</a>`, fullImageUrl, strings.Join(tagClassList, " "), galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, anchorlessCaptionHTML, i+1))
 
 			if glightboxDescId != "" {
 				elements = append(elements, fmt.Sprintf(`
@@ -132,43 +133,43 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 			}
 		}
 
-		w.WriteString(fmt.Sprintf(`
+		w.WriteString(strings.ReplaceAll(`
 <div class="items-center flex flex-col">
 	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
-	<div class="grid masonry-grid-%s">
-		<div class="grid-sizer grid-sizer-%s"></div>
-		%s
+	<div class="grid masonry-grid-{id}">
+		<div class="grid-sizer grid-sizer-{id}"></div>
+		`+strings.Join(elements, "\n")+`
 	</div>
 	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%%] ml-auto mr-auto">
-</div>`, galleryID, galleryID, strings.Join(elements, "\n")))
+</div>
 
-		w.WriteString(fmt.Sprintf(`
 <script>
-	var pckry_%s = new Packery('.masonry-grid-%s', {
-		itemSelector: '.grid-item-%s',
-		columnWidth: '.grid-sizer-%s',
+	var pckry_{id} = new Packery('.masonry-grid-{id}', {
+		itemSelector: '.grid-item-{id}',
+		columnWidth: '.grid-sizer-{id}',
 		percentPosition: false
 	});
 
-	var imgLoad_%s_timer;
-	var imgLoad_%s = imagesLoaded('.masonry-grid-%s');
+	var imgLoad_{id}_timer;
+	var imgLoad_{id} = imagesLoaded('.masonry-grid-{id}');
 
-	function initMasonryLayout_%s(tm) {
-		clearTimeout(imgLoad_%s_timer);
-		imgLoad_%s_timer = setTimeout(() => pckry_%s.layout(), 100);
+	function initMasonryLayout_{id}(tm) {
+		clearTimeout(imgLoad_{id}_timer);
+		imgLoad_{id}_timer = setTimeout(() => pckry_{id}.layout(), 100);
 	}
 
-	imgLoad_%s.on('progress', initMasonryLayout_%s);
+	imgLoad_{id}.on('progress', initMasonryLayout_{id});
 
-	window.addEventListener('resize', initMasonryLayout_%s);
+	window.addEventListener('resize', initMasonryLayout_{id});
 
 	document.addEventListener('popout', (e) => {
-		window.removeEventListener('resize', initMasonryLayout_%s);
-		imgLoad_%s.off('progress', initMasonryLayout_%s);
-		initMasonryLayout_%s = null;
-		imgLoad_%s = null;
+		window.removeEventListener('resize', initMasonryLayout_{id});
+		imgLoad_{id}.off('progress', initMasonryLayout_{id});
+		initMasonryLayout_{id} = null;
+		imgLoad_{id} = null;
 	}, {once: true});
-</script>`, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID, galleryID))
+</script>
+`, "{id}", galleryID))
 	}
 
 	return ast.WalkContinue, nil

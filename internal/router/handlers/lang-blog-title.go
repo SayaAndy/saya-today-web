@@ -46,6 +46,20 @@ func (r *BlogPageHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
+	}
+
+	return map[string]string{
+		"og:title":       metadata.Title,
+		"og:description": fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
+		"og:image":       fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail),
+		"twitter:card":   "summary_large_image",
+	}, nil
+}
+
 func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	_, pathParts, _, err := router.GetPathFromReferer(c)
 	if err != nil {

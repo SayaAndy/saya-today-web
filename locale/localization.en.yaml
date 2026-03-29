@@ -1,6 +1,7 @@
 TagsLabel: 'Tags:'
 BlogSearch:
   Header: 'Blog Search'
+  Description: "The Saya Blog posts' list"
   TagsHeader: 'Tags'
   OrderByHeader: 'Order by...'
   TitleOrdered: 'Title'
@@ -9,6 +10,7 @@ BlogSearch:
   ChooseAllTags: 'Choose All'
 GlobalMap:
   Header: 'Global Map'
+  Description: "Global map with all the tags of places I've been to"
 HomePage:
   Header: 'Home Page'
   Contacts: 'Contacts'

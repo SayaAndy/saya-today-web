@@ -41,6 +41,14 @@ func (r *HomeHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+	return map[string]string{
+		"og:title":       supplements.Localization[lang].HomePage.Header,
+		"og:description": supplements.Localization[lang].HomePage.HomePageDescription,
+		"og:image":       "https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/" + fmt.Sprintf("otter-%d.gif", rand.Int()%3+1),
+	}, nil
+}
+
 func (r *HomeHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	templateMap["Title"] = supplements.Localization[lang].HomePage.Header
 	templateMap["FilledHeartCount"] = uint(40)

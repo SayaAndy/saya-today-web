@@ -60,6 +60,7 @@ type Route interface {
 	ToValidateLang() LangSetting
 	TemplatesToInject() []string
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
+	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error)
 	RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderBody(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderFooter(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
@@ -382,11 +383,18 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 		return c.Status(fiber.StatusOK).Type("html").Send(val)
 	}
 
-	content, err := r.supplements.TemplateManager.Render("general-page", fiber.Map{
+	valueMap := fiber.Map{
 		"L":           r.supplements.Localization[lang],
 		"Lang":        lang,
 		"QueryString": queryString,
-	})
+	}
+
+	var err error
+	if valueMap["Meta"], err = route.AddMeta(c, r.supplements, lang, valueMap); err != nil {
+		slog.Warn("failed to receive meta", slog.String("path", path), slog.String("error", err.Error()))
+	}
+
+	content, err := r.supplements.TemplateManager.Render("general-page", valueMap)
 	if err != nil {
 		slog.Warn("failed to generate div", slog.String("path", path), slog.String("error", err.Error()))
 		return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")

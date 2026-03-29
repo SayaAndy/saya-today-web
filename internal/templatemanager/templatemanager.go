@@ -32,6 +32,9 @@ var templateFuncMap = template.FuncMap{
 		return items
 	},
 	"replace": strings.ReplaceAll,
+	"fdiv": func(a, b int) float64 {
+		return float64(a) / float64(b)
+	},
 }
 
 func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager, error) {

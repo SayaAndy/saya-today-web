@@ -41,6 +41,12 @@ func (r *BasicHandler) Render(c *fiber.Ctx, supplements *Supplements, lang strin
 	return fiber.StatusNoContent, nil
 }
 
+func (r *BasicHandler) AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+	return map[string]string{
+		"robots": "noindex,nofollow",
+	}, nil
+}
+
 func (r *BasicHandler) RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	return fiber.StatusNoContent, nil
 }

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="og:title" content="{{ .L.GlobalMap.Header }}">
+    <meta name="og:description" content="{{ .L.GlobalMap.Description }}">
     <title>{{ .L.GlobalMap.Header }} // SAYA TODAY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     {{ block "header" . }}{{ end }}
@@ -243,35 +245,32 @@
             map.addLayer(markers);
         }
 
-        function stringToColor(str) {
+        function markerToHsl(str, newCoef) {
             let hash = 0;
-            for (let i = 0; i < str.length; i++) {
+            for (let i = 0; i < str.length / 2; i++) {
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                hash = str.charCodeAt(str.length - i - 1) + ((hash << 5) - hash);
+                hash %= 360;
             }
 
-            let color = '#';
-            for (let i = 0; i < 3; i++) {
-                const value = (hash >> (i * 8)) & 0xFF;
-                color += ('00' + value.toString(16)).substr(-2);
-            }
-
-            return color;
+            return [hash, (20 + newCoef * 80).toFixed(0), (20 + newCoef * 75).toFixed(0)];
         }
 
-        function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "") {
-            const titleColor = stringToColor(title);
+        function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "", newCoef = 1) {
+            const [h, s, l] = markerToHsl(title, newCoef);
+            const color = `hsl(${h} ${s}% ${l}%)`;
 
             if (relativeErrorMeters != 0) {
                 var circle = L.circle([x, y], {
-                    color: titleColor,
-                    fillColor: titleColor,
+                    color: color,
+                    fillColor: color,
                     fillOpacity: 0.15,
                     radius: relativeErrorMeters
                 }).addTo(map);
             }
 
             var marker = L.marker([x, y], {
-                icon: createCustomIcon(titleColor),
+                icon: createCustomIcon(color),
                 title: title,
             }).bindPopup(`
                     <div class="flex flex-row justify-center justify-items-center">
@@ -285,7 +284,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initLocationMap();
             {{- range .MapMarkers }}
-            mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }});
+            mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }}, {{ fdiv .Index (len $.MapMarkers) }});
             {{- end }}
         });
 

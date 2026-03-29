@@ -1,6 +1,7 @@
 TagsLabel: 'Тэги:'
 BlogSearch:
   Header: 'Поиск по блогу'
+  Description: 'Каталог записей Saya Blog'
   TagsHeader: 'Тэги'
   OrderByHeader: 'Упорядочить по...'
   TitleOrdered: 'названию'
@@ -9,6 +10,7 @@ BlogSearch:
   ChooseAllTags: 'Выбрать все'
 GlobalMap:
   Header: 'Глобальная карта'
+  Description: 'Глобальная карта с метками мест, где я побывал'
 HomePage:
   Header: 'Домашняя страница'
   Contacts: 'Контакты'
