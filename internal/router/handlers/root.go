@@ -41,12 +41,16 @@ func (r *RootHandler) SitemapInfo(_ *router.Supplements) []router.SitemapInfo {
 }
 
 func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
-	return []router.MetaField{
+	meta = []router.MetaField{
 		{Property: "og:title", Content: "Saya Blog"},
 		{Property: "og:description", Content: "The blog of a 25 years old, travelling God knows where, proud to be not mainstream // Личный блог 25-летки, странствующего по ебеням, зато не мейнстрим"},
 		{Property: "og:url", Content: fmt.Sprint(templateMap["CanonicalEndpoint"]) + "/"},
 		{Property: "og:type", Content: "website"},
-	}, nil
+	}
+	if supplements.Meta.GoogleSiteVerification != "" {
+		meta = append(meta, router.MetaField{Name: "google-site-verification", Content: supplements.Meta.GoogleSiteVerification})
+	}
+	return meta, nil
 }
 
 func (r *RootHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, _ string, templateMap fiber.Map) (statusCode int, err error) {

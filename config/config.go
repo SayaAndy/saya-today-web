@@ -17,6 +17,7 @@ type Config struct {
 	Auth               AuthConfig                `json:"Auth" yaml:"auth" validate:"required"`
 	Mail               MailConfig                `json:"Mail" yaml:"mail" validate:"required"`
 	CanonicalEndpoint  string                    `json:"CanonicalEndpoint" yaml:"canonicalEndpoint" validate:"required"`
+	Meta               MetaConfig                `json:"Meta" yaml:"meta"`
 }
 
 type BlogPagesConfig struct {
@@ -75,6 +76,10 @@ type MailConfig struct {
 
 type TriggerConfig struct {
 	OnNewPost string `json:"OnNewPost" yaml:"onNewPost" validate:"cron,required"`
+}
+
+type MetaConfig struct {
+	GoogleSiteVerification string `json:"GoogleSiteVerification" yaml:"googleSiteVerification"`
 }
 
 func LoadConfig(path string, config *Config) error {
