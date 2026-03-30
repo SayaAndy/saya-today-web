@@ -41,6 +41,14 @@ func (r *HomeHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *HomeHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
+	sitemapInfo := []router.SitemapInfo{}
+	for _, lang := range supplements.AvailableLanguages {
+		sitemapInfo = append(sitemapInfo, router.SitemapInfo{Loc: "/" + lang.Name, Priority: 0.7})
+	}
+	return sitemapInfo
+}
+
 func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
 	return map[string]string{
 		"og:title":       supplements.Localization[lang].HomePage.Header,

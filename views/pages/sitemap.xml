@@ -1,0 +1,10 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {{- range .URLs }}
+    <url>
+        <loc>{{ $.CanonicalEndpoint }}{{ .Loc }}</loc>
+        <lastmod>{{ .LastModified.UTC.Format "2006-01-02T15:04:05Z" }}</lastmod>
+        <changefreq>{{ .ChangeFreq }}</changefreq>
+        <priority>{{ printf "%.1f" .Priority }}</priority>
+    </url>
+    {{- end }}
+</urlset>

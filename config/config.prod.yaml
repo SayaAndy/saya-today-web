@@ -44,3 +44,4 @@ mail:
   salt: '${MAIL_SALT}'
   trigger:
     onNewPost: "0/5 * * * *"
+canonicalEndpoint: 'https://${FQDN}'

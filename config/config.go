@@ -16,6 +16,7 @@ type Config struct {
 	AvailableLanguages []AvailableLanguageConfig `json:"AvailableLanguages" yaml:"availableLanguages" validate:"required"`
 	Auth               AuthConfig                `json:"Auth" yaml:"auth" validate:"required"`
 	Mail               MailConfig                `json:"Mail" yaml:"mail" validate:"required"`
+	CanonicalEndpoint  string                    `json:"CanonicalEndpoint" yaml:"canonicalEndpoint" validate:"required"`
 }
 
 type BlogPagesConfig struct {

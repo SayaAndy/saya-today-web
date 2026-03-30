@@ -33,10 +33,11 @@ func NewB2Client(cfg *config.B2Config) (*B2Client, error) {
 }
 
 type BlogPage struct {
-	Link     string
-	FileName string
-	Lang     string
-	Metadata *frontmatter.Metadata
+	Link         string
+	FileName     string
+	Lang         string
+	ModifiedTime time.Time
+	Metadata     *frontmatter.Metadata
 }
 
 func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
@@ -79,9 +80,13 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 		tags := strings.Split(attrs.Info["tags"], ",")
 		slices.Sort(tags)
 
+		lang, _ := strings.CutPrefix(linkParts[0], c.prefix)
+
 		filePaths = append(filePaths, &BlogPage{
-			Link:     obj.Name(),
-			FileName: fileName,
+			Link:         obj.Name(),
+			FileName:     fileName,
+			Lang:         lang,
+			ModifiedTime: attrs.LastModified,
 			Metadata: &frontmatter.Metadata{
 				Title:            attrs.Info["title"],
 				ShortDescription: attrs.Info["short-description"],

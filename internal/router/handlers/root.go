@@ -35,6 +35,10 @@ func (r *RootHandler) CacheDuration() time.Duration {
 	return 24 * time.Hour
 }
 
+func (r *RootHandler) SitemapInfo(_ *router.Supplements) []router.SitemapInfo {
+	return []router.SitemapInfo{{Loc: "", Priority: 0.7}}
+}
+
 func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
 	return map[string]string{
 		"og:title":       "Saya Blog",

@@ -46,6 +46,25 @@ func (r *BlogPageHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *BlogPageHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
+	sitemapInfo := []router.SitemapInfo{}
+
+	pages, err := supplements.B2Client.Scan("")
+	if err != nil {
+		return sitemapInfo
+	}
+
+	for _, page := range pages {
+		sitemapInfo = append(sitemapInfo, router.SitemapInfo{
+			Loc:          "/" + page.Lang + "/blog/" + page.FileName,
+			LastModified: page.ModifiedTime,
+			Priority:     1.0,
+		})
+	}
+
+	return sitemapInfo
+}
+
 func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
 	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
 	if err != nil {

@@ -34,6 +34,14 @@ func (r *BasicHandler) TemplatesToInject() []string {
 	return []string{}
 }
 
+func (r *BasicHandler) SitemapInfo(supplements *Supplements) []SitemapInfo {
+	return nil
+}
+
+func (r *BasicHandler) ContentType() string {
+	return fiber.MIMETextHTMLCharsetUTF8
+}
+
 func (r *BasicHandler) Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	if !r.IsTemplated() {
 		panic("handler did not implement Render method (while being non-templated)")

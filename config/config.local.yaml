@@ -45,3 +45,4 @@ mail:
   salt: '${MAIL_SALT}'
   trigger:
     onNewPost: "* * * * *"
+canonicalEndpoint: 'http://127.0.0.1:3000'
