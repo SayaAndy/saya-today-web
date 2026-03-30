@@ -85,6 +85,7 @@ type NewPostConfig struct {
 
 type UserProfileConfig struct {
 	Header                       string `yaml:"Header" json:"Header"`
+	Description                  string `yaml:"Description" json:"Description"`
 	EmailHeader                  string `yaml:"EmailHeader" json:"EmailHeader"`
 	VerificationCodeHeader       string `yaml:"VerificationCodeHeader" json:"VerificationCodeHeader"`
 	TypeEmail                    string `yaml:"TypeEmail" json:"TypeEmail"`

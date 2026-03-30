@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/router"
@@ -35,10 +36,16 @@ func (r *RootHandler) CacheDuration() time.Duration {
 	return 24 * time.Hour
 }
 
-func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
-	return map[string]string{
-		"og:title":       "Saya Blog",
-		"og:description": "The blog of a 25 years old, travelling God knows where, proud to be not mainstream // Личный блог 25-летки, странствующего по ебеням, зато не мейнстрим",
+func (r *RootHandler) SitemapInfo(_ *router.Supplements) []router.SitemapInfo {
+	return []router.SitemapInfo{{Loc: "/", Priority: 0.7}}
+}
+
+func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
+	return []router.MetaField{
+		{Property: "og:title", Content: "Saya Blog"},
+		{Property: "og:description", Content: "The blog of a 25 years old, travelling God knows where, proud to be not mainstream // Личный блог 25-летки, странствующего по ебеням, зато не мейнстрим"},
+		{Property: "og:url", Content: fmt.Sprint(templateMap["CanonicalEndpoint"]) + "/"},
+		{Property: "og:type", Content: "website"},
 	}, nil
 }
 

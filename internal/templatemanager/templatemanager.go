@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type TemplateManager struct {
@@ -13,8 +15,9 @@ type TemplateManager struct {
 }
 
 type templateManagerRender struct {
-	Main string
-	Tmpl *template.Template
+	Main         string
+	Tmpl         *template.Template
+	LastModified time.Time
 }
 
 type TemplateManagerTemplates struct {
@@ -53,10 +56,15 @@ func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager
 		if err != nil {
 			return nil, err
 		}
+		modTime, err := setLastModified(tmplStruct.Files...)
+		if err != nil {
+			return nil, err
+		}
 
 		templateMap[tmplStruct.Name] = templateManagerRender{
-			Main: filepath.Base(tmplStruct.Files[0]),
-			Tmpl: tmpl,
+			Main:         filepath.Base(tmplStruct.Files[0]),
+			Tmpl:         tmpl,
+			LastModified: modTime,
 		}
 	}
 
@@ -114,10 +122,40 @@ func (tm *TemplateManager) Add(name string, files ...string) error {
 		return fmt.Errorf("failed to add template into manager: %w", err)
 	}
 
+	modTime, err := setLastModified(files...)
+	if err != nil {
+		return fmt.Errorf("failed to add template into manager: %w", err)
+	}
+
 	tm.templates[name] = templateManagerRender{
-		Main: filepath.Base(files[0]),
-		Tmpl: tmpl,
+		Main:         filepath.Base(files[0]),
+		Tmpl:         tmpl,
+		LastModified: modTime,
 	}
 
 	return nil
+}
+
+func (tm *TemplateManager) GetLastModified(name string) (time.Time, error) {
+	tmpl, exists := tm.templates[name]
+	if !exists {
+		return time.Time{}, fmt.Errorf("template %s not found", name)
+	}
+
+	return tmpl.LastModified, nil
+}
+
+func setLastModified(filenames ...string) (time.Time, error) {
+	lastModified := time.Time{}
+	for _, filename := range filenames {
+		stat, err := os.Stat(filename)
+		if err != nil {
+			return lastModified, fmt.Errorf("failed to stat file: path '%s': %w", filename, err)
+		}
+		modTime := stat.ModTime()
+		if lastModified.Before(modTime) {
+			lastModified = modTime
+		}
+	}
+	return lastModified, nil
 }

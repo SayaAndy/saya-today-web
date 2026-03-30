@@ -46,17 +46,54 @@ func (r *BlogPageHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
-func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+func (r *BlogPageHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
+	sitemapInfo := []router.SitemapInfo{}
+
+	pages, err := supplements.B2Client.Scan("")
+	if err != nil {
+		return sitemapInfo
+	}
+
+	for _, page := range pages {
+		sitemapInfo = append(sitemapInfo, router.SitemapInfo{
+			Loc:          "/" + page.Lang + "/blog/" + page.FileName,
+			LastModified: page.ModifiedTime,
+			Priority:     1.0,
+		})
+	}
+
+	return sitemapInfo
+}
+
+func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
 	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
 
-	return map[string]string{
-		"og:title":       metadata.Title,
-		"og:description": fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
-		"og:image":       fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail),
-		"twitter:card":   "summary_large_image",
+	return []router.MetaField{
+		{Property: "og:title", Content: metadata.Title},
+		{Property: "og:description", Content: fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate)},
+		{Property: "og:image", Content: fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail)},
+		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog/%s", templateMap["CanonicalEndpoint"], lang, c.Params("title"))},
+		{Property: "og:type", Content: "website"},
+		{Name: "twitter:card", Content: "summary_large_image"},
+	}, nil
+}
+
+func (r *BlogPageHandler) AddLinkedData(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error) {
+	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
+	}
+
+	return map[string]any{
+		"@context":      "https://schema.org",
+		"@type":         "Article",
+		"headline":      metadata.Title,
+		"description":   fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
+		"author":        map[string]string{"@type": "Person", "name": "Saya Andy"},
+		"datePublished": metadata.PublishedTime.UTC().Format(time.RFC3339),
 	}, nil
 }
 

@@ -37,10 +37,13 @@ func (r *UserHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
-func (r *UserHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
-	return map[string]string{
-		"og:title":       supplements.Localization[lang].BlogSearch.Header,
-		"og:description": supplements.Localization[lang].BlogSearch.Description,
+func (r *UserHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
+	return []router.MetaField{
+		{Name: "robots", Content: "noindex,nofollow"},
+		{Property: "og:title", Content: supplements.Localization[lang].UserProfile.Header},
+		{Property: "og:description", Content: supplements.Localization[lang].UserProfile.Description},
+		{Property: "og:url", Content: fmt.Sprintf("%s/%s/user", templateMap["CanonicalEndpoint"], lang)},
+		{Property: "og:type", Content: "website"},
 	}, nil
 }
 

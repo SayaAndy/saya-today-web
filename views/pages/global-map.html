@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="og:title" content="{{ .L.GlobalMap.Header }}">
-    <meta name="og:description" content="{{ .L.GlobalMap.Description }}">
+    <meta name="description" content="{{ .L.GlobalMap.Description }}">
+    <meta property="og:title" content="{{ .L.GlobalMap.Header }}">
+    <meta property="og:description" content="{{ .L.GlobalMap.Description }}">
+    <meta property="og:url" content="{{ .CanonicalEndpoint }}/{{ .Lang }}/map">
+    <meta property="og:type" content="site">
     <title>{{ .L.GlobalMap.Header }} // SAYA TODAY</title>
+    <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     {{ block "header" . }}{{ end }}
     <link href="/output.css" rel="stylesheet">

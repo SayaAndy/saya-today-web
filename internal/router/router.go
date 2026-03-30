@@ -2,8 +2,10 @@ package router
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"log/slog"
 	"net/url"
 	"slices"
@@ -21,7 +23,9 @@ import (
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/yuin/goldmark"
@@ -52,6 +56,19 @@ var (
 	Routes = make([]Route, 0)
 )
 
+type SitemapInfo struct {
+	Loc          string
+	LastModified time.Time
+	ChangeFreq   string
+	Priority     float32
+}
+
+type MetaField struct {
+	Name     string
+	Property string
+	Content  string
+}
+
 type Route interface {
 	Filter() (method string, path string)
 	IsTemplated() bool
@@ -59,8 +76,11 @@ type Route interface {
 	CacheDuration() time.Duration
 	ToValidateLang() LangSetting
 	TemplatesToInject() []string
+	SitemapInfo(supplements *Supplements) []SitemapInfo
+	ContentType() string
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
-	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error)
+	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta []MetaField, err error)
+	AddLinkedData(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error)
 	RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderBody(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderFooter(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
@@ -87,6 +107,7 @@ type Router struct {
 	app                  *fiber.App
 	templatedRoutes      map[string]map[string]Route
 	templatedPathMatcher *PathMatcher
+	canonicalEndpoint    string
 }
 
 func NewRouter(cfg *config.Config) (*Router, error) {
@@ -210,10 +231,24 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestSpeed,
+	}))
+
+	app.Use(etag.New())
+
+	app.Use(func(c *fiber.Ctx) error {
+		path := c.Path()
+		if len(path) > 1 && path[len(path)-1] == '/' {
+			return c.Redirect(strings.TrimRight(path, "/"), fiber.StatusMovedPermanently)
+		}
+		return c.Next()
+	})
+
 	templatedRoutes := make(map[string]map[string]Route)
 	templatedPathMatcher := NewPathMatcher()
 
-	return &Router{supplements, app, templatedRoutes, templatedPathMatcher}, nil
+	return &Router{supplements, app, templatedRoutes, templatedPathMatcher, cfg.CanonicalEndpoint}, nil
 }
 
 func (r *Router) InitRoutes() (err error) {
@@ -261,10 +296,11 @@ func (r *Router) InitRoutes() (err error) {
 				}
 
 				defaultMap := fiber.Map{
-					"L":           r.supplements.Localization[lang],
-					"Lang":        lang,
-					"Path":        trimmedPath,
-					"QueryString": queryString,
+					"L":                 r.supplements.Localization[lang],
+					"Lang":              lang,
+					"Path":              trimmedPath,
+					"QueryString":       queryString,
+					"CanonicalEndpoint": r.canonicalEndpoint,
 				}
 
 				statusCode, err := currentRoute.Render(c, r.supplements, lang, defaultMap)
@@ -303,8 +339,8 @@ func (r *Router) InitRoutes() (err error) {
 					go r.supplements.PageCache.SetWithTTL(cacheKey, content, int64(len(content)), route.CacheDuration())
 				}
 
-				c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
-				return c.Status(statusCode).Type("html").Send(content)
+				c.Set(fiber.HeaderContentType, route.ContentType())
+				return c.Status(statusCode).Send(content)
 			})
 		}
 	}
@@ -327,7 +363,7 @@ func (r *Router) InitRoutes() (err error) {
 
 	r.app.Static("/", "./static")
 
-	Routes = make([]Route, 0)
+	// Routes = make([]Route, 0)
 
 	return nil
 }
@@ -379,19 +415,29 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	if val, ok := r.supplements.PageCache.Get(cacheKey); val != nil && ok {
-		c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
-		return c.Status(fiber.StatusOK).Type("html").Send(val)
+		c.Set(fiber.HeaderContentType, route.ContentType())
+		return c.Status(fiber.StatusOK).Send(val)
 	}
 
 	valueMap := fiber.Map{
-		"L":           r.supplements.Localization[lang],
-		"Lang":        lang,
-		"QueryString": queryString,
+		"L":                 r.supplements.Localization[lang],
+		"Lang":              lang,
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
 	}
 
 	var err error
 	if valueMap["Meta"], err = route.AddMeta(c, r.supplements, lang, valueMap); err != nil {
 		slog.Warn("failed to receive meta", slog.String("path", path), slog.String("error", err.Error()))
+	}
+
+	var ld map[string]any
+	if ld, err = route.AddLinkedData(c, r.supplements, lang, valueMap); err != nil {
+		slog.Warn("failed to receive linked data", slog.String("path", path), slog.String("error", err.Error()))
+	}
+	if ld != nil {
+		ldBytes, _ := json.Marshal(ld)
+		valueMap["LinkedData"] = template.JS(ldBytes)
 	}
 
 	content, err := r.supplements.TemplateManager.Render("general-page", valueMap)
@@ -401,8 +447,8 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	go r.supplements.PageCache.SetWithTTL(cacheKey, content, int64(len(content)), route.CacheDuration())
-	c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
-	return c.Status(fiber.StatusOK).Type("html").Send(content)
+	c.Set(fiber.HeaderContentType, route.ContentType())
+	return c.Status(fiber.StatusOK).Send(content)
 }
 
 func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
@@ -447,17 +493,18 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	if route.ToCache() != Disabled {
 		if val, ok := r.supplements.PageCache.Get(cacheKey); val != nil && ok {
-			c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
-			return c.Status(fiber.StatusOK).Type("html").Send(val)
+			c.Set(fiber.HeaderContentType, route.ContentType())
+			return c.Status(fiber.StatusOK).Send(val)
 		}
 	}
 
 	var statusCode int
 	defaultMap := fiber.Map{
-		"L":           r.supplements.Localization[lang],
-		"Lang":        lang,
-		"Path":        strings.Trim(path, "/"),
-		"QueryString": queryString,
+		"L":                 r.supplements.Localization[lang],
+		"Lang":              lang,
+		"Path":              strings.Trim(path, "/"),
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
 	}
 
 	switch part {
@@ -505,8 +552,8 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 		go r.supplements.PageCache.SetWithTTL(cacheKey, content, int64(len(content)), route.CacheDuration())
 	}
 
-	c.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
-	return c.Status(statusCode).Type("html").Send(content)
+	c.Set(fiber.HeaderContentType, route.ContentType())
+	return c.Status(statusCode).Send(content)
 }
 
 func (r *Router) getAndValidateLang(c *fiber.Ctx, langSetting LangSetting, defaultLang ...string) (string, error) {

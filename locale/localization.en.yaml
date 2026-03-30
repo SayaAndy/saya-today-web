@@ -48,6 +48,7 @@ Mail:
     CapturedOn: 'Captured on'
 UserProfile:
   Header: 'Personal Settings'
+  Description: 'Set and verify your e-mail here, as well as subscribe to favorite blog tags'
   EmailHeader: 'E-Mail'
   VerificationCodeHeader: 'Verification Code'
   TypeEmail: 'Please type your email'

@@ -48,6 +48,7 @@ Mail:
     CapturedOn: 'Снималось'
 UserProfile:
   Header: 'Личные настройки'
+  Description: 'Здесь можно настроить и верифицировать свою электронную почту, а также подписаться на избранные темы блога'
   EmailHeader: 'E-Mail'
   VerificationCodeHeader: 'Код верификации'
   TypeEmail: 'Пожалуйста, введите свою почту'

@@ -47,6 +47,23 @@ func (r *CatalogueHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *CatalogueHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
+	sitemapInfo := []router.SitemapInfo{}
+	for _, lang := range supplements.AvailableLanguages {
+		sitemapInfo = append(sitemapInfo, router.SitemapInfo{Loc: "/" + lang.Name + "/blog", Priority: 0.3})
+	}
+	return sitemapInfo
+}
+
+func (r *CatalogueHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
+	return []router.MetaField{
+		{Property: "og:title", Content: supplements.Localization[lang].BlogSearch.Header},
+		{Property: "og:description", Content: supplements.Localization[lang].BlogSearch.Description},
+		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog", templateMap["CanonicalEndpoint"], lang)},
+		{Property: "og:type", Content: "website"},
+	}, nil
+}
+
 func (r *CatalogueHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	querySort := c.Query("sort")
 	if querySort == "" {

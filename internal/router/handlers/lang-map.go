@@ -40,6 +40,14 @@ func (r *MapHandler) ToValidateLang() router.LangSetting {
 	return router.InPath
 }
 
+func (r *MapHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
+	sitemapInfo := []router.SitemapInfo{}
+	for _, lang := range supplements.AvailableLanguages {
+		sitemapInfo = append(sitemapInfo, router.SitemapInfo{Loc: "/" + lang.Name + "/map", Priority: 0.3})
+	}
+	return sitemapInfo
+}
+
 func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	pages, err := supplements.B2Client.Scan(lang + "/")
 	slices.SortFunc(pages, func(a *b2.BlogPage, b *b2.BlogPage) int {
