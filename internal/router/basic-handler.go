@@ -53,6 +53,10 @@ func (r *BasicHandler) AddMeta(c *fiber.Ctx, supplements *Supplements, lang stri
 	return []MetaField{{Name: "robots", Content: "noindex,nofollow"}}, nil
 }
 
+func (r *BasicHandler) AddLinkedData(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error) {
+	return nil, nil
+}
+
 func (r *BasicHandler) RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	return fiber.StatusNoContent, nil
 }

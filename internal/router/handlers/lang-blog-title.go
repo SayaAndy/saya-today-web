@@ -81,6 +81,22 @@ func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements,
 	}, nil
 }
 
+func (r *BlogPageHandler) AddLinkedData(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error) {
+	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
+	}
+
+	return map[string]any{
+		"@context":      "https://schema.org",
+		"@type":         "Article",
+		"headline":      metadata.Title,
+		"description":   fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
+		"author":        map[string]string{"@type": "Person", "name": "Saya Andy"},
+		"datePublished": metadata.PublishedTime.UTC().Format(time.RFC3339),
+	}, nil
+}
+
 func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	_, pathParts, _, err := router.GetPathFromReferer(c)
 	if err != nil {

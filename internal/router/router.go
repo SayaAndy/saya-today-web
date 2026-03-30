@@ -2,8 +2,10 @@ package router
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"log/slog"
 	"net/url"
 	"slices"
@@ -78,6 +80,7 @@ type Route interface {
 	ContentType() string
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta []MetaField, err error)
+	AddLinkedData(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error)
 	RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderBody(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderFooter(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
@@ -426,6 +429,15 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	var err error
 	if valueMap["Meta"], err = route.AddMeta(c, r.supplements, lang, valueMap); err != nil {
 		slog.Warn("failed to receive meta", slog.String("path", path), slog.String("error", err.Error()))
+	}
+
+	var ld map[string]any
+	if ld, err = route.AddLinkedData(c, r.supplements, lang, valueMap); err != nil {
+		slog.Warn("failed to receive linked data", slog.String("path", path), slog.String("error", err.Error()))
+	}
+	if ld != nil {
+		ldBytes, _ := json.Marshal(ld)
+		valueMap["LinkedData"] = template.JS(ldBytes)
 	}
 
 	content, err := r.supplements.TemplateManager.Render("general-page", valueMap)
