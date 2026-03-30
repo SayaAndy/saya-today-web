@@ -24,6 +24,7 @@
           MAIL_PASSWORD: "{{ saya_today_web_mail_password }}"
           MAIL_SALT: "{{ saya_today_web_mail_salt }}"
           FQDN: "{{ saya_today_web_listen_address }}"
+          GOOGLE_SITE_VERIFICATION: "{{ saya_today_google_site_verification | default('') }}"
         network_mode: caddy
         networks:
           - name: caddy

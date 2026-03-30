@@ -6,7 +6,7 @@
     {{- range .Meta }}
     <meta {{with .Name}}name="{{.}}" {{end}}{{with .Property}}property="{{.}}" {{end}}{{with .Content}}content="{{.}}"{{end}}>
     {{- if eq .Property "og:description" }}
-    <meta name="description" href="{{.Content}}">
+    <meta name="description" content="{{.Content}}">
     {{- end }}
     {{- if eq .Property "og:url" }}
     <link rel="canonical" href="{{.Content}}">

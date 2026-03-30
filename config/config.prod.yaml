@@ -45,3 +45,5 @@ mail:
   trigger:
     onNewPost: "0/5 * * * *"
 canonicalEndpoint: 'https://${FQDN}'
+meta:
+  googleSiteVerification: '${GOOGLE_SITE_VERIFICATION}'

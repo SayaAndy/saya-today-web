@@ -100,6 +100,7 @@ type Supplements struct {
 	BlogTrigger        *blogtrigger.BlogTriggerScheduler
 	TemplateManager    *templatemanager.TemplateManager
 	MarkdownRenderer   goldmark.Markdown
+	Meta               config.MetaConfig
 }
 
 type Router struct {
@@ -214,6 +215,8 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	if err != nil {
 		return nil, fmt.Errorf("fail to initialize template manager: %w", err)
 	}
+
+	supplements.Meta = cfg.Meta
 
 	enablePrintRoutes := false
 	if cfg.LogLevel <= slog.LevelDebug {
