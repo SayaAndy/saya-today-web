@@ -49,11 +49,13 @@ func (r *HomeHandler) SitemapInfo(supplements *router.Supplements) []router.Site
 	return sitemapInfo
 }
 
-func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
-	return map[string]string{
-		"og:title":       supplements.Localization[lang].HomePage.Header,
-		"og:description": supplements.Localization[lang].HomePage.HomePageDescription,
-		"og:image":       "https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/" + fmt.Sprintf("otter-%d.gif", rand.Int()%3+1),
+func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
+	return []router.MetaField{
+		{Property: "og:title", Content: supplements.Localization[lang].HomePage.Header},
+		{Property: "og:description", Content: supplements.Localization[lang].HomePage.HomePageDescription},
+		{Property: "og:image", Content: fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/otter-%d.gif", rand.Int()%3+1)},
+		{Property: "og:url", Content: fmt.Sprintf("%s/%s", templateMap["CanonicalEndpoint"], lang)},
+		{Property: "og:type", Content: "website"},
 	}, nil
 }
 

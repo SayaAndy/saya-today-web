@@ -59,6 +59,12 @@ type SitemapInfo struct {
 	Priority     float32
 }
 
+type MetaField struct {
+	Name     string
+	Property string
+	Content  string
+}
+
 type Route interface {
 	Filter() (method string, path string)
 	IsTemplated() bool
@@ -69,7 +75,7 @@ type Route interface {
 	SitemapInfo(supplements *Supplements) []SitemapInfo
 	ContentType() string
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
-	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error)
+	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta []MetaField, err error)
 	RenderHeader(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderBody(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	RenderFooter(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)

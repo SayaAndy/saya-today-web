@@ -65,17 +65,19 @@ func (r *BlogPageHandler) SitemapInfo(supplements *router.Supplements) []router.
 	return sitemapInfo
 }
 
-func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta map[string]string, err error) {
+func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
 	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
 
-	return map[string]string{
-		"og:title":       metadata.Title,
-		"og:description": fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
-		"og:image":       fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail),
-		"twitter:card":   "summary_large_image",
+	return []router.MetaField{
+		{Property: "og:title", Content: metadata.Title},
+		{Property: "og:description", Content: fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate)},
+		{Property: "og:image", Content: fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail)},
+		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog/%s", templateMap["CanonicalEndpoint"], lang, c.Params("title"))},
+		{Property: "og:type", Content: "website"},
+		{Name: "twitter:card", Content: "summary_large_image"},
 	}, nil
 }
 
