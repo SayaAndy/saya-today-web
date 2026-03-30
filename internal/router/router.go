@@ -21,7 +21,9 @@ import (
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/yuin/goldmark"
@@ -225,6 +227,20 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 		AllowMethods: "GET,POST,OPTIONS",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
+
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestSpeed,
+	}))
+
+	app.Use(etag.New())
+
+	app.Use(func(c *fiber.Ctx) error {
+		path := c.Path()
+		if len(path) > 1 && path[len(path)-1] == '/' {
+			return c.Redirect(strings.TrimRight(path, "/"), fiber.StatusMovedPermanently)
+		}
+		return c.Next()
+	})
 
 	templatedRoutes := make(map[string]map[string]Route)
 	templatedPathMatcher := NewPathMatcher()

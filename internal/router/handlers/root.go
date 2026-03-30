@@ -37,14 +37,14 @@ func (r *RootHandler) CacheDuration() time.Duration {
 }
 
 func (r *RootHandler) SitemapInfo(_ *router.Supplements) []router.SitemapInfo {
-	return []router.SitemapInfo{{Loc: "", Priority: 0.7}}
+	return []router.SitemapInfo{{Loc: "/", Priority: 0.7}}
 }
 
 func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
 	return []router.MetaField{
 		{Property: "og:title", Content: "Saya Blog"},
 		{Property: "og:description", Content: "The blog of a 25 years old, travelling God knows where, proud to be not mainstream // Личный блог 25-летки, странствующего по ебеням, зато не мейнстрим"},
-		{Property: "og:url", Content: fmt.Sprint(templateMap["CanonicalEndpoint"])},
+		{Property: "og:url", Content: fmt.Sprint(templateMap["CanonicalEndpoint"]) + "/"},
 		{Property: "og:type", Content: "website"},
 	}, nil
 }
