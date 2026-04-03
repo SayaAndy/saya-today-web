@@ -8,12 +8,12 @@
                 <label class="block text-main-medium font-bold mb-1 z-22">
                     {{ .L.UserProfile.EmailHeader }}
                 </label>
-                <input class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
+                <input class="bg-background-medium appearance-none border-background-medium rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-background-light focus:text-main-hard z-22"
                 id="email-input" name="email" type="text" value="{{ .Email }}" placeholder="{{ .L.UserProfile.TypeEmail }}" maxlength="64"
                 data-validated-email="{{ .Email }}" onchange="checkIfValidated(this);">
             </div>
         </div>
-        <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-main-hard hover:bg-main-medium active:bg-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/send-verification-code" hx-target="#email-message" hx-swap="outerHTML" hx-indicator="#email-form">
             {{ .L.UserProfile.SendCodeButton }}
         </button>
@@ -29,11 +29,11 @@
                 <label class="block text-main-medium font-bold ml-1 z-22">
                     {{ .L.UserProfile.VerificationCodeHeader }}
                 </label>
-                <input class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
+                <input class="bg-background-medium appearance-none border-background-medium rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-background-light focus:text-main-hard z-22"
                 name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16" autocapitalize="characters">
             </div>
         </div>
-        <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-main-hard hover:bg-main-medium active:bg-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-indicator="#email-verification-form">
             {{ .L.UserProfile.VerifyButton }}
         </button>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div id="pick-tags-form" class="flex flex-col w-full relative crossable">
-                <input type="text" class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
+                <input type="text" class="bg-background-medium appearance-none border-background-medium rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-background-light focus:text-main-hard z-22"
                     list="existing-tags" onchange="addTag(this.value);" onkeydown="if (event.keyCode === 13) {addTag(this.value); this.value=''; return false;}">
                 <datalist id="existing-tags">
                     {{- range .ExistingTags }}
@@ -78,7 +78,7 @@
                     {{- end }}
                 </div>
             </div>
-            <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
+            <button class="w-max mx-auto bg-color-main-hard hover:bg-main-medium active:bg-color-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
                 hx-put="/api/v1/subs" hx-target="#subs-message" hx-swap="outerHTML" hx-indicator="#subs-form">
                 {{ .L.UserProfile.SaveButton }}
             </button>

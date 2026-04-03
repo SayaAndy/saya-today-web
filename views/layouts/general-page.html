@@ -32,7 +32,11 @@
     <script>
         function changeUrl(path, toAppend = false) {
             const urlParams = new URLSearchParams(window.location.search);
-            const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
+            newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
+            while (path.slice(-3) == '/..' && toAppend) {
+                newPathname = newPathname.replace(/\/[^\/]+$/, '');
+                path = path.slice(0, -3);
+            }
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
 
             history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
@@ -192,7 +196,7 @@
             sm:left-0 sm:flex-col sm:fixed sm:w-fit
             z-20 shadow-[0_0_1rem_black]">
             <nav aria-label="Main navigation" class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20">
-                <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                <a onclick="return changeUrl('/..', true);" href="../" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
                     <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
                 <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
