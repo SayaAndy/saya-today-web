@@ -6,18 +6,18 @@
     </a>
     <div class="grow my-0.5 mx-1 flex flex-col justify-center">
         <div class="flex flex-row gap-2 max-w-full">
-            <a href="{{ .ArticleLink }}" onclick="return changeUrl('{{ .ArticleLink }}');" class="grow text-base cursor-pointer">
+            <a href="{{ .ArticleLink }}" onclick="return changeUrl('{{ .ArticleLink }}');" class="grow-2 text-base cursor-pointer">
                 <span class="font-extrabold">{{ .Title }}</span>
                 <span class="font-extrabold select-none text-secondary">//</span>
                 <span class="italic text-secondary">{{ .ActionDate }}</span>
             </a>
-            <p class="basis-56 text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
+            <p class="basis-56 grow text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
         </div>
         <p class="text-base text-main-hard">{{ .ShortDescription }}</p>
         <p class="text-base text-secondary italic">
             <i class="fas fa-thumbs-up w-4 h-4"></i>
             <span>{{ .LikeCount }}</span>
-            <span class="font-extrabold select-none">//</span>
+            <span class="font-thin select-none">//</span>
             <i class="fas fa-eye w-4 h-4"></i>
             <span>{{ .ViewCount }}</span>
         </p>

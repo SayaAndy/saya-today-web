@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
 </head>
 
-<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh">
+<body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh">
 
     <script>
         function switchTheme(theme) {
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <div id="map-container" class="bg-background-dark flex z-10 w-full h-full"></div>
+    <div id="map-container" class="bg-paper bg-background-dark flex z-10 w-full h-full"></div>
 
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
     <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
@@ -213,7 +213,7 @@
         var map;
         var markers = L.markerClusterGroup();
 
-        function createCustomIcon(color, borderColor = "var(--main-soft-color)") {
+        function createCustomIcon(color, borderColor = "var(--color-main-soft)") {
             const svgIcon = `
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 1C7.5 1 4 4.5 4 9c0 6.5 8 14 8 14s8-7.5 8-14c0-4.5-3.5-8-8-8zm0 11c-1.5 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1.5 3-3 3z"

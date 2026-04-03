@@ -1,6 +1,6 @@
 {{ define "body" }}
 <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
-<div class="relative bg-background-light flex flex-col px-8 py-4">
+<div class="relative bg-paper bg-background-light flex flex-col px-8 py-4">
     <form id="email-form" class="w-full mb-2 flex flex-col relative crossable"
         hx-get="/api/v1/email/is-in-verification" hx-target="#email-message" hx-swap="outerHTML" hx-trigger="load" hx-indicator="this">
         <div class="flex flex-row w-full mb-4 z-21">
@@ -8,17 +8,17 @@
                 <label class="block text-main-medium font-bold mb-1 z-22">
                     {{ .L.UserProfile.EmailHeader }}
                 </label>
-                <input class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                <input class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
                 id="email-input" name="email" type="text" value="{{ .Email }}" placeholder="{{ .L.UserProfile.TypeEmail }}" maxlength="64"
                 data-validated-email="{{ .Email }}" onchange="checkIfValidated(this);">
             </div>
         </div>
-        <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/send-verification-code" hx-target="#email-message" hx-swap="outerHTML" hx-indicator="#email-form">
             {{ .L.UserProfile.SendCodeButton }}
         </button>
     </form>
-    <div id="email-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
+    <div id="email-message" class="bg-paper bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
 
     <hr class="my-2 border-t-4 border-dotted border-main-hard">
 
@@ -29,21 +29,21 @@
                 <label class="block text-main-medium font-bold ml-1 z-22">
                     {{ .L.UserProfile.VerificationCodeHeader }}
                 </label>
-                <input class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                <input class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
                 name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16" autocapitalize="characters">
             </div>
         </div>
-        <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+        <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-indicator="#email-verification-form">
             {{ .L.UserProfile.VerifyButton }}
         </button>
     </form>
-    <div id="verification-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
+    <div id="verification-message" class="bg-paper bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
 </div>
 
 <hr class="my-4 border-t-4 border-dotted border-main-hard">
 
-<div class="bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
+<div class="bg-paper bg-background-light flex flex-col inset-shadow-[0_0_0.4rem_black] px-8 py-4">
     <form id="subs-form" class="w-full mb-2 flex flex-col relative crossable">
         <div class="flex flex-col w-full mb-4 z-21">
             <label class="block text-main-medium font-bold mb-1 z-22">
@@ -61,30 +61,30 @@
                 </div>
             </div>
             <div id="pick-tags-form" class="flex flex-col w-full relative crossable">
-                <input type="text" class="bg-(--background-medium-color) appearance-none border-(--background-medium-color) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--background-light-color) focus:text-main-hard z-22"
+                <input type="text" class="bg-(--color-background-medium) appearance-none border-(--color-background-medium) rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-(--color-background-light) focus:text-main-hard z-22"
                     list="existing-tags" onchange="addTag(this.value);" onkeydown="if (event.keyCode === 13) {addTag(this.value); this.value=''; return false;}">
                 <datalist id="existing-tags">
                     {{- range .ExistingTags }}
                     <option value="{{ .Name }}">
                     {{- end }}
                 </datalist>
-                <div id="tags-picked-list" class="bg-background-dark flex flex-wrap inset-shadow-[0_0_0.4rem_black] p-2 m-4 w-full">
+                <div id="tags-picked-list" class="bg-paper bg-background-dark flex flex-wrap inset-shadow-[0_0_0.4rem_black] p-2 m-4 w-full">
                     {{- range .TagsPickedList }}
-                    <div id="tagPicked{{ . }}" class="bg-main-hard text-background-light m-2 flex flex-row">
+                    <div id="tagPicked{{ . }}" class="bg-paper bg-main-hard text-background-light m-2 flex flex-row">
                         <p class="py-1 px-2">{{ . }}</p>
-                        <p class="py-1 px-2 bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked{{ . }}'));">✘</p>
+                        <p class="py-1 px-2 bg-paper bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked{{ . }}'));">✘</p>
                         <input type="hidden" name="tags_picked" value="{{ . }}">
                     </div>
                     {{- end }}
                 </div>
             </div>
-            <button class="w-max mx-auto bg-(--main-hard-color) hover:bg-(--main-medium-color) active:bg-(--main-soft-color) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--background-light-color) font-bold py-2 px-4 rounded z-22"
+            <button class="w-max mx-auto bg-(--color-main-hard) hover:bg-(--color-main-medium) active:bg-(--color-main-soft) active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-(--color-background-light) font-bold py-2 px-4 rounded z-22"
                 hx-put="/api/v1/subs" hx-target="#subs-message" hx-swap="outerHTML" hx-indicator="#subs-form">
                 {{ .L.UserProfile.SaveButton }}
             </button>
         </div>
     </form>
-    <div id="subs-message" class="bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
+    <div id="subs-message" class="bg-paper bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
 </div>
 
 <script>
@@ -182,9 +182,9 @@ function addTag(name) {
     }
 
     tagsPickedList.innerHTML += `
-    <div id="tagPicked${name}" class="bg-main-hard text-background-light m-2 flex flex-row">
+    <div id="tagPicked${name}" class="bg-paper bg-main-hard text-background-light m-2 flex flex-row">
         <p class="py-1 px-2">${name}</p>
-        <p class="py-1 px-2 bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked${name}'));">✘</p>
+        <p class="py-1 px-2 bg-paper bg-main-soft cursor-pointer" onclick="htmx.remove(htmx.find('#tagPicked${name}'));">✘</p>
         <input type="hidden" name="tags_picked" value="${name}">
     </div>
     `;

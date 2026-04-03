@@ -3,7 +3,7 @@
     <div class="relative flex shrink-0 ar-gt-0.8:min-w-[10dvh] ar-gt-0.8:max-w-[20dvh] ar-gt-0.8:w-fit ar-lt-0.8:w-full ar-lt-0.8:max-h-[30%] ar-gt-0.8:mr-6">
         <div class="absolute w-full h-full inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
         <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-            class="tags-list relative flex flex-col w-full bg-background-light">
+            class="tags-list relative flex flex-col w-full bg-paper bg-background-light">
             <div class="flex flex-col overflow-y-auto">
                 <fieldset>
                     <legend class="font-bold w-full text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
@@ -43,22 +43,22 @@
                 </fieldset>
             </div>
             <hr class="border-t-2 border-dotted border-main-hard my-0.5">
-            <div class="flex flex-row bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
-                <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
-                <div class="w-1 bg-background-light grow-0"></div>
+            <div class="flex flex-row bg-paper bg-background-dark my-2 p-0.5 rounded-1 justify-items-center">
+                <i onclick="defaultSearchParams(); cleanHrefParams();" class="fas fa-rotate-left flex-1 text-center text-2xl hover:bg-paper bg-background-light cursor-pointer transition-colors duration-300"></i>
+                <div class="w-1 bg-paper bg-background-light grow-0"></div>
                 <button class="flex-1" type="submit">
-                    <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-background-light cursor-pointer transition-colors duration-300"></i>
+                    <i onclick="setHrefParams();" class="fas fa-magnifying-glass text-center text-2xl hover:bg-paper bg-background-light cursor-pointer transition-colors duration-300"></i>
                 </button>
             </div>
         </form>
     </div>
 
-    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-hard bg-background-dark"></div>
+    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-hard bg-paper bg-background-dark"></div>
 
     <div class="relative flex grow h-full">
         <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
         <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
-            class="blog-cards relative grow flex flex-col overflow-y-auto bg-background-light p-6">
+            class="blog-cards relative grow flex flex-col overflow-y-auto bg-paper bg-background-light p-6">
             Loading...
         </div>
     </div>

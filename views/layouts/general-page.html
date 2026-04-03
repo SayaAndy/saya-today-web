@@ -23,7 +23,7 @@
     {{- end }}
 </head>
 
-<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
+<body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
 
     <script>
         let map = null;
@@ -254,10 +254,10 @@
             </script>
         </div>
 
-        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
-            <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
+        <div class="bg-paper bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
+            <div class="bg-paper bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
-            <div class="max-h-full max-w-full flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+            <div class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative pt-4 ml-8 pr-4">
                 <header id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
                     hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </header>
@@ -278,7 +278,7 @@
                 <hr class="border-t-4 border-dotted border-main-hard mb-2">
             </div>
 
-            <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
+            <div class="pr-[0.5dvw] bg-paper bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
         </div>
     </div>
 
