@@ -58,7 +58,7 @@
     <div class="relative flex grow h-full">
         <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
         <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
-            class="blog-cards relative grow flex flex-col overflow-y-auto bg-paper bg-background-light p-6">
+            class="blog-cards relative grow flex flex-col overflow-y-auto bg-paper bg-background-light pr-2">
             Loading...
         </div>
     </div>
