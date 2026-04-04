@@ -489,7 +489,7 @@ form.crossable.htmx-request input {
 .grid-tooltip {
     position: relative;
     display: inline-block;
-    box-shadow: inset 0rem 0rem 0.5rem var(--color-main-soft);
+    box-shadow: inset 0rem 0rem 0.5rem var(--color-accent-deep);
     transition: box-shadow 0.5s ease-in-out;
 }
 
@@ -503,7 +503,7 @@ form.crossable.htmx-request input {
     transition: opacity 0.5s;
     width: 100%;
     top: 100%;
-    background-color: var(--color-background-dark);
+    background-color: var(--color-accent-light);
     color: var(--color-main-hard);
     text-align: center;
     padding: 0.25rem 0.25rem;
@@ -511,6 +511,7 @@ form.crossable.htmx-request input {
     border-radius: 0.5rem;
     position: absolute;
     z-index: 1001;
+    box-shadow: 0.25rem 0.25rem 0.25rem var(--color-accent-light);
 }
 
 .grid-tooltip:hover .grid-tooltip-text {
@@ -526,7 +527,7 @@ form.crossable.htmx-request input {
     margin-left: -0.25rem;
     border-width: 0.25rem;
     border-style: solid;
-    border-color: transparent transparent var(--color-background-dark) transparent;
+    border-color: transparent transparent var(--color-accent-light) transparent;
 }
 
 .grid-item {
@@ -543,7 +544,7 @@ form.crossable.htmx-request input {
     transition: opacity 0.5s;
     top: 0%;
     left: 0%;
-    background-color: var(--color-main-soft);
+    background-color: var(--color-accent-deep);
     color: var(--color-background-dark);
     text-align: center;
     padding: 0.25rem 0.25rem;
