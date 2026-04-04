@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap');
 
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 @theme {
     --font-m-plus: "M PLUS Rounded 1c", sans-serif;
@@ -13,6 +14,14 @@
     --color-background-medium: var(--color-background-medium);
     --color-background-light: var(--color-background-light);
     --color-secondary: var(--color-secondary);
+    --color-accent-light: var(--color-accent-light);
+    --color-accent-deep: var(--color-accent-deep);
+    --color-main-light-hard: var(--color-main-light-hard);
+    --color-main-light-medium: var(--color-main-light-medium);
+    --color-main-light-soft: var(--color-main-light-soft);
+    --color-main-dark-hard: var(--color-main-dark-hard);
+    --color-main-dark-medium: var(--color-main-dark-medium);
+    --color-main-dark-soft: var(--color-main-dark-soft);
 }
 
 html {
@@ -78,6 +87,8 @@ body {
 }
 
 [data-theme="olive"] {
+    --color-accent-light: var(--color-lime-300);
+    --color-accent-deep: var(--color-lime-600);
     --color-main-dark-hard: #4b513a;
     --color-main-dark-medium: #8a9d8a;
     --color-main-dark-soft: #a5b8a5;
@@ -106,6 +117,8 @@ body {
 }
 
 [data-theme="lettuce"] {
+    --color-accent-light: var(--color-lime-300);
+    --color-accent-deep: var(--color-lime-600);
     --color-main-dark-hard: #384a0c;
     --color-main-dark-medium: #617c1f;
     --color-main-dark-soft: #9bb665;
@@ -134,6 +147,8 @@ body {
 }
 
 [data-theme="night"] {
+    --color-accent-light: var(--color-indigo-900);
+    --color-accent-deep: var(--color-indigo-500);
     --color-main-light-hard: var(--color-sky-100);
     --color-main-light-medium: var(--color-sky-200);
     --color-main-light-soft: var(--color-sky-300);
@@ -162,6 +177,8 @@ body {
 }
 
 [data-theme="ram"] {
+    --color-accent-light: var(--color-orange-800);
+    --color-accent-deep: var(--color-orange-300);
     --color-main-light-hard: #fefad8;
     --color-main-light-medium: #f6e4c5;
     --color-main-light-soft: #e8d4b8;
@@ -190,6 +207,8 @@ body {
 }
 
 [data-theme="lilac"] {
+    --color-accent-light: var(--color-indigo-300);
+    --color-accent-deep: var(--color-indigo-800);
     --color-main-dark-hard: #343b58;
     --color-main-dark-medium: #414868;
     --color-main-dark-soft: #6c6e75; 
@@ -650,12 +669,12 @@ body[data-theme~="ram"] .leaflet-tile {
         min-width: fit-content;
     }
 
-    .ar-gt-0\.8\:min-w-\[10dvh\] {
-        min-width: 10dvh;
+    .ar-gt-0\.8\:min-w-1\/10 {
+        min-width: 10%;
     }
 
-    .ar-gt-0\.8\:max-w-\[20dvh\] {
-        max-width: 20dvh;
+    .ar-gt-0\.8\:max-w-1\/4 {
+        max-width: 25%;
     }
 
     .ar-gt-0\.8\:items-center {

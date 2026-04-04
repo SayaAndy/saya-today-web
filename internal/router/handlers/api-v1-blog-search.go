@@ -91,7 +91,9 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 					"Thumbnail":        page.Metadata.Thumbnail,
 					"Tags":             page.Metadata.Tags,
 					"LikeCount":        supplements.ClientCache.GetLikeCount(page.FileName),
+					"Liked":            supplements.ClientCache.GetLikeStatus(c.IP(), page.FileName),
 					"ViewCount":        supplements.ClientCache.GetViewCount(page.FileName),
+					"Viewed":           supplements.ClientCache.GetViewStatus(c.IP(), page.FileName),
 				})
 				break
 			}
