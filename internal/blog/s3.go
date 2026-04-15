@@ -11,6 +11,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
@@ -27,11 +28,31 @@ func NewS3Client(cfg *config.StorageConfig) (Client, error) {
 	}
 	s3cfg := cfg.Config.(*config.S3Config)
 
-	s3cl := s3.New(s3.Options{
-		Region:       s3cfg.Region,
-		BaseEndpoint: aws.String(s3cfg.Endpoint),
-		Credentials:  credentials.NewStaticCredentialsProvider(s3cfg.AccessKeyID, s3cfg.SecretAccessKey, ""),
+	opts := []func(*awsconfig.LoadOptions) error{
+		awsconfig.WithRegion(s3cfg.Region),
+	}
+	if s3cfg.AccessKeyID != "" && s3cfg.SecretAccessKey != "" {
+		opts = append(opts, awsconfig.WithCredentialsProvider(
+			credentials.NewStaticCredentialsProvider(s3cfg.AccessKeyID, s3cfg.SecretAccessKey, ""),
+		))
+	}
+
+	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(), opts...)
+	if err != nil {
+		return nil, fmt.Errorf("load AWS config: %w", err)
+	}
+
+	var s3Opts []func(*s3.Options)
+	if s3cfg.Endpoint != "" {
+		s3Opts = append(s3Opts, func(o *s3.Options) {
+			o.BaseEndpoint = aws.String(s3cfg.Endpoint)
+		})
+	}
+	s3Opts = append(s3Opts, func(o *s3.Options) {
+		o.UsePathStyle = s3cfg.UsePathStyle
 	})
+
+	s3cl := s3.NewFromConfig(awsCfg, s3Opts...)
 
 	return &S3Client{s3cfg.Prefix, s3cfg.BucketName, s3cl}, nil
 }

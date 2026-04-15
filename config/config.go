@@ -107,7 +107,8 @@ type S3Config struct {
 	BucketName      string `json:"BucketName" yaml:"bucketName" validate:"required,min=1"`
 	Region          string `json:"Region" yaml:"region" validate:"required,min=1"`
 	Prefix          string `json:"Prefix" yaml:"prefix"`
-	Endpoint        string `json:"Endpoint" yaml:"endpoint" validate:"required,url"`
+	Endpoint        string `json:"Endpoint" yaml:"endpoint" validate:"url"`
+	UsePathStyle    bool   `json:"UsePathStyle"`
 	AccessKeyID     string `json:"AccessKeyID" yaml:"accessKeyID"`
 	SecretAccessKey string `json:"SecretAccessKey" yaml:"secretAccessKey"`
 }
