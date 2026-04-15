@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
@@ -49,7 +49,7 @@ func (r *BlogPageHandler) ToValidateLang() router.LangSetting {
 func (r *BlogPageHandler) SitemapInfo(supplements *router.Supplements) []router.SitemapInfo {
 	sitemapInfo := []router.SitemapInfo{}
 
-	pages, err := supplements.B2Client.Scan("")
+	pages, err := supplements.BlogClient.Scan("")
 	if err != nil {
 		return sitemapInfo
 	}
@@ -66,7 +66,7 @@ func (r *BlogPageHandler) SitemapInfo(supplements *router.Supplements) []router.
 }
 
 func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
-	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
+	metadata, _, err := supplements.BlogClient.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
@@ -82,7 +82,7 @@ func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements,
 }
 
 func (r *BlogPageHandler) AddLinkedData(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error) {
-	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
+	metadata, _, err := supplements.BlogClient.ReadFrontmatter(lang + "/" + c.Params("title") + ".md")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
@@ -103,7 +103,7 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 		return fiber.StatusBadRequest, fmt.Errorf("failed to get path from referer: %w", err)
 	}
 
-	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.B2Client, lang+"/"+pathParts[2])
+	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.BlogClient, lang+"/"+pathParts[2])
 	if err != nil {
 		return fiber.StatusNotFound, fmt.Errorf("failed to find '%s' post: %w", pathParts[2], err)
 	}
@@ -138,7 +138,7 @@ func (r *BlogPageHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplem
 		return fiber.StatusBadRequest, fmt.Errorf("failed to get path from referer: %w", err)
 	}
 
-	metadata, _, err := supplements.B2Client.ReadFrontmatter(lang + "/" + pathParts[2] + ".md")
+	metadata, _, err := supplements.BlogClient.ReadFrontmatter(lang + "/" + pathParts[2] + ".md")
 	if err != nil {
 		return fiber.StatusNotFound, fmt.Errorf("could not read '%s' for metadata: %w", path, err)
 	}
@@ -148,8 +148,8 @@ func (r *BlogPageHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplem
 	return fiber.StatusOK, nil
 }
 
-func readBlogPost(md goldmark.Markdown, b2Client *b2.B2Client, sourceName string) (metadata *frontmatter.Metadata, html string, err error) {
-	metadata, markdown, err := b2Client.ReadFrontmatter(sourceName + ".md")
+func readBlogPost(md goldmark.Markdown, blogClient blog.Client, sourceName string) (metadata *frontmatter.Metadata, html string, err error) {
+	metadata, markdown, err := blogClient.ReadFrontmatter(sourceName + ".md")
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to read a frontmatter file: %w", err)
 	}

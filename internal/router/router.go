@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/config"
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/glightbox"
@@ -90,7 +90,7 @@ type Route interface {
 
 type Supplements struct {
 	DB                 *sql.DB
-	B2Client           *b2.B2Client
+	BlogClient         blog.Client
 	Localization       map[string]*locale.LocaleConfig
 	AvailableLanguages []config.AvailableLanguageConfig
 	ClientCache        *ClientCache
@@ -140,7 +140,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	}
 	slog.Debug("successfully applied migrations")
 
-	supplements.B2Client, err = b2.NewB2Client(&cfg.BlogPages.Storage.Config)
+	supplements.BlogClient, err = blog.NewClientMap[cfg.BlogPages.Storage.Type](&cfg.BlogPages.Storage)
 	if err != nil {
 		return nil, fmt.Errorf("fail to initialize b2 client: %w", err)
 	}
@@ -198,8 +198,8 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 		return nil, fmt.Errorf("fail to initialize mailer: %w", err)
 	}
 
-	supplements.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(supplements.B2Client, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost,
-		func(bp []*b2.BlogPage) error {
+	supplements.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(supplements.BlogClient, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost,
+		func(bp []*blog.Page) error {
 			for _, post := range bp {
 				if err := supplements.Mailer.NewPost(post); err != nil {
 					return err

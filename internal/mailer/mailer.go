@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
 	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
@@ -418,7 +418,7 @@ func (m *Mailer) Subscribe(userIdHash []byte, subscriptionType SubscriptionType,
 	return nil
 }
 
-func (m *Mailer) NewPost(post *b2.BlogPage) error {
+func (m *Mailer) NewPost(post *blog.Page) error {
 	tx, err := m.db.Begin()
 	if err != nil {
 		return fmt.Errorf("failed to initialize transaction with db: %s", err)

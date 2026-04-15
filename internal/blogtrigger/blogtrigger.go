@@ -5,29 +5,29 @@ import (
 	"log/slog"
 
 	"github.com/SayaAndy/saya-today-web/config"
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/go-co-op/gocron/v2"
 )
 
 type BlogTriggerScheduler struct {
 	s              gocron.Scheduler
-	knownBlogPages map[string]map[string]*b2.BlogPage
-	b2Client       *b2.B2Client
-	onTrigger      func([]*b2.BlogPage) error
+	knownBlogPages map[string]map[string]*blog.Page
+	blogClient     blog.Client
+	onTrigger      func([]*blog.Page) error
 }
 
-func NewBlogTriggerScheduler(b2Client *b2.B2Client, availableLanguages []config.AvailableLanguageConfig, cron string, onTrigger func([]*b2.BlogPage) error) (*BlogTriggerScheduler, error) {
+func NewBlogTriggerScheduler(blogClient blog.Client, availableLanguages []config.AvailableLanguageConfig, cron string, onTrigger func([]*blog.Page) error) (*BlogTriggerScheduler, error) {
 	s, err := gocron.NewScheduler()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create new scheduler: %w", err)
 	}
 
-	knownBlogPages := make(map[string]map[string]*b2.BlogPage, len(availableLanguages))
+	knownBlogPages := make(map[string]map[string]*blog.Page, len(availableLanguages))
 	for _, lang := range availableLanguages {
-		knownBlogPages[lang.Name] = make(map[string]*b2.BlogPage)
+		knownBlogPages[lang.Name] = make(map[string]*blog.Page)
 	}
 
-	bts := &BlogTriggerScheduler{s, knownBlogPages, b2Client, onTrigger}
+	bts := &BlogTriggerScheduler{s, knownBlogPages, blogClient, onTrigger}
 	defer bts.s.Start()
 
 	bts.s.NewJob(gocron.CronJob(cron, false), gocron.NewTask(func(bts *BlogTriggerScheduler) {
@@ -53,10 +53,10 @@ func (bts *BlogTriggerScheduler) Close() error {
 	return bts.s.Shutdown()
 }
 
-func (bts *BlogTriggerScheduler) scan() (newPages []*b2.BlogPage, err error) {
-	newPages = make([]*b2.BlogPage, 0)
+func (bts *BlogTriggerScheduler) scan() (newPages []*blog.Page, err error) {
+	newPages = make([]*blog.Page, 0)
 	for lang := range bts.knownBlogPages {
-		posts, err := bts.b2Client.Scan(lang + "/")
+		posts, err := bts.blogClient.Scan(lang + "/")
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan blog pages in b2 on '%s': %w", lang, err)
 		}

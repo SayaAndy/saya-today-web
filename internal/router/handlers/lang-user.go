@@ -55,7 +55,7 @@ func (r *UserHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, 
 		slog.Error("get info from mailer about a client", slog.String("error", err.Error()))
 	}
 
-	tagsArray, err := getTags(supplements.B2Client, lang)
+	tagsArray, err := getTags(supplements.BlogClient, lang)
 	if err != nil {
 		return fiber.ErrInternalServerError.Code, fmt.Errorf("failed to get the available tags")
 	}

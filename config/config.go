@@ -1,6 +1,8 @@
 package config
 
 import (
+	"encoding/json"
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -25,8 +27,72 @@ type BlogPagesConfig struct {
 }
 
 type StorageConfig struct {
-	Type   string   `json:"type" yaml:"type"`
-	Config B2Config `json:"Config" yaml:"config" validate:"required"`
+	Type   string `json:"type" yaml:"type,oneof=b2 s3"`
+	Config any    `json:"Config" yaml:"config" validate:"required"`
+}
+
+func (sc *StorageConfig) UnmarshalJSON(data []byte) error {
+	var tmp struct {
+		Type   string          `json:"Type"`
+		Config json.RawMessage `json:"Config"`
+	}
+
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	sc.Type = tmp.Type
+
+	switch tmp.Type {
+	case "b2":
+		var b2Config B2Config
+		if err := json.Unmarshal(tmp.Config, &b2Config); err != nil {
+			return fmt.Errorf("unmarshal B2Config: %w", err)
+		}
+		sc.Config = &b2Config
+	case "s3":
+		var s3Config S3Config
+		if err := json.Unmarshal(tmp.Config, &s3Config); err != nil {
+			return fmt.Errorf("unmarshal S3Config: %w", err)
+		}
+		sc.Config = &s3Config
+	default:
+		return fmt.Errorf("unsupported storage type: %s", tmp.Type)
+	}
+
+	return nil
+}
+
+func (sc *StorageConfig) UnmarshalYAML(value *yaml.Node) error {
+	var tmp struct {
+		Type   string    `yaml:"type"`
+		Config yaml.Node `yaml:"config"`
+	}
+
+	if err := value.Decode(&tmp); err != nil {
+		return err
+	}
+
+	sc.Type = tmp.Type
+
+	switch tmp.Type {
+	case "b2":
+		var b2Config B2Config
+		if err := tmp.Config.Decode(&b2Config); err != nil {
+			return fmt.Errorf("unmarshal B2Config: %w", err)
+		}
+		sc.Config = &b2Config
+	case "s3":
+		var s3Config S3Config
+		if err := tmp.Config.Decode(&s3Config); err != nil {
+			return fmt.Errorf("unmarshal S3Config: %w", err)
+		}
+		sc.Config = &s3Config
+	default:
+		return fmt.Errorf("unsupported storage type: %s", tmp.Type)
+	}
+
+	return nil
 }
 
 type B2Config struct {
@@ -35,6 +101,15 @@ type B2Config struct {
 	Prefix         string `json:"Prefix" yaml:"prefix"`
 	KeyID          string `json:"KeyID" yaml:"keyID"`
 	ApplicationKey string `json:"ApplicationKey" yaml:"applicationKey"`
+}
+
+type S3Config struct {
+	BucketName      string `json:"BucketName" yaml:"bucketName" validate:"required,min=1"`
+	Region          string `json:"Region" yaml:"region" validate:"required,min=1"`
+	Prefix          string `json:"Prefix" yaml:"prefix"`
+	Endpoint        string `json:"Endpoint" yaml:"endpoint" validate:"required,url"`
+	AccessKeyID     string `json:"AccessKeyID" yaml:"accessKeyID"`
+	SecretAccessKey string `json:"SecretAccessKey" yaml:"secretAccessKey"`
 }
 
 type FactGiverConfig struct {

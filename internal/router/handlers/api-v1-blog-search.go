@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -56,11 +56,11 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 
 	cacheKey := "blog-search." + lang + ".pages-list"
 
-	var pages []*b2.BlogPage
+	var pages []*blog.Page
 	if pagesBytes, ok := supplements.PageCache.Get(cacheKey); pagesBytes != nil || ok {
 		json.Unmarshal(pagesBytes, &pages)
 	} else {
-		pages, err = supplements.B2Client.Scan(lang + "/")
+		pages, err = supplements.BlogClient.Scan(lang + "/")
 		if err != nil {
 			return fiber.StatusInternalServerError, fmt.Errorf("failed to scan pages for '%s' lang: %w", lang, err)
 		}

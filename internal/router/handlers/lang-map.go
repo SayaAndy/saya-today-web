@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,8 +49,8 @@ func (r *MapHandler) SitemapInfo(supplements *router.Supplements) []router.Sitem
 }
 
 func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	pages, err := supplements.B2Client.Scan(lang + "/")
-	slices.SortFunc(pages, func(a *b2.BlogPage, b *b2.BlogPage) int {
+	pages, err := supplements.BlogClient.Scan(lang + "/")
+	slices.SortFunc(pages, func(a *blog.Page, b *blog.Page) int {
 		return a.Metadata.PublishedTime.Compare(b.Metadata.PublishedTime)
 	})
 	status := fiber.StatusOK
@@ -60,7 +60,7 @@ func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang 
 			slog.String("lang", lang),
 		)
 		status = fiber.StatusPartialContent
-		pages = []*b2.BlogPage{}
+		pages = []*blog.Page{}
 	}
 
 	type MapMarker struct {
