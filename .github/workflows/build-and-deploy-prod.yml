@@ -54,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up SSH connection for pl.saya.today
+      - name: Set up SSH connection for uz.saya.casa
         run: |
           mkdir -p ~/.ssh
           (cat <<EOF
@@ -63,11 +63,11 @@ jobs:
           ) > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           sed -i 's/\r$//' ~/.ssh/id_ed25519
-          ssh-keyscan -H pl.saya.today >> ~/.ssh/known_hosts
+          ssh-keyscan -H uz.saya.casa >> ~/.ssh/known_hosts
 
       - name: Test SSH connection
         run: |
-          ssh -o ConnectTimeout=10 -i ~/.ssh/id_ed25519 svc_github@pl.saya.today "echo 'SSH connection successful'"
+          ssh -o ConnectTimeout=10 -i ~/.ssh/id_ed25519 svc_github@uz.saya.casa "echo 'SSH connection successful'"
 
       - name: Install Ansible
         shell: bash

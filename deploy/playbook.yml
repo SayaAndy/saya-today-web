@@ -2,7 +2,7 @@
 - name: Deploy saya-today-web Docker Container
   hosts: all
   remote_user: svc_github
-
+ 
   tasks:
     - name: Create a volume
       community.docker.docker_volume:
