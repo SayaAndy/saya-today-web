@@ -245,12 +245,12 @@
                         sidebarUserButton.classList.remove('hidden');
                         lang = location.pathname.split("/")[1];
                         sidebarHomeButton.setAttribute('href', `/${lang}`);
-                        sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
+                        sidebarHomeButton.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
                         sidebarMapButton.setAttribute('href', `/${lang}/map`);
                         sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
-                        sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+                        sidebarBlogButton.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
                         sidebarUserButton.setAttribute('href', `/${lang}/user`);
-                        sidebarUserButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
+                        sidebarUserButton.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
                     }
                 }
                 window.addEventListener("popstate", updateSidebar);
