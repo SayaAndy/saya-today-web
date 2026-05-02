@@ -1,34 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>{{ .L.UnsubscribePage.Header }} // SAYA TODAY</title>
-<style>
-  .bg-paper {
-    background-image: url(data:image/webp;base64,UklGRi4BAABXRUJQVlA4ICIBAABQCQCdASqAAIAAPm02lUmkIqIkIImIgA2JaW3rMFmGDAOKLAoJtP591ByFR74Tun2DP+Lygpfsz5FH7+cKgxi2Islfd03i5AJdXUfU0SDc8SXYAAD++hlzeYAJWQEF8ZdkJdlcA+5btZg0FMGaso8SHoBph0qAOQysElJ5C5SJFNoKIV1J550UyL7Y9Gh0/c/uzLnBmr8lvz7k1WeA81H4S5ViU/wBqa7aM1m8D9rDtrk8cSTqx+xWF6MS8UfZGSsks6CT/igtgv6syFN9uNA3LjnjiCJKYOvFcMkX+jB2578GWVo3nyLaM1QNPYCxn3TiUbnf7U0MdD2NsBpg1+Jd1wu6yW/U+goN+IQS6Nt4RMWltVcZHlxrneKJi0SobO0AAA==);
-    background-size: 128px;
-    background-repeat: repeat;
-    background-blend-mode: multiply;
-  }
-</style>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex,nofollow" />
+        <title>{{ .L.UnsubscribePage.Header }} // SAYA.UZ</title>
+        <style>
+            .bg-paper {
+                background-image: url(data:image/webp;base64,UklGRi4BAABXRUJQVlA4ICIBAABQCQCdASqAAIAAPm02lUmkIqIkIImIgA2JaW3rMFmGDAOKLAoJtP591ByFR74Tun2DP+Lygpfsz5FH7+cKgxi2Islfd03i5AJdXUfU0SDc8SXYAAD++hlzeYAJWQEF8ZdkJdlcA+5btZg0FMGaso8SHoBph0qAOQysElJ5C5SJFNoKIV1J550UyL7Y9Gh0/c/uzLnBmr8lvz7k1WeA81H4S5ViU/wBqa7aM1m8D9rDtrk8cSTqx+xWF6MS8UfZGSsks6CT/igtgv6syFN9uNA3LjnjiCJKYOvFcMkX+jB2578GWVo3nyLaM1QNPYCxn3TiUbnf7U0MdD2NsBpg1+Jd1wu6yW/U+goN+IQS6Nt4RMWltVcZHlxrneKJi0SobO0AAA==);
+                background-size: 128px;
+                background-repeat: repeat;
+                background-blend-mode: multiply;
+            }
+        </style>
+    </head>
 
-<body style="width: 100dvw; height: 100dvh; display: flex; flex-direction: column; position: fixed">
+    <body
+        style="
+            width: 100dvw;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+        "
+    >
+        <div
+            class="bg-paper"
+            style="flex: 3 0 0; background-color: rgba({{ .StatusColor }}, 0.1)"
+        ></div>
 
-    <div class="bg-paper" style='flex: 3 0 0; background-color: rgba({{ .StatusColor }}, 0.1)'></div>
+        <div class="bg-paper" style="flex: 1 0 0; align-content: center">
+            <p
+                style="
+                    position: relative;
+                    width: 100%;
+                    margin-inline: auto;
+                    text-align: center;
+                    font-size: 2rem;
+                "
+            >
+                {{ .StatusEmoji }}
+            </p>
+        </div>
 
-    <div class="bg-paper" style="flex: 1 0 0; align-content: center;">
-        <p style="position: relative; width: 100%; margin-inline: auto; text-align: center; font-size: 2rem;">{{ .StatusEmoji }}</p>
-    </div>
+        <div class="bg-paper" style="flex: 1 0 0; align-content: center">
+            <p
+                style="
+                    position: relative;
+                    width: 100%;
+                    margin-inline: auto;
+                    text-align: center;
+                    font-size: 1.5rem;
+                "
+            >
+                {{ .StatusText }}
+            </p>
+        </div>
 
-    <div class="bg-paper" style="flex: 1 0 0; align-content: center;">
-        <p style="position: relative; width: 100%; margin-inline: auto; text-align: center; font-size: 1.5rem;">{{ .StatusText }}</p>
-    </div>
-
-    <div class="bg-paper" style='flex: 3 0 0; background-color: rgba({{ .StatusColor }}, 0.2)'></div>
-
-</body>
-
+        <div
+            class="bg-paper"
+            style="flex: 3 0 0; background-color: rgba({{ .StatusColor }}, 0.2)"
+        ></div>
+    </body>
 </html>

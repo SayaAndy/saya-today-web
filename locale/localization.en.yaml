@@ -1,77 +1,77 @@
-TagsLabel: 'Tags:'
+TagsLabel: "Tags:"
 BlogSearch:
-  Header: 'Blog Search'
+  Header: "Blog Search"
   Description: "The Saya Blog posts' list"
-  TagsHeader: 'Tags'
-  OrderByHeader: 'Order by...'
-  TitleOrdered: 'Title'
-  ActionDateOrdered: 'Action Date'
-  PublicationDateOrdered: 'Publication Date'
-  ChooseAllTags: 'Choose All'
+  TagsHeader: "Tags"
+  OrderByHeader: "Order by..."
+  TitleOrdered: "Title"
+  ActionDateOrdered: "Action Date"
+  PublicationDateOrdered: "Publication Date"
+  ChooseAllTags: "Choose All"
 GlobalMap:
-  Header: 'Global Map'
+  Header: "Global Map"
   Description: "Global map with all the tags of places I've been to"
 HomePage:
-  Header: 'Home Page'
-  Contacts: 'Contacts'
-  DidYouKnowThat: 'Did you know, that...'
-  SidebarDescription: 'Describing the Sidebar'
-  HomePageDescription: 'Home Page -- where we are right now!'
-  BlogSearchDescription: 'Blog Search. You can find my travel notes there and, maybe, something else!'
-  MarkerMapDescription: 'Map with markers of my travel notes -- a convinient way to find an interesting region and find related posts!'
-  ThemeSwitchDescription: 'Theme Palette lets you change the theme of the site -- there are 2 dark and 2 bright themes currently!'
-  Hymn1: 'We welcome you to Sayasite!'
+  Header: "Home Page"
+  Contacts: "Contacts"
+  DidYouKnowThat: "Did you know, that..."
+  SidebarDescription: "Describing the Sidebar"
+  HomePageDescription: "Home Page -- where we are right now!"
+  BlogSearchDescription: "Blog Search. You can find my travel notes there and, maybe, something else!"
+  MarkerMapDescription: "Map with markers of my travel notes -- a convinient way to find an interesting region and find related posts!"
+  ThemeSwitchDescription: "Theme Palette lets you change the theme of the site -- there are 2 dark and 2 bright themes currently!"
+  Hymn1: "We welcome you to Sayasite!"
   Hymn2: "We've been expecting you!"
-  Hymn3: 'You bring such joy in Sayasite!'
-  Hymn4: 'No matter where you roam, know our love is true!~'
+  Hymn3: "You bring such joy in Sayasite!"
+  Hymn4: "No matter where you roam, know our love is true!~"
 UnsubscribePage:
-  Header: 'Cancelling the Subscription'
-  UnsetCode: 'Your cancel code is not set. You just having a walk around the site?'
+  Header: "Cancelling the Subscription"
+  UnsetCode: "Your cancel code is not set. You just having a walk around the site?"
   InvalidCode: "Your cancel code could not be verified. Maybe, the code expired after a day. Or maybe, you've already unsubscribed."
   OnServerError: "We couldn't unsubscribe you, the problem is on our side! We will solve this problem as soon as possible."
-  Success: 'Cancelled your subscription successfully! We do hope we will engage you again someday.'
+  Success: "Cancelled your subscription successfully! We do hope we will engage you again someday."
 Metadata:
-  Published: 'Published'
-  Action: 'Took place on'
+  Published: "Published"
+  Action: "Took place on"
 Mail:
-  UnsubscribeFooter: 'If this letter got you in a bad mood, you can unsubscribe from my blog by {}this link{/}.'
+  UnsubscribeFooter: "If this letter got you in a bad mood, you can unsubscribe from my blog by {}this link{/}."
   VerifyEmail:
-    Subject: 'Verification Link for SAYA.TODAY is waiting for you!'
-    Welcome: 'Greetings!'
-    Intro: 'There are 2 ways for us to validate your profile:'
-    GotoLink: 'Go by this link:'
+    Subject: "Verification Link for SAYA.UZ is waiting for you!"
+    Welcome: "Greetings!"
+    Intro: "There are 2 ways for us to validate your profile:"
+    GotoLink: "Go by this link:"
     InputCode: "Or input this code on the personal page:"
-    IfRandom: 'If you are unsure what this letter this, you can ignore it, and also, if you are interested, you may visit my site :)'
+    IfRandom: "If you are unsure what this letter this, you can ignore it, and also, if you are interested, you may visit my site :)"
   NewPost:
-    Subject: 'A new post arrived at SAYA.TODAY!'
-    Intro: 'A new post came!'
-    CapturedOn: 'Captured on'
+    Subject: "A new post arrived at SAYA.UZ!"
+    Intro: "A new post came!"
+    CapturedOn: "Captured on"
 UserProfile:
-  Header: 'Personal Settings'
-  Description: 'Set and verify your e-mail here, as well as subscribe to favorite blog tags'
-  EmailHeader: 'E-Mail'
-  VerificationCodeHeader: 'Verification Code'
-  TypeEmail: 'Please type your email'
-  SendCodeButton: 'Send Code'
-  VerifyButton: 'Verify'
-  VerificationCodeSent: 'Verification code sent! Please check your e-mail. Your next verification attempt will be possible on {}.'
-  DelayTilVerification: 'You have already requested the verification before! Please wait until {} for a new verification request.'
-  FailedEmailRender: 'Failed to render the email status message, please ask administrator for a more detailed cause.'
-  VerificationCodeSendingError: 'Failed to send a verification code, please ask administrator for a more detailed cause.'
-  EmailAlreadyValidated: 'You already have this E-Mail validated.'
-  EmailTaken: 'This E-Mail is already taken.'
-  EmailEmpty: 'E-Mail is unset or empty.'
-  VerificationSuccess: 'Success! You are now able to subscribe with your new e-mail.'
-  VerificationFailed: 'Verification code is invalid, please ask administrator for a more detailed cause.'
-  VerificationEmpty: 'Verification code is unset or empty.'
-  SubscriptionHeader: 'Subscribe to...'
-  TagsNone: 'None'
-  TagsAll: 'All'
-  TagsSpecific: 'Specific'
+  Header: "Personal Settings"
+  Description: "Set and verify your e-mail here, as well as subscribe to favorite blog tags"
+  EmailHeader: "E-Mail"
+  VerificationCodeHeader: "Verification Code"
+  TypeEmail: "Please type your email"
+  SendCodeButton: "Send Code"
+  VerifyButton: "Verify"
+  VerificationCodeSent: "Verification code sent! Please check your e-mail. Your next verification attempt will be possible on {}."
+  DelayTilVerification: "You have already requested the verification before! Please wait until {} for a new verification request."
+  FailedEmailRender: "Failed to render the email status message, please ask administrator for a more detailed cause."
+  VerificationCodeSendingError: "Failed to send a verification code, please ask administrator for a more detailed cause."
+  EmailAlreadyValidated: "You already have this E-Mail validated."
+  EmailTaken: "This E-Mail is already taken."
+  EmailEmpty: "E-Mail is unset or empty."
+  VerificationSuccess: "Success! You are now able to subscribe with your new e-mail."
+  VerificationFailed: "Verification code is invalid, please ask administrator for a more detailed cause."
+  VerificationEmpty: "Verification code is unset or empty."
+  SubscriptionHeader: "Subscribe to..."
+  TagsNone: "None"
+  TagsAll: "All"
+  TagsSpecific: "Specific"
   TagDoesNotExist: 'The tag "{}" does not exist on the site.'
   TagAlreadyAdded: 'The tag "{}" is already in your subscribed list.'
-  SaveButton: 'Save'
-  SubscribeInvalidType: 'Invalid subscription type.'
-  FailedToSubscribe: 'Failed to subscribe by new settings, please ask administrator for a more detailed cause.'
-  SubscribedSuccessfully: 'Successfully subscribed you by new settings!'
-  RefreshPage: 'Please refresh the profile page on the device, where you requested the code.'
+  SaveButton: "Save"
+  SubscribeInvalidType: "Invalid subscription type."
+  FailedToSubscribe: "Failed to subscribe by new settings, please ask administrator for a more detailed cause."
+  SubscribedSuccessfully: "Successfully subscribed you by new settings!"
+  RefreshPage: "Please refresh the profile page on the device, where you requested the code."

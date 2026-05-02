@@ -1,306 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ .L.GlobalMap.Description }}">
-    <meta property="og:title" content="{{ .L.GlobalMap.Header }}">
-    <meta property="og:description" content="{{ .L.GlobalMap.Description }}">
-    <meta property="og:url" content="{{ .CanonicalEndpoint }}/{{ .Lang }}/map">
-    <meta property="og:type" content="site">
-    <title>{{ .L.GlobalMap.Header }} // SAYA TODAY</title>
-    <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css">
-    {{ block "header" . }}{{ end }}
-    <link href="/output.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="{{ .L.GlobalMap.Description }}" />
+        <meta property="og:title" content="{{ .L.GlobalMap.Header }}" />
+        <meta
+            property="og:description"
+            content="{{ .L.GlobalMap.Description }}"
+        />
+        <meta
+            property="og:url"
+            content="{{ .CanonicalEndpoint }}/{{ .Lang }}/map"
+        />
+        <meta property="og:type" content="site" />
+        <title>{{ .L.GlobalMap.Header }} // SAYA.UZ</title>
+        <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map" />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css"
+        />
+        {{ block "header" . }}{{ end }}
+        <link href="/output.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"
+        />
+    </head>
 
-<body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh">
+    <body
+        data-theme="ram"
+        class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh"
+    >
+        <script>
+            function switchTheme(theme) {
+                if (theme == "" || typeof theme == "undefined") {
+                    const currentTheme =
+                        document.body.getAttribute("data-theme");
+                    switch (currentTheme) {
+                        case "olive":
+                            theme = "lettuce";
+                            break;
+                        case "lettuce":
+                            theme = "night";
+                            break;
+                        case "night":
+                            theme = "ram";
+                            break;
+                        case "ram":
+                            theme = "lilac";
+                            break;
+                        case "lilac":
+                            theme = "olive";
+                            break;
+                    }
+                }
+                localStorage.setItem("theme", theme);
+                document.body.setAttribute("data-theme", theme);
+            }
 
-    <script>
-        function switchTheme(theme) {
-            if (theme == "" || typeof theme == "undefined") {
-                const currentTheme = document.body.getAttribute('data-theme');
-                switch (currentTheme) {
-                    case "olive": theme = "lettuce"; break;
-                    case "lettuce": theme = "night"; break;
-                    case "night": theme = "ram"; break;
-                    case "ram": theme = "lilac"; break;
-                    case "lilac": theme = "olive"; break;
+            const savedTheme = localStorage.getItem("theme") || "lilac";
+            switchTheme(savedTheme);
+        </script>
+
+        <script>
+            const clientTimeZone =
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            function convertRemToPixels(rem) {
+                return (
+                    rem *
+                    parseFloat(
+                        getComputedStyle(document.documentElement).fontSize,
+                    )
+                );
+            }
+        </script>
+
+        <div
+            id="sidebar"
+            class="bg-sidebar block fixed shadow-[0_0_0.4rem_black] z-1001 w-fit h-auto"
+        >
+            <div class="text-[3rem] flex flex-col gap-0 relative z-1001">
+                <a
+                    href="./"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        class="fas fa-circle-left flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </a>
+                <a
+                    href="/{{ .Lang }}"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        class="fas fa-home flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </a>
+                <a
+                    href="/{{ .Lang }}/blog"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        class="fas fa-search flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </a>
+                <a
+                    href="/{{ .Lang }}/map"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        class="fas fa-map flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </a>
+                <div
+                    id="toolbar-theme-button"
+                    onclick="toggleThemeWheel()"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        id="toolbar-theme-button-content"
+                        class="fas fa-swatchbook flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </div>
+                <a
+                    href="/{{ .Lang }}/user"
+                    id="sidebar-user-button"
+                    class="themed-button themed-button-sidebar w-fit h-fit"
+                    draggable="false"
+                >
+                    <i
+                        onclick="return changeUrl('/{{ .Lang }}/user');"
+                        class="fas fa-user flex faw-18 h-18 content-center text-center text-sidebar"
+                    ></i>
+                </a>
+            </div>
+            <div class="theme-wheel" id="theme-wheel">
+                <div class="theme-icon" data-theme="olive"></div>
+                <div class="theme-icon" data-theme="lettuce"></div>
+                <div class="theme-icon" data-theme="night"></div>
+                <div class="theme-icon" data-theme="ram"></div>
+                <div class="theme-icon" data-theme="lilac"></div>
+                <div class="theme-pin"></div>
+            </div>
+        </div>
+
+        <div
+            id="map-container"
+            class="bg-paper bg-background-dark flex z-10 w-full h-full"
+        ></div>
+
+        <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+
+        <script>
+            const themeWheel = document.getElementById("theme-wheel");
+            const themeButton = document.getElementById("toolbar-theme-button");
+            const themeIcons = document.querySelectorAll(".theme-icon");
+            const themeWheelRadius = convertRemToPixels(6);
+            const THUMB_BASE = "{{ .ThumbnailBaseUrl }}";
+
+            themeIcons.forEach((icon) => {
+                if (icon.getAttribute("data-theme") == savedTheme) {
+                    icon.classList.add("active");
+                }
+            });
+
+            function calculateVmax(percent) {
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const largerDimension = Math.max(viewportWidth, viewportHeight);
+
+                const vmaxValue = (largerDimension / 100) * percent;
+
+                return vmaxValue;
+            }
+
+            function positionThemeIcons() {
+                const sliceAngle = 360 / themeIcons.length;
+
+                themeIcons.forEach((icon, index) => {
+                    const startAngle = index * sliceAngle;
+                    const endAngle = (index + 1) * sliceAngle;
+
+                    const clipPath = createSliceClipPath(
+                        startAngle,
+                        endAngle,
+                        themeWheelRadius,
+                    );
+                    icon.style.clipPath = clipPath;
+                });
+            }
+
+            function createSliceClipPath(startAngle, endAngle, radius) {
+                const centerX = radius;
+                const centerY = radius;
+
+                let points = `${centerX}px ${centerY}px`;
+
+                const segments = Math.max(
+                    2,
+                    Math.ceil(Math.abs(endAngle - startAngle) / 5),
+                );
+                const angleStep = (endAngle - startAngle) / segments;
+
+                for (let i = 0; i <= segments; i++) {
+                    const angle =
+                        ((startAngle + angleStep * i - 90) * Math.PI) / 180;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    points += `, ${x}px ${y}px`;
+                }
+
+                points += `, ${centerX}px ${centerY}px`;
+
+                return `polygon(${points})`;
+            }
+
+            function positionThemeWheel() {
+                const buttonRect = themeButton.getBoundingClientRect();
+                const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+                const margin = 0;
+
+                let wheelX = buttonCenterX - themeWheelRadius;
+                let wheelY = buttonCenterY - themeWheelRadius;
+
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                if (wheelX < margin) {
+                    wheelX = margin;
+                } else if (
+                    wheelX + themeWheelRadius * 2 >
+                    viewportWidth - margin
+                ) {
+                    wheelX = viewportWidth - themeWheelRadius * 2 - margin;
+                }
+
+                if (wheelY < margin) {
+                    wheelY = margin;
+                } else if (
+                    wheelY + themeWheelRadius * 2 >
+                    viewportHeight - margin
+                ) {
+                    wheelY = viewportHeight - themeWheelRadius * 2 - margin;
+                }
+
+                themeWheel.style.left = wheelX + "px";
+                themeWheel.style.top = wheelY + "px";
+            }
+
+            function hideThemeWheel() {
+                themeWheel.classList.remove("active");
+            }
+
+            function showThemeWheel() {
+                positionThemeWheel();
+                positionThemeIcons();
+                themeWheel.classList.add("active");
+            }
+
+            function toggleThemeWheel() {
+                if (themeWheel.classList.contains("active")) {
+                    hideThemeWheel();
+                } else {
+                    showThemeWheel();
                 }
             }
-            localStorage.setItem('theme', theme);
-            document.body.setAttribute('data-theme', theme);
-        }
 
-        const savedTheme = localStorage.getItem('theme') || 'lilac';
-        switchTheme(savedTheme);
-    </script>
-
-    <script>
-        const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        function convertRemToPixels(rem) {    
-            return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-        }
-    </script>
-
-    <div id="sidebar" class="bg-sidebar block fixed shadow-[0_0_0.4rem_black] z-1001 w-fit h-auto">
-        <div class="text-[3rem] flex flex-col gap-0 relative z-1001">
-            <a href="./" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i class="fas fa-circle-left flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </a>
-            <a href="/{{ .Lang }}" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i class="fas fa-home flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </a>
-            <a href="/{{ .Lang }}/blog" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i class="fas fa-search flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </a>
-            <a href="/{{ .Lang }}/map" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i class="fas fa-map flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </a>
-            <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </div>
-            <a href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                <i onclick="return changeUrl('/{{ .Lang }}/user');" class="fas fa-user flex faw-18 h-18 content-center text-center text-sidebar"></i>
-            </a>
-        </div>
-        <div class="theme-wheel" id="theme-wheel">
-            <div class="theme-icon" data-theme="olive"></div>
-            <div class="theme-icon" data-theme="lettuce"></div>
-            <div class="theme-icon" data-theme="night"></div>
-            <div class="theme-icon" data-theme="ram"></div>
-            <div class="theme-icon" data-theme="lilac"></div>
-            <div class="theme-pin"></div>
-        </div>
-    </div>
-
-    <div id="map-container" class="bg-paper bg-background-dark flex z-10 w-full h-full"></div>
-
-    <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
-
-    <script>
-        const themeWheel = document.getElementById('theme-wheel');
-        const themeButton = document.getElementById('toolbar-theme-button');
-        const themeIcons = document.querySelectorAll('.theme-icon');
-        const themeWheelRadius = convertRemToPixels(6);
-        const THUMB_BASE = "{{ .ThumbnailBaseUrl }}";
-
-        themeIcons.forEach(icon => {
-            if (icon.getAttribute('data-theme') == savedTheme) {
-                icon.classList.add('active');
-            }
-        });
-
-        function calculateVmax(percent) {
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            const largerDimension = Math.max(viewportWidth, viewportHeight);
-
-            const vmaxValue = (largerDimension / 100) * percent;
-
-            return vmaxValue;
-        }
-
-        function positionThemeIcons() {
-            const sliceAngle = 360 / themeIcons.length;
-
-            themeIcons.forEach((icon, index) => {
-                const startAngle = index * sliceAngle;
-                const endAngle = (index + 1) * sliceAngle;
-
-                const clipPath = createSliceClipPath(startAngle, endAngle, themeWheelRadius);
-                icon.style.clipPath = clipPath;
+            themeIcons.forEach((icon) => {
+                icon.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const theme = icon.getAttribute("data-theme");
+                    switchTheme(theme);
+                    themeIcons.forEach((icon) => {
+                        icon.classList.remove("active");
+                    });
+                    icon.classList.add("active");
+                });
             });
-        }
 
-        function createSliceClipPath(startAngle, endAngle, radius) {
-            const centerX = radius;
-            const centerY = radius;
+            themeWheel.addEventListener("mouseleave", hideThemeWheel);
 
-            let points = `${centerX}px ${centerY}px`;
-
-            const segments = Math.max(2, Math.ceil(Math.abs(endAngle - startAngle) / 5));
-            const angleStep = (endAngle - startAngle) / segments;
-
-            for (let i = 0; i <= segments; i++) {
-                const angle = ((startAngle + angleStep * i - 90) * Math.PI) / 180;
-                const x = centerX + Math.cos(angle) * radius;
-                const y = centerY + Math.sin(angle) * radius;
-                points += `, ${x}px ${y}px`;
-            }
-
-            points += `, ${centerX}px ${centerY}px`;
-            
-            return `polygon(${points})`;
-        }
-
-        function positionThemeWheel() {
-            const buttonRect = themeButton.getBoundingClientRect();
-            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
-            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
-
-            const margin = 0;
-
-            let wheelX = buttonCenterX - themeWheelRadius;
-            let wheelY = buttonCenterY - themeWheelRadius;
-
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            if (wheelX < margin) {
-                wheelX = margin;
-            } else if (wheelX + (themeWheelRadius * 2) > viewportWidth - margin) {
-                wheelX = viewportWidth - (themeWheelRadius * 2) - margin;
-            }
-
-            if (wheelY < margin) {
-                wheelY = margin;
-            } else if (wheelY + (themeWheelRadius * 2) > viewportHeight - margin) {
-                wheelY = viewportHeight - (themeWheelRadius * 2) - margin;
-            }
-
-            themeWheel.style.left = wheelX + 'px';
-            themeWheel.style.top = wheelY + 'px';
-        }
-
-        function hideThemeWheel() {
-            themeWheel.classList.remove('active');
-        }
-
-        function showThemeWheel() {
-            positionThemeWheel();
-            positionThemeIcons();
-            themeWheel.classList.add('active');
-        }
-
-        function toggleThemeWheel() {
-            if (themeWheel.classList.contains('active')) {
-                hideThemeWheel();
-            } else {
-                showThemeWheel();
-            }
-        }
-
-        themeIcons.forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const theme = icon.getAttribute('data-theme');
-                switchTheme(theme);
-                themeIcons.forEach(icon => {
-                    icon.classList.remove('active');
-                })
-                icon.classList.add('active');
+            document.addEventListener("click", (e) => {
+                if (
+                    !themeWheel.contains(e.target) &&
+                    e.target !== themeButton &&
+                    !e.target.classList.contains("toolbar-theme-button-content")
+                ) {
+                    hideThemeWheel();
+                }
             });
-        });
+        </script>
 
-        themeWheel.addEventListener('mouseleave', hideThemeWheel);
+        <script>
+            var map;
+            var markers = L.markerClusterGroup();
 
-        document.addEventListener('click', (e) => {
-            if (!themeWheel.contains(e.target) && e.target !== themeButton && !e.target.classList.contains("toolbar-theme-button-content")) {
-                hideThemeWheel();
-            }
-        });
-    </script>
+            function createCustomIcon(color, borderColor = "var(--color-main-soft)") {
+                const svgIcon = `
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1C7.5 1 4 4.5 4 9c0 6.5 8 14 8 14s8-7.5 8-14c0-4.5-3.5-8-8-8zm0 11c-1.5 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1.5 3-3 3z"
+                              fill="${color}"
+                              stroke="${borderColor}"
+                              stroke-width="1"
+                              stroke-linejoin="round"/>
+                    </svg>
+                `;
 
-    <script>
-        var map;
-        var markers = L.markerClusterGroup();
-
-        function createCustomIcon(color, borderColor = "var(--color-main-soft)") {
-            const svgIcon = `
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 1C7.5 1 4 4.5 4 9c0 6.5 8 14 8 14s8-7.5 8-14c0-4.5-3.5-8-8-8zm0 11c-1.5 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1.5 3-3 3z"
-                          fill="${color}"
-                          stroke="${borderColor}"
-                          stroke-width="1"
-                          stroke-linejoin="round"/>
-                </svg>
-            `;
-
-            return L.divIcon({
-                html: svgIcon,
-                className: 'custom-svg-marker',
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32]
-            });
-        }
-
-        function initLocationMap() {
-            map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], 4);
-
-            L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
-                maxZoom: 20,
-                attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                zoomControl: false
-            }).addTo(map);
-
-            L.control.zoom({
-                position: 'topright'
-            }).addTo(map);
-
-            map.addLayer(markers);
-        }
-
-        function markerToHsl(str, newCoef) {
-            let hash = 0;
-            for (let i = 0; i < str.length / 2; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-                hash = str.charCodeAt(str.length - i - 1) + ((hash << 5) - hash);
-                hash %= 360;
+                return L.divIcon({
+                    html: svgIcon,
+                    className: 'custom-svg-marker',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
             }
 
-            return [hash, (20 + newCoef * 80).toFixed(0), (20 + newCoef * 75).toFixed(0)];
-        }
+            function initLocationMap() {
+                map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], 4);
 
-        function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "", newCoef = 1) {
-            const [h, s, l] = markerToHsl(title, newCoef);
-            const color = `hsl(${h} ${s}% ${l}%)`;
-
-            if (relativeErrorMeters != 0) {
-                var circle = L.circle([x, y], {
-                    color: color,
-                    fillColor: color,
-                    fillOpacity: 0.15,
-                    radius: relativeErrorMeters
+                L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+                    maxZoom: 20,
+                    attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    zoomControl: false
                 }).addTo(map);
+
+                L.control.zoom({
+                    position: 'topright'
+                }).addTo(map);
+
+                map.addLayer(markers);
             }
 
-            var marker = L.marker([x, y], {
-                icon: createCustomIcon(color),
-                title: title,
-            }).bindPopup(`
-                    <div class="flex flex-row justify-center justify-items-center">
-                        <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src="${THUMB_BASE.replace('%s', thumbnail)}">
-                        <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
-                    </div>`);
+            function markerToHsl(str, newCoef) {
+                let hash = 0;
+                for (let i = 0; i < str.length / 2; i++) {
+                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                    hash = str.charCodeAt(str.length - i - 1) + ((hash << 5) - hash);
+                    hash %= 360;
+                }
 
-            markers.addLayer(marker);
-        }
+                return [hash, (20 + newCoef * 80).toFixed(0), (20 + newCoef * 75).toFixed(0)];
+            }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initLocationMap();
-            {{- range .MapMarkers }}
-            mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }}, {{ fdiv .Index (len $.MapMarkers) }});
-            {{- end }}
-        });
+            function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "", newCoef = 1) {
+                const [h, s, l] = markerToHsl(title, newCoef);
+                const color = `hsl(${h} ${s}% ${l}%)`;
 
-        window.addEventListener('resize', function() {
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 100);
-        });
-    </script>
+                if (relativeErrorMeters != 0) {
+                    var circle = L.circle([x, y], {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.15,
+                        radius: relativeErrorMeters
+                    }).addTo(map);
+                }
 
-</body>
+                var marker = L.marker([x, y], {
+                    icon: createCustomIcon(color),
+                    title: title,
+                }).bindPopup(`
+                        <div class="flex flex-row justify-center justify-items-center">
+                            <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src="${THUMB_BASE.replace('%s', thumbnail)}">
+                            <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
+                        </div>`);
+
+                markers.addLayer(marker);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initLocationMap();
+                {{- range .MapMarkers }}
+                mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }}, {{ fdiv .Index (len $.MapMarkers) }});
+                {{- end }}
+            });
+
+            window.addEventListener('resize', function() {
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            });
+        </script>
+    </body>
 </html>
