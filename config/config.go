@@ -238,6 +238,7 @@ type TriggerConfig struct {
 
 type MetaConfig struct {
 	GoogleSiteVerification string `json:"GoogleSiteVerification" yaml:"googleSiteVerification"`
+	YandexVerification     string `json:"YandexVerification" yaml:"yandexVerification"`
 }
 
 type PhotoStorageConfig struct {
