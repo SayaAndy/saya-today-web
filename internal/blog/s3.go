@@ -58,6 +58,7 @@ func NewS3Client(cfg *config.StorageConfig) (Client, error) {
 	}
 	s3Opts = append(s3Opts, func(o *s3.Options) {
 		o.UsePathStyle = s3cfg.UsePathStyle
+		o.DisableLogOutputChecksumValidationSkipped = true
 	})
 
 	s3cl := s3.NewFromConfig(awsCfg, s3Opts...)
