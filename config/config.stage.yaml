@@ -22,11 +22,11 @@ localePath: ./locale/
 availableLanguages:
   - name: ru
     alt: Русский
-    flag: https://f003.backblazeb2.com/file/sayana-static/flags/ru.svg
+    flag: https://storage.yandexcloud.kz/sayauz-static/flags/ru.svg
     locFile: localization.ru.yaml
   - name: en
     alt: English
-    flag: https://f003.backblazeb2.com/file/sayana-static/flags/gb.svg
+    flag: https://storage.yandexcloud.kz/sayauz-static/flags/gb.svg
     locFile: localization.en.yaml
 auth:
   db:
@@ -47,23 +47,23 @@ mail:
 canonicalEndpoint: 'https://${FQDN}'
 photoStorage:
   full:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/full/%s
+    baseUrl: https://storage.yandexcloud.kz/sayauz-photos/%s
   webp:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp/%s.webp
   thumbnail1600p:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1600/%s.webp
   thumbnail1200p:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1200/%s.webp
   thumbnail800p:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp800/%s.webp
   thumbnail560p:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp560/%s.webp
   thumbnail320p:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp320/%s.webp
   homePageGifs:
-    baseUrl: https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/otter-%s.gif
+    baseUrl: https://storage.yandexcloud.kz/sayauz-static/home-page-gifs/otter-%s.gif
     indexes: ['1', '2', '3']
 staticStorage:
-  baseUrl: https://f003.backblazeb2.com/file/sayana-static
+  baseUrl: https://storage.yandexcloud.kz/sayauz-static
 allowOrigins:
-  - https://f003.backblazeb2.com
+  - https://storage.yandexcloud.kz
