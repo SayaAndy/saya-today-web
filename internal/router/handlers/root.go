@@ -50,6 +50,9 @@ func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lan
 	if supplements.Meta.GoogleSiteVerification != "" {
 		meta = append(meta, router.MetaField{Name: "google-site-verification", Content: supplements.Meta.GoogleSiteVerification})
 	}
+	if supplements.Meta.YandexVerification != "" {
+		meta = append(meta, router.MetaField{Name: "yandex-verification", Content: supplements.Meta.YandexVerification})
+	}
 	return meta, nil
 }
 
