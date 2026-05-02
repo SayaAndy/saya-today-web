@@ -7,8 +7,11 @@ import (
 	"fmt"
 	"html/template"
 	"log/slog"
+	"net"
 	"net/url"
+	"os"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -112,6 +115,7 @@ type Router struct {
 	templatedRoutes      map[string]map[string]Route
 	templatedPathMatcher *PathMatcher
 	canonicalEndpoint    string
+	endpoint             config.EndpointConfig
 }
 
 func NewRouter(cfg *config.Config) (*Router, error) {
@@ -256,7 +260,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	templatedRoutes := make(map[string]map[string]Route)
 	templatedPathMatcher := NewPathMatcher()
 
-	return &Router{supplements, app, templatedRoutes, templatedPathMatcher, cfg.CanonicalEndpoint}, nil
+	return &Router{supplements, app, templatedRoutes, templatedPathMatcher, cfg.CanonicalEndpoint, cfg.Endpoint}, nil
 }
 
 func (r *Router) InitRoutes() (err error) {
@@ -382,10 +386,30 @@ func (r *Router) InitRoutes() (err error) {
 	return nil
 }
 
-func (r *Router) Listen(endpoint string) error {
-	if err := r.app.Listen(endpoint); err != nil {
-		return fmt.Errorf("error while running fiber server: %w", err)
+func (r *Router) Listen() error {
+	switch r.endpoint.Type {
+	case "unix":
+		unixConfig := r.endpoint.Config.(*config.UnixConfig)
+		endpoint, _ := strings.CutPrefix(unixConfig.Path, "unix://")
+		ln, err := net.Listen("unix", endpoint)
+		if err != nil {
+			return fmt.Errorf("error while initializing unix listener: %w", err)
+		}
+		chmod, _ := strconv.ParseUint(unixConfig.Chmod[1:], 8, 32)
+		os.Chmod(unixConfig.Path, os.FileMode(chmod))
+		if err := r.app.Listener(ln); err != nil {
+			return fmt.Errorf("error while running fiber server: %w", err)
+		}
+	case "http":
+		httpConfig := r.endpoint.Config.(*config.HttpConfig)
+		fmt.Print(httpConfig)
+		if err := r.app.Listen(httpConfig.ListenOn); err != nil {
+			return fmt.Errorf("error while running fiber server: %w", err)
+		}
+	default:
+		return fmt.Errorf("error with initializing fiber server: invalid endpoint type (supported are unix and http)")
 	}
+
 	return nil
 }
 
@@ -409,6 +433,12 @@ func (r *Router) Close() (err error) {
 	}
 	slog.Debug("closing page cache")
 	r.supplements.PageCache.Close()
+	if r.endpoint.Type == "unix" {
+		slog.Debug("closing unix socket")
+		if err = os.Remove(r.endpoint.Config.(*config.UnixConfig).Path); err != nil {
+			allErrors = append(allErrors, fmt.Errorf("fail to close unix socket: %w", err))
+		}
+	}
 	return errors.Join(allErrors...)
 }
 

@@ -1,4 +1,8 @@
 logLevel: debug
+endpoint:
+  type: http
+  config:
+    listenOn: ":3000"
 blogPages:
   storage:
     type: b2

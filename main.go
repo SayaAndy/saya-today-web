@@ -47,7 +47,7 @@ func main() {
 	routerShutdown := make(chan struct{}, 1)
 
 	go func() {
-		if err := app.Listen(":3000"); err != nil {
+		if err := app.Listen(); err != nil {
 			slog.Error("error while running fiber server", slog.String("error", err.Error()))
 			if nestedErr := app.Close(); nestedErr != nil {
 				slog.Error("error while shutting down fiber server", slog.String("error", err.Error()))

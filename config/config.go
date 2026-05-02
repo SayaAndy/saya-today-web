@@ -12,6 +12,7 @@ import (
 
 type Config struct {
 	LogLevel           slog.Level                `json:"LogLevel" yaml:"logLevel" validate:"required"`
+	Endpoint           EndpointConfig            `json:"Endpoint" yaml:"endpoint" validate:"required"`
 	BlogPages          BlogPagesConfig           `json:"BlogPages" yaml:"blogPages" validate:"required"`
 	FactGiver          FactGiverConfig           `json:"FactGiver" yaml:"factGiver" validate:"required"`
 	LocalePath         string                    `json:"LocalePath" yaml:"localePath" validate:"required,filepath"`
@@ -25,12 +26,90 @@ type Config struct {
 	AllowOrigins       []string                  `json:"AllowOrigins" yaml:"allowOrigins"`
 }
 
+type EndpointConfig struct {
+	Type   string `json:"Type" yaml:"type" validate:"required,oneof=http unix"`
+	Config any    `json:"Config" yaml:"config" validate:"required"`
+}
+
+func (ec *EndpointConfig) UnmarshalJSON(data []byte) error {
+	var tmp struct {
+		Type   string          `json:"Type"`
+		Config json.RawMessage `json:"Config"`
+	}
+
+	if err := json.Unmarshal(data, &tmp); err != nil {
+		return err
+	}
+
+	ec.Type = tmp.Type
+
+	switch tmp.Type {
+	case "http":
+		var httpConfig HttpConfig
+		if err := json.Unmarshal(tmp.Config, &httpConfig); err != nil {
+			return fmt.Errorf("unmarshal HttpConfig: %w", err)
+		}
+		ec.Config = &httpConfig
+	case "unix":
+		var unixConfig UnixConfig
+		if err := json.Unmarshal(tmp.Config, &unixConfig); err != nil {
+			return fmt.Errorf("unmarshal UnixConfig: %w", err)
+		}
+		ec.Config = &unixConfig
+	default:
+		return fmt.Errorf("unsupported storage type: %s", tmp.Type)
+	}
+
+	return nil
+}
+
+func (ec *EndpointConfig) UnmarshalYAML(value *yaml.Node) error {
+	var tmp struct {
+		Type   string    `yaml:"type"`
+		Config yaml.Node `yaml:"config"`
+	}
+
+	if err := value.Decode(&tmp); err != nil {
+		return err
+	}
+
+	ec.Type = tmp.Type
+
+	switch tmp.Type {
+	case "http":
+		var httpConfig HttpConfig
+		if err := tmp.Config.Decode(&httpConfig); err != nil {
+			return fmt.Errorf("unmarshal HttpConfig: %w", err)
+		}
+		ec.Config = &httpConfig
+	case "unix":
+		var unixConfig UnixConfig
+		if err := tmp.Config.Decode(&unixConfig); err != nil {
+			return fmt.Errorf("unmarshal UnixConfig: %w", err)
+		}
+		ec.Config = &unixConfig
+	default:
+		return fmt.Errorf("unsupported storage type: %s", tmp.Type)
+	}
+
+	return nil
+}
+
+type HttpConfig struct {
+	ListenOn string `json:"ListenOn" yaml:"listenOn" validate:"required"`
+}
+
+type UnixConfig struct {
+	Path  string `json:"Path" yaml:"path" validate:"required"`
+	Chmod string `json:"Chmod" yaml:"chmod" validate:"oneof=0600 0660 0666"`
+}
+
 type BlogPagesConfig struct {
 	Storage StorageConfig `json:"Storage" yaml:"storage" validate:"required"`
 }
 
 type StorageConfig struct {
-	Type   string `json:"type" yaml:"type,oneof=b2 s3"`
+	Type   string `json:"Type" yaml:"type" validate:"required,oneof=b2 s3"`
 	Config any    `json:"Config" yaml:"config" validate:"required"`
 }
 
@@ -200,6 +279,10 @@ func InitConfig(path string) (*Config, error) {
 	config := &Config{}
 	if err := LoadConfig(path, config); err != nil {
 		return nil, err
+	}
+
+	if config.Endpoint.Type == "unix" && config.Endpoint.Config.(*UnixConfig).Chmod == "" {
+		config.Endpoint.Config.(*UnixConfig).Chmod = "0660"
 	}
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
