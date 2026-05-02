@@ -12,12 +12,13 @@
     <link rel="canonical" href="{{.Content}}">
     {{- end }}
     {{- end }}
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css">
     <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css">
     <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css">
     <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
     <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css">
-    <link href="/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="/output.css">
     {{- with .LinkedData }}
     <script type="application/ld+json">
     {{ . }}
