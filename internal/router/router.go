@@ -78,6 +78,7 @@ type Route interface {
 	TemplatesToInject() []string
 	SitemapInfo(supplements *Supplements) []SitemapInfo
 	ContentType() string
+	RateLimiter() *fiber.Handler
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta []MetaField, err error)
 	AddLinkedData(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error)
@@ -265,6 +266,10 @@ func (r *Router) InitRoutes() (err error) {
 
 		if err = r.supplements.TemplateManager.Add(method+" "+match, route.TemplatesToInject()...); err != nil {
 			return fmt.Errorf("failed to add '%s %s' route into template manager: %w", method, match, err)
+		}
+
+		if rateLimiter := route.RateLimiter(); rateLimiter != nil {
+			r.app.Use(match, *rateLimiter)
 		}
 
 		if route.IsTemplated() {

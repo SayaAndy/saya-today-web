@@ -44,6 +44,10 @@ func (r *BlogSearchHandler) ToValidateLang() router.LangSetting {
 	return router.InForm
 }
 
+func (r *BlogSearchHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterLoose
+}
+
 func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	sort := c.Query("sort")
 	tz := c.Query("tz")

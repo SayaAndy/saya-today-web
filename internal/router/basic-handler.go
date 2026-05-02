@@ -42,6 +42,10 @@ func (r *BasicHandler) ContentType() string {
 	return fiber.MIMETextHTMLCharsetUTF8
 }
 
+func (r *BasicHandler) RateLimiter() *fiber.Handler {
+	return nil
+}
+
 func (r *BasicHandler) Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	if !r.IsTemplated() {
 		panic("handler did not implement Render method (while being non-templated)")

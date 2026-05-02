@@ -37,6 +37,10 @@ func (r *PutLikeHandler) ToValidateLang() router.LangSetting {
 	return router.InReferer
 }
 
+func (r *PutLikeHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterMedium
+}
+
 func (r *PutLikeHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	path, pathParts, _, err := router.GetPathFromReferer(c)
 	if err != nil {

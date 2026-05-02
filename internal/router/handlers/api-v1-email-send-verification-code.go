@@ -38,6 +38,10 @@ func (r *SendVerificationCodeHandler) ToValidateLang() router.LangSetting {
 	return router.InReferer
 }
 
+func (r *SendVerificationCodeHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterStrict
+}
+
 func (r *SendVerificationCodeHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	id := c.IP()
 	templateMap["StatusId"] = "email-message"

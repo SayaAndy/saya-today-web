@@ -36,6 +36,10 @@ func (r *VerifyCodeHandler) ToValidateLang() router.LangSetting {
 	return router.InReferer
 }
 
+func (r *VerifyCodeHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterStrict
+}
+
 func (r *VerifyCodeHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	verificationCode := c.FormValue("email_code")
 	templateMap["StatusId"] = "verification-message"
