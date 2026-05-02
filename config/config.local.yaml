@@ -46,3 +46,25 @@ mail:
   trigger:
     onNewPost: "* * * * *"
 canonicalEndpoint: 'http://127.0.0.1:3000'
+photoStorage:
+  full:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/full/%s
+  webp:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp/%s.webp
+  thumbnail1600p:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp
+  thumbnail1200p:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp
+  thumbnail800p:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp
+  thumbnail560p:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp
+  thumbnail320p:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp
+  homePageGifs:
+    baseUrl: https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/otter-%s.gif
+    indexes: ['1', '2', '3']
+staticStorage:
+  baseUrl: https://f003.backblazeb2.com/file/sayana-static
+allowOrigins:
+  - https://f003.backblazeb2.com

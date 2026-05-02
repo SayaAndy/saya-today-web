@@ -74,7 +74,7 @@ func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements,
 	return []router.MetaField{
 		{Property: "og:title", Content: metadata.Title},
 		{Property: "og:description", Content: fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate)},
-		{Property: "og:image", Content: fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp", metadata.Thumbnail)},
+		{Property: "og:image", Content: fmt.Sprintf(supplements.PhotoStorage.Thumbnail320p.BaseUrl, metadata.Thumbnail)},
 		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog/%s", templateMap["CanonicalEndpoint"], lang, c.Params("title"))},
 		{Property: "og:type", Content: "website"},
 		{Name: "twitter:card", Content: "summary_large_image"},

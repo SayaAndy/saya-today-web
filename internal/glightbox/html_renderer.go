@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
@@ -21,9 +22,10 @@ type GLightboxHTMLRenderer struct {
 	html.Config
 	md            goldmark.Markdown
 	anchorMatchRe *regexp.Regexp
+	photoStorage  config.PhotoStorageConfig
 }
 
-func NewGLightboxHTMLRenderer(opts ...html.Option) renderer.NodeRenderer {
+func NewGLightboxHTMLRenderer(photoStorage config.PhotoStorageConfig, opts ...html.Option) renderer.NodeRenderer {
 	r := &GLightboxHTMLRenderer{
 		Config: html.NewConfig(),
 		md: goldmark.New(
@@ -44,11 +46,12 @@ func NewGLightboxHTMLRenderer(opts ...html.Option) renderer.NodeRenderer {
 				),
 			),
 		),
+		anchorMatchRe: regexp.MustCompile(`(?s)<\s*a(\s+[^<]*)(href\s*=\s*["'].*?["'])\s*([^<]*)>(.*?)<\s*\/\s*a\s*>`),
+		photoStorage:  photoStorage,
 	}
 	for _, opt := range opts {
 		opt.SetHTMLOption(&r.Config)
 	}
-	r.anchorMatchRe = regexp.MustCompile(`(?s)<\s*a(\s+[^<]*)(href\s*=\s*["'].*?["'])\s*([^<]*)>(.*?)<\s*\/\s*a\s*>`)
 	return r
 }
 
@@ -111,19 +114,32 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 			anchorlessCaptionHTML := r.anchorMatchRe.ReplaceAll(captionHTML, []byte("<span class=\"linklike\" $1 $3>$4</span>"))
 
 			elements = append(elements, fmt.Sprintf(`
-	<a href="https://f003.backblazeb2.com/file/sayana-photos/full/%s" class="glightbox grid-item %s grid-item-%s p-1"
-	    data-gallery="gallery" data-title="%s" %s>
+	<a href="%[7]s" class="glightbox grid-item %[1]s grid-item-%[2]s p-1"
+	    data-gallery="gallery" data-title="%[3]s" %[4]s>
 		<picture>
-			<source media="(width < 800px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/%s.webp" />
-			<source media="(width < 2400px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
-			<source media="(width < 3200px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-800p/%s.webp" />
-			<source media="(width < 4000px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1200p/%s.webp" />
-			<source media="(width >= 4000px)" srcset="https://f003.backblazeb2.com/file/sayana-photos/webp-1600p/%s.webp" />
-			<img src="https://f003.backblazeb2.com/file/sayana-photos/webp-560p/%s.webp" />
+			<source media="(width < 800px)" srcset="%[8]s" />
+			<source media="(width < 2400px)" srcset="%[9]s" />
+			<source media="(width < 3200px)" srcset="%[10]s" />
+			<source media="(width < 4000px)" srcset="%[11]s" />
+			<source media="(width >= 4000px)" srcset="%[12]s" />
+			<img src="%[9]s" />
 		</picture>
-		<span class="grid-tooltip-text"><p>%s</p></span>
-		<span class="grid-item-index">%d</span>
-	</a>`, fullImageUrl, strings.Join(tagClassList, " "), galleryID, dayDate.Format("2006-01-02 15:04:05 -07:00"), dataDescriptionAttribute, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, imageUrlWithoutExt, anchorlessCaptionHTML, i+1))
+		<span class="grid-tooltip-text"><p>%[5]s</p></span>
+		<span class="grid-item-index">%[6]d</span>
+	</a>`,
+				strings.Join(tagClassList, " "),
+				galleryID,
+				dayDate.Format("2006-01-02 15:04:05 -07:00"),
+				dataDescriptionAttribute,
+				anchorlessCaptionHTML,
+				i+1,
+				fmt.Sprintf(r.photoStorage.Full.BaseUrl, fullImageUrl),
+				fmt.Sprintf(r.photoStorage.Thumbnail1600p.BaseUrl, imageUrlWithoutExt),
+				fmt.Sprintf(r.photoStorage.Thumbnail1200p.BaseUrl, imageUrlWithoutExt),
+				fmt.Sprintf(r.photoStorage.Thumbnail800p.BaseUrl, imageUrlWithoutExt),
+				fmt.Sprintf(r.photoStorage.Thumbnail560p.BaseUrl, imageUrlWithoutExt),
+				fmt.Sprintf(r.photoStorage.Thumbnail320p.BaseUrl, imageUrlWithoutExt),
+			))
 
 			if glightboxDescId != "" {
 				elements = append(elements, fmt.Sprintf(`

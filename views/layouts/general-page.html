@@ -13,8 +13,8 @@
     {{- end }}
     {{- end }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/css/glightbox.min.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css">
     <link href="/output.css" rel="stylesheet">
     {{- with .LinkedData }}
     <script type="application/ld+json">
@@ -49,7 +49,7 @@
         }
     </script>
 
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 
     <script>
         function sfc32(a, b, c, d) {
@@ -133,7 +133,7 @@
                     const frameCenters = new Array(4);
                     for (i = 1; i <= 4; i++) {
                         let frame = document.createElement("img");
-                        frame.src = `https://f003.backblazeb2.com/file/sayana-static/themes/ram/ram-frame${i}.webp`;
+                        frame.src = `{{ .StaticStorageBaseUrl }}/themes/ram/ram-frame${i}.webp`;
                         frame.classList.add("ram-frame", "theme-decor", "z-0", "absolute");
                         let x, y;
                     outerLoop:
@@ -288,10 +288,10 @@
 
     <div class="grow bg-split-right"></div>
 
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
 
     <script>
         // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz

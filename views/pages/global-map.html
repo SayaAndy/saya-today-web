@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     {{ block "header" . }}{{ end }}
     <link href="/output.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
 </head>
 
 <body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh">
@@ -81,9 +81,9 @@
 
     <div id="map-container" class="bg-paper bg-background-dark flex z-10 w-full h-full"></div>
 
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 
     <script>
         const themeWheel = document.getElementById('theme-wheel');
@@ -278,7 +278,7 @@
                 title: title,
             }).bindPopup(`
                     <div class="flex flex-row justify-center justify-items-center">
-                        <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/${thumbnail}.webp">
+                        <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src='{{ printf .ThumbnailBaseUrl "${thumbnail}" }}'>
                         <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
                     </div>`);
 

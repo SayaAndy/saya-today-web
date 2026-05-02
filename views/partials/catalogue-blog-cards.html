@@ -2,7 +2,7 @@
 <hr class="first-of-type:hidden border-t-2 border-dotted border-main-hard">
 <div class="w-full flex flex-row items-stretch">
     <div class="relative min-h-24 flex flex-col w-28 overflow-hidden shrink-0 mask-r-from-70% mask-r-to-100%">
-        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="https://f003.backblazeb2.com/file/sayana-photos/webp-320p/{{ .Thumbnail }}.webp">
+        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="{{ printf $.ThumbnailBaseUrl .Thumbnail }}">
         <div class="w-full h-6 flex flex-row mt-auto relative">
             <div class="flex-1/2 flex flex-row justify-center select-none bg-linear-180 {{ if .Liked }}from-accent-deep/40 to-accent-deep/80 text-background-dark{{ else }}from-accent-light/40 to-accent-light/80 text-main-hard{{ end }}">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-2 -2 28 28" id="Smiley-Thumbs-Up--Streamline-Freehand">

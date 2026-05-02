@@ -20,6 +20,9 @@ type Config struct {
 	Mail               MailConfig                `json:"Mail" yaml:"mail" validate:"required"`
 	CanonicalEndpoint  string                    `json:"CanonicalEndpoint" yaml:"canonicalEndpoint" validate:"required"`
 	Meta               MetaConfig                `json:"Meta" yaml:"meta"`
+	PhotoStorage       PhotoStorageConfig        `json:"PhotoStorage" yaml:"photoStorage"`
+	StaticStorage      PhotoTypeConfig           `json:"StaticStorage" yaml:"staticStorage"`
+	AllowOrigins       []string                  `json:"AllowOrigins" yaml:"allowOrigins"`
 }
 
 type BlogPagesConfig struct {
@@ -156,6 +159,26 @@ type TriggerConfig struct {
 
 type MetaConfig struct {
 	GoogleSiteVerification string `json:"GoogleSiteVerification" yaml:"googleSiteVerification"`
+}
+
+type PhotoStorageConfig struct {
+	Full           PhotoTypeConfig    `json:"Full" yaml:"full" validate:"required"`
+	Webp           PhotoTypeConfig    `json:"Webp" yaml:"webp"`
+	Thumbnail1600p PhotoTypeConfig    `json:"Thumbnail1600p" yaml:"thumbnail1600p"`
+	Thumbnail1200p PhotoTypeConfig    `json:"Thumbnail1200p" yaml:"thumbnail1200p"`
+	Thumbnail800p  PhotoTypeConfig    `json:"Thumbnail800p" yaml:"thumbnail800p"`
+	Thumbnail560p  PhotoTypeConfig    `json:"Thumbnail560p" yaml:"thumbnail560p"`
+	Thumbnail320p  PhotoTypeConfig    `json:"Thumbnail320p" yaml:"thumbnail320p"`
+	HomePageGifs   HomePageGifsConfig `json:"HomePageGifs" yaml:"homePageGifs"`
+}
+
+type PhotoTypeConfig struct {
+	BaseUrl string `json:"BaseUrl" yaml:"baseUrl" validate:"url,required"`
+}
+
+type HomePageGifsConfig struct {
+	BaseUrl string   `json:"BaseUrl" yaml:"baseUrl" validate:"url,required"`
+	Indexes []string `json:"Indexes" yaml:"indexes"`
 }
 
 func LoadConfig(path string, config *Config) error {

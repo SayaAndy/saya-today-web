@@ -101,6 +101,8 @@ type Supplements struct {
 	TemplateManager    *templatemanager.TemplateManager
 	MarkdownRenderer   goldmark.Markdown
 	Meta               config.MetaConfig
+	PhotoStorage       config.PhotoStorageConfig
+	StaticStorage      config.PhotoTypeConfig
 }
 
 type Router struct {
@@ -156,7 +158,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 
 	supplements.MarkdownRenderer = goldmark.New(
 		goldmark.WithExtensions(
-			glightbox.NewGLightboxExtension(),
+			glightbox.NewGLightboxExtension(cfg.PhotoStorage),
 			tailwind.NewTailwindExtension(),
 		),
 		goldmark.WithParserOptions(
@@ -217,6 +219,8 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	}
 
 	supplements.Meta = cfg.Meta
+	supplements.PhotoStorage = cfg.PhotoStorage
+	supplements.StaticStorage = cfg.StaticStorage
 
 	enablePrintRoutes := false
 	if cfg.LogLevel <= slog.LevelDebug {
@@ -229,7 +233,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	})
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://f003.backblazeb2.com",
+		AllowOrigins: strings.Join(cfg.AllowOrigins, ","),
 		AllowMethods: "GET,POST,OPTIONS",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
@@ -299,11 +303,13 @@ func (r *Router) InitRoutes() (err error) {
 				}
 
 				defaultMap := fiber.Map{
-					"L":                 r.supplements.Localization[lang],
-					"Lang":              lang,
-					"Path":              trimmedPath,
-					"QueryString":       queryString,
-					"CanonicalEndpoint": r.canonicalEndpoint,
+					"L":                    r.supplements.Localization[lang],
+					"Lang":                 lang,
+					"Path":                 trimmedPath,
+					"QueryString":          queryString,
+					"CanonicalEndpoint":    r.canonicalEndpoint,
+					"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+					"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 				}
 
 				statusCode, err := currentRoute.Render(c, r.supplements, lang, defaultMap)
@@ -423,10 +429,12 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	valueMap := fiber.Map{
-		"L":                 r.supplements.Localization[lang],
-		"Lang":              lang,
-		"QueryString":       queryString,
-		"CanonicalEndpoint": r.canonicalEndpoint,
+		"L":                    r.supplements.Localization[lang],
+		"Lang":                 lang,
+		"QueryString":          queryString,
+		"CanonicalEndpoint":    r.canonicalEndpoint,
+		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 	}
 
 	var err error
@@ -503,11 +511,13 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	var statusCode int
 	defaultMap := fiber.Map{
-		"L":                 r.supplements.Localization[lang],
-		"Lang":              lang,
-		"Path":              strings.Trim(path, "/"),
-		"QueryString":       queryString,
-		"CanonicalEndpoint": r.canonicalEndpoint,
+		"L":                    r.supplements.Localization[lang],
+		"Lang":                 lang,
+		"Path":                 strings.Trim(path, "/"),
+		"QueryString":          queryString,
+		"CanonicalEndpoint":    r.canonicalEndpoint,
+		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 	}
 
 	switch part {
