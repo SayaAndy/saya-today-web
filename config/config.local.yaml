@@ -5,22 +5,26 @@ endpoint:
     listenOn: ":3000"
 blogPages:
   storage:
-    type: b2
+    type: s3
     config:
-      bucketName: sayana-pages
-      region: eu-central-003
+      bucketName: sayauz-pages
+      region: kz1
       prefix: "stage-"
-      keyID: "${B2_KEY_ID}"
-      applicationKey: "${B2_APPLICATION_KEY}"
+      endpoint: "https://storage.yandexcloud.kz"
+      usePathStyle: true
+      accessKeyID: "${S3_ACCESS_KEY_ID}"
+      secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
 factGiver:
   storage:
-    type: b2
+    type: s3
     config:
-      bucketName: sayana-pages
-      region: eu-central-003
+      bucketName: sayauz-pages
+      region: kz1
       prefix: ""
-      keyID: "${B2_KEY_ID}"
-      applicationKey: "${B2_APPLICATION_KEY}"
+      endpoint: "https://storage.yandexcloud.kz"
+      usePathStyle: true
+      accessKeyID: "${S3_ACCESS_KEY_ID}"
+      secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
   factsFileName: "facts-*.txt"
 localePath: ./locale/
 availableLanguages:
