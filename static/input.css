@@ -57,6 +57,14 @@ html {
     background-size: --value([bg-size]), 128px;
 }
 
+@utility faw-full {
+    --fa-width: 100%;
+}
+
+@utility faw-* {
+    --fa-width: calc(--value(integer) * var(--spacing));
+}
+
 body {
     scrollbar-width: thin;
     scrollbar-color: var(--color-background-light) var(--color-main-soft);
