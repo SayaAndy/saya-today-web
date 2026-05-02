@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /api/
+Disallow: /api/v1/email/
+Disallow: /ru/user/
+Disallow: /en/user/
 
 Sitemap: {{ .CanonicalEndpoint }}/sitemap.xml
