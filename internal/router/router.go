@@ -309,6 +309,8 @@ func (r *Router) InitRoutes() (err error) {
 					cacheKey = fmt.Sprintf("%s.full-page.%s", method, trimmedPath)
 				case ByUrlAndQuery:
 					cacheKey = fmt.Sprintf("%s.full-page.%s.%s", method, trimmedPath, queryString)
+				case Disabled:
+					c.Set("Cache-Control", "no-store, no-cache, must-revalidate")
 				}
 
 				defaultMap := fiber.Map{
@@ -371,6 +373,7 @@ func (r *Router) InitRoutes() (err error) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrBadRequest.Code).SendString(fmt.Sprintf("unknown segment '%s'", part))
 		}
+		c.Set("Cache-Control", "no-store, no-cache, must-revalidate")
 		err := r.generalPageSegment(c, part)
 		return err
 	})
