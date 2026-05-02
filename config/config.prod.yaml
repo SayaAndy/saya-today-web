@@ -1,8 +1,9 @@
 logLevel: info
 endpoint:
-  type: http
+  type: unix
   config:
-    listenOn: ":3000"
+    path: "/etc/sayauz/prod.socket"
+    chmod: '0666'
 blogPages:
   storage:
     type: b2

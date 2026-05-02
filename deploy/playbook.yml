@@ -2,9 +2,27 @@
 - name: Deploy saya-today-web Docker Container
   hosts: all
   remote_user: svc_github
+
+  vars:
+    docker_volumes:
+      - "{{ saya_today_web_name }}-volume:/data:rw"
  
   tasks:
-    - name: Create a volume
+    - name: Initialize Unix socket volume
+      when: >-
+        saya_today_web_unix_sockets_path is defined and
+        saya_today_web_unix_sockets_path is string and
+        saya_today_web_unix_sockets_path | length > 0
+      block:
+        - name: Ensure Unix socket volume exists
+          community.docker.docker_volume:
+            name: "sayana_sockets"
+        - name: Include Unix socket volume in docker volumes list
+          ansible.builtin.set_fact:
+            docker_volumes: >-
+              {{ docker_volumes + ["sayana_sockets:" ~ saya_today_web_unix_sockets_path ~ ":rw"] }}
+
+    - name: Create a data volume
       community.docker.docker_volume:
         name: "{{ saya_today_web_name }}-volume"
 
@@ -29,8 +47,7 @@
         networks:
           - name: caddy
             ipv4_address: "{{ saya_today_web_ipv4_address }}"
-        volumes:
-          - "{{ saya_today_web_name }}-volume:/data:rw"
+        volumes: "{{ docker_volumes }}"
         restart_policy: unless-stopped
       no_log: true
 ...

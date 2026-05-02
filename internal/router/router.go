@@ -433,12 +433,7 @@ func (r *Router) Close() (err error) {
 	}
 	slog.Debug("closing page cache")
 	r.supplements.PageCache.Close()
-	if r.endpoint.Type == "unix" {
-		slog.Debug("closing unix socket")
-		if err = os.Remove(r.endpoint.Config.(*config.UnixConfig).Path); err != nil {
-			allErrors = append(allErrors, fmt.Errorf("fail to close unix socket: %w", err))
-		}
-	}
+
 	return errors.Join(allErrors...)
 }
 
