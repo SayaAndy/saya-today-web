@@ -8,7 +8,7 @@ all:
           saya_today_web_hostname: sayauz-prod
           saya_today_web_ipv4_address: 172.16.0.17
           saya_today_web_listen_address: saya.uz
-          saya_today_web_unix_sockets_mount: '/etc/sayauz'
+          saya_today_web_unix_sockets_path: '/etc/sayauz'
 
     stage:
       hosts:
@@ -18,4 +18,4 @@ all:
           saya_today_web_hostname: sayauz-stage
           saya_today_web_ipv4_address: 172.16.0.18
           saya_today_web_listen_address: stage.saya.uz
-          saya_today_web_unix_sockets_mount: '/etc/sayauz'
+          saya_today_web_unix_sockets_path: '/etc/sayauz'
