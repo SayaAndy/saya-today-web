@@ -1,49 +1,80 @@
 logLevel: info
+endpoint:
+  type: unix
+  config:
+    path: "/etc/sayauz/prod.socket"
+    chmod: '0666'
 blogPages:
   storage:
-    type: b2
+    type: s3
     config:
-      bucketName: sayana-pages
-      region: eu-central-003
-      prefix: 'prod-'
-      keyID: '${B2_KEY_ID}'
-      applicationKey: '${B2_APPLICATION_KEY}'
+      bucketName: sayauz-pages
+      region: kz1
+      prefix: "prod-"
+      endpoint: "https://storage.yandexcloud.kz"
+      usePathStyle: true
+      accessKeyID: "${S3_ACCESS_KEY_ID}"
+      secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
 factGiver:
   storage:
-    type: b2
+    type: s3
     config:
-      bucketName: sayana-pages
-      region: eu-central-003
-      prefix: ''
-      keyID: '${B2_KEY_ID}'
-      applicationKey: '${B2_APPLICATION_KEY}'
-  factsFileName: 'facts-*.txt'
+      bucketName: sayauz-pages
+      region: kz1
+      prefix: ""
+      endpoint: "https://storage.yandexcloud.kz"
+      usePathStyle: true
+      accessKeyID: "${S3_ACCESS_KEY_ID}"
+      secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
+  factsFileName: "facts-*.txt"
 localePath: ./locale/
 availableLanguages:
   - name: ru
     alt: Русский
-    flag: https://f003.backblazeb2.com/file/sayana-static/flags/ru.svg
+    flag: https://storage.yandexcloud.kz/sayauz-static/flags/ru.svg
     locFile: localization.ru.yaml
   - name: en
     alt: English
-    flag: https://f003.backblazeb2.com/file/sayana-static/flags/gb.svg
+    flag: https://storage.yandexcloud.kz/sayauz-static/flags/gb.svg
     locFile: localization.en.yaml
 auth:
   db:
     type: sqlite3
     config:
-      dsn: 'file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2&_journal_mode=WAL'
-  salt: '${AUTH_SALT}'
+      dsn: "file:/data/auth.db?cache=private&mode=rwc&_locking_mode=EXCLUSIVE&_mutex=no&_auto_vacuum=2&_journal_mode=WAL"
+  salt: "${AUTH_SALT}"
 mail:
-  clientHost: '${FQDN}'
-  mailHost: '${MAIL_HOST}'
-  publicName: 'SAYA.TODAY'
-  mailAddress: '${MAIL_ADDRESS}'
-  username: '${MAIL_USERNAME}'
-  password: '${MAIL_PASSWORD}'
-  salt: '${MAIL_SALT}'
+  clientHost: "${FQDN}"
+  mailHost: "${MAIL_HOST}"
+  publicName: "SAYA.UZ"
+  mailAddress: "${MAIL_ADDRESS}"
+  username: "${MAIL_USERNAME}"
+  password: "${MAIL_PASSWORD}"
+  salt: "${MAIL_SALT}"
   trigger:
     onNewPost: "0/5 * * * *"
-canonicalEndpoint: 'https://${FQDN}'
+canonicalEndpoint: "https://${FQDN}"
 meta:
-  googleSiteVerification: '${GOOGLE_SITE_VERIFICATION}'
+  googleSiteVerification: "${GOOGLE_SITE_VERIFICATION}"
+photoStorage:
+  full:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-photos/%s
+  webp:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp/%s.webp
+  thumbnail1600p:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1600/%s.webp
+  thumbnail1200p:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1200/%s.webp
+  thumbnail800p:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp800/%s.webp
+  thumbnail560p:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp560/%s.webp
+  thumbnail320p:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp320/%s.webp
+  homePageGifs:
+    baseUrl: https://storage.yandexcloud.kz/sayauz-static/home-page-gifs/otter-%s.gif
+    indexes: ["1", "2", "3"]
+staticStorage:
+  baseUrl: https://storage.yandexcloud.kz/sayauz-static
+allowOrigins:
+  - https://storage.yandexcloud.kz

@@ -1,5 +1,5 @@
 <button hx-put="/api/v1/like" hx-vals='{"like": {{ not .Liked }}}' hx-target="this" hx-swap="outerHTML" hx-trigger="click"
     class="themed-button themed-button-like flex flex-col shrink-0 w-fit h-fit mr-2 my-auto{{ if .Liked }} active{{ end }}">
-    <i class="fas fa-thumbs-up w-8 h-fit py-0.5 content-center text-center"></i>
-    <div class="h-fit px-0.5 content-center bg-(--background-medium-color) text-(--main-hard-color)">{{ .LikedCount }}</div>
+    <i class="fas fa-thumbs-up faw-8 h-fit py-0.5 content-center text-center"></i>
+    <div class="h-fit px-0.5 content-center bg-background-medium text-main-hard">{{ .LikedCount }}</div>
 </button>

@@ -53,7 +53,10 @@ func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lan
 	return []router.MetaField{
 		{Property: "og:title", Content: supplements.Localization[lang].HomePage.Header},
 		{Property: "og:description", Content: supplements.Localization[lang].HomePage.HomePageDescription},
-		{Property: "og:image", Content: fmt.Sprintf("https://f003.backblazeb2.com/file/sayana-static/home-page-gifs/otter-%d.gif", rand.Int()%3+1)},
+		{Property: "og:image", Content: fmt.Sprintf(
+			supplements.PhotoStorage.HomePageGifs.BaseUrl,
+			supplements.PhotoStorage.HomePageGifs.Indexes[rand.Int()%len(supplements.PhotoStorage.HomePageGifs.Indexes)],
+		)},
 		{Property: "og:url", Content: fmt.Sprintf("%s/%s", templateMap["CanonicalEndpoint"], lang)},
 		{Property: "og:type", Content: "website"},
 	}, nil
@@ -63,7 +66,10 @@ func (r *HomeHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, 
 	templateMap["Title"] = supplements.Localization[lang].HomePage.Header
 	templateMap["FilledHeartCount"] = uint(40)
 	templateMap["OutlineHeartCount"] = uint(40)
-	templateMap["GifName"] = fmt.Sprintf("otter-%d.gif", rand.Int()%3+1)
+	templateMap["GifUrl"] = fmt.Sprintf(
+		supplements.PhotoStorage.HomePageGifs.BaseUrl,
+		supplements.PhotoStorage.HomePageGifs.Indexes[rand.Int()%len(supplements.PhotoStorage.HomePageGifs.Indexes)],
+	)
 	templateMap["FunFacts"] = supplements.FactGiver.Give(lang)
 	return fiber.StatusOK, nil
 }

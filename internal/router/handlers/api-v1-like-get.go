@@ -48,7 +48,7 @@ func (r *GetLikeHandler) Render(c *fiber.Ctx, supplements *router.Supplements, l
 
 	page := pathParts[2]
 	pageLink := lang + "/" + page + ".md"
-	if pages, _ := supplements.B2Client.Scan(pageLink); len(pages) == 0 {
+	if pages, _ := supplements.BlogClient.Scan(pageLink); len(pages) == 0 {
 		return fiber.StatusNotFound, fmt.Errorf("server did not find '%s' article", pageLink)
 	}
 

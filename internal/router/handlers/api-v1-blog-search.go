@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -44,6 +44,10 @@ func (r *BlogSearchHandler) ToValidateLang() router.LangSetting {
 	return router.InForm
 }
 
+func (r *BlogSearchHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterLoose
+}
+
 func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	sort := c.Query("sort")
 	tz := c.Query("tz")
@@ -56,11 +60,11 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 
 	cacheKey := "blog-search." + lang + ".pages-list"
 
-	var pages []*b2.BlogPage
+	var pages []*blog.Page
 	if pagesBytes, ok := supplements.PageCache.Get(cacheKey); pagesBytes != nil || ok {
 		json.Unmarshal(pagesBytes, &pages)
 	} else {
-		pages, err = supplements.B2Client.Scan(lang + "/")
+		pages, err = supplements.BlogClient.Scan(lang + "/")
 		if err != nil {
 			return fiber.StatusInternalServerError, fmt.Errorf("failed to scan pages for '%s' lang: %w", lang, err)
 		}
@@ -91,7 +95,9 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 					"Thumbnail":        page.Metadata.Thumbnail,
 					"Tags":             page.Metadata.Tags,
 					"LikeCount":        supplements.ClientCache.GetLikeCount(page.FileName),
+					"Liked":            supplements.ClientCache.GetLikeStatus(c.IP(), page.FileName),
 					"ViewCount":        supplements.ClientCache.GetViewCount(page.FileName),
+					"Viewed":           supplements.ClientCache.GetViewStatus(c.IP(), page.FileName),
 				})
 				break
 			}

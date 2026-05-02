@@ -12,10 +12,13 @@
     <link rel="canonical" href="{{.Content}}">
     {{- end }}
     {{- end }}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.css">
-    <link rel="stylesheet" href="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/css/glightbox.min.css">
-    <link href="/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
+    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css">
+    <link rel="stylesheet" href="/output.css">
     {{- with .LinkedData }}
     <script type="application/ld+json">
     {{ . }}
@@ -23,7 +26,7 @@
     {{- end }}
 </head>
 
-<body data-theme="ram" class="font-andika text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
+<body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
 
     <script>
         let map = null;
@@ -32,7 +35,11 @@
     <script>
         function changeUrl(path, toAppend = false) {
             const urlParams = new URLSearchParams(window.location.search);
-            const newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
+            newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
+            while (path.slice(-3) == '/..' && toAppend) {
+                newPathname = newPathname.replace(/\/[^\/]+$/, '');
+                path = path.slice(0, -3);
+            }
             const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
 
             history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
@@ -45,7 +52,7 @@
         }
     </script>
 
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 
     <script>
         function sfc32(a, b, c, d) {
@@ -129,7 +136,7 @@
                     const frameCenters = new Array(4);
                     for (i = 1; i <= 4; i++) {
                         let frame = document.createElement("img");
-                        frame.src = `https://f003.backblazeb2.com/file/sayana-static/themes/ram/ram-frame${i}.webp`;
+                        frame.src = `{{ .StaticStorageBaseUrl }}/themes/ram/ram-frame${i}.webp`;
                         frame.classList.add("ram-frame", "theme-decor", "z-0", "absolute");
                         let x, y;
                     outerLoop:
@@ -192,23 +199,23 @@
             sm:left-0 sm:flex-col sm:fixed sm:w-fit
             z-20 shadow-[0_0_1rem_black]">
             <nav aria-label="Main navigation" class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20">
-                <a onclick="return changeUrl('/../', true);" href="./" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-circle-left flex w-18 h-18 content-center text-center text-sidebar"></i>
+                <a onclick="return changeUrl('/..', true);" href="../" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
+                    <i class="fas fa-circle-left flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
                 <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-home flex w-18 h-18 content-center text-center text-sidebar"></i>
+                    <i class="fas fa-home flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
                 <a onclick="return changeUrl('/{{ .Lang }}/blog');" href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-search flex w-18 h-18 content-center text-center text-sidebar"></i>
+                    <i class="fas fa-search flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
                 <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-map flex w-18 h-18 content-center text-center text-sidebar"></i>
+                    <i class="fas fa-map flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
                 <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                    <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex w-18 h-18 content-center text-center text-sidebar"></i>
+                    <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </div>
                 <a onclick="return changeUrl('/{{ .Lang }}/user');" href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-user flex w-18 h-18 content-center text-center text-sidebar"></i>
+                    <i class="fas fa-user flex faw-18 h-18 content-center text-center text-sidebar"></i>
                 </a>
             </nav>
             <div class="theme-wheel" id="theme-wheel">
@@ -241,12 +248,12 @@
                         sidebarUserButton.classList.remove('hidden');
                         lang = location.pathname.split("/")[1];
                         sidebarHomeButton.setAttribute('href', `/${lang}`);
-                        sidebarHomeButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
+                        sidebarHomeButton.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
                         sidebarMapButton.setAttribute('href', `/${lang}/map`);
                         sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
-                        sidebarBlogButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
+                        sidebarBlogButton.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
                         sidebarUserButton.setAttribute('href', `/${lang}/user`);
-                        sidebarUserButton.firstElementChild.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
+                        sidebarUserButton.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
                     }
                 }
                 window.addEventListener("popstate", updateSidebar);
@@ -254,10 +261,10 @@
             </script>
         </div>
 
-        <div class="bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
-            <div class="bg-background-dark border-r-2 border-dashed border-main-hard"></div>
+        <div class="bg-paper bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
+            <div class="bg-paper bg-background-dark border-r-2 border-dashed border-main-hard"></div>
 
-            <div class="max-h-full max-w-full flex flex-col grow bg-background-dark relative pt-4 ml-8 pr-4">
+            <div class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative pt-4 ml-8 pr-4">
                 <header id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
                     hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                 </header>
@@ -278,16 +285,16 @@
                 <hr class="border-t-4 border-dotted border-main-hard mb-2">
             </div>
 
-            <div class="pr-[0.5dvw] bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
+            <div class="pr-[0.5dvw] bg-paper bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
         </div>
     </div>
 
     <div class="grow bg-split-right"></div>
 
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
-    <script src="https://f003.backblazeb2.com/file/sayana-static/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+    <script src="{{ .StaticStorageBaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
 
     <script>
         // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz

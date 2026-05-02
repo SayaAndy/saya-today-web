@@ -8,11 +8,11 @@ import (
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/config"
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 )
 
 type FactGiver struct {
-	b2Client      *b2.B2Client
+	blogClient    blog.Client
 	cache         map[string][]string
 	langs         []config.AvailableLanguageConfig
 	factsFileName string
@@ -21,13 +21,13 @@ type FactGiver struct {
 }
 
 func NewFactGiver(cfg *config.FactGiverConfig, langs []config.AvailableLanguageConfig) (*FactGiver, error) {
-	b2Client, err := b2.NewB2Client(&cfg.Storage.Config)
+	blogClient, err := blog.NewClientMap[cfg.Storage.Type](&cfg.Storage)
 	if err != nil {
 		return nil, fmt.Errorf("fail to init b2 client for a new fact giver: %s", err.Error())
 	}
 
 	factGiver := &FactGiver{
-		b2Client:      b2Client,
+		blogClient:    blogClient,
 		cache:         make(map[string][]string, len(langs)),
 		langs:         langs,
 		factsFileName: cfg.FactsFileName,
@@ -53,7 +53,7 @@ func (g *FactGiver) Give(lang string) [3]string {
 func (g *FactGiver) initCache() error {
 	for _, lang := range g.langs {
 		localFacts := strings.Replace(g.factsFileName, "*", lang.Name, 1)
-		factsContentBytes, err := g.b2Client.ReadAll(localFacts)
+		factsContentBytes, err := g.blogClient.ReadAll(localFacts)
 		if err != nil {
 			return fmt.Errorf("fail to read '%s' facts file: %s", lang.Name, err.Error())
 		}

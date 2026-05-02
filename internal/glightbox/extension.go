@@ -1,6 +1,7 @@
 package glightbox
 
 import (
+	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer"
@@ -8,10 +9,12 @@ import (
 )
 
 // Extension that combines parser and renderer
-type GLightboxExtension struct{}
+type GLightboxExtension struct {
+	photoStorage config.PhotoStorageConfig
+}
 
-func NewGLightboxExtension() goldmark.Extender {
-	return &GLightboxExtension{}
+func NewGLightboxExtension(photoStorage config.PhotoStorageConfig) goldmark.Extender {
+	return &GLightboxExtension{photoStorage}
 }
 
 func (e *GLightboxExtension) Extend(m goldmark.Markdown) {
@@ -22,7 +25,7 @@ func (e *GLightboxExtension) Extend(m goldmark.Markdown) {
 	)
 	m.Renderer().AddOptions(
 		renderer.WithNodeRenderers(
-			util.Prioritized(NewGLightboxHTMLRenderer(), 500),
+			util.Prioritized(NewGLightboxHTMLRenderer(e.photoStorage), 500),
 		),
 	)
 }

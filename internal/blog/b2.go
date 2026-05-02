@@ -1,4 +1,4 @@
-package b2
+package blog
 
 import (
 	"context"
@@ -18,30 +18,27 @@ type B2Client struct {
 	b2cl   *b2.Client
 }
 
-func NewB2Client(cfg *config.B2Config) (*B2Client, error) {
-	b2cl, err := b2.NewClient(context.Background(), cfg.KeyID, cfg.ApplicationKey)
+func NewB2Client(cfg *config.StorageConfig) (Client, error) {
+	if cfg.Type != "b2" {
+		return nil, fmt.Errorf("invalid storage type for B2InputClient")
+	}
+	b2cfg := cfg.Config.(*config.B2Config)
+
+	b2cl, err := b2.NewClient(context.Background(), b2cfg.KeyID, b2cfg.ApplicationKey)
 	if err != nil {
 		return nil, err
 	}
 
-	bucket, err := b2cl.Bucket(context.Background(), cfg.BucketName)
+	bucket, err := b2cl.Bucket(context.Background(), b2cfg.BucketName)
 	if err != nil {
 		return nil, err
 	}
 
-	return &B2Client{b2cl: b2cl, bucket: bucket, prefix: cfg.Prefix}, nil
+	return &B2Client{b2cl: b2cl, bucket: bucket, prefix: b2cfg.Prefix}, nil
 }
 
-type BlogPage struct {
-	Link         string
-	FileName     string
-	Lang         string
-	ModifiedTime time.Time
-	Metadata     *frontmatter.Metadata
-}
-
-func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
-	filePaths := []*BlogPage{}
+func (c *B2Client) Scan(prefix string) ([]*Page, error) {
+	filePaths := []*Page{}
 
 	iter := c.bucket.List(context.Background(), b2.ListPrefix(c.prefix+prefix))
 
@@ -82,7 +79,7 @@ func (c *B2Client) Scan(prefix string) ([]*BlogPage, error) {
 
 		lang, _ := strings.CutPrefix(linkParts[0], c.prefix)
 
-		filePaths = append(filePaths, &BlogPage{
+		filePaths = append(filePaths, &Page{
 			Link:         obj.Name(),
 			FileName:     fileName,
 			Lang:         lang,

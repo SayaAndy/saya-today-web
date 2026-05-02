@@ -7,13 +7,16 @@ import (
 	"fmt"
 	"html/template"
 	"log/slog"
+	"net"
 	"net/url"
+	"os"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/config"
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/blogtrigger"
 	"github.com/SayaAndy/saya-today-web/internal/factgiver"
 	"github.com/SayaAndy/saya-today-web/internal/glightbox"
@@ -78,6 +81,7 @@ type Route interface {
 	TemplatesToInject() []string
 	SitemapInfo(supplements *Supplements) []SitemapInfo
 	ContentType() string
+	RateLimiter() *fiber.Handler
 	Render(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (statusCode int, err error)
 	AddMeta(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (meta []MetaField, err error)
 	AddLinkedData(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (ld map[string]any, err error)
@@ -90,7 +94,7 @@ type Route interface {
 
 type Supplements struct {
 	DB                 *sql.DB
-	B2Client           *b2.B2Client
+	BlogClient         blog.Client
 	Localization       map[string]*locale.LocaleConfig
 	AvailableLanguages []config.AvailableLanguageConfig
 	ClientCache        *ClientCache
@@ -101,6 +105,8 @@ type Supplements struct {
 	TemplateManager    *templatemanager.TemplateManager
 	MarkdownRenderer   goldmark.Markdown
 	Meta               config.MetaConfig
+	PhotoStorage       config.PhotoStorageConfig
+	StaticStorage      config.PhotoTypeConfig
 }
 
 type Router struct {
@@ -109,6 +115,7 @@ type Router struct {
 	templatedRoutes      map[string]map[string]Route
 	templatedPathMatcher *PathMatcher
 	canonicalEndpoint    string
+	endpoint             config.EndpointConfig
 }
 
 func NewRouter(cfg *config.Config) (*Router, error) {
@@ -140,7 +147,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	}
 	slog.Debug("successfully applied migrations")
 
-	supplements.B2Client, err = b2.NewB2Client(&cfg.BlogPages.Storage.Config)
+	supplements.BlogClient, err = blog.NewClientMap[cfg.BlogPages.Storage.Type](&cfg.BlogPages.Storage)
 	if err != nil {
 		return nil, fmt.Errorf("fail to initialize b2 client: %w", err)
 	}
@@ -156,7 +163,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 
 	supplements.MarkdownRenderer = goldmark.New(
 		goldmark.WithExtensions(
-			glightbox.NewGLightboxExtension(),
+			glightbox.NewGLightboxExtension(cfg.PhotoStorage),
 			tailwind.NewTailwindExtension(),
 		),
 		goldmark.WithParserOptions(
@@ -198,8 +205,8 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 		return nil, fmt.Errorf("fail to initialize mailer: %w", err)
 	}
 
-	supplements.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(supplements.B2Client, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost,
-		func(bp []*b2.BlogPage) error {
+	supplements.BlogTrigger, err = blogtrigger.NewBlogTriggerScheduler(supplements.BlogClient, cfg.AvailableLanguages, cfg.Mail.Trigger.OnNewPost,
+		func(bp []*blog.Page) error {
 			for _, post := range bp {
 				if err := supplements.Mailer.NewPost(post); err != nil {
 					return err
@@ -217,6 +224,8 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	}
 
 	supplements.Meta = cfg.Meta
+	supplements.PhotoStorage = cfg.PhotoStorage
+	supplements.StaticStorage = cfg.StaticStorage
 
 	enablePrintRoutes := false
 	if cfg.LogLevel <= slog.LevelDebug {
@@ -229,7 +238,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	})
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "https://f003.backblazeb2.com",
+		AllowOrigins: strings.Join(cfg.AllowOrigins, ","),
 		AllowMethods: "GET,POST,OPTIONS",
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
@@ -251,7 +260,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	templatedRoutes := make(map[string]map[string]Route)
 	templatedPathMatcher := NewPathMatcher()
 
-	return &Router{supplements, app, templatedRoutes, templatedPathMatcher, cfg.CanonicalEndpoint}, nil
+	return &Router{supplements, app, templatedRoutes, templatedPathMatcher, cfg.CanonicalEndpoint, cfg.Endpoint}, nil
 }
 
 func (r *Router) InitRoutes() (err error) {
@@ -261,6 +270,10 @@ func (r *Router) InitRoutes() (err error) {
 
 		if err = r.supplements.TemplateManager.Add(method+" "+match, route.TemplatesToInject()...); err != nil {
 			return fmt.Errorf("failed to add '%s %s' route into template manager: %w", method, match, err)
+		}
+
+		if rateLimiter := route.RateLimiter(); rateLimiter != nil {
+			r.app.Use(match, *rateLimiter)
 		}
 
 		if route.IsTemplated() {
@@ -296,14 +309,18 @@ func (r *Router) InitRoutes() (err error) {
 					cacheKey = fmt.Sprintf("%s.full-page.%s", method, trimmedPath)
 				case ByUrlAndQuery:
 					cacheKey = fmt.Sprintf("%s.full-page.%s.%s", method, trimmedPath, queryString)
+				case Disabled:
+					c.Set("Cache-Control", "no-store, no-cache, must-revalidate")
 				}
 
 				defaultMap := fiber.Map{
-					"L":                 r.supplements.Localization[lang],
-					"Lang":              lang,
-					"Path":              trimmedPath,
-					"QueryString":       queryString,
-					"CanonicalEndpoint": r.canonicalEndpoint,
+					"L":                    r.supplements.Localization[lang],
+					"Lang":                 lang,
+					"Path":                 trimmedPath,
+					"QueryString":          queryString,
+					"CanonicalEndpoint":    r.canonicalEndpoint,
+					"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+					"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 				}
 
 				statusCode, err := currentRoute.Render(c, r.supplements, lang, defaultMap)
@@ -356,6 +373,7 @@ func (r *Router) InitRoutes() (err error) {
 			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
 			return c.Status(fiber.ErrBadRequest.Code).SendString(fmt.Sprintf("unknown segment '%s'", part))
 		}
+		c.Set("Cache-Control", "no-store, no-cache, must-revalidate")
 		err := r.generalPageSegment(c, part)
 		return err
 	})
@@ -371,10 +389,30 @@ func (r *Router) InitRoutes() (err error) {
 	return nil
 }
 
-func (r *Router) Listen(endpoint string) error {
-	if err := r.app.Listen(endpoint); err != nil {
-		return fmt.Errorf("error while running fiber server: %w", err)
+func (r *Router) Listen() error {
+	switch r.endpoint.Type {
+	case "unix":
+		unixConfig := r.endpoint.Config.(*config.UnixConfig)
+		endpoint, _ := strings.CutPrefix(unixConfig.Path, "unix://")
+		ln, err := net.Listen("unix", endpoint)
+		if err != nil {
+			return fmt.Errorf("error while initializing unix listener: %w", err)
+		}
+		chmod, _ := strconv.ParseUint(unixConfig.Chmod[1:], 8, 32)
+		os.Chmod(unixConfig.Path, os.FileMode(chmod))
+		if err := r.app.Listener(ln); err != nil {
+			return fmt.Errorf("error while running fiber server: %w", err)
+		}
+	case "http":
+		httpConfig := r.endpoint.Config.(*config.HttpConfig)
+		fmt.Print(httpConfig)
+		if err := r.app.Listen(httpConfig.ListenOn); err != nil {
+			return fmt.Errorf("error while running fiber server: %w", err)
+		}
+	default:
+		return fmt.Errorf("error with initializing fiber server: invalid endpoint type (supported are unix and http)")
 	}
+
 	return nil
 }
 
@@ -398,6 +436,7 @@ func (r *Router) Close() (err error) {
 	}
 	slog.Debug("closing page cache")
 	r.supplements.PageCache.Close()
+
 	return errors.Join(allErrors...)
 }
 
@@ -423,10 +462,12 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	valueMap := fiber.Map{
-		"L":                 r.supplements.Localization[lang],
-		"Lang":              lang,
-		"QueryString":       queryString,
-		"CanonicalEndpoint": r.canonicalEndpoint,
+		"L":                    r.supplements.Localization[lang],
+		"Lang":                 lang,
+		"QueryString":          queryString,
+		"CanonicalEndpoint":    r.canonicalEndpoint,
+		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 	}
 
 	var err error
@@ -503,11 +544,13 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	var statusCode int
 	defaultMap := fiber.Map{
-		"L":                 r.supplements.Localization[lang],
-		"Lang":              lang,
-		"Path":              strings.Trim(path, "/"),
-		"QueryString":       queryString,
-		"CanonicalEndpoint": r.canonicalEndpoint,
+		"L":                    r.supplements.Localization[lang],
+		"Lang":                 lang,
+		"Path":                 strings.Trim(path, "/"),
+		"QueryString":          queryString,
+		"CanonicalEndpoint":    r.canonicalEndpoint,
+		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
+		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
 	}
 
 	switch part {

@@ -3,17 +3,19 @@ all:
     prod:
       hosts:
         node_prod:
-          ansible_host: pl.saya.today
-          saya_today_web_name: sayana-web
-          saya_today_web_hostname: sayana-web
-          saya_today_web_ipv4_address: 172.16.0.18
-          saya_today_web_listen_address: saya.today
+          ansible_host: uz.saya.casa
+          saya_today_web_name: sayauz-prod
+          saya_today_web_hostname: sayauz-prod
+          saya_today_web_ipv4_address: 172.16.0.17
+          saya_today_web_listen_address: saya.uz
+          saya_today_web_unix_sockets_path: '/etc/sayauz'
 
     stage:
       hosts:
         node_stage:
-          ansible_host: pl.saya.today
-          saya_today_web_name: sayana-demo
-          saya_today_web_hostname: sayana-demo
-          saya_today_web_ipv4_address: 172.16.0.17
-          saya_today_web_listen_address: demo.saya.today
+          ansible_host: uz.saya.casa
+          saya_today_web_name: sayauz-stage
+          saya_today_web_hostname: sayauz-stage
+          saya_today_web_ipv4_address: 172.16.0.18
+          saya_today_web_listen_address: stage.saya.uz
+          saya_today_web_unix_sockets_path: '/etc/sayauz'

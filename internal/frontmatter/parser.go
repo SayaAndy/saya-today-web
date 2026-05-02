@@ -1,8 +1,8 @@
 package frontmatter
 
 import (
+	"bytes"
 	"fmt"
-	"regexp"
 	"time"
 
 	"gopkg.in/yaml.v3"
@@ -22,15 +22,17 @@ type Metadata struct {
 }
 
 func ParseFrontmatter(content []byte) (metadata *Metadata, markdown []byte, err error) {
-	frontmatterRegex := regexp.MustCompile(`^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$`)
-	matches := frontmatterRegex.FindSubmatch(content)
-
-	if len(matches) != 3 {
+	if !bytes.HasPrefix(content, []byte("---\n")) {
 		return nil, content, nil
 	}
 
-	yamlContent := matches[1]
-	markdownContent := matches[2]
+	end := bytes.Index(content[4:], []byte("\n---\n"))
+	if end == -1 {
+		return nil, content, nil
+	}
+
+	yamlContent := content[4 : end+4]
+	markdownContent := content[end+9:]
 
 	metadata = &Metadata{}
 	if err := yaml.Unmarshal([]byte(yamlContent), &metadata); err != nil {

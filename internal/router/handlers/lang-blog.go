@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/SayaAndy/saya-today-web/internal/b2"
+	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -79,7 +79,7 @@ func (r *CatalogueHandler) RenderBody(c *fiber.Ctx, supplements *router.Suppleme
 		queryTags = append(queryTags, string(match[1]))
 	}
 
-	tagsArray, err := getTags(supplements.B2Client, lang)
+	tagsArray, err := getTags(supplements.BlogClient, lang)
 	if err != nil {
 		return fiber.StatusInternalServerError, fmt.Errorf("failed to get the available tags")
 	}
@@ -102,8 +102,8 @@ type Tag struct {
 	Count int    `json:"Count" yaml:"count"`
 }
 
-func getTags(b2Client *b2.B2Client, lang string) (tags []Tag, err error) {
-	pages, err := b2Client.Scan(lang + "/")
+func getTags(blogClient blog.Client, lang string) (tags []Tag, err error) {
+	pages, err := blogClient.Scan(lang + "/")
 	if err != nil {
 		slog.Warn("failed to scan pages via b2", slog.String("error", err.Error()))
 		return nil, fmt.Errorf("failed to scan pages via b2: %w", err)

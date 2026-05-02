@@ -1,0 +1,50 @@
+{
+    email saya.andy@posteo.com
+
+    order rate_limit before reverse_proxy
+
+    servers {
+        timeouts {
+            read_body   10s
+            read_header 5s
+            write       30s
+            idle        2m
+        }
+    }
+}
+
+(saya-web) {
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Xss-Protection "1; mode=block"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Content-Security-Policy "upgrade-insecure-requests"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Cache-Control "public, max-age=15, must-revalidate"
+        Feature-Policy "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'self'; camera 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; gyroscope 'none';       magnetometer 'none'; microphone 'none'; midi 'none'; payment 'none'; picture-in-picture *; speaker 'none'; sync-xhr 'none'; usb 'none'; vr 'none'"
+        Server "No."
+    }
+
+    request_body {                                                                                                   
+        max_size 1MB
+    }
+
+    rate_limit {
+        zone per_ip {
+            key    {remote_host}
+            events 600
+            window 1m
+        }
+    }
+}
+
+stage.saya.uz {
+    import saya-web
+    reverse_proxy sayauz-stage:3000
+}
+
+saya.uz {
+    import saya-web
+    reverse_proxy sayauz-prod:3000
+}

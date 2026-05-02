@@ -20,19 +20,19 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 		switch node := n.(type) {
 		case *ast.Heading:
 			classes := map[int]string{
-				1: "font-andika text-4xl font-bold text-main-hard mb-3 tracking-[.0125rem]",
-				2: "font-andika text-3xl font-bold text-main-hard mb-1 tracking-[.0125rem]",
-				3: "font-andika text-2xl font-medium text-main-hard mb-0.8 tracking-[.0125rem]",
-				4: "font-andika text-xl font-medium text-main-medium mb-0.5 tracking-[.0125rem]",
-				5: "font-andika text-base font-medium text-main-medium mb-0.5 italic tracking-[.0125rem]",
-				6: "font-andika text-base font-medium text-secondary mb-0.5",
+				1: "font-gentium text-4xl font-bold text-main-hard mb-3 tracking-[.0125rem]",
+				2: "font-gentium text-3xl font-bold text-main-hard mb-1 tracking-[.0125rem]",
+				3: "font-gentium text-2xl font-medium text-main-hard mb-0.8 tracking-[.0125rem]",
+				4: "font-gentium text-xl font-medium text-main-medium mb-0.5 tracking-[.0125rem]",
+				5: "font-gentium text-base font-medium text-main-medium mb-0.5 italic tracking-[.0125rem]",
+				6: "font-gentium text-base font-medium text-secondary mb-0.5",
 			}
 			if class, ok := classes[node.Level]; ok {
 				node.SetAttribute([]byte("class"), []byte(class))
 			}
 
 		case *ast.Paragraph:
-			node.SetAttribute([]byte("class"), []byte("text-base/[2] font-andika tracking-[.0125rem] -indent-8 ml-4 mb-8"))
+			node.SetAttribute([]byte("class"), []byte("text-base/[2] font-gentium tracking-[.0125rem] -indent-8 ml-4 mb-8"))
 
 		case *ast.List:
 			if node.IsOrdered() {
@@ -42,16 +42,16 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 			}
 
 		case *ast.ListItem:
-			node.SetAttribute([]byte("class"), []byte("text-base/[2] font-andika tracking-[.0125rem]"))
+			node.SetAttribute([]byte("class"), []byte("text-base/[2] font-gentium tracking-[.0125rem]"))
 
 		case *ast.Blockquote:
-			node.SetAttribute([]byte("class"), []byte("border-l-2 border-main-medium bg-background-dark p-1 mb-2 italic"))
+			node.SetAttribute([]byte("class"), []byte("border-l-2 border-main-medium bg-paper bg-background-dark p-1 mb-2 italic font-thin"))
 
 		case *ast.CodeSpan:
-			node.SetAttribute([]byte("class"), []byte("bg-background-dark"))
+			node.SetAttribute([]byte("class"), []byte("bg-paper bg-background-dark"))
 
 		case *ast.CodeBlock, *ast.FencedCodeBlock:
-			node.SetAttribute([]byte("class"), []byte("bg-background-dark p-1 rounded-lg overflow-x-auto mb-4"))
+			node.SetAttribute([]byte("class"), []byte("bg-paper bg-background-dark p-1 rounded-lg overflow-x-auto mb-4"))
 
 		case *ast.Link:
 			if bytes.HasPrefix(node.Destination, []byte{'.', '/'}) {
@@ -66,7 +66,7 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 		case *ast.Emphasis:
 			switch node.Level {
 			case 1:
-				node.SetAttribute([]byte("class"), []byte("italic"))
+				node.SetAttribute([]byte("class"), []byte("italic font-thin"))
 			case 2:
 				node.SetAttribute([]byte("class"), []byte("font-bold"))
 			case 3:

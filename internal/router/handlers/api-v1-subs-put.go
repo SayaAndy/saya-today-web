@@ -34,6 +34,10 @@ func (r *PutSubsHandler) ToValidateLang() router.LangSetting {
 	return router.InReferer
 }
 
+func (r *PutSubsHandler) RateLimiter() *fiber.Handler {
+	return &router.RateLimiterMedium
+}
+
 func (r *PutSubsHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	templateMap["StatusId"] = "subs-message"
 
