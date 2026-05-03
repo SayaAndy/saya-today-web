@@ -568,6 +568,44 @@ form.crossable.htmx-request input {
     --border-size: 0.2rem;
 }
 
+.accent-button,
+.accent-button.active:active {
+    --tw-duration: 1500ms;
+    --tw-ease: var(--ease-in-out);
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 10%, transparent);
+    --tw-gradient-position: from 225deg in oklab;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 10%, transparent);
+    --tw-gradient-via: transparent;
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    background-image: conic-gradient(var(--tw-gradient-stops));
+    transition-duration: 1500ms;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--ease-in-out);
+}
+
+.accent-button:hover,
+.accent-button.active:active:hover {
+    cursor: pointer;
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
+}
+
+.accent-button.active,
+.accent-button:active {
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-dark) 30%, transparent);
+    --tw-gradient-position: from 45deg in oklab;
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-dark) 30%, transparent);
+    --tw-gradient-via: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
+}
+
+.accent-button.active:hover,
+.accent-button:active:hover {
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 70%, transparent);
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 70%, transparent);
+    --tw-gradient-via: color-mix(in oklab, var(--color-accent-dark) 50%, transparent);
+}
+
 .custom-svg-marker {
     background: transparent;
     border: none;

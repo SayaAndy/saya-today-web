@@ -346,9 +346,7 @@
                 class="flex flex-row w-full h-24 md:flex-col md:w-24 md:h-full bg-paper bg-background shadow-elevation-6 z-2 shrink-0"
             >
                 <a
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     onclick="return changeUrl('/..', true);"
                     href="../"
                     id="sidebar-back-button"
@@ -357,9 +355,7 @@
                     <svg viewBox="0 0 24 24"><use href="#icon-back"/></svg>
                 </a>
                 <a
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     onclick="return changeUrl('/{{ .Lang }}');"
                     href="/{{ .Lang }}"
                     id="sidebar-home-button"
@@ -368,9 +364,7 @@
                     <svg viewBox="0 0 24 24"><use href="#icon-logo"/></svg>
                 </a>
                 <a
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     onclick="return changeUrl('/{{ .Lang }}/blog');"
                     href="/{{ .Lang }}/blog"
                     id="sidebar-blog-button"
@@ -379,9 +373,7 @@
                     <svg viewBox="0 0 24 24"><use href="#icon-newspaper"/></svg>
                 </a>
                 <a
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     href="/{{ .Lang }}/map"
                     id="sidebar-map-button"
                     draggable="false"
@@ -389,9 +381,7 @@
                     <svg viewBox="0 0 24 24"><use href="#icon-map"/></svg>
                 </a>
                 <div
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     onclick="toggleThemeWheel()"
                     id="sidebar-theme-button"
                     draggable="false"
@@ -399,9 +389,7 @@
                     <svg class="sidebar-theme-button-content" viewBox="0 0 24 24"><use href="#icon-palette"/></svg>
                 </div>
                 <a
-                    class="w-18 h-18 bg-conic-225 rounded-xl m-3
-                        from-accent-light/10 via-transparent to-accent-light/10 transition-colors duration-1500 ease-in-out
-                        hover:cursor-pointer hover:from-accent-light/50 hover:via-transparent hover:to-accent-light/50"
+                    class="w-18 h-18 rounded-xl m-3 accent-button"
                     onclick="return changeUrl('/{{ .Lang }}/user');"
                     href="/{{ .Lang }}/user"
                     id="sidebar-user-button"
@@ -434,6 +422,11 @@
                     );
 
                     function updateSidebar() {
+                        sidebarHomeButton.classList.remove("active");
+                        sidebarMapButton.classList.remove("active");
+                        sidebarBlogButton.classList.remove("active");
+                        sidebarBackButton.classList.remove("active");
+                        sidebarUserButton.classList.remove("active");
                         if (
                             location.pathname == "" ||
                             location.pathname == "/"
@@ -455,6 +448,9 @@
                                 "onclick",
                                 `return changeUrl('/${lang}', false);`,
                             );
+                            if (location.pathname == `/${lang}`) {
+                                sidebarHomeButton.classList.add("active");
+                            }
                             sidebarMapButton.setAttribute(
                                 "href",
                                 `/${lang}/map`,
@@ -467,6 +463,9 @@
                                 "onclick",
                                 `return changeUrl('/${lang}/blog', false);`,
                             );
+                            if (location.pathname.startsWith(`/${lang}/blog`)) {
+                                sidebarBlogButton.classList.add("active");
+                            }
                             sidebarUserButton.setAttribute(
                                 "href",
                                 `/${lang}/user`,
@@ -475,6 +474,9 @@
                                 "onclick",
                                 `return changeUrl('/${lang}/user', false);`,
                             );
+                            if (location.pathname.startsWith(`/${lang}/user`)) {
+                                sidebarUserButton.classList.add("active");
+                            }
                         }
                     }
                     window.addEventListener("popstate", updateSidebar);
