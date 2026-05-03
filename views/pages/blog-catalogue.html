@@ -56,7 +56,7 @@
     </symbol>
 </svg>
 <div class="flex md:flex-row flex-col text-base h-full">
-    <div class="relative flex shrink-0 w-full max-h-[30%] md:min-w-1/10 md:max-w-1/4 md:w-fit">
+    <div class="relative flex shrink-0 w-full max-h-[30%] md:min-w-1/10 md:max-w-1/4 md:max-h-full md:h-full md:w-fit">
         <div class="absolute w-full h-full inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
         <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
             class="tags-list relative flex flex-col w-full bg-paper bg-background-light">
