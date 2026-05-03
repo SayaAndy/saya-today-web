@@ -108,14 +108,18 @@
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
                 [&>*:nth-child(4n+2)]:bg-background-medium/50 [&>*:nth-child(4n+3)]:bg-background-medium/50" style="container-type: inline-size;">
-                <i class="fas fa-home faw-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
-                <p class="p-1">{{ .L.HomePage.HomePageDescription }}</p>
-                <i class="fas fa-search faw-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
-                <p class="p-1">{{ .L.HomePage.BlogSearchDescription }}</p>
-                <i class="fas fa-map faw-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
-                <p class="p-1">{{ .L.HomePage.MarkerMapDescription }}</p>
-                <i class="fas fa-swatchbook faw-full h-full text-[10cqi] content-center text-center text-main-hard"></i>
-                <p class="p-1">{{ .L.HomePage.ThemeSwitchDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-back"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.BackDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-logo"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.HomePageDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-newspaper"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.BlogSearchDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-map"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.MarkerMapDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-palette"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.ThemeSwitchDescription }}</p>
+                <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-account"/></svg>
+                <p class="p-1 w-[85cqi]">{{ .L.HomePage.AccountDescription }}</p>
             </div>
         </div>
     </div>

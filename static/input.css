@@ -5,9 +5,11 @@
     --font-m-plus: "M PLUS Rounded 1c", sans-serif;
     --font-gentium: "Gentium Plus", serif;
     --breakpoint-xs: 32rem;
+    --color-main: var(--color-main);
     --color-main-hard: var(--color-main-hard);
     --color-main-medium: var(--color-main-medium);
     --color-main-soft: var(--color-main-soft);
+    --color-background: var(--color-background);
     --color-background-dark: var(--color-background-dark);
     --color-background-medium: var(--color-background-medium);
     --color-background-light: var(--color-background-light);
@@ -20,6 +22,20 @@
     --color-main-dark-hard: var(--color-main-dark-hard);
     --color-main-dark-medium: var(--color-main-dark-medium);
     --color-main-dark-soft: var(--color-main-dark-soft);
+    --shadow-elevation-flat: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    --shadow-elevation-0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-5: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-7: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-9: 0px 5px 6px -3px rgba(0, 0, 0, 0.2), 0px 9px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 16px 2px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-10: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-11: 0px 6px 7px -4px rgba(0, 0, 0, 0.2), 0px 11px 15px 1px rgba(0, 0, 0, 0.14), 0px 4px 20px 3px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-12: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
 }
 
 html {
@@ -102,9 +118,11 @@ body {
     --color-main-light-soft: #ffffdd;
     --color-main-light-medium: var(--color-main-light-soft);
     --color-main-light-hard: #fffff0;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
@@ -132,9 +150,11 @@ body {
     --color-main-light-soft: #f5eee2;
     --color-main-light-medium: var(--color-main-light-soft);
     --color-main-light-hard: #fff9ef;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
@@ -164,9 +184,11 @@ body {
     --color-main-dark-hard: #13131b;
     --color-main-dark-medium: var(--color-main-dark-hard);
     --color-main-dark-soft: #222230;
+    --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
     --color-main-soft: var(--color-main-light-soft);
+    --color-background: var(--color-main-dark-soft);
     --color-background-dark: var(--color-main-dark-hard);
     --color-background-medium: var(--color-main-dark-medium);
     --color-background-light: var(--color-main-dark-soft);
@@ -231,9 +253,11 @@ body {
     --color-main-dark-hard: #413b34;
     --color-main-dark-medium: #62584f;
     --color-main-dark-soft: #6d6258;
+    --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
     --color-main-soft: var(--color-main-light-soft);
+    --color-background: var(--color-main-dark-soft);
     --color-background-dark: var(--color-main-dark-hard);
     --color-background-medium: var(--color-main-dark-medium);
     --color-background-light: var(--color-main-dark-soft);
@@ -261,9 +285,11 @@ body {
     --color-main-light-hard: #e3e6ff;
     --color-main-light-medium: #d1d6ff;
     --color-main-light-soft: #c3caff;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
