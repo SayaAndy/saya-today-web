@@ -39,10 +39,12 @@ type HomePageConfig struct {
 	Contacts               string `yaml:"Contacts" json:"Contacts"`
 	DidYouKnowThat         string `yaml:"DidYouKnowThat" json:"DidYouKnowThat"`
 	SidebarDescription     string `yaml:"SidebarDescription" json:"SidebarDescription"`
+	BackDescription        string `yaml:"BackDescription" json:"BackDescription"`
 	HomePageDescription    string `yaml:"HomePageDescription" json:"HomePageDescription"`
 	BlogSearchDescription  string `yaml:"BlogSearchDescription" json:"BlogSearchDescription"`
 	MarkerMapDescription   string `yaml:"MarkerMapDescription" json:"MarkerMapDescription"`
 	ThemeSwitchDescription string `yaml:"ThemeSwitchDescription" json:"ThemeSwitchDescription"`
+	AccountDescription     string `yaml:"AccountDescription" json:"AccountDescription"`
 	Hymn1                  string `yaml:"Hymn1" json:"Hymn1"`
 	Hymn2                  string `yaml:"Hymn2" json:"Hymn2"`
 	Hymn3                  string `yaml:"Hymn3" json:"Hymn3"`

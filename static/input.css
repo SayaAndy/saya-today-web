@@ -5,9 +5,11 @@
     --font-m-plus: "M PLUS Rounded 1c", sans-serif;
     --font-gentium: "Gentium Plus", serif;
     --breakpoint-xs: 32rem;
+    --color-main: var(--color-main);
     --color-main-hard: var(--color-main-hard);
     --color-main-medium: var(--color-main-medium);
     --color-main-soft: var(--color-main-soft);
+    --color-background: var(--color-background);
     --color-background-dark: var(--color-background-dark);
     --color-background-medium: var(--color-background-medium);
     --color-background-light: var(--color-background-light);
@@ -20,6 +22,20 @@
     --color-main-dark-hard: var(--color-main-dark-hard);
     --color-main-dark-medium: var(--color-main-dark-medium);
     --color-main-dark-soft: var(--color-main-dark-soft);
+    --shadow-elevation-flat: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    --shadow-elevation-0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-5: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-7: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-9: 0px 5px 6px -3px rgba(0, 0, 0, 0.2), 0px 9px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 16px 2px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-10: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-11: 0px 6px 7px -4px rgba(0, 0, 0, 0.2), 0px 11px 15px 1px rgba(0, 0, 0, 0.14), 0px 4px 20px 3px rgba(0, 0, 0, 0.12);
+    --shadow-elevation-12: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
 }
 
 html {
@@ -54,14 +70,6 @@ html {
 @utility bg-paper-size-* {
     background-size: calc(--value(integer) * var(--spacing)), 128px;
     background-size: --value([bg-size]), 128px;
-}
-
-@utility faw-full {
-    --fa-width: 100%;
-}
-
-@utility faw-* {
-    --fa-width: calc(--value(integer) * var(--spacing));
 }
 
 body {
@@ -102,9 +110,11 @@ body {
     --color-main-light-soft: #ffffdd;
     --color-main-light-medium: var(--color-main-light-soft);
     --color-main-light-hard: #fffff0;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
@@ -132,9 +142,11 @@ body {
     --color-main-light-soft: #f5eee2;
     --color-main-light-medium: var(--color-main-light-soft);
     --color-main-light-hard: #fff9ef;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
@@ -164,9 +176,11 @@ body {
     --color-main-dark-hard: #13131b;
     --color-main-dark-medium: var(--color-main-dark-hard);
     --color-main-dark-soft: #222230;
+    --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
     --color-main-soft: var(--color-main-light-soft);
+    --color-background: var(--color-main-dark-soft);
     --color-background-dark: var(--color-main-dark-hard);
     --color-background-medium: var(--color-main-dark-medium);
     --color-background-light: var(--color-main-dark-soft);
@@ -231,9 +245,11 @@ body {
     --color-main-dark-hard: #413b34;
     --color-main-dark-medium: #62584f;
     --color-main-dark-soft: #6d6258;
+    --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
     --color-main-soft: var(--color-main-light-soft);
+    --color-background: var(--color-main-dark-soft);
     --color-background-dark: var(--color-main-dark-hard);
     --color-background-medium: var(--color-main-dark-medium);
     --color-background-light: var(--color-main-dark-soft);
@@ -261,9 +277,11 @@ body {
     --color-main-light-hard: #e3e6ff;
     --color-main-light-medium: #d1d6ff;
     --color-main-light-soft: #c3caff;
+    --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
     --color-main-soft: var(--color-main-dark-soft);
+    --color-background: var(--color-main-light-hard);
     --color-background-dark: var(--color-main-light-soft);
     --color-background-medium: var(--color-main-light-medium);
     --color-background-light: var(--color-main-light-hard);
@@ -379,10 +397,6 @@ form.crossable.htmx-request input {
     border-style: inset;
 }
 
-.border-outset {
-    border-style: outset;
-}
-
 .bg-sidebar {
     background-image: var(--squares-and-triangles-background);
     background-repeat: var(--squares-and-triangles-background-repeat);
@@ -482,64 +496,42 @@ form.crossable.htmx-request input {
     border-radius: 50%;
 }
 
-.themed-button::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        135deg,
-        var(--color-main-light-hard),
-        var(--color-main-dark-hard)
-    );
-    opacity: 0.2;
-    z-index: 10;
-    content: "";
+.accent-button,
+.accent-button.active:active {
+    --tw-duration: 1500ms;
+    --tw-ease: var(--ease-in-out);
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 10%, transparent);
+    --tw-gradient-position: from 225deg in oklab;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 10%, transparent);
+    --tw-gradient-via: transparent;
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    background-image: conic-gradient(var(--tw-gradient-stops));
+    transition-duration: 1500ms;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--ease-in-out);
 }
 
-.themed-button:active::before {
-    opacity: 0.4;
+.accent-button:hover,
+.accent-button.active:active:hover {
+    cursor: pointer;
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
 }
 
-.themed-button:hover:not(:active)::before {
-    opacity: 0;
+.accent-button.active,
+.accent-button:active {
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-dark) 30%, transparent);
+    --tw-gradient-position: from 45deg in oklab;
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-dark) 30%, transparent);
+    --tw-gradient-via: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
 }
 
-.themed-button {
-    border-top: var(--border-size) solid var(--color-main-light-hard);
-    border-left: var(--border-size) solid var(--color-main-light-hard);
-    border-bottom: var(--border-size) solid var(--color-main-dark-hard);
-    border-right: var(--border-size) solid var(--color-main-dark-hard);
-    position: relative;
-    --border-size: 0.5rem;
-}
-
-.themed-button:active,
-.themed-button.active {
-    border-top: var(--border-size) solid var(--color-main-dark-hard);
-    border-left: var(--border-size) solid var(--color-main-dark-hard);
-    border-bottom: var(--border-size) solid var(--color-main-light-hard);
-    border-right: var(--border-size) solid var(--color-main-light-hard);
-}
-
-.themed-button:active > *,
-.themed-button.active > * {
-    transform: translateY(calc(var(--border-size) / 2));
-}
-
-.themed-button.themed-button-sidebar {
-    --border-size: 0.25rem;
-    background-image: var(--squares-and-triangles-background);
-    background-repeat: var(--squares-and-triangles-background-repeat);
-    background-size: calc(
-            var(--squares-and-triangles-background-width-coef) * 0.9rem
-        )
-        calc(var(--squares-and-triangles-background-height-coef) * 0.9rem);
-}
-
-.themed-button.themed-button-like {
-    --border-size: 0.2rem;
+.accent-button.active:hover,
+.accent-button:active:hover {
+    --tw-gradient-from: color-mix(in oklab, var(--color-accent-light) 70%, transparent);
+    --tw-gradient-to: color-mix(in oklab, var(--color-accent-light) 70%, transparent);
+    --tw-gradient-via: color-mix(in oklab, var(--color-accent-dark) 50%, transparent);
 }
 
 .custom-svg-marker {
