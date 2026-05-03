@@ -612,7 +612,6 @@
             const themeWheel = document.getElementById("theme-wheel");
             const themeButton = document.getElementById("sidebar-theme-button");
             const themeIcons = document.querySelectorAll(".theme-icon");
-            const themeWheelRadius = convertRemToPixels(6);
 
             themeIcons.forEach((icon) => {
                 if (icon.getAttribute("data-theme") == savedTheme) {
@@ -641,7 +640,7 @@
                     const clipPath = createSliceClipPath(
                         startAngle,
                         endAngle,
-                        themeWheelRadius,
+                        convertRemToPixels(6),
                     );
                     icon.style.clipPath = clipPath;
                 });
@@ -676,6 +675,7 @@
                 const buttonRect = themeButton.getBoundingClientRect();
                 const buttonCenterX = buttonRect.left + buttonRect.width / 2;
                 const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+                const themeWheelRadius = convertRemToPixels(6);
 
                 const margin = 0;
 
