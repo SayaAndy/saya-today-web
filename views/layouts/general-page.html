@@ -1,470 +1,725 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{- range .Meta }}
-    <meta {{with .Name}}name="{{.}}" {{end}}{{with .Property}}property="{{.}}" {{end}}{{with .Content}}content="{{.}}"{{end}}>
-    {{- if eq .Property "og:description" }}
-    <meta name="description" content="{{.Content}}">
-    {{- end }}
-    {{- if eq .Property "og:url" }}
-    <link rel="canonical" href="{{.Content}}">
-    {{- end }}
-    {{- end }}
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css">
-    <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css">
-    <link rel="stylesheet" href="/output.css">
-    {{- with .LinkedData }}
-    <script type="application/ld+json">
-    {{ . }}
-    </script>
-    {{- end }}
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {{- range .Meta }}
+        <meta
+            {{with
+            .Name}}name="{{.}}"
+            {{end}}{{with
+            .Property}}property="{{.}}"
+            {{end}}{{with
+            .Content}}content="{{.}}"
+            {{end}}
+        />
+        {{- if eq .Property "og:description" }}
+        <meta name="description" content="{{.Content}}" />
+        {{- end }} {{- if eq .Property "og:url" }}
+        <link rel="canonical" href="{{.Content}}" />
+        {{- end }} {{- end }}
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/brands.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css"
+        />
+        <link rel="stylesheet" href="/output.css" />
+        <link
+            rel="icon"
+            href="/favicon-light.svg"
+            type="image/svg+xml"
+            media="(prefers-color-scheme: light)"
+        />
+        <link
+            rel="icon"
+            href="/favicon-dark.svg"
+            type="image/svg+xml"
+            media="(prefers-color-scheme: dark)"
+        />
+        {{- with .LinkedData }}
+        <script type="application/ld+json">
+            {{ . }}
+        </script>
+        {{- end }}
+    </head>
 
-<body data-theme="ram" class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row">
+    <body
+        data-theme="ram"
+        class="font-m-plus text-main-hard overflow-hidden bg-interlocked-hexagons h-dvh flex flex-row"
+    >
+        <script>
+            let map = null;
+        </script>
 
-    <script>
-        let map = null;
-    </script>
+        <script>
+            function changeUrl(path, toAppend = false) {
+                const urlParams = new URLSearchParams(window.location.search);
+                newPathname = location.pathname.endsWith("/")
+                    ? location.pathname.slice(0, -1)
+                    : location.pathname;
+                while (path.slice(-3) == "/.." && toAppend) {
+                    newPathname = newPathname.replace(/\/[^\/]+$/, "");
+                    path = path.slice(0, -3);
+                }
+                const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
 
-    <script>
-        function changeUrl(path, toAppend = false) {
-            const urlParams = new URLSearchParams(window.location.search);
-            newPathname = location.pathname.endsWith('/') ? location.pathname.slice(0, -1) : location.pathname;
-            while (path.slice(-3) == '/..' && toAppend) {
-                newPathname = newPathname.replace(/\/[^\/]+$/, '');
-                path = path.slice(0, -3);
-            }
-            const newPath = toAppend ? `${newPathname}${path}` : `${path}`;
-
-            history.pushState({}, '', `${newPath}${urlParams.entries.length == 0 ? '' : '?' + urlParams.toString()}`);
-            window.dispatchEvent(new Event('popstate'));
-            return false;
-        };
-
-        function convertRemToPixels(rem) {    
-            return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-        }
-    </script>
-
-    <script src="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
-
-    <script>
-        function sfc32(a, b, c, d) {
-            return function() {
-                a |= 0; b |= 0; c |= 0; d |= 0;
-                let t = (a + b | 0) + d | 0;
-                d = d + 1 | 0;
-                a = b ^ b >>> 9;
-                b = c + (c << 3) | 0;
-                c = (c << 21 | c >>> 11);
-                c = c + t | 0;
-                return (t >>> 0) / 4294967296;
-            }
-        }
-
-        function cyrb128(str) {
-            let h1 = 1779033703, h2 = 3144134277,
-                h3 = 1013904242, h4 = 2773480762;
-            for (let i = 0, k; i < str.length; i++) {
-                k = str.charCodeAt(i);
-                h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
-                h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
-                h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
-                h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
-            }
-            h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
-            h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
-            h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
-            h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
-            h1 ^= (h2 ^ h3 ^ h4), h2 ^= h1, h3 ^= h1, h4 ^= h1;
-            return [h1>>>0, h2>>>0, h3>>>0, h4>>>0];
-        }
-
-        var seed = cyrb128("{{ .Title }}");
-        var rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
-
-        function calculateVmin(percent) {
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            const smallerDimension = Math.min(viewportWidth, viewportHeight);
-
-            const vminValue = (smallerDimension / 100) * percent;
-
-            return vminValue;
-        }
-
-        function switchThemeDecor(theme) {
-            document.querySelectorAll('.theme-decor').forEach((e) => {
-                e.remove();
-            });
-
-            if (theme == "" || typeof theme == "undefined") {
-                theme = document.body.getAttribute('data-theme');
+                history.pushState(
+                    {},
+                    "",
+                    `${newPath}${urlParams.entries.length == 0 ? "" : "?" + urlParams.toString()}`,
+                );
+                window.dispatchEvent(new Event("popstate"));
+                return false;
             }
 
-            vmin = calculateVmin(1);
-            var clWidth = document.documentElement.clientWidth;
-            var clHeight = document.documentElement.clientHeight;
+            function convertRemToPixels(rem) {
+                return (
+                    rem *
+                    parseFloat(
+                        getComputedStyle(document.documentElement).fontSize,
+                    )
+                );
+            }
+        </script>
 
-            switch (theme) {
-                case "olive": break;
-                case "lettuce": break;
-                case "night":
-                    for (i = 0; i < 25; i++) {
-                        let star = document.createElement("div");
-                        star.append("*");
-                        star.classList.add("night-star", "theme-decor", "z-0", "absolute");
-                        const x = Math.floor(rand() * clWidth);
-                        const y = Math.floor(rand() * clHeight * 0.8);
-                        const rot = rand() * 90;
-                        const animDuration = (rand() * 10) + 3;
-                        const sz = Math.floor(rand() * 8) + 12;
-                        star.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
-                        star.style.animationDuration = `${animDuration}s`;
-                        star.style.fontSize = `${sz}px`;
-                        document.body.append(star);
-                    }
-                    break;
-                case "ram":
-                    const frameCenters = new Array(4);
-                    for (i = 1; i <= 4; i++) {
-                        let frame = document.createElement("img");
-                        frame.src = `{{ .StaticStorageBaseUrl }}/themes/ram/ram-frame${i}.webp`;
-                        frame.classList.add("ram-frame", "theme-decor", "z-0", "absolute");
-                        let x, y;
-                    outerLoop:
-                        while (true) {
-                            x = Math.floor(rand() * clWidth - 20*vmin);
-                            y = Math.floor(rand() * clHeight - 20*vmin);
-                            for (j = 0; j < i-1; j++) {
-                                const xd = frameCenters[j].x - x;
-                                const yd = frameCenters[j].y - y;
-                                if (Math.sqrt(xd*xd + yd*yd) < 30*vmin) {
-                                    continue outerLoop;
-                                }
-                            }
-                            break;
+        <script src="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+
+        <script>
+            function sfc32(a, b, c, d) {
+                return function () {
+                    a |= 0;
+                    b |= 0;
+                    c |= 0;
+                    d |= 0;
+                    let t = (((a + b) | 0) + d) | 0;
+                    d = (d + 1) | 0;
+                    a = b ^ (b >>> 9);
+                    b = (c + (c << 3)) | 0;
+                    c = (c << 21) | (c >>> 11);
+                    c = (c + t) | 0;
+                    return (t >>> 0) / 4294967296;
+                };
+            }
+
+            function cyrb128(str) {
+                let h1 = 1779033703,
+                    h2 = 3144134277,
+                    h3 = 1013904242,
+                    h4 = 2773480762;
+                for (let i = 0, k; i < str.length; i++) {
+                    k = str.charCodeAt(i);
+                    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+                    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+                    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+                    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+                }
+                h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+                h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+                h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+                h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+                ((h1 ^= h2 ^ h3 ^ h4), (h2 ^= h1), (h3 ^= h1), (h4 ^= h1));
+                return [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
+            }
+
+            var seed = cyrb128("{{ .Title }}");
+            var rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
+
+            function calculateVmin(percent) {
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const smallerDimension = Math.min(
+                    viewportWidth,
+                    viewportHeight,
+                );
+
+                const vminValue = (smallerDimension / 100) * percent;
+
+                return vminValue;
+            }
+
+            function switchThemeDecor(theme) {
+                document.querySelectorAll(".theme-decor").forEach((e) => {
+                    e.remove();
+                });
+
+                if (theme == "" || typeof theme == "undefined") {
+                    theme = document.body.getAttribute("data-theme");
+                }
+
+                vmin = calculateVmin(1);
+                var clWidth = document.documentElement.clientWidth;
+                var clHeight = document.documentElement.clientHeight;
+
+                switch (theme) {
+                    case "olive":
+                        break;
+                    case "lettuce":
+                        break;
+                    case "night":
+                        for (i = 0; i < 25; i++) {
+                            let star = document.createElement("div");
+                            star.append("*");
+                            star.classList.add(
+                                "night-star",
+                                "theme-decor",
+                                "z-0",
+                                "absolute",
+                            );
+                            const x = Math.floor(rand() * clWidth);
+                            const y = Math.floor(rand() * clHeight * 0.8);
+                            const rot = rand() * 90;
+                            const animDuration = rand() * 10 + 3;
+                            const sz = Math.floor(rand() * 8) + 12;
+                            star.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
+                            star.style.animationDuration = `${animDuration}s`;
+                            star.style.fontSize = `${sz}px`;
+                            document.body.append(star);
                         }
-                        frameCenters[i-1] = {x: x, y: y};
-                        const rot = rand() * 90 - 45;
-                        frame.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
-                        document.body.append(frame);
-                    }
-                    break;
-                case "lilac": break;
-            }
-        }
-
-        function switchTheme(theme) {
-            if (theme == "" || typeof theme == "undefined") {
-                const currentTheme = document.body.getAttribute('data-theme');
-                switch (currentTheme) {
-                    case "olive": theme = "lettuce"; break;
-                    case "lettuce": theme = "night"; break;
-                    case "night": theme = "ram"; break;
-                    case "ram": theme = "lilac"; break;
-                    case "lilac": theme = "olive"; break;
+                        break;
+                    case "ram":
+                        const frameCenters = new Array(4);
+                        for (i = 1; i <= 4; i++) {
+                            let frame = document.createElement("img");
+                            frame.src = `{{ .StaticStorageBaseUrl }}/themes/ram/ram-frame${i}.webp`;
+                            frame.classList.add(
+                                "ram-frame",
+                                "theme-decor",
+                                "z-0",
+                                "absolute",
+                            );
+                            let x, y;
+                            outerLoop: while (true) {
+                                x = Math.floor(rand() * clWidth - 20 * vmin);
+                                y = Math.floor(rand() * clHeight - 20 * vmin);
+                                for (j = 0; j < i - 1; j++) {
+                                    const xd = frameCenters[j].x - x;
+                                    const yd = frameCenters[j].y - y;
+                                    if (
+                                        Math.sqrt(xd * xd + yd * yd) <
+                                        30 * vmin
+                                    ) {
+                                        continue outerLoop;
+                                    }
+                                }
+                                break;
+                            }
+                            frameCenters[i - 1] = { x: x, y: y };
+                            const rot = rand() * 90 - 45;
+                            frame.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
+                            document.body.append(frame);
+                        }
+                        break;
+                    case "lilac":
+                        break;
                 }
             }
-            localStorage.setItem('theme', theme);
-            document.body.setAttribute('data-theme', theme);
-            switchThemeDecor(theme);
-        }
 
-        const savedTheme = localStorage.getItem('theme') || 'lilac';
-        switchTheme(savedTheme);
-    </script>
+            function switchTheme(theme) {
+                if (theme == "" || typeof theme == "undefined") {
+                    const currentTheme =
+                        document.body.getAttribute("data-theme");
+                    switch (currentTheme) {
+                        case "olive":
+                            theme = "lettuce";
+                            break;
+                        case "lettuce":
+                            theme = "night";
+                            break;
+                        case "night":
+                            theme = "ram";
+                            break;
+                        case "ram":
+                            theme = "lilac";
+                            break;
+                        case "lilac":
+                            theme = "olive";
+                            break;
+                    }
+                }
+                localStorage.setItem("theme", theme);
+                document.body.setAttribute("data-theme", theme);
+                switchThemeDecor(theme);
+            }
 
-    <div id="general-page-top-embeds" class="flex"
-        hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-    </div>
-    <div id="general-page-top-embeds-trigger" hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-top-embeds" hx-swap="innerHTML"></div>
+            const savedTheme = localStorage.getItem("theme") || "lilac";
+            switchTheme(savedTheme);
+        </script>
 
-    <script>
-        const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    </script>
+        <div
+            id="general-page-top-embeds"
+            class="flex"
+            hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+            hx-trigger="load"
+            hx-target="this"
+            hx-swap="innerHTML"
+        ></div>
+        <div
+            id="general-page-top-embeds-trigger"
+            hx-get="/api/v1/general-page/top-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+            hx-trigger="popstate from:window"
+            hx-target="#general-page-top-embeds"
+            hx-swap="innerHTML"
+        ></div>
 
-    <div class="grow bg-split-left"></div>
+        <script>
+            const clientTimeZone =
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
+        </script>
 
-    <div class="flex flex-col sm:flex-row">
-        <div id="sidebar" class="bg-sidebar flex
-            flex-row sticky w-dvw h-fit xs:w-[90dvw]
-            sm:left-0 sm:flex-col sm:fixed sm:w-fit
-            z-20 shadow-[0_0_1rem_black]">
-            <nav aria-label="Main navigation" class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20">
-                <a onclick="return changeUrl('/..', true);" href="../" id="sidebar-back-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-circle-left flex faw-18 h-18 content-center text-center text-sidebar"></i>
-                </a>
-                <a onclick="return changeUrl('/{{ .Lang }}');" href="/{{ .Lang }}" id="sidebar-home-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-home flex faw-18 h-18 content-center text-center text-sidebar"></i>
-                </a>
-                <a onclick="return changeUrl('/{{ .Lang }}/blog');" href="/{{ .Lang }}/blog" id="sidebar-blog-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-search flex faw-18 h-18 content-center text-center text-sidebar"></i>
-                </a>
-                <a href="/{{ .Lang }}/map" id="sidebar-map-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-map flex faw-18 h-18 content-center text-center text-sidebar"></i>
-                </a>
-                <div id="toolbar-theme-button" onclick="toggleThemeWheel();" class="themed-button themed-button-sidebar w-fit h-fit" draggable="false">
-                    <i id="toolbar-theme-button-content" class="fas fa-swatchbook flex faw-18 h-18 content-center text-center text-sidebar"></i>
+        <div class="grow bg-split-left"></div>
+
+        <div class="flex flex-col sm:flex-row">
+            <div
+                id="sidebar"
+                class="bg-sidebar flex flex-row sticky w-dvw h-fit xs:w-[90dvw] sm:left-0 sm:flex-col sm:fixed sm:w-fit z-20 shadow-[0_0_1rem_black]"
+            >
+                <nav
+                    aria-label="Main navigation"
+                    class="text-[3rem] flex flex-row sm:flex-col gap-0 relative z-20"
+                >
+                    <a
+                        onclick="return changeUrl('/..', true);"
+                        href="../"
+                        id="sidebar-back-button"
+                        class="themed-button themed-button-sidebar w-fit h-fit hidden"
+                        draggable="false"
+                    >
+                        <i
+                            class="fas fa-circle-left flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </a>
+                    <a
+                        onclick="return changeUrl('/{{ .Lang }}');"
+                        href="/{{ .Lang }}"
+                        id="sidebar-home-button"
+                        class="themed-button themed-button-sidebar w-fit h-fit hidden"
+                        draggable="false"
+                    >
+                        <i
+                            class="fas fa-home flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </a>
+                    <a
+                        onclick="return changeUrl('/{{ .Lang }}/blog');"
+                        href="/{{ .Lang }}/blog"
+                        id="sidebar-blog-button"
+                        class="themed-button themed-button-sidebar w-fit h-fit hidden"
+                        draggable="false"
+                    >
+                        <i
+                            class="fas fa-search flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </a>
+                    <a
+                        href="/{{ .Lang }}/map"
+                        id="sidebar-map-button"
+                        class="themed-button themed-button-sidebar w-fit h-fit hidden"
+                        draggable="false"
+                    >
+                        <i
+                            class="fas fa-map flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </a>
+                    <div
+                        id="toolbar-theme-button"
+                        onclick="toggleThemeWheel()"
+                        class="themed-button themed-button-sidebar w-fit h-fit"
+                        draggable="false"
+                    >
+                        <i
+                            id="toolbar-theme-button-content"
+                            class="fas fa-swatchbook flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </div>
+                    <a
+                        onclick="return changeUrl('/{{ .Lang }}/user');"
+                        href="/{{ .Lang }}/user"
+                        id="sidebar-user-button"
+                        class="themed-button themed-button-sidebar w-fit h-fit hidden"
+                        draggable="false"
+                    >
+                        <i
+                            class="fas fa-user flex faw-18 h-18 content-center text-center text-sidebar"
+                        ></i>
+                    </a>
+                </nav>
+                <div class="theme-wheel" id="theme-wheel">
+                    <div class="theme-icon" data-theme="olive"></div>
+                    <div class="theme-icon" data-theme="lettuce"></div>
+                    <div class="theme-icon" data-theme="night"></div>
+                    <div class="theme-icon" data-theme="ram"></div>
+                    <div class="theme-icon" data-theme="lilac"></div>
+                    <div class="theme-pin"></div>
                 </div>
-                <a onclick="return changeUrl('/{{ .Lang }}/user');" href="/{{ .Lang }}/user" id="sidebar-user-button" class="themed-button themed-button-sidebar w-fit h-fit hidden" draggable="false">
-                    <i class="fas fa-user flex faw-18 h-18 content-center text-center text-sidebar"></i>
-                </a>
-            </nav>
-            <div class="theme-wheel" id="theme-wheel">
-                <div class="theme-icon" data-theme="olive"></div>
-                <div class="theme-icon" data-theme="lettuce"></div>
-                <div class="theme-icon" data-theme="night"></div>
-                <div class="theme-icon" data-theme="ram"></div>
-                <div class="theme-icon" data-theme="lilac"></div>
-                <div class="theme-pin"></div>
-            </div>
-            <script>
-                sidebarHomeButton = document.getElementById("sidebar-home-button");
-                sidebarMapButton = document.getElementById("sidebar-map-button");
-                sidebarBlogButton = document.getElementById("sidebar-blog-button");
-                sidebarBackButton = document.getElementById("sidebar-back-button");
-                sidebarUserButton = document.getElementById("sidebar-user-button");
+                <script>
+                    sidebarHomeButton = document.getElementById(
+                        "sidebar-home-button",
+                    );
+                    sidebarMapButton =
+                        document.getElementById("sidebar-map-button");
+                    sidebarBlogButton = document.getElementById(
+                        "sidebar-blog-button",
+                    );
+                    sidebarBackButton = document.getElementById(
+                        "sidebar-back-button",
+                    );
+                    sidebarUserButton = document.getElementById(
+                        "sidebar-user-button",
+                    );
 
-                function updateSidebar() {
-                    if (location.pathname == "" || location.pathname == "/") {
-                        sidebarHomeButton.classList.add('hidden');
-                        sidebarMapButton.classList.add('hidden');
-                        sidebarBlogButton.classList.add('hidden');
-                        sidebarBackButton.classList.add('hidden');
-                        sidebarUserButton.classList.add('hidden');
-                    } else {
-                        sidebarHomeButton.classList.remove('hidden');
-                        sidebarMapButton.classList.remove('hidden');
-                        sidebarBlogButton.classList.remove('hidden');
-                        sidebarBackButton.classList.remove('hidden');
-                        sidebarUserButton.classList.remove('hidden');
-                        lang = location.pathname.split("/")[1];
-                        sidebarHomeButton.setAttribute('href', `/${lang}`);
-                        sidebarHomeButton.setAttribute('onclick', `return changeUrl('/${lang}', false);`);
-                        sidebarMapButton.setAttribute('href', `/${lang}/map`);
-                        sidebarBlogButton.setAttribute('href', `/${lang}/blog`);
-                        sidebarBlogButton.setAttribute('onclick', `return changeUrl('/${lang}/blog', false);`);
-                        sidebarUserButton.setAttribute('href', `/${lang}/user`);
-                        sidebarUserButton.setAttribute('onclick', `return changeUrl('/${lang}/user', false);`);
+                    function updateSidebar() {
+                        if (
+                            location.pathname == "" ||
+                            location.pathname == "/"
+                        ) {
+                            sidebarHomeButton.classList.add("hidden");
+                            sidebarMapButton.classList.add("hidden");
+                            sidebarBlogButton.classList.add("hidden");
+                            sidebarBackButton.classList.add("hidden");
+                            sidebarUserButton.classList.add("hidden");
+                        } else {
+                            sidebarHomeButton.classList.remove("hidden");
+                            sidebarMapButton.classList.remove("hidden");
+                            sidebarBlogButton.classList.remove("hidden");
+                            sidebarBackButton.classList.remove("hidden");
+                            sidebarUserButton.classList.remove("hidden");
+                            lang = location.pathname.split("/")[1];
+                            sidebarHomeButton.setAttribute("href", `/${lang}`);
+                            sidebarHomeButton.setAttribute(
+                                "onclick",
+                                `return changeUrl('/${lang}', false);`,
+                            );
+                            sidebarMapButton.setAttribute(
+                                "href",
+                                `/${lang}/map`,
+                            );
+                            sidebarBlogButton.setAttribute(
+                                "href",
+                                `/${lang}/blog`,
+                            );
+                            sidebarBlogButton.setAttribute(
+                                "onclick",
+                                `return changeUrl('/${lang}/blog', false);`,
+                            );
+                            sidebarUserButton.setAttribute(
+                                "href",
+                                `/${lang}/user`,
+                            );
+                            sidebarUserButton.setAttribute(
+                                "onclick",
+                                `return changeUrl('/${lang}/user', false);`,
+                            );
+                        }
+                    }
+                    window.addEventListener("popstate", updateSidebar);
+                    window.addEventListener("load", updateSidebar, {
+                        once: true,
+                    });
+                </script>
+            </div>
+
+            <div
+                class="bg-paper bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]"
+            >
+                <div
+                    class="bg-paper bg-background-dark border-r-2 border-dashed border-main-hard"
+                ></div>
+
+                <div
+                    class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative pt-4 ml-8 pr-4"
+                >
+                    <header
+                        id="general-page-header"
+                        class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
+                        hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="load"
+                        hx-target="this"
+                        hx-swap="innerHTML"
+                    ></header>
+                    <div
+                        id="general-page-header-trigger"
+                        hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="popstate from:window"
+                        hx-target="#general-page-header"
+                        hx-swap="innerHTML"
+                    ></div>
+
+                    <hr
+                        class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2"
+                    />
+
+                    <main
+                        id="general-page-body"
+                        class="relative flex flex-col grow overflow-y-auto"
+                        hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="load"
+                        hx-target="this"
+                        hx-swap="innerHTML"
+                    ></main>
+                    <div
+                        id="general-page-body-trigger"
+                        hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="popstate from:window"
+                        hx-target="#general-page-body"
+                        hx-swap="innerHTML"
+                    ></div>
+
+                    <footer
+                        id="general-page-footer"
+                        class="flex flex-row basis-4 my-1"
+                        hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="load"
+                        hx-target="this"
+                        hx-swap="innerHTML"
+                    ></footer>
+                    <div
+                        id="general-page-footer-trigger"
+                        hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+                        hx-trigger="popstate from:window"
+                        hx-target="#general-page-footer"
+                        hx-swap="innerHTML"
+                    ></div>
+
+                    <hr
+                        class="border-t-4 border-dotted border-main-hard mb-2"
+                    />
+                </div>
+
+                <div
+                    class="pr-[0.5dvw] bg-paper bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"
+                ></div>
+            </div>
+        </div>
+
+        <div class="grow bg-split-right"></div>
+
+        <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
+
+        <script>
+            // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz
+            var __resetLayout = Packery.prototype._resetLayout;
+            Packery.prototype._resetLayout = function () {
+                __resetLayout.call(this);
+                var parentSize = getSize(this.element.parentNode);
+                var colW = this.columnWidth + this.gutter;
+                this.fitWidth =
+                    Math.floor((parentSize.innerWidth + this.gutter) / colW) *
+                    colW;
+                this.packer.width = this.fitWidth;
+                this.packer.height = Number.POSITIVE_INFINITY;
+                this.packer.reset();
+            };
+
+            Packery.prototype._getContainerSize = function () {
+                var emptyWidth = 0;
+                for (var i = 0, len = this.packer.spaces.length; i < len; i++) {
+                    var space = this.packer.spaces[i];
+                    if (
+                        space.y === 0 &&
+                        space.height === Number.POSITIVE_INFINITY
+                    ) {
+                        emptyWidth += space.width;
                     }
                 }
-                window.addEventListener("popstate", updateSidebar);
-                window.addEventListener("load", updateSidebar, {once: true});
-            </script>
-        </div>
 
-        <div class="bg-paper bg-background-dark @container/main flex z-10 w-dvw xs:w-[90dvw] sm:w-[85dvw] md:w-[80dvw] lg:w-[75dvw] xl:w-[70dvw] 2xl:w-[60dvw] 3xl:w-[50dvw] grow-0 h-[calc(100dvh-5rem)] sm:h-dvh shadow-[0_0_1rem_black]">
-            <div class="bg-paper bg-background-dark border-r-2 border-dashed border-main-hard"></div>
+                return {
+                    width: this.fitWidth - this.gutter - emptyWidth,
+                    height: this.maxY - this.gutter,
+                };
+            };
 
-            <div class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative pt-4 ml-8 pr-4">
-                <header id="general-page-header" class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col basis-8"
-                    hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-                </header>
-                <div id="general-page-header-trigger" hx-get="/api/v1/general-page/header{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-header" hx-swap="innerHTML"></div>
+            Packery.prototype.needsResizeLayout = function () {
+                return true;
+            };
+        </script>
 
-                <hr class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2">
+        <div
+            id="general-page-bottom-embeds"
+            class="flex"
+            hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+            hx-trigger="load"
+            hx-target="this"
+            hx-swap="innerHTML"
+        ></div>
+        <div
+            id="general-page-bottom-embeds-trigger"
+            hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}"
+            hx-trigger="popstate from:window"
+            hx-target="#general-page-bottom-embeds"
+            hx-swap="innerHTML"
+        ></div>
 
-                <main id="general-page-body" class="relative flex flex-col grow overflow-y-auto"
-                    hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-                </main>
-                <div id="general-page-body-trigger" hx-get="/api/v1/general-page/body{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-body" hx-swap="innerHTML"></div>
+        <script>
+            const themeWheel = document.getElementById("theme-wheel");
+            const themeButton = document.getElementById("toolbar-theme-button");
+            const themeIcons = document.querySelectorAll(".theme-icon");
+            const themeWheelRadius = convertRemToPixels(6);
 
-                <footer id="general-page-footer" class="flex flex-row basis-4 my-1"
-                    hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-                </footer>
-                <div id="general-page-footer-trigger" hx-get="/api/v1/general-page/footer{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-footer" hx-swap="innerHTML"></div>
+            themeIcons.forEach((icon) => {
+                if (icon.getAttribute("data-theme") == savedTheme) {
+                    icon.classList.add("active");
+                }
+            });
 
-                <hr class="border-t-4 border-dotted border-main-hard mb-2">
-            </div>
+            function calculateVmax(percent) {
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
 
-            <div class="pr-[0.5dvw] bg-paper bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"></div>
-        </div>
-    </div>
+                const largerDimension = Math.max(viewportWidth, viewportHeight);
 
-    <div class="grow bg-split-right"></div>
+                const vmaxValue = (largerDimension / 100) * percent;
 
-    <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
-    <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="{{ .StaticStorageBaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
-    <script src="{{ .StaticStorageBaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
+                return vmaxValue;
+            }
 
-    <script>
-        // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz
-        var __resetLayout = Packery.prototype._resetLayout;
-        Packery.prototype._resetLayout = function() {
-            __resetLayout.call( this );
-            var parentSize = getSize( this.element.parentNode );
-            var colW = this.columnWidth + this.gutter;
-            this.fitWidth = Math.floor( ( parentSize.innerWidth + this.gutter ) / colW ) * colW;
-            this.packer.width = this.fitWidth;
-            this.packer.height = Number.POSITIVE_INFINITY;
-            this.packer.reset();
-        };
+            function positionThemeIcons() {
+                const sliceAngle = 360 / themeIcons.length;
 
-        Packery.prototype._getContainerSize = function() {
-            var emptyWidth = 0;
-            for ( var i=0, len = this.packer.spaces.length; i < len; i++ ) {
-                var space = this.packer.spaces[i];
-                if ( space.y === 0 && space.height === Number.POSITIVE_INFINITY ) {
-                    emptyWidth += space.width;
+                themeIcons.forEach((icon, index) => {
+                    const startAngle = index * sliceAngle;
+                    const endAngle = (index + 1) * sliceAngle;
+
+                    const clipPath = createSliceClipPath(
+                        startAngle,
+                        endAngle,
+                        themeWheelRadius,
+                    );
+                    icon.style.clipPath = clipPath;
+                });
+            }
+
+            function createSliceClipPath(startAngle, endAngle, radius) {
+                const centerX = radius;
+                const centerY = radius;
+
+                let points = `${centerX}px ${centerY}px`;
+
+                const segments = Math.max(
+                    2,
+                    Math.ceil(Math.abs(endAngle - startAngle) / 5),
+                );
+                const angleStep = (endAngle - startAngle) / segments;
+
+                for (let i = 0; i <= segments; i++) {
+                    const angle =
+                        ((startAngle + angleStep * i - 90) * Math.PI) / 180;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    points += `, ${x}px ${y}px`;
+                }
+
+                points += `, ${centerX}px ${centerY}px`;
+
+                return `polygon(${points})`;
+            }
+
+            function positionThemeWheel() {
+                const buttonRect = themeButton.getBoundingClientRect();
+                const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+                const margin = 0;
+
+                let wheelX = buttonCenterX - themeWheelRadius;
+                let wheelY = buttonCenterY - themeWheelRadius;
+
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                if (wheelX < margin) {
+                    wheelX = margin;
+                } else if (
+                    wheelX + themeWheelRadius * 2 >
+                    viewportWidth - margin
+                ) {
+                    wheelX = viewportWidth - themeWheelRadius * 2 - margin;
+                }
+
+                if (wheelY < margin) {
+                    wheelY = margin;
+                } else if (
+                    wheelY + themeWheelRadius * 2 >
+                    viewportHeight - margin
+                ) {
+                    wheelY = viewportHeight - themeWheelRadius * 2 - margin;
+                }
+
+                themeWheel.style.left = wheelX + "px";
+                themeWheel.style.top = wheelY + "px";
+            }
+
+            function hideThemeWheel() {
+                themeWheel.classList.remove("active");
+            }
+
+            function showThemeWheel() {
+                positionThemeWheel();
+                positionThemeIcons();
+                themeWheel.classList.add("active");
+            }
+
+            function toggleThemeWheel() {
+                if (themeWheel.classList.contains("active")) {
+                    hideThemeWheel();
+                } else {
+                    showThemeWheel();
                 }
             }
 
-            return {
-                width: this.fitWidth - this.gutter - emptyWidth,
-                height: this.maxY - this.gutter
-            };
-        };
-
-        Packery.prototype.needsResizeLayout = function() {
-            return true;
-        };
-    </script>
-
-    <div id="general-page-bottom-embeds" class="flex"
-        hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
-    </div>
-    <div id="general-page-bottom-embeds-trigger" hx-get="/api/v1/general-page/bottom-embeds{{ if .QueryString }}?{{ .QueryString }}{{ end }}" hx-trigger="popstate from:window" hx-target="#general-page-bottom-embeds" hx-swap="innerHTML"></div>
-
-    <script>
-        const themeWheel = document.getElementById('theme-wheel');
-        const themeButton = document.getElementById('toolbar-theme-button');
-        const themeIcons = document.querySelectorAll('.theme-icon');
-        const themeWheelRadius = convertRemToPixels(6);
-
-        themeIcons.forEach(icon => {
-            if (icon.getAttribute('data-theme') == savedTheme) {
-                icon.classList.add('active');
-            }
-        });
-
-        function calculateVmax(percent) {
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            const largerDimension = Math.max(viewportWidth, viewportHeight);
-
-            const vmaxValue = (largerDimension / 100) * percent;
-
-            return vmaxValue;
-        }
-
-        function positionThemeIcons() {
-            const sliceAngle = 360 / themeIcons.length;
-
-            themeIcons.forEach((icon, index) => {
-                const startAngle = index * sliceAngle;
-                const endAngle = (index + 1) * sliceAngle;
-
-                const clipPath = createSliceClipPath(startAngle, endAngle, themeWheelRadius);
-                icon.style.clipPath = clipPath;
+            themeIcons.forEach((icon) => {
+                icon.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const theme = icon.getAttribute("data-theme");
+                    switchTheme(theme);
+                    themeIcons.forEach((icon) => {
+                        icon.classList.remove("active");
+                    });
+                    icon.classList.add("active");
+                });
             });
-        }
 
-        function createSliceClipPath(startAngle, endAngle, radius) {
-            const centerX = radius;
-            const centerY = radius;
+            themeWheel.addEventListener("mouseleave", hideThemeWheel);
 
-            let points = `${centerX}px ${centerY}px`;
-
-            const segments = Math.max(2, Math.ceil(Math.abs(endAngle - startAngle) / 5));
-            const angleStep = (endAngle - startAngle) / segments;
-
-            for (let i = 0; i <= segments; i++) {
-                const angle = ((startAngle + angleStep * i - 90) * Math.PI) / 180;
-                const x = centerX + Math.cos(angle) * radius;
-                const y = centerY + Math.sin(angle) * radius;
-                points += `, ${x}px ${y}px`;
-            }
-
-            points += `, ${centerX}px ${centerY}px`;
-            
-            return `polygon(${points})`;
-        }
-
-        function positionThemeWheel() {
-            const buttonRect = themeButton.getBoundingClientRect();
-            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
-            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
-
-            const margin = 0;
-
-            let wheelX = buttonCenterX - themeWheelRadius;
-            let wheelY = buttonCenterY - themeWheelRadius;
-
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            if (wheelX < margin) {
-                wheelX = margin;
-            } else if (wheelX + (themeWheelRadius * 2) > viewportWidth - margin) {
-                wheelX = viewportWidth - (themeWheelRadius * 2) - margin;
-            }
-
-            if (wheelY < margin) {
-                wheelY = margin;
-            } else if (wheelY + (themeWheelRadius * 2) > viewportHeight - margin) {
-                wheelY = viewportHeight - (themeWheelRadius * 2) - margin;
-            }
-
-            themeWheel.style.left = wheelX + 'px';
-            themeWheel.style.top = wheelY + 'px';
-        }
-
-        function hideThemeWheel() {
-            themeWheel.classList.remove('active');
-        }
-
-        function showThemeWheel() {
-            positionThemeWheel();
-            positionThemeIcons();
-            themeWheel.classList.add('active');
-        }
-
-        function toggleThemeWheel() {
-            if (themeWheel.classList.contains('active')) {
-                hideThemeWheel();
-            } else {
-                showThemeWheel();
-            }
-        }
-
-        themeIcons.forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const theme = icon.getAttribute('data-theme');
-                switchTheme(theme);
-                themeIcons.forEach(icon => {
-                    icon.classList.remove('active');
-                })
-                icon.classList.add('active');
+            document.addEventListener("click", (e) => {
+                if (
+                    !themeWheel.contains(e.target) &&
+                    e.target !== themeButton &&
+                    !e.target.classList.contains("toolbar-theme-button-content")
+                ) {
+                    hideThemeWheel();
+                }
             });
-        });
+        </script>
 
-        themeWheel.addEventListener('mouseleave', hideThemeWheel);
-
-        document.addEventListener('click', (e) => {
-            if (!themeWheel.contains(e.target) && e.target !== themeButton && !e.target.classList.contains("toolbar-theme-button-content")) {
-                hideThemeWheel();
-            }
-        });
-    </script>
-
-    <script>
-        let decorResizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(decorResizeTimeout);
-            decorResizeTimeout = setTimeout(switchThemeDecor, 300);
-        });
-    </script>
-
-</body>
+        <script>
+            let decorResizeTimeout;
+            window.addEventListener("resize", function () {
+                clearTimeout(decorResizeTimeout);
+                decorResizeTimeout = setTimeout(switchThemeDecor, 300);
+            });
+        </script>
+    </body>
 </html>

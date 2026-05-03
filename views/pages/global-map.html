@@ -15,8 +15,11 @@
         />
         <meta property="og:type" content="site" />
         <title>{{ .L.GlobalMap.Header }} // SAYA.UZ</title>
-        <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map">
-        <link rel="stylesheet" href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css">
+        <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map" />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css"
+        />
         <link
             rel="stylesheet"
             href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/fontawesome.min.css"
@@ -30,7 +33,19 @@
             href="{{ .StaticStorageBaseUrl }}/libs/font-awesome/7.2.0/css/solid.min.css"
         />
         {{ block "header" . }}{{ end }}
-        <link rel="stylesheet" href="/output.css">
+        <link rel="stylesheet" href="/output.css" />
+        <link
+            rel="icon"
+            href="/favicon-light.svg"
+            type="image/svg+xml"
+            media="(prefers-color-scheme: light)"
+        />
+        <link
+            rel="icon"
+            href="/favicon-dark.svg"
+            type="image/svg+xml"
+            media="(prefers-color-scheme: dark)"
+        />
         <link
             rel="stylesheet"
             href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
