@@ -1,7 +1,10 @@
 {{ define "body" }}
 <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
 <article class="relative bg-paper bg-background-light flex flex-col px-8 py-4 overflow-y-auto">
-    <h1 class="max-xs:block [@media(max-height:32rem)]:block hidden font-gentium text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">{{ .Title }}</h1>
+    <h1 class="max-xs:flex flex-row content-center [@media(max-height:32rem)]:block hidden font-gentium text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">
+        <div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
+        {{ .Title }}
+    </h1>
     <p class="block grow text-lg font-gentium text-secondary">
         <b>{{ .L.Metadata.Published }}</b>: 
         <time datetime="{{ .PublishedDate }}" hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
