@@ -73,7 +73,7 @@ jobs:
 
       - name: Test SSH connection
         run: |
-          ssh -o ConnectTimeout=10 -i ~/.ssh/id_ed25519 svc_github@uz.saya.casa "echo 'SSH connection successful'"
+          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 svc_github@uz.saya.casa "echo 'SSH connection successful'"
 
       - name: Install Ansible
         shell: bash
