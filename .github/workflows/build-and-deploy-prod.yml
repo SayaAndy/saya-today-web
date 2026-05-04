@@ -40,6 +40,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ghcr.io/sayaandy/saya-today-web:latest
             ghcr.io/sayaandy/saya-today-web:stable
@@ -87,8 +89,9 @@ jobs:
         working-directory: ./deploy
         run: |
           ansible-playbook \
+            playbook.yml \
             -i inventory.yml \
-            -l prod playbook.yml \
+            -l prod \
             --private-key ~/.ssh/id_ed25519 \
             -u svc_github \
             -e saya_today_web_auth_salt="${{ secrets.AUTH_SALT }}" \
