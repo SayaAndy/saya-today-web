@@ -4,6 +4,7 @@ RUN apk add --no-cache sqlite-dev musl-dev gcc
 
 WORKDIR /builddir
 COPY . .
+RUN go mod download
 RUN CGO_ENABLED=1 go build -o sayana-web .
 
 FROM alpine:3.23 AS runtime-stage
