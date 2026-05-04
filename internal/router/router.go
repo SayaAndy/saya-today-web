@@ -647,8 +647,7 @@ func (r *Router) getAndValidateLang(c *fiber.Ctx, langSetting LangSetting, defau
 			return lang, nil
 		}
 	}
-	c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
-	return "", c.Status(fiber.ErrBadRequest.Code).SendString(fmt.Sprintf("lang value is invalid: '%s' is not considered an available language", lang))
+	return "", fiber.NewError(fiber.StatusBadRequest, fmt.Sprintf("lang value is invalid: '%s' is not considered an available language", lang))
 }
 
 func GetPathFromReferer(c *fiber.Ctx) (path string, pathParts []string, queryString string, err error) {
