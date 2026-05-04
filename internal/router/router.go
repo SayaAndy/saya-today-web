@@ -394,6 +394,11 @@ func (r *Router) Listen() error {
 	case "unix":
 		unixConfig := r.endpoint.Config.(*config.UnixConfig)
 		endpoint, _ := strings.CutPrefix(unixConfig.Path, "unix://")
+
+		if err := os.Remove(endpoint); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("error while cleaning up existing unix socket: %w", err)
+		}
+
 		ln, err := net.Listen("unix", endpoint)
 		if err != nil {
 			return fmt.Errorf("error while initializing unix listener: %w", err)
