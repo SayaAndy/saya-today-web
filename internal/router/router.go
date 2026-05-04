@@ -394,6 +394,11 @@ func (r *Router) Listen() error {
 	case "unix":
 		unixConfig := r.endpoint.Config.(*config.UnixConfig)
 		endpoint, _ := strings.CutPrefix(unixConfig.Path, "unix://")
+
+		if err := os.Remove(endpoint); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("error while cleaning up existing unix socket: %w", err)
+		}
+
 		ln, err := net.Listen("unix", endpoint)
 		if err != nil {
 			return fmt.Errorf("error while initializing unix listener: %w", err)
@@ -642,8 +647,7 @@ func (r *Router) getAndValidateLang(c *fiber.Ctx, langSetting LangSetting, defau
 			return lang, nil
 		}
 	}
-	c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
-	return "", c.Status(fiber.ErrBadRequest.Code).SendString(fmt.Sprintf("lang value is invalid: '%s' is not considered an available language", lang))
+	return "", fiber.NewError(fiber.StatusBadRequest, fmt.Sprintf("lang value is invalid: '%s' is not considered an available language", lang))
 }
 
 func GetPathFromReferer(c *fiber.Ctx) (path string, pathParts []string, queryString string, err error) {
