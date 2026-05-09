@@ -451,8 +451,8 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	path := c.Path()
 	method := c.Method()
 	trimmedPath := strings.Trim(path, "/")
-	cacheKey := ""
 	queryString := c.Request().URI().QueryString()
+	cacheKey := ""
 
 	switch route.ToCache() {
 	case ByUrlOnly:
@@ -469,6 +469,7 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	valueMap := fiber.Map{
 		"L":                    r.supplements.Localization[lang],
 		"Lang":                 lang,
+		"Path":                 trimmedPath,
 		"QueryString":          queryString,
 		"CanonicalEndpoint":    r.canonicalEndpoint,
 		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
@@ -489,10 +490,52 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 		valueMap["LinkedData"] = template.JS(ldBytes)
 	}
 
+	syntheticReferer := path
+	if len(queryString) > 0 {
+		syntheticReferer += "?" + string(queryString)
+	}
+	c.Request().Header.Set("Referer", syntheticReferer)
+
+	parts := []struct {
+		name   string
+		key    string
+		render func(c *fiber.Ctx, supplements *Supplements, lang string, templateMap fiber.Map) (int, error)
+	}{
+		{"top-embeds", "RenderedTopEmbeds", route.RenderTopEmbeds},
+		{"header", "RenderedHeader", route.RenderHeader},
+		{"body", "RenderedBody", route.RenderBody},
+		{"footer", "RenderedFooter", route.RenderFooter},
+		{"bottom-embeds", "RenderedBottomEmbeds", route.RenderBottomEmbeds},
+	}
+
+	for _, p := range parts {
+		statusCode, err := p.render(c, r.supplements, lang, valueMap)
+		if err != nil {
+			slog.Error("failed to render segment for full page",
+				slog.String("path", path),
+				slog.String("segment", p.name),
+				slog.String("error", err.Error()),
+			)
+			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+			return c.Status(statusCode).SendString(err.Error())
+		}
+		segContent, err := r.supplements.TemplateManager.Render("general-page-"+p.name, valueMap, route.TemplatesToInject()...)
+		if err != nil {
+			slog.Error("failed to render segment template for full page",
+				slog.String("path", path),
+				slog.String("segment", p.name),
+				slog.String("error", err.Error()),
+			)
+			c.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
+			return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate segment")
+		}
+		valueMap[p.key] = template.HTML(segContent)
+	}
+
 	content, err := r.supplements.TemplateManager.Render("general-page", valueMap)
 	if err != nil {
-		slog.Warn("failed to generate div", slog.String("path", path), slog.String("error", err.Error()))
-		return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate div")
+		slog.Warn("failed to generate full page", slog.String("path", path), slog.String("error", err.Error()))
+		return c.Status(fiber.ErrInternalServerError.Code).SendString("failed to generate full page")
 	}
 
 	go r.supplements.PageCache.SetWithTTL(cacheKey, content, int64(len(content)), route.CacheDuration())
