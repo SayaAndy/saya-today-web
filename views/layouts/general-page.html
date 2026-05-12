@@ -13,7 +13,9 @@
             .Content}}content="{{.}}"
             {{end}}
         />
-        {{- if eq .Property "og:description" }}
+        {{- if eq .Property "og:title" }}
+        <title>{{.Content}} // SAYA.UZ</title>
+        {{- end }} {{- if eq .Property "og:description" }}
         <meta name="description" content="{{.Content}}" />
         {{- end }} {{- if eq .Property "og:url" }}
         <link rel="canonical" href="{{.Content}}" />
