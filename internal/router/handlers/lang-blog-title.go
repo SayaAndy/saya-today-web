@@ -126,6 +126,8 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	templateMap["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
 	templateMap["ActionDate"] = metadata.ActionDate
 	templateMap["ShortDescription"] = metadata.ShortDescription
+	templateMap["Thumbnail"] = metadata.Thumbnail
+	templateMap["Medley"] = metadata.Medley
 
 	go supplements.ClientCache.View(c.IP(), pathParts[2])
 

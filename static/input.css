@@ -104,12 +104,12 @@ body {
 [data-theme="olive"] {
     --color-accent-light: var(--color-lime-300);
     --color-accent-deep: var(--color-lime-600);
-    --color-main-dark-hard: #4b513a;
-    --color-main-dark-medium: #8a9d8a;
-    --color-main-dark-soft: #a5b8a5;
-    --color-main-light-soft: #ffffdd;
+    --color-main-dark-hard: oklch(42.269% 0.03716 119.926);
+    --color-main-dark-medium: oklch(67.552% 0.03493 145.278);
+    --color-main-dark-soft: oklch(76.256% 0.03392 145.352);
+    --color-main-light-soft: oklch(99.13% 0.04397 107.223);
     --color-main-light-medium: var(--color-main-light-soft);
-    --color-main-light-hard: #fffff0;
+    --color-main-light-hard: oklch(99.598% 0.01951 106.845);
     --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
@@ -136,12 +136,12 @@ body {
 [data-theme="lettuce"] {
     --color-accent-light: var(--color-lime-300);
     --color-accent-deep: var(--color-lime-600);
-    --color-main-dark-hard: #384a0c;
-    --color-main-dark-medium: #617c1f;
-    --color-main-dark-soft: #9bb665;
-    --color-main-light-soft: #f5eee2;
+    --color-main-dark-hard: oklch(38.049% 0.087 124.935);
+    --color-main-dark-medium: oklch(54.648% 0.12144 124.626);
+    --color-main-dark-soft: oklch(73.722% 0.11138 124.213);
+    --color-main-light-soft: oklch(95.132% 0.01754 81.278);
     --color-main-light-medium: var(--color-main-light-soft);
-    --color-main-light-hard: #fff9ef;
+    --color-main-light-hard: oklch(98.403% 0.01457 80.636);
     --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
@@ -173,9 +173,9 @@ body {
     --color-main-light-hard: var(--color-sky-100);
     --color-main-light-medium: var(--color-sky-200);
     --color-main-light-soft: var(--color-sky-300);
-    --color-main-dark-hard: #13131b;
+    --color-main-dark-hard: oklch(19.064% 0.01614 284.757);
     --color-main-dark-medium: var(--color-main-dark-hard);
-    --color-main-dark-soft: #222230;
+    --color-main-dark-soft: oklch(25.846% 0.02619 284.414);
     --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
@@ -239,12 +239,12 @@ body {
 [data-theme="ram"] {
     --color-accent-light: var(--color-orange-800);
     --color-accent-deep: var(--color-orange-300);
-    --color-main-light-hard: #fefad8;
-    --color-main-light-medium: #f6e4c5;
-    --color-main-light-soft: #e8d4b8;
-    --color-main-dark-hard: #413b34;
-    --color-main-dark-medium: #62584f;
-    --color-main-dark-soft: #6d6258;
+    --color-main-light-hard: oklch(97.95% 0.0443 101.66);
+    --color-main-light-medium: oklch(92.541% 0.04519 81.305);
+    --color-main-light-soft: oklch(87.909% 0.04338 76.287);
+    --color-main-dark-hard: oklch(35.615% 0.01442 71.558);
+    --color-main-dark-medium: oklch(46.724% 0.01927 64.275);
+    --color-main-dark-soft: oklch(50.352% 0.02092 64.558);
     --color-main: var(--color-main-light-hard);
     --color-main-hard: var(--color-main-light-hard);
     --color-main-medium: var(--color-main-light-medium);
@@ -271,12 +271,12 @@ body {
 [data-theme="lilac"] {
     --color-accent-light: var(--color-indigo-300);
     --color-accent-deep: var(--color-indigo-800);
-    --color-main-dark-hard: #343b58;
-    --color-main-dark-medium: #414868;
-    --color-main-dark-soft: #6c6e75;
-    --color-main-light-hard: #e3e6ff;
-    --color-main-light-medium: #d1d6ff;
-    --color-main-light-soft: #c3caff;
+    --color-main-dark-hard: oklch(35.926% 0.05132 273.187);
+    --color-main-dark-medium: oklch(40.944% 0.05461 274.279);
+    --color-main-dark-soft: oklch(53.885% 0.01118 273.226);
+    --color-main-light-hard: oklch(93.022% 0.03408 280.254);
+    --color-main-light-medium: oklch(88.545% 0.05677 279.69);
+    --color-main-light-soft: oklch(85.154% 0.07433 278.817);
     --color-main: var(--color-main-dark-hard);
     --color-main-hard: var(--color-main-dark-hard);
     --color-main-medium: var(--color-main-dark-medium);
@@ -346,6 +346,26 @@ a:hover,
 form.crossable.disabled input,
 form.crossable.htmx-request input {
     filter: grayscale(1);
+}
+
+.multitone {
+    position: relative;
+    z-index: 1;
+}
+
+.multitone::before {
+    filter: url(#multitone);
+    background-image: var(--multitone-bg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .bg-interlocked-hexagons {
