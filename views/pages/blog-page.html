@@ -23,11 +23,11 @@
         <hr class="block sm:hidden border-t-3 bg-paper bg-background-dark border-dotted border-main-hard w-full">
         {{- if .Medley }}
         <div class="overflow-y-auto grow-2 shrink-0 flex-1 bg-paper bg-background-dark shadow-elevation-2 -mr-8 sm:-mt-4 max-sm:-ml-8 z-2">
-            <h2 class="text-2xl font-gentium font-extrabold text-main-hard tracking-[.0125rem]">
+            <h2 class="text-2xl font-gentium font-extrabold text-main-hard tracking-[.0125rem] ml-2">
                 {{ .Medley }}
             </h2>
             <hr class="block border-t-2 my-1 border-dotted border-main-hard w-full">
-            <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone, medley: "{{ .Medley }}", sort: "medley", hideTags: true, hidePublishedTime: true}' hx-target="this" hx-swap="innerHTML" hx-trigger="load"
+            <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone, medley: "{{ .Medley }}", sort: "medley", hideTags: true, hidePublishedTime: true, highlight: "{{ .Codename }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load"
                 class="grow flex flex-col pr-2">
                 Loading...
             </div>

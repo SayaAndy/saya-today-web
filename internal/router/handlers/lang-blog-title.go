@@ -102,10 +102,11 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	if err != nil {
 		return fiber.StatusBadRequest, fmt.Errorf("failed to get path from referer: %w", err)
 	}
+	title := pathParts[2]
 
-	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.BlogClient, lang+"/"+pathParts[2])
+	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.BlogClient, lang+"/"+title)
 	if err != nil {
-		return fiber.StatusNotFound, fmt.Errorf("failed to find '%s' post: %w", pathParts[2], err)
+		return fiber.StatusNotFound, fmt.Errorf("failed to find '%s' post: %w", title, err)
 	}
 
 	geolocationParts := strings.Split(metadata.Geolocation, " ")
@@ -122,6 +123,7 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	templateMap["MapLocationY"] = y
 	templateMap["MapLocationAreaMeters"] = areaError
 	templateMap["Title"] = metadata.Title
+	templateMap["Codename"] = title
 	templateMap["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 	templateMap["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
 	templateMap["ActionDate"] = metadata.ActionDate
@@ -129,7 +131,7 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	templateMap["Thumbnail"] = metadata.Thumbnail
 	templateMap["Medley"] = metadata.Medley
 
-	go supplements.ClientCache.View(c.IP(), pathParts[2])
+	go supplements.ClientCache.View(c.IP(), title)
 
 	return fiber.StatusOK, nil
 }

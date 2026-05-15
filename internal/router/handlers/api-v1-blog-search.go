@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/blog"
@@ -53,12 +52,7 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 	sort := c.Query("sort")
 	tz := c.Query("tz")
 	medley := c.Query("medley")
-	referer := c.Get("Referer")
-	refererParts := strings.Split(referer, "/")
-	refererPage := ""
-	if len(refererParts) >= 1 {
-		refererPage = refererParts[len(refererParts)-1]
-	}
+	highlight := c.Query("highlight")
 	hideTags := c.QueryBool("hideTags", false)
 	hidePublishedTime := c.QueryBool("hidePublishedTime", false)
 
@@ -111,7 +105,7 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 						"Viewed":           supplements.ClientCache.GetViewStatus(c.IP(), page.FileName),
 						"Medley":           page.Metadata.Medley,
 						"MedleyPart":       page.Metadata.MedleyPart,
-						"ToHighlight":      page.FileName == refererPage,
+						"ToHighlight":      page.FileName == highlight,
 					})
 					break
 				}
