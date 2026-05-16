@@ -401,15 +401,22 @@
                 localStorage.setItem("theme", theme);
                 document.body.setAttribute("data-theme", theme);
                 switchThemeDecor(theme);
-                if (theme == "ram" || theme == "night") {
+            }
+
+            const savedTheme = localStorage.getItem("theme") || "lilac";
+            switchTheme(savedTheme);
+
+            function switchColorScheme(isNightMode) {
+                if (isNightMode) {
                     makeMultitoneOklch('multitone', 4, '--color-background-dark', '--color-accent-light', '--color-background-light');
                 } else {
                     makeMultitoneOklch('multitone', 4, '--color-background-light', '--color-accent-light', '--color-background-dark');
                 }
             }
 
-            const savedTheme = localStorage.getItem("theme") || "lilac";
-            switchTheme(savedTheme);
+            const mq = matchMedia('(prefers-color-scheme: dark)');
+            switchColorScheme(mq.matches);
+            mq.addEventListener('change', (e) => switchColorScheme(e.matches));
         </script>
 
         <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>

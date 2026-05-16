@@ -24,7 +24,7 @@
             <p class="basis-56 grow text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
             {{- end }}
         </div>
-        <p class="font-gentium">{{ .ShortDescription }}</p>
+        <p class="font-m-plus">{{ .ShortDescription }}</p>
         {{- if not $.HideTags }}
         <p class="font-m-plus text-sm">{{ $.L.TagsLabel }} {{ template "catalogue-blog-card-tags.html" . }}</p>
         {{- end }}
