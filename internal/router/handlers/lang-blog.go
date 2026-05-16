@@ -65,10 +65,8 @@ func (r *CatalogueHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements
 }
 
 func (r *CatalogueHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	querySort := c.Query("sort")
-	if querySort == "" {
-		querySort = "publicationDateDesc"
-	}
+	querySort := c.Query("sort", "publicationDateDesc")
+	previousBlogPage := c.Query("codename")
 
 	encodedQuery := c.Request().URI().QueryString()
 	decodedQuery, _ := url.QueryUnescape(string(encodedQuery))
@@ -88,6 +86,7 @@ func (r *CatalogueHandler) RenderBody(c *fiber.Ctx, supplements *router.Suppleme
 	templateMap["QuerySort"] = querySort
 	templateMap["QueryTags"] = strings.Join(queryTags, ",")
 	templateMap["Title"] = supplements.Localization[lang].BlogSearch.Header
+	templateMap["PreviousBlogPage"] = previousBlogPage
 
 	return fiber.StatusOK, nil
 }

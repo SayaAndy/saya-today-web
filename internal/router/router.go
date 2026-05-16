@@ -576,11 +576,12 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	cacheKey := ""
 	trimmedPath := strings.Trim(path, "/")
+	requestQuery := string(c.Request().URI().QueryString())
 	switch route.ToCache() {
 	case ByUrlOnly:
 		cacheKey = fmt.Sprintf("%s.%s.%s", method, part, trimmedPath)
 	case ByUrlAndQuery:
-		cacheKey = fmt.Sprintf("%s.%s.%s.%s", method, part, trimmedPath, queryString)
+		cacheKey = fmt.Sprintf("%s.%s.%s.%s.%s", method, part, trimmedPath, queryString, requestQuery)
 	}
 
 	if route.ToCache() != Disabled {
