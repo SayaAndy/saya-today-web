@@ -10,6 +10,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
@@ -70,11 +71,15 @@ func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements,
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
+	title := metadata.Title
+	if metadata.Medley != "" {
+		title += " // " + l10n.T.GetPath(lang, "Medleys", metadata.Medley).(string)
+	}
 
 	return []router.MetaField{
-		{Property: "og:title", Content: metadata.Title},
+		{Property: "og:title", Content: title},
 		{Property: "og:description", Content: fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate)},
-		{Property: "og:image", Content: fmt.Sprintf(supplements.PhotoStorage.Thumbnail320p.BaseUrl, metadata.Thumbnail)},
+		{Property: "og:image", Content: fmt.Sprintf(supplements.PhotoStorage.Thumbnail560p.BaseUrl, metadata.Thumbnail)},
 		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog/%s", templateMap["CanonicalEndpoint"], lang, c.Params("title"))},
 		{Property: "og:type", Content: "website"},
 		{Name: "twitter:card", Content: "summary_large_image"},
@@ -86,11 +91,15 @@ func (r *BlogPageHandler) AddLinkedData(c *fiber.Ctx, supplements *router.Supple
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
+	title := metadata.Title
+	if metadata.Medley != "" {
+		title += " // " + l10n.T.GetPath(lang, "Medleys", metadata.Medley).(string)
+	}
 
 	return map[string]any{
 		"@context":      "https://schema.org",
 		"@type":         "Article",
-		"headline":      metadata.Title,
+		"headline":      title,
 		"description":   fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
 		"author":        map[string]string{"@type": "Person", "name": "Saya Andy"},
 		"datePublished": metadata.PublishedTime.UTC().Format(time.RFC3339),
