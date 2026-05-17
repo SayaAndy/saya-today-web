@@ -20,7 +20,7 @@ COPY --from=build-stage /builddir/migrations /app/migrations
 COPY --from=build-stage /builddir/static /app/static
 COPY --from=build-stage /builddir/views /app/views
 COPY --from=build-stage /builddir/l10n/*.yaml /app/l10n/
-COPY --from=build-stage /builddir/config/config.${ENVIRONMENT}.yaml /app/config/config.${ENVIRONMENT}.yaml
+COPY --from=build-stage /builddir/config/config.*.yaml /app/config/
 
 RUN apk add --no-cache tzdata sqlite
 
