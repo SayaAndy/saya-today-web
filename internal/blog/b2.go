@@ -70,17 +70,15 @@ func (c *B2Client) Scan(prefix string) ([]*Page, error) {
 			return nil, fmt.Errorf("failed to parse published time metadata field: %w", err)
 		}
 
-		linkParts := strings.Split(obj.Name(), "/")
-		nameParts := strings.Split(linkParts[len(linkParts)-1], ".")
-		fileName := strings.Join(nameParts[:len(linkParts)-1], ".")
-
+		link := obj.Name()
+		fileName := link[strings.LastIndex(link, "/")+1 : strings.LastIndex(link, ".")]
 		tags := strings.Split(attrs.Info["tags"], ",")
 		slices.Sort(tags)
 
-		lang, _ := strings.CutPrefix(linkParts[0], c.prefix)
+		lang, _ := strings.CutPrefix(link[0:strings.Index(link, "/")], c.prefix)
 
 		filePaths = append(filePaths, &Page{
-			Link:         obj.Name(),
+			Link:         link,
 			FileName:     fileName,
 			Lang:         lang,
 			ModifiedTime: attrs.LastModified,
