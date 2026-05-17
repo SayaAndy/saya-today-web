@@ -4,7 +4,7 @@
 <article class="relative bg-paper bg-background-light flex flex-col px-8 py-4 overflow-y-auto">
     <div class="flex flex-col sm:flex-row h-[30cqb] sm:h-[15cqb]">
         <div class="grow shrink-2 flex-1 overflow-y-auto -ml-8 -mt-4 {{if .Medley}}max-sm:-mr-8{{else}}-mr-8{{end}} z-1 shadow-elevation-2">
-            <div class="multitone min-h-full" style="--multitone-bg: url({{ printf $.ThumbnailBaseUrl .Thumbnail }});">
+            <div class="multitone min-h-full" style="--multitone-bg: url({{ printf $.PhotoStorage.Thumbnail560p.BaseUrl .Thumbnail }});">
                 <div class="ml-8 py-4">
                     <h1 class="max-xs:flex flex-row content-center [@media(max-height:32rem)]:block hidden font-gentium text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">
                         <div hx-get="/api/v1/like" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
@@ -39,48 +39,12 @@
     {{ .ParsedMarkdown }}
 {{- if .MapLocationX }}
     <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
-    <div id="map-container" class="relative p-1 flex-none ml-auto mr-auto w-[80%] lg:w-[60%] h-[30dvh] md:h-[40dvh]"></div>
+    <div id="map-outer-container" class="relative p-1 flex-none ml-auto mr-auto w-[80%] lg:w-[60%] h-[30dvh] md:h-[40dvh]"
+        hx-get="/api/v1/map" hx-vals='{"lang": "{{ .Lang }}", "codename": "{{ .Codename }}", "zoom": 8}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
+    </div>
     <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
 
     <script>
-        function initLocationMap(id, x, y, relativeErrorMeters = 0) {
-            map = L.map(id).setView([x, y], 8);
-
-            protomapsL.leafletLayer({
-                url: 'https://cdn.saya.uz/map/global.pmtiles',
-                maxZoom: 15,
-                flavor: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
-                lang: '{{ .Lang }}'
-            }).addTo(map);
-
-            if (relativeErrorMeters != 0) {
-                var circle = L.circle([x, y], {
-                    color: '#8a9d8a',
-                    fillColor: '#8a9d8a',
-                    fillOpacity: 0.15,
-                    radius: relativeErrorMeters
-                }).addTo(map);
-            }
-
-            var marker = L.marker([x, y], {
-                title: '{{ .Title }}',
-            }).addTo(map)
-                .bindPopup('<span><b>{{ .Title }}</b><br><a href="https://www.openstreetmap.org/#map=13/{{ .MapLocationX }}/{{ .MapLocationY }}">{{ .MapLocationX }}, {{ .MapLocationY }}</a></span>')
-                .openPopup();
-        }
-
-        if (map) {
-            map.remove();
-            map = null;
-        }
-
-        setTimeout(() => initLocationMap(
-            'map-container',
-            {{ .MapLocationX }},
-            {{ .MapLocationY }},
-            {{ .MapLocationAreaMeters }}
-        ), 1000);
-
         var lightbox = GLightbox({
             selector: '.glightbox',
             moreLength: 0

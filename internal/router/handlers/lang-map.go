@@ -1,13 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-	"log/slog"
-	"slices"
-	"strconv"
-	"strings"
-
-	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,61 +42,5 @@ func (r *MapHandler) SitemapInfo(supplements *router.Supplements) []router.Sitem
 }
 
 func (r *MapHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	pages, err := supplements.BlogClient.Scan(lang + "/")
-	slices.SortFunc(pages, func(a *blog.Page, b *blog.Page) int {
-		return a.Metadata.PublishedTime.Compare(b.Metadata.PublishedTime)
-	})
-	status := fiber.StatusOK
-	if err != nil {
-		slog.Error("received an error while scanning b2 pages",
-			slog.String("error", err.Error()),
-			slog.String("lang", lang),
-		)
-		status = fiber.StatusPartialContent
-		pages = []*blog.Page{}
-	}
-
-	type MapMarker struct {
-		Index          int     `json:"Index"`
-		Title          string  `json:"Title"`
-		PageLink       string  `json:"PageLink"`
-		Lat            float64 `json:"Lat"`
-		Long           float64 `json:"Long"`
-		AccuracyMeters int64   `json:"AccuracyMeters"`
-		Thumbnail      string  `json:"Thumbnail"`
-	}
-
-	mapMarkers := make([]*MapMarker, 0, len(pages))
-	for i, page := range pages {
-		geolocationParts := strings.Split(page.Metadata.Geolocation, " ")
-		if len(geolocationParts) < 2 {
-			continue
-		}
-
-		var x, y float64
-		var areaError int64
-		if len(geolocationParts) >= 2 {
-			x, _ = strconv.ParseFloat(geolocationParts[0], 64)
-			y, _ = strconv.ParseFloat(geolocationParts[1], 64)
-		}
-		if len(geolocationParts) >= 3 {
-			areaError, _ = strconv.ParseInt(geolocationParts[2], 10, 64)
-		}
-
-		mapMarkers = append(mapMarkers, &MapMarker{
-			Index:          i,
-			Title:          page.Metadata.Title,
-			PageLink:       fmt.Sprintf("/%s/blog/%s", lang, page.FileName),
-			Lat:            x,
-			Long:           y,
-			AccuracyMeters: areaError,
-			Thumbnail:      page.Metadata.Thumbnail,
-		})
-	}
-
-	templateMap["MapMarkers"] = mapMarkers
-	templateMap["MapLocationLat"] = 45.4507
-	templateMap["MapLocationLong"] = 68.8319
-
-	return status, nil
+	return fiber.StatusOK, nil
 }

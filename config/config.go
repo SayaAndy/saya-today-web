@@ -22,7 +22,7 @@ type Config struct {
 	CanonicalEndpoint  string                    `json:"CanonicalEndpoint" yaml:"canonicalEndpoint" validate:"required"`
 	Meta               MetaConfig                `json:"Meta" yaml:"meta"`
 	PhotoStorage       PhotoStorageConfig        `json:"PhotoStorage" yaml:"photoStorage"`
-	StaticStorage      PhotoTypeConfig           `json:"StaticStorage" yaml:"staticStorage"`
+	StaticStorage      StaticStorageConfig       `json:"StaticStorage" yaml:"staticStorage" validate:"required"`
 	AllowOrigins       []string                  `json:"AllowOrigins" yaml:"allowOrigins"`
 }
 
@@ -259,6 +259,16 @@ type PhotoTypeConfig struct {
 type HomePageGifsConfig struct {
 	BaseUrl string   `json:"BaseUrl" yaml:"baseUrl" validate:"url,required"`
 	Indexes []string `json:"Indexes" yaml:"indexes"`
+}
+
+type StaticStorageConfig struct {
+	BaseUrl string           `json:"BaseUrl" yaml:"baseUrl" validate:"url,required"`
+	Map     MapStorageConfig `json:"Map" yaml:"map" validate:"required"`
+}
+
+type MapStorageConfig struct {
+	BaseUrl string `json:"BaseUrl" yaml:"baseUrl" validate:"url,required"`
+	PMTiles string `json:"PMTiles" yaml:"pmTiles" validate:"required"`
 }
 
 func LoadConfig(path string, config *Config) error {

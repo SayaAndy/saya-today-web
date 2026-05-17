@@ -43,6 +43,7 @@ var templateFuncMap = template.FuncMap{
 	"l": func(path ...any) any {
 		return l10n.T.GetPath(path...)
 	},
+	"join": strings.Join,
 }
 
 func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager, error) {

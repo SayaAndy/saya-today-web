@@ -104,7 +104,7 @@ type Supplements struct {
 	MarkdownRenderer   goldmark.Markdown
 	Meta               config.MetaConfig
 	PhotoStorage       config.PhotoStorageConfig
-	StaticStorage      config.PhotoTypeConfig
+	StaticStorage      config.StaticStorageConfig
 }
 
 type Router struct {
@@ -303,12 +303,12 @@ func (r *Router) InitRoutes() (err error) {
 				}
 
 				defaultMap := fiber.Map{
-					"Lang":                 lang,
-					"Path":                 trimmedPath,
-					"QueryString":          queryString,
-					"CanonicalEndpoint":    r.canonicalEndpoint,
-					"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-					"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+					"Lang":              lang,
+					"Path":              trimmedPath,
+					"QueryString":       queryString,
+					"CanonicalEndpoint": r.canonicalEndpoint,
+					"StaticStorage":     r.supplements.StaticStorage,
+					"PhotoStorage":      r.supplements.PhotoStorage,
 				}
 
 				statusCode, err := currentRoute.Render(c, r.supplements, lang, defaultMap)
@@ -455,12 +455,12 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	valueMap := fiber.Map{
-		"Lang":                 lang,
-		"Path":                 trimmedPath,
-		"QueryString":          queryString,
-		"CanonicalEndpoint":    r.canonicalEndpoint,
-		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+		"Lang":              lang,
+		"Path":              trimmedPath,
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
+		"StaticStorage":     r.supplements.StaticStorage,
+		"PhotoStorage":      r.supplements.PhotoStorage,
 	}
 
 	var err error
@@ -580,12 +580,12 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	var statusCode int
 	defaultMap := fiber.Map{
-		"Lang":                 lang,
-		"Path":                 strings.Trim(path, "/"),
-		"QueryString":          queryString,
-		"CanonicalEndpoint":    r.canonicalEndpoint,
-		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+		"Lang":              lang,
+		"Path":              strings.Trim(path, "/"),
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
+		"StaticStorage":     r.supplements.StaticStorage,
+		"PhotoStorage":      r.supplements.PhotoStorage,
 	}
 
 	switch part {

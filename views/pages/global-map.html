@@ -19,7 +19,7 @@
         <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map" />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css"
+            href="{{ .StaticStorage.BaseUrl }}/fonts/fonts.css"
         />
         {{ block "header" . }}{{ end }}
         <link rel="stylesheet" href="/output.css" />
@@ -42,16 +42,20 @@
         />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
         />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"
         />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"
         />
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/protomaps-leaflet/5.0.0/dist/protomaps-leaflet.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
     </head>
 
     <body
@@ -216,21 +220,14 @@
             </div>
         </nav>
 
-        <div
-            id="map-container"
-            class="bg-paper bg-background-dark flex z-10 w-full h-full"
-        ></div>
-
-        <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/protomaps-leaflet/5.0.0/dist/protomaps-leaflet.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+        <div id="map-outer-container" class="bg-paper bg-background-dark flex z-10 w-full h-full"
+            hx-get="/api/v1/map" hx-vals='{"lang": "{{ .Lang }}", "codename": "{{ .Codename }}", "zoom": 4, "zoomPosition": "topright"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
+        </div>
 
         <script>
             const themeWheel = document.getElementById("theme-wheel");
             const themeButton = document.getElementById("sidebar-theme-button");
             const themeIcons = document.querySelectorAll(".theme-icon");
-            const THUMB_BASE = "{{ .ThumbnailBaseUrl }}";
 
             themeIcons.forEach((icon) => {
                 if (icon.getAttribute("data-theme") == savedTheme) {
@@ -251,6 +248,7 @@
 
             function positionThemeIcons() {
                 const sliceAngle = 360 / themeIcons.length;
+                const themeWheelRadius = convertRemToPixels(6);
 
                 themeIcons.forEach((icon, index) => {
                     const startAngle = index * sliceAngle;
@@ -366,97 +364,6 @@
                 ) {
                     hideThemeWheel();
                 }
-            });
-        </script>
-
-        <script>
-            var map;
-            var markers = L.markerClusterGroup();
-
-            function createCustomIcon(color, borderColor = "var(--color-main-soft)") {
-                const svgIcon = `
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 1C7.5 1 4 4.5 4 9c0 6.5 8 14 8 14s8-7.5 8-14c0-4.5-3.5-8-8-8zm0 11c-1.5 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1.5 3-3 3z"
-                              fill="${color}"
-                              stroke="${borderColor}"
-                              stroke-width="1"
-                              stroke-linejoin="round"/>
-                    </svg>
-                `;
-
-                return L.divIcon({
-                    html: svgIcon,
-                    className: 'custom-svg-marker',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32],
-                    popupAnchor: [0, -32]
-                });
-            }
-
-            function initLocationMap() {
-                map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], 4);
-
-                protomapsL.leafletLayer({
-                    url: 'https://cdn.saya.uz/map/global.pmtiles',
-                    maxZoom: 15,
-                    flavor: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
-                    lang: '{{ .Lang }}'
-                }).addTo(map);
-
-                L.control.zoom({
-                    position: 'topright'
-                }).addTo(map);
-
-                map.addLayer(markers);
-            }
-
-            function markerToHsl(str, newCoef) {
-                let hash = 0;
-                for (let i = 0; i < str.length / 2; i++) {
-                    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-                    hash = str.charCodeAt(str.length - i - 1) + ((hash << 5) - hash);
-                    hash %= 360;
-                }
-
-                return [hash, (20 + newCoef * 80).toFixed(0), (20 + newCoef * 75).toFixed(0)];
-            }
-
-            function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "", newCoef = 1) {
-                const [h, s, l] = markerToHsl(title, newCoef);
-                const color = `hsl(${h} ${s}% ${l}%)`;
-
-                if (relativeErrorMeters != 0) {
-                    var circle = L.circle([x, y], {
-                        color: color,
-                        fillColor: color,
-                        fillOpacity: 0.15,
-                        radius: relativeErrorMeters
-                    }).addTo(map);
-                }
-
-                var marker = L.marker([x, y], {
-                    icon: createCustomIcon(color),
-                    title: title,
-                }).bindPopup(`
-                        <div class="flex flex-row justify-center justify-items-center">
-                            <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src="${THUMB_BASE.replace('%s', thumbnail)}">
-                            <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
-                        </div>`);
-
-                markers.addLayer(marker);
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                initLocationMap();
-                {{- range .MapMarkers }}
-                mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }}, {{ fdiv .Index (len $.MapMarkers) }});
-                {{- end }}
-            });
-
-            window.addEventListener('resize', function() {
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 100);
             });
         </script>
     </body>

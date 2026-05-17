@@ -74,9 +74,9 @@ photoStorage:
     indexes: ["1", "2", "3"]
 staticStorage:
   baseUrl: https://cdn.saya.uz/static
-mapStorage:
-  baseUrl: https://cdn.saya.uz/map
+  map:
+    baseUrl: https://cdn.saya.uz/map
+    pmTiles: global.pmtiles
 allowOrigins:
   - https://storage.yandexcloud.kz
   - https://cdn.saya.uz
-

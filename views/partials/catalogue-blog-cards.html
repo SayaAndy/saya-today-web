@@ -2,7 +2,7 @@
 <hr class="first-of-type:hidden border-t-2 border-dotted border-main-hard">
 <div {{ if .ToHighlight }}id="blog-page-highlighted"{{ end }} class="w-full flex flex-row items-stretch {{ if .ToHighlight }}bg-accent-light bg-paper{{ end }}">
     <div class="relative min-h-24 flex flex-col w-28 overflow-hidden shrink-0 mask-r-from-70% mask-r-to-100%">
-        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="{{ printf $.ThumbnailBaseUrl .Thumbnail }}">
+        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="{{ printf $.PhotoStorage.Thumbnail320p.BaseUrl .Thumbnail }}">
         <div class="w-full h-6 flex flex-row mt-auto relative">
             <div class="flex-1/2 flex flex-row justify-center select-none bg-linear-180 {{ if .Liked }}from-accent-deep/40 to-accent-deep/80 text-background-dark{{ else }}from-accent-light/40 to-accent-light/80 text-main-hard{{ end }}">
                 <svg viewBox="0 0 24 24"><use href="#icon-like"/></svg>

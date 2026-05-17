@@ -22,15 +22,23 @@
         {{- end }} {{- end }}
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/fonts/fonts.css"
+            href="{{ .StaticStorage.BaseUrl }}/fonts/fonts.css"
         />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet/1.9.4/leaflet.css"
         />
         <link
             rel="stylesheet"
-            href="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ .StaticStorage.BaseUrl }}/libs/glightbox/3.3.0/css/glightbox.min.css"
         />
         <link rel="stylesheet" href="/output.css" />
         <link
@@ -55,6 +63,11 @@
             {{ . }}
         </script>
         {{- end }}
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/protomaps-leaflet/5.0.0/dist/protomaps-leaflet.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
     </head>
 
     <body
@@ -159,8 +172,6 @@
                 );
             }
         </script>
-
-        <script src="{{ .StaticStorageBaseUrl }}/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 
         <script>
             function sfc32(a, b, c, d) {
@@ -342,7 +353,7 @@
                         const frameCenters = new Array(4);
                         for (i = 1; i <= 4; i++) {
                             let frame = document.createElement("img");
-                            frame.src = `{{ .StaticStorageBaseUrl }}/themes/ram/ram-frame${i}.webp`;
+                            frame.src = `{{ .StaticStorage.BaseUrl }}/themes/ram/ram-frame${i}.webp`;
                             frame.classList.add(
                                 "ram-frame",
                                 "theme-decor",
@@ -419,11 +430,9 @@
             mq.addEventListener('change', (e) => switchColorScheme(e.matches));
         </script>
 
-        <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/protomaps-leaflet/5.0.0/dist/protomaps-leaflet.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
-        <script src="{{ .StaticStorageBaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+        <script src="{{ .StaticStorage.BaseUrl }}/libs/packery/3.0.0/dist/packery.pkgd.min.js"></script>
 
         <script>
             // Enable fitWidth-like attribute for Packery. Source: https://codepen.io/desandro/pen/kVmLYz
