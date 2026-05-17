@@ -70,9 +70,12 @@ photoStorage:
   thumbnail320p:
     baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp320/%s.webp
   homePageGifs:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-static/home-page-gifs/otter-%s.gif
+    baseUrl: https://cdn.saya.uz/static/home-page-gifs/otter-%s.gif
     indexes: ["1", "2", "3"]
 staticStorage:
-  baseUrl: https://storage.yandexcloud.kz/sayauz-static
+  baseUrl: https://cdn.saya.uz/static
+mapStorage:
+  baseUrl: https://cdn.saya.uz/map
 allowOrigins:
   - https://storage.yandexcloud.kz
+  - https://cdn.saya.uz

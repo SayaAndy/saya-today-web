@@ -223,6 +223,7 @@
 
         <script src="{{ .StaticStorageBaseUrl }}/libs/htmx/2.0.6/htmx.min.js"></script>
         <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet/1.9.4/leaflet.js"></script>
+        <script src="{{ .StaticStorageBaseUrl }}/libs/protomaps-leaflet/5.0.0/dist/protomaps-leaflet.js"></script>
         <script src="{{ .StaticStorageBaseUrl }}/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 
         <script>
@@ -395,10 +396,11 @@
             function initLocationMap() {
                 map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], 4);
 
-                L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
-                    maxZoom: 20,
-                    attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
-                    zoomControl: false
+                protomapsL.leafletLayer({
+                    url: 'https://cdn.saya.uz/map/global.pmtiles',
+                    maxZoom: 15,
+                    flavor: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+                    lang: '{{ .Lang }}'
                 }).addTo(map);
 
                 L.control.zoom({

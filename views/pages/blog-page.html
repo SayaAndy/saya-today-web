@@ -46,9 +46,11 @@
         function initLocationMap(id, x, y, relativeErrorMeters = 0) {
             map = L.map(id).setView([x, y], 8);
 
-            L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png', {
-                maxZoom: 20,
-                attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+            protomapsL.leafletLayer({
+                url: 'https://cdn.saya.uz/map/global.pmtiles',
+                maxZoom: 15,
+                flavor: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+                lang: '{{ .Lang }}'
             }).addTo(map);
 
             if (relativeErrorMeters != 0) {

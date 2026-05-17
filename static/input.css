@@ -851,10 +851,8 @@ form.crossable.htmx-request input {
     background-color: var(--color-background-medium) !important;
 }
 
-@media (prefers-color-scheme: dark) {
-    .leaflet-tile {
-        filter: invert(1) hue-rotate(190deg) contrast(1.1) brightness(1.2) !important;
-    }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    color: var(--color-main-medium) !important;
 }
 
 .home-page-heart {
