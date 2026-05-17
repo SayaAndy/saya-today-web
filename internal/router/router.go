@@ -23,7 +23,6 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/internal/tailwind"
 	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
-	"github.com/SayaAndy/saya-today-web/locale"
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -95,7 +94,6 @@ type Route interface {
 type Supplements struct {
 	DB                 *sql.DB
 	BlogClient         blog.Client
-	Localization       map[string]*locale.LocaleConfig
 	AvailableLanguages []config.AvailableLanguageConfig
 	ClientCache        *ClientCache
 	PageCache          *ristretto.Cache[string, []byte]
@@ -106,7 +104,7 @@ type Supplements struct {
 	MarkdownRenderer   goldmark.Markdown
 	Meta               config.MetaConfig
 	PhotoStorage       config.PhotoStorageConfig
-	StaticStorage      config.PhotoTypeConfig
+	StaticStorage      config.StaticStorageConfig
 }
 
 type Router struct {
@@ -149,16 +147,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 
 	supplements.BlogClient, err = blog.NewClientMap[cfg.BlogPages.Storage.Type](&cfg.BlogPages.Storage)
 	if err != nil {
-		return nil, fmt.Errorf("fail to initialize b2 client: %w", err)
-	}
-
-	supplements.Localization = make(map[string]*locale.LocaleConfig, len(cfg.AvailableLanguages))
-	for _, lang := range cfg.AvailableLanguages {
-		localeCfg, err := locale.InitConfig(cfg.LocalePath + lang.LocFile)
-		if err != nil {
-			return nil, fmt.Errorf("fail to initialize a locale: %w", err)
-		}
-		supplements.Localization[lang.Name] = localeCfg
+		return nil, fmt.Errorf("fail to initialize blog client: type %s: %w", cfg.BlogPages.Storage.Type, err)
 	}
 
 	supplements.MarkdownRenderer = goldmark.New(
@@ -200,7 +189,7 @@ func NewRouter(cfg *config.Config) (*Router, error) {
 	}
 
 	supplements.Mailer, err = mailer.NewMailer(supplements.DB, cfg.Mail.ClientHost, cfg.Mail.MailHost,
-		cfg.Mail.PublicName, cfg.Mail.MailAddress, cfg.Mail.Username, cfg.Mail.Password, []byte(cfg.Mail.Salt), supplements.Localization)
+		cfg.Mail.PublicName, cfg.Mail.MailAddress, cfg.Mail.Username, cfg.Mail.Password, []byte(cfg.Mail.Salt))
 	if err != nil {
 		return nil, fmt.Errorf("fail to initialize mailer: %w", err)
 	}
@@ -314,13 +303,12 @@ func (r *Router) InitRoutes() (err error) {
 				}
 
 				defaultMap := fiber.Map{
-					"L":                    r.supplements.Localization[lang],
-					"Lang":                 lang,
-					"Path":                 trimmedPath,
-					"QueryString":          queryString,
-					"CanonicalEndpoint":    r.canonicalEndpoint,
-					"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-					"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+					"Lang":              lang,
+					"Path":              trimmedPath,
+					"QueryString":       queryString,
+					"CanonicalEndpoint": r.canonicalEndpoint,
+					"StaticStorage":     r.supplements.StaticStorage,
+					"PhotoStorage":      r.supplements.PhotoStorage,
 				}
 
 				statusCode, err := currentRoute.Render(c, r.supplements, lang, defaultMap)
@@ -467,13 +455,12 @@ func (r *Router) generalPage(c *fiber.Ctx, route Route, lang string) error {
 	}
 
 	valueMap := fiber.Map{
-		"L":                    r.supplements.Localization[lang],
-		"Lang":                 lang,
-		"Path":                 trimmedPath,
-		"QueryString":          queryString,
-		"CanonicalEndpoint":    r.canonicalEndpoint,
-		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+		"Lang":              lang,
+		"Path":              trimmedPath,
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
+		"StaticStorage":     r.supplements.StaticStorage,
+		"PhotoStorage":      r.supplements.PhotoStorage,
 	}
 
 	var err error
@@ -576,11 +563,12 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	cacheKey := ""
 	trimmedPath := strings.Trim(path, "/")
+	requestQuery := string(c.Request().URI().QueryString())
 	switch route.ToCache() {
 	case ByUrlOnly:
 		cacheKey = fmt.Sprintf("%s.%s.%s", method, part, trimmedPath)
 	case ByUrlAndQuery:
-		cacheKey = fmt.Sprintf("%s.%s.%s.%s", method, part, trimmedPath, queryString)
+		cacheKey = fmt.Sprintf("%s.%s.%s.%s.%s", method, part, trimmedPath, queryString, requestQuery)
 	}
 
 	if route.ToCache() != Disabled {
@@ -592,13 +580,12 @@ func (r *Router) generalPageSegment(c *fiber.Ctx, part string) error {
 
 	var statusCode int
 	defaultMap := fiber.Map{
-		"L":                    r.supplements.Localization[lang],
-		"Lang":                 lang,
-		"Path":                 strings.Trim(path, "/"),
-		"QueryString":          queryString,
-		"CanonicalEndpoint":    r.canonicalEndpoint,
-		"StaticStorageBaseUrl": r.supplements.StaticStorage.BaseUrl,
-		"ThumbnailBaseUrl":     r.supplements.PhotoStorage.Thumbnail320p.BaseUrl,
+		"Lang":              lang,
+		"Path":              strings.Trim(path, "/"),
+		"QueryString":       queryString,
+		"CanonicalEndpoint": r.canonicalEndpoint,
+		"StaticStorage":     r.supplements.StaticStorage,
+		"PhotoStorage":      r.supplements.PhotoStorage,
 	}
 
 	switch part {

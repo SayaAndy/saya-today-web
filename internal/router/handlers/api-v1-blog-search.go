@@ -1,13 +1,13 @@
 package handlers
 
 import (
+	"cmp"
 	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/url"
 	"regexp"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/blog"
@@ -51,6 +51,10 @@ func (r *BlogSearchHandler) RateLimiter() *fiber.Handler {
 func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
 	sort := c.Query("sort")
 	tz := c.Query("tz")
+	medley := c.Query("medley")
+	highlight := c.Query("highlight")
+	hideTags := c.QueryBool("hideTags", false)
+	hidePublishedTime := c.QueryBool("hidePublishedTime", false)
 
 	loc, err := time.LoadLocation(tz)
 	if err != nil {
@@ -85,21 +89,26 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 	for _, page := range pages {
 		for _, tag := range page.Metadata.Tags {
 			if len(tags) == 0 || slices.Contains(tags, tag) {
-				pageMeta = append(pageMeta, fiber.Map{
-					"Link":             page.Link,
-					"ArticleLink":      "/" + lang + "/blog/" + page.FileName,
-					"Title":            page.Metadata.Title,
-					"PublishedTime":    page.Metadata.PublishedTime.In(loc).Format("2006-01-02 15:04:05 -07:00"),
-					"ActionDate":       page.Metadata.ActionDate,
-					"ShortDescription": page.Metadata.ShortDescription,
-					"Thumbnail":        page.Metadata.Thumbnail,
-					"Tags":             page.Metadata.Tags,
-					"LikeCount":        supplements.ClientCache.GetLikeCount(page.FileName),
-					"Liked":            supplements.ClientCache.GetLikeStatus(c.IP(), page.FileName),
-					"ViewCount":        supplements.ClientCache.GetViewCount(page.FileName),
-					"Viewed":           supplements.ClientCache.GetViewStatus(c.IP(), page.FileName),
-				})
-				break
+				if medley == "" || medley == page.Metadata.Medley {
+					pageMeta = append(pageMeta, fiber.Map{
+						"Link":             page.Link,
+						"ArticleLink":      "/" + lang + "/blog/" + page.FileName,
+						"Title":            page.Metadata.Title,
+						"PublishedTime":    page.Metadata.PublishedTime.In(loc).Format("2006-01-02 15:04:05 -07:00"),
+						"ActionDate":       page.Metadata.ActionDate,
+						"ShortDescription": page.Metadata.ShortDescription,
+						"Thumbnail":        page.Metadata.Thumbnail,
+						"Tags":             page.Metadata.Tags,
+						"LikeCount":        supplements.ClientCache.GetLikeCount(page.FileName),
+						"Liked":            supplements.ClientCache.GetLikeStatus(c.IP(), page.FileName),
+						"ViewCount":        supplements.ClientCache.GetViewCount(page.FileName),
+						"Viewed":           supplements.ClientCache.GetViewStatus(c.IP(), page.FileName),
+						"Medley":           page.Metadata.Medley,
+						"MedleyPart":       page.Metadata.MedleyPart,
+						"ToHighlight":      page.FileName == highlight,
+					})
+					break
+				}
 			}
 		}
 	}
@@ -107,13 +116,13 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 	slices.SortFunc(pageMeta, func(a, b fiber.Map) int {
 		switch sort {
 		case "titleAsc":
-			return strings.Compare(a["Title"].(string), b["Title"].(string))
+			return cmp.Compare(a["Title"].(string), b["Title"].(string))
 		case "titleDesc":
-			return strings.Compare(b["Title"].(string), a["Title"].(string))
+			return cmp.Compare(b["Title"].(string), a["Title"].(string))
 		case "actionDateAsc":
-			return strings.Compare(a["ActionDate"].(string), b["ActionDate"].(string))
+			return cmp.Compare(a["ActionDate"].(string), b["ActionDate"].(string))
 		case "actionDateDesc":
-			return strings.Compare(b["ActionDate"].(string), a["ActionDate"].(string))
+			return cmp.Compare(b["ActionDate"].(string), a["ActionDate"].(string))
 		case "publicationDateAsc":
 			publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"].(string))
 			publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"].(string))
@@ -122,11 +131,15 @@ func (r *BlogSearchHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 			publishedTimeA, _ := time.Parse("2006-01-02 15:04:05 -07:00", a["PublishedTime"].(string))
 			publishedTimeB, _ := time.Parse("2006-01-02 15:04:05 -07:00", b["PublishedTime"].(string))
 			return publishedTimeB.Compare(publishedTimeA)
+		case "medley":
+			return cmp.Compare(a["MedleyPart"].(int), b["MedleyPart"].(int))
 		}
 		return 0
 	})
 
 	templateMap["BlogPages"] = pageMeta
+	templateMap["HideTags"] = hideTags
+	templateMap["HidePublishedTime"] = hidePublishedTime
 
 	return fiber.StatusOK, nil
 }

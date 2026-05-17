@@ -16,7 +16,7 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/templatemanager"
-	"github.com/SayaAndy/saya-today-web/locale"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/wneessen/go-mail"
@@ -43,8 +43,6 @@ type Mailer struct {
 
 	hashMap      map[string][]byte
 	hashMapMutex sync.RWMutex
-
-	l map[string]*locale.LocaleConfig
 }
 
 type SubscriptionType int
@@ -55,7 +53,7 @@ const (
 	Specific
 )
 
-func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string, mailAddress string, username string, password string, salt []byte, localization map[string]*locale.LocaleConfig) (*Mailer, error) {
+func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string, mailAddress string, username string, password string, salt []byte) (*Mailer, error) {
 	verificationCodes, err := ristretto.NewCache(&ristretto.Config[uint64, string]{
 		NumCounters:            10000,
 		MaxCost:                1 << 20, // 1 MB
@@ -111,7 +109,7 @@ func NewMailer(db *sql.DB, clientHost string, mailHost string, publicName string
 			End        time.Time
 			CodeExpiry time.Time
 		}, 0),
-		l: localization}, nil
+	}, nil
 }
 
 func (m *Mailer) GetHash(id string) []byte {
@@ -261,10 +259,9 @@ func (m *Mailer) SendVerificationCode(userId string, address string, lang string
 	verificationInfo := fmt.Sprintf("%s.%s", base64.RawStdEncoding.EncodeToString([]byte(userId)), base64.RawStdEncoding.EncodeToString([]byte(address)))
 	m.verificationCodes.Set(verificationCode, verificationInfo, int64(len(verificationInfo)+8))
 
-	message.Subject(m.l[lang].Mail.VerifyEmail.Subject)
+	message.Subject(l10n.T.GetPath(lang, "Mail", "VerifyEmail", "Subject").(string))
 
 	msg, err := m.tm.Render("verify-email", fiber.Map{
-		"L":                m.l[lang],
 		"Lang":             lang,
 		"VerificationCode": fmt.Sprintf("%X", verificationCode),
 		"ClientHost":       m.clientHost,
@@ -499,11 +496,10 @@ rowLoop:
 		rand.Read(unsubscribeCodeBytes)
 		unsubscribeCode := binary.LittleEndian.Uint64(unsubscribeCodeBytes)
 
-		unsubscribeFooter := strings.Replace(m.l[post.Lang].Mail.UnsubscribeFooter, "{}", fmt.Sprintf(`<a style="color: #273de1 !important;" href="https://%s/%s/user/unsubscribe?code=%X">`, m.clientHost, post.Lang, unsubscribeCode), 1)
+		unsubscribeFooter := strings.Replace(l10n.T.GetPath(post.Lang, "Mail", "UnsubscribeFooter").(string), "{}", fmt.Sprintf(`<a style="color: #273de1 !important;" href="https://%s/%s/user/unsubscribe?code=%X">`, m.clientHost, post.Lang, unsubscribeCode), 1)
 		unsubscribeFooter = strings.Replace(unsubscribeFooter, "{/}", "</a>", 1)
 
 		msgBody, err := m.tm.Render("new-post", fiber.Map{
-			"L":                 m.l[post.Lang],
 			"Lang":              post.Lang,
 			"Post":              post,
 			"ClientHost":        m.clientHost,
@@ -529,7 +525,7 @@ rowLoop:
 		message.SetMessageID()
 		message.SetDate()
 		message.SetBulk()
-		message.Subject(m.l[post.Lang].Mail.NewPost.Subject)
+		message.Subject(l10n.T.GetPath(post.Lang, "Mail", "NewPost", "Subject").(string))
 		message.SetBodyString(mail.TypeTextHTML, string(msgBody))
 
 		m.unsubscribeCodes.Set(unsubscribeCode, user.userId, 40)

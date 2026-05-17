@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/SayaAndy/saya-today-web/l10n"
 )
 
 type TemplateManager struct {
@@ -38,6 +40,10 @@ var templateFuncMap = template.FuncMap{
 	"fdiv": func(a, b int) float64 {
 		return float64(a) / float64(b)
 	},
+	"l": func(path ...any) any {
+		return l10n.T.GetPath(path...)
+	},
+	"join": strings.Join,
 }
 
 func NewTemplateManager(templates ...TemplateManagerTemplates) (*TemplateManager, error) {

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -51,8 +52,8 @@ func (r *HomeHandler) SitemapInfo(supplements *router.Supplements) []router.Site
 
 func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
 	return []router.MetaField{
-		{Property: "og:title", Content: supplements.Localization[lang].HomePage.Header},
-		{Property: "og:description", Content: supplements.Localization[lang].HomePage.HomePageDescription},
+		{Property: "og:title", Content: l10n.T.GetPath(lang, "HomePage", "Header").(string)},
+		{Property: "og:description", Content: l10n.T.GetPath(lang, "HomePage", "HomePageDescription").(string)},
 		{Property: "og:image", Content: fmt.Sprintf(
 			supplements.PhotoStorage.HomePageGifs.BaseUrl,
 			supplements.PhotoStorage.HomePageGifs.Indexes[rand.Int()%len(supplements.PhotoStorage.HomePageGifs.Indexes)],
@@ -63,7 +64,7 @@ func (r *HomeHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lan
 }
 
 func (r *HomeHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	templateMap["Title"] = supplements.Localization[lang].HomePage.Header
+	templateMap["Title"] = l10n.T.GetPath(lang, "HomePage", "Header").(string)
 	templateMap["FilledHeartCount"] = uint(40)
 	templateMap["OutlineHeartCount"] = uint(40)
 	templateMap["GifUrl"] = fmt.Sprintf(
@@ -75,6 +76,6 @@ func (r *HomeHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, 
 }
 
 func (r *HomeHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	templateMap["Title"] = supplements.Localization[lang].HomePage.Header
+	templateMap["Title"] = l10n.T.GetPath(lang, "HomePage", "Header").(string)
 	return fiber.StatusOK, nil
 }

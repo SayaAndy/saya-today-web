@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -46,19 +47,19 @@ func (r *VerifyCodeHandler) Render(c *fiber.Ctx, supplements *router.Supplements
 
 	if verificationCode == "" {
 		templateMap["Status"] = "Failed"
-		templateMap["Message"] = supplements.Localization[lang].UserProfile.VerificationEmpty
+		templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "VerificationEmpty").(string)
 		return fiber.StatusUnprocessableEntity, nil
 	}
 
 	if err = supplements.Mailer.Verify(verificationCode, lang); err != nil {
 		slog.Warn("verification code is invalid", slog.String("verification_code", verificationCode), slog.String("error", err.Error()))
 		templateMap["Status"] = "Failed"
-		templateMap["Message"] = supplements.Localization[lang].UserProfile.VerificationFailed
+		templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "VerificationFailed").(string)
 		return fiber.StatusUnprocessableEntity, nil
 	}
 
 	templateMap["Status"] = "OK"
-	templateMap["Message"] = supplements.Localization[lang].UserProfile.VerificationSuccess
+	templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "VerificationSuccess").(string)
 	templateMap["DataAttributes"] = map[string]any{
 		"hide-verification-panel": template.HTMLAttr("data-code-expiry-time=\"true\""),
 	}

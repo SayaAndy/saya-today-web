@@ -1,0 +1,109 @@
+<div
+    id="map-container"
+    class="bg-paper bg-background-dark flex z-10 w-full h-full"
+></div>
+
+<script>
+(function() {
+    var map;
+    var markers = L.markerClusterGroup();
+    const THUMB_BASE = "{{ .PhotoStorage.Thumbnail320p.BaseUrl }}";
+
+    function createCustomIcon(color, borderColor = "var(--color-main-soft)") {
+        const svgIcon = `
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 1C7.5 1 4 4.5 4 9c0 6.5 8 14 8 14s8-7.5 8-14c0-4.5-3.5-8-8-8zm0 11c-1.5 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1.5 3-3 3z"
+                        fill="${color}"
+                        stroke="${borderColor}"
+                        stroke-width="1"
+                        stroke-linejoin="round"/>
+            </svg>
+        `;
+
+        return L.divIcon({
+            html: svgIcon,
+            className: 'custom-svg-marker',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+    }
+
+    function initLocationMap() {
+        map = L.map('map-container').setView([{{ .MapLocationLat }}, {{ .MapLocationLong }}], {{ .MapLocationZoom }});
+
+        protomapsL.leafletLayer({
+            url: '{{ .StaticStorage.Map.BaseUrl }}/{{ .StaticStorage.Map.PMTiles }}',
+            maxZoom: 15,
+            flavor: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+            lang: '{{ .Lang }}'
+        }).addTo(map);
+
+        {{- with .ZoomPosition }}
+        L.control.zoom({
+            position: '{{ . }}'
+        }).addTo(map);
+        {{- end }}
+
+        map.addLayer(markers);
+    }
+
+    function markerToHsl(str, newCoef) {
+        let hash = 0;
+        for (let i = 0; i < str.length / 2; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            hash = str.charCodeAt(str.length - i - 1) + ((hash << 5) - hash);
+            hash %= 360;
+        }
+
+        return [hash, (20 + newCoef * 80).toFixed(0), (20 + newCoef * 75).toFixed(0)];
+    }
+
+    function mapAddMarker(x, y, relativeErrorMeters = 0, title = "", link = "", thumbnail = "", newCoef = 1, toHighlight = false) {
+        const [h, s, l] = markerToHsl(title, newCoef);
+        const color = `hsl(${h} ${s}% ${l}%)`;
+
+        if (relativeErrorMeters != 0) {
+            var circle = L.circle([x, y], {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.15,
+                radius: relativeErrorMeters
+            }).addTo(map);
+        }
+
+        var marker = L.marker([x, y], {
+            icon: createCustomIcon(color),
+            title: title,
+        }).bindPopup(`
+                <div class="flex flex-row justify-center justify-items-center">
+                    <img onclick="location.href='${link}';" class="cursor-pointer object-cover rounded-[10%] select-none w-12 h-12 mr-1" src="${THUMB_BASE.replace('%s', thumbnail)}">
+                    <span><b><a href="${link}">${title}</a></b><br><a href="https://www.openstreetmap.org/#map=13/${x}/${y}">${x}, ${y}</a></span>
+                </div>`);
+
+        markers.addLayer(marker);
+
+        if (toHighlight) {
+            markers.zoomToShowLayer(marker, () => marker.openPopup());
+        }
+    }
+
+    initLocationMap();
+    {{- range .MapMarkers }}
+    mapAddMarker({{ .Lat }}, {{ .Long }}, {{ .AccuracyMeters }}, {{ .Title }}, {{ .PageLink }}, {{ .Thumbnail }}, {{ fdiv .Index (len $.MapMarkers) }}, {{ .ToHighlight }});
+    {{- end }}
+
+    function onResize() {
+        setTimeout(() => {
+            if (map) map.invalidateSize();
+        }, 300);
+    }
+    window.addEventListener('resize', onResize);
+    new MutationObserver((muts, obs) => {
+        if (!document.getElementById('map-container')) {
+            window.removeEventListener('resize', onResize);
+            obs.disconnect();
+        }
+    }).observe(document.body, { childList: true, subtree: true });
+})();
+</script>

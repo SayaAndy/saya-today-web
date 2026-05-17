@@ -6,6 +6,7 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -40,15 +41,15 @@ func (r *UserHandler) ToValidateLang() router.LangSetting {
 func (r *UserHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (meta []router.MetaField, err error) {
 	return []router.MetaField{
 		{Name: "robots", Content: "noindex,nofollow"},
-		{Property: "og:title", Content: supplements.Localization[lang].UserProfile.Header},
-		{Property: "og:description", Content: supplements.Localization[lang].UserProfile.Description},
+		{Property: "og:title", Content: l10n.T.GetPath(lang, "UserProfile", "Header").(string)},
+		{Property: "og:description", Content: l10n.T.GetPath(lang, "UserProfile", "Description").(string)},
 		{Property: "og:url", Content: fmt.Sprintf("%s/%s/user", templateMap["CanonicalEndpoint"], lang)},
 		{Property: "og:type", Content: "website"},
 	}, nil
 }
 
 func (r *UserHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	templateMap["Title"] = supplements.Localization[lang].UserProfile.Header
+	templateMap["Title"] = l10n.T.GetPath(lang, "UserProfile", "Header").(string)
 
 	email, _, err := supplements.Mailer.GetInfo(supplements.Mailer.GetHash(c.IP()))
 	if err != nil {
@@ -83,6 +84,6 @@ func (r *UserHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplements, 
 }
 
 func (r *UserHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplements, lang string, templateMap fiber.Map) (statusCode int, err error) {
-	templateMap["Title"] = supplements.Localization[lang].UserProfile.Header
+	templateMap["Title"] = l10n.T.GetPath(lang, "UserProfile", "Header").(string)
 	return fiber.StatusOK, nil
 }

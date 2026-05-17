@@ -31,11 +31,11 @@ localePath: ./locale/
 availableLanguages:
   - name: ru
     alt: Русский
-    flag: https://storage.yandexcloud.kz/sayauz-static/flags/ru.svg
+    flag: https://cdn.saya.uz/static/flags/ru.svg
     locFile: localization.ru.yaml
   - name: en
     alt: English
-    flag: https://storage.yandexcloud.kz/sayauz-static/flags/gb.svg
+    flag: https://cdn.saya.uz/static/flags/gb.svg
     locFile: localization.en.yaml
 auth:
   db:
@@ -56,23 +56,26 @@ mail:
 canonicalEndpoint: "https://${FQDN}"
 photoStorage:
   full:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-photos/%s
+    baseUrl: https://photos.saya.uz/jpeg-full/%s
   webp:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp/%s.webp
+    baseUrl: https://photos.saya.uz/webp-full/%s.webp
   thumbnail1600p:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1600/%s.webp
+    baseUrl: https://photos.saya.uz/webp-1600p/%s.webp
   thumbnail1200p:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp1200/%s.webp
+    baseUrl: https://photos.saya.uz/webp-1200p/%s.webp
   thumbnail800p:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp800/%s.webp
+    baseUrl: https://photos.saya.uz/webp-800p/%s.webp
   thumbnail560p:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp560/%s.webp
+    baseUrl: https://photos.saya.uz/webp-560p/%s.webp
   thumbnail320p:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-thumbnails-webp320/%s.webp
+    baseUrl: https://photos.saya.uz/webp-320p/%s.webp
   homePageGifs:
-    baseUrl: https://storage.yandexcloud.kz/sayauz-static/home-page-gifs/otter-%s.gif
+    baseUrl: https://cdn.saya.uz/static/home-page-gifs/otter-%s.gif
     indexes: ["1", "2", "3"]
 staticStorage:
-  baseUrl: https://storage.yandexcloud.kz/sayauz-static
+  baseUrl: https://cdn.saya.uz/static
+  map:
+    baseUrl: https://cdn.saya.uz/map
+    pmTiles: global.pmtiles
 allowOrigins:
-  - https://storage.yandexcloud.kz
+  - https://cdn.saya.uz

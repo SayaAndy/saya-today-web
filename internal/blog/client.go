@@ -17,6 +17,7 @@ type Page struct {
 
 type Client interface {
 	Scan(prefix string) ([]*Page, error)
+	GetMedleys() ([]MedleyEntry, error)
 	ReadAll(path string) ([]byte, error)
 	ReadFrontmatter(path string) (metadata *frontmatter.Metadata, markdown []byte, err error)
 }

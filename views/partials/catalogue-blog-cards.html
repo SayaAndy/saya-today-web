@@ -1,8 +1,8 @@
 {{- range .BlogPages }}
 <hr class="first-of-type:hidden border-t-2 border-dotted border-main-hard">
-<div class="w-full flex flex-row items-stretch">
+<div {{ if .ToHighlight }}id="blog-page-highlighted"{{ end }} class="w-full flex flex-row items-stretch {{ if .ToHighlight }}bg-accent-light bg-paper{{ end }}">
     <div class="relative min-h-24 flex flex-col w-28 overflow-hidden shrink-0 mask-r-from-70% mask-r-to-100%">
-        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="{{ printf $.ThumbnailBaseUrl .Thumbnail }}">
+        <img onclick="return changeUrl('{{ .ArticleLink }}');" class="h-full min-h-24 w-full cursor-pointer select-none object-cover block absolute" src="{{ printf $.PhotoStorage.Thumbnail320p.BaseUrl .Thumbnail }}">
         <div class="w-full h-6 flex flex-row mt-auto relative">
             <div class="flex-1/2 flex flex-row justify-center select-none bg-linear-180 {{ if .Liked }}from-accent-deep/40 to-accent-deep/80 text-background-dark{{ else }}from-accent-light/40 to-accent-light/80 text-main-hard{{ end }}">
                 <svg viewBox="0 0 24 24"><use href="#icon-like"/></svg>
@@ -20,10 +20,20 @@
                 <span class="font-extrabold">{{ .Title }}</span>
                 <span class="italic">[{{ .ActionDate }}]</span>
             </a>
+            {{- if not $.HidePublishedTime }}
             <p class="basis-56 grow text-base italic text-secondary text-right">{{ .PublishedTime }}</p>
+            {{- end }}
         </div>
-        <p class="font-gentium">{{ .ShortDescription }}</p>
+        <p class="font-m-plus">{{ .ShortDescription }}</p>
+        {{- if not $.HideTags }}
         <p class="font-m-plus text-sm">{{ $.L.TagsLabel }} {{ template "catalogue-blog-card-tags.html" . }}</p>
+        {{- end }}
     </div>
 </div>
+{{- if .ToHighlight }}
+<script>
+    element = document.getElementById("blog-page-highlighted");
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+</script>
+{{- end }}
 {{- end }}

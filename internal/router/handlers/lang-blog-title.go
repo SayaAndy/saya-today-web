@@ -10,6 +10,7 @@ import (
 	"github.com/SayaAndy/saya-today-web/internal/blog"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yuin/goldmark"
 )
@@ -70,11 +71,15 @@ func (r *BlogPageHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements,
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
+	title := metadata.Title
+	if metadata.Medley != "" {
+		title += " // " + l10n.T.GetPath(lang, "Medleys", metadata.Medley).(string)
+	}
 
 	return []router.MetaField{
-		{Property: "og:title", Content: metadata.Title},
+		{Property: "og:title", Content: title},
 		{Property: "og:description", Content: fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate)},
-		{Property: "og:image", Content: fmt.Sprintf(supplements.PhotoStorage.Thumbnail320p.BaseUrl, metadata.Thumbnail)},
+		{Property: "og:image", Content: fmt.Sprintf(supplements.PhotoStorage.Thumbnail560p.BaseUrl, metadata.Thumbnail)},
 		{Property: "og:url", Content: fmt.Sprintf("%s/%s/blog/%s", templateMap["CanonicalEndpoint"], lang, c.Params("title"))},
 		{Property: "og:type", Content: "website"},
 		{Name: "twitter:card", Content: "summary_large_image"},
@@ -86,11 +91,15 @@ func (r *BlogPageHandler) AddLinkedData(c *fiber.Ctx, supplements *router.Supple
 	if err != nil {
 		return nil, fmt.Errorf("failed to read frontmatter of the desired blog post: %w", err)
 	}
+	title := metadata.Title
+	if metadata.Medley != "" {
+		title += " // " + l10n.T.GetPath(lang, "Medleys", metadata.Medley).(string)
+	}
 
 	return map[string]any{
 		"@context":      "https://schema.org",
 		"@type":         "Article",
-		"headline":      metadata.Title,
+		"headline":      title,
 		"description":   fmt.Sprintf("%s [%s]", metadata.ShortDescription, metadata.ActionDate),
 		"author":        map[string]string{"@type": "Person", "name": "Saya Andy"},
 		"datePublished": metadata.PublishedTime.UTC().Format(time.RFC3339),
@@ -102,10 +111,11 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	if err != nil {
 		return fiber.StatusBadRequest, fmt.Errorf("failed to get path from referer: %w", err)
 	}
+	title := pathParts[2]
 
-	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.BlogClient, lang+"/"+pathParts[2])
+	metadata, parsedMarkdown, err := readBlogPost(supplements.MarkdownRenderer, supplements.BlogClient, lang+"/"+title)
 	if err != nil {
-		return fiber.StatusNotFound, fmt.Errorf("failed to find '%s' post: %w", pathParts[2], err)
+		return fiber.StatusNotFound, fmt.Errorf("failed to find '%s' post: %w", title, err)
 	}
 
 	geolocationParts := strings.Split(metadata.Geolocation, " ")
@@ -122,12 +132,15 @@ func (r *BlogPageHandler) RenderBody(c *fiber.Ctx, supplements *router.Supplemen
 	templateMap["MapLocationY"] = y
 	templateMap["MapLocationAreaMeters"] = areaError
 	templateMap["Title"] = metadata.Title
+	templateMap["Codename"] = title
 	templateMap["ParsedMarkdown"] = template.HTML(parsedMarkdown)
 	templateMap["PublishedDate"] = metadata.PublishedTime.Format("2006-01-02 15:04:05 -07:00")
 	templateMap["ActionDate"] = metadata.ActionDate
 	templateMap["ShortDescription"] = metadata.ShortDescription
+	templateMap["Thumbnail"] = metadata.Thumbnail
+	templateMap["Medley"] = metadata.Medley
 
-	go supplements.ClientCache.View(c.IP(), pathParts[2])
+	go supplements.ClientCache.View(c.IP(), title)
 
 	return fiber.StatusOK, nil
 }

@@ -23,17 +23,17 @@
         <div class="flex flex-col justify-start items-start bg-paper bg-background-dark mb-8 shadow-[0.4rem_0.4rem_0.4rem_black]">
             <p class="text-3xl/loose sm:text-4xl/loose lg:text-5xl/loose tracking-widest uppercase w-full font-m-plus font-thin italic text-left
                 border-l-4 border-solid border-background-dark
-                bg-linear-to-r from-background-dark to-background-light">{{ .L.HomePage.Hymn1 }}</p>
+                bg-linear-to-r from-background-dark to-background-light">{{ l $.Lang "HomePage" "Hymn1" }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
-            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn2 }}</p>
-            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn3 }}</p>
-            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ .L.HomePage.Hymn4 }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ l $.Lang "HomePage" "Hymn2" }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ l $.Lang "HomePage" "Hymn3" }}</p>
+            <p class="text-xl/loose sm:text-2xl/loose lg:text-3xl/loose -indent-8 ml-12 p-1">{{ l $.Lang "HomePage" "Hymn4" }}</p>
         </div>
 
         <div class="flex flex-col justify-center items-center">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-m-plus font-thin italic text-left
                 border-l-1.5 border-solid border-background-dark
-                bg-linear-to-r from-background-dark to-background-light">{{ .L.HomePage.DidYouKnowThat }}</p>
+                bg-linear-to-r from-background-dark to-background-light">{{ l $.Lang "HomePage" "DidYouKnowThat" }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <ul class="w-full text-left list-[circle]">
                 <li class="ml-4 mb-1">{{ index .FunFacts 0 }}</li>
@@ -47,7 +47,7 @@
         <div class="flex flex-col justify-center items-start mb-4">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-m-plus font-thin italic text-left
                 border-l-1.5 border-solid border-background-dark
-                bg-linear-to-r from-background-dark to-background-light">{{ .L.HomePage.Contacts }}</p>
+                bg-linear-to-r from-background-dark to-background-light">{{ l $.Lang "HomePage" "Contacts" }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <a href="https://t.me/EarlInisMona">
                 <svg class="w-4 h-4 mr-1 inline" viewBox="0 0 24 24"><use href="#icon-telegram"/></svg>
@@ -122,22 +122,22 @@
         <div class="flex flex-col justify-center items-center">
             <p class="text-xl sm:text-2xl lg:text-3xl p-1 w-full font-m-plus font-thin italic text-left
                 border-l-1.5 border-solid border-color-background-dark
-                bg-linear-to-r from-background-dark to-background-light">{{ .L.HomePage.SidebarDescription }}</p>
+                bg-linear-to-r from-background-dark to-background-light">{{ l $.Lang "HomePage" "SidebarDescription" }}</p>
             <hr class="w-full border-t-2 border-dotted border-main-hard mb-1">
             <div class="w-full grid grid-cols-[1fr_4fr] content-center items-center
                 [&>*:nth-child(4n+2)]:bg-background-medium/50 [&>*:nth-child(4n+3)]:bg-background-medium/50" style="container-type: inline-size;">
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-back"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.BackDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "BackDescription" }}</p>
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-logo"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.HomePageDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "HomePageDescription" }}</p>
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-newspaper"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.BlogSearchDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "BlogSearchDescription" }}</p>
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-map"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.MarkerMapDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "MarkerMapDescription" }}</p>
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-palette"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.ThemeSwitchDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "ThemeSwitchDescription" }}</p>
                 <svg viewBox="0 0 24 24" class="h-full w-[15cqi] context-center text-main-hard"><use href="#icon-account"/></svg>
-                <p class="p-1 w-[85cqi]">{{ .L.HomePage.AccountDescription }}</p>
+                <p class="p-1 w-[85cqi]">{{ l $.Lang "HomePage" "AccountDescription" }}</p>
             </div>
         </div>
     </div>
