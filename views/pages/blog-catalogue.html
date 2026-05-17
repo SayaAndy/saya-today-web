@@ -51,57 +51,57 @@
             class="tags-list relative flex flex-col w-full bg-paper bg-background-light">
             <div class="flex flex-col overflow-y-auto">
                 <fieldset>
-                    <legend class="font-bold w-full text-center">{{ .L.BlogSearch.OrderByHeader }}</legend>
+                    <legend class="font-bold w-full text-center">{{ l $.Lang "BlogSearch" "OrderByHeader" }}</legend>
                     <div class="md:flex flex-col grid grid-cols-3 grid-rows-2 grid-flow-col">
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.TitleOrdered }}
+                                {{ l $.Lang "BlogSearch" "TitleOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-letter-asc"/></svg>
                             </label>
                         </div>
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.TitleOrdered }}
+                                {{ l $.Lang "BlogSearch" "TitleOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-letter-desc"/></svg>
                             </label>
                         </div>
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.ActionDateOrdered }}
+                                {{ l $.Lang "BlogSearch" "ActionDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-asc"/></svg>
                             </label>
                         </div>
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.ActionDateOrdered }}
+                                {{ l $.Lang "BlogSearch" "ActionDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-desc"/></svg>
                             </label>
                         </div>
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.PublicationDateOrdered }}
+                                {{ l $.Lang "BlogSearch" "PublicationDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-asc"/></svg>
                             </label>
                         </div>
                         <div>
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}>
-                                {{ .L.BlogSearch.PublicationDateOrdered }}
+                                {{ l $.Lang "BlogSearch" "PublicationDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-desc"/></svg>
                             </label>
                         </div>
                     </div>
                 </fieldset>
                 <fieldset class="mt-1">
-                    <legend class="font-bold w-full text-center">{{ .L.BlogSearch.TagsHeader }}</legend>
+                    <legend class="font-bold w-full text-center">{{ l $.Lang "BlogSearch" "TagsHeader" }}</legend>
                     <div class="md:flex flex-col grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 grid-flow-row-dense">
                         <div class="m-1">
-                            <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();" class="bg-accent-light rounded border-transparent text-accent-deep focus:border-transparent focus:bg-background-dark focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep"> {{ .L.BlogSearch.ChooseAllTags }}</label>
+                            <label class="font-bold"><input type="checkbox" id="tagsAllCheckbox" onclick="selectAll();" class="bg-accent-light rounded border-transparent text-accent-deep focus:border-transparent focus:bg-background-dark focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep"> {{ l $.Lang "BlogSearch" "ChooseAllTags" }}</label>
                         </div>
                         {{- range .Tags }}
                         <div class="m-1">

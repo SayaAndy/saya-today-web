@@ -92,8 +92,9 @@ func (idx *Index) UnmarshalJSON(data []byte) error {
 }
 
 type MedleyEntry struct {
-	Codename string   `json:"codename"`
-	Content  []string `json:"content"`
+	Codename   string            `json:"codename"`
+	Localnames map[string]string `json:"localnames"`
+	Content    []string          `json:"content"`
 }
 
 type MedleyPageEntry struct {

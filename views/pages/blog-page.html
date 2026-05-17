@@ -11,12 +11,12 @@
                         {{ .Title }}
                     </h1>
                     <p class="block grow text-lg font-gentium text-secondary">
-                        <b>{{ .L.Metadata.Published }}</b>: 
+                        <b>{{ l $.Lang "Metadata" "Published" }}</b>: 
                         <time datetime="{{ .PublishedDate }}" hx-get="/api/v1/tz" hx-vals='js:{timestamp: "{{ .PublishedDate }}", tz: clientTimeZone}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
                             {{ .PublishedDate }}
                         </time>
                     </p>
-                    <p class="block grow text-lg font-gentium text-secondary"><b>{{ .L.Metadata.Action }}</b>: {{ .ActionDate }}</p>
+                    <p class="block grow text-lg font-gentium text-secondary"><b>{{ l $.Lang "Metadata" "Action" }}</b>: {{ .ActionDate }}</p>
                     <p class="block grow text-md font-gentium font-thin text-main-hard">{{ .ShortDescription }}</p>
                 </div>
             </div>
@@ -25,7 +25,7 @@
         {{- if .Medley }}
         <div class="overflow-y-auto grow-2 shrink-0 flex-1 bg-paper bg-background-dark shadow-elevation-2 -mr-8 sm:-mt-4 max-sm:-ml-8 z-2">
             <h2 class="text-2xl font-gentium font-extrabold text-main-hard tracking-[.0125rem] ml-2">
-                {{ .Medley }}
+                {{ l .Lang "Medleys" .Medley }}
             </h2>
             <hr class="block border-t-2 my-1 border-dotted border-main-hard w-full">
             <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone, medley: "{{ .Medley }}", sort: "medley", hideTags: true, hidePublishedTime: true, highlight: "{{ .Codename }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load"

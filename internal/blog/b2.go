@@ -2,6 +2,7 @@ package blog
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"slices"
 	"strings"
@@ -35,6 +36,20 @@ func NewB2Client(cfg *config.StorageConfig) (Client, error) {
 	}
 
 	return &B2Client{b2cl: b2cl, bucket: bucket, prefix: b2cfg.Prefix}, nil
+}
+
+func (c *B2Client) GetMedleys() ([]MedleyEntry, error) {
+	idxRaw, err := c.readAll(MedleysIndexFileName)
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", MedleysIndexFileName, err)
+	}
+
+	var idx []MedleyEntry
+	if err := json.Unmarshal(idxRaw, &idx); err != nil {
+		return nil, fmt.Errorf("unmarshal %s: %w", MedleysIndexFileName, err)
+	}
+
+	return idx, nil
 }
 
 func (c *B2Client) Scan(prefix string) ([]*Page, error) {
@@ -102,7 +117,11 @@ func (c *B2Client) Scan(prefix string) ([]*Page, error) {
 }
 
 func (c *B2Client) ReadAll(path string) ([]byte, error) {
-	obj := c.bucket.Object(c.prefix + path)
+	return c.readAll(c.prefix + path)
+}
+
+func (c *B2Client) readAll(path string) ([]byte, error) {
+	obj := c.bucket.Object(path)
 	if obj == nil {
 		return nil, fmt.Errorf("failed to reference object in B2 bucket")
 	}

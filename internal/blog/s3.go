@@ -10,13 +10,12 @@ import (
 
 	"github.com/SayaAndy/saya-today-web/config"
 	"github.com/SayaAndy/saya-today-web/internal/frontmatter"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
-
-const s3ScanConcurrency = 32
 
 type S3Client struct {
 	prefix     string
@@ -58,6 +57,20 @@ func NewS3Client(cfg *config.StorageConfig) (Client, error) {
 	s3cl := s3.NewFromConfig(awsCfg, s3Opts...)
 
 	return &S3Client{s3cfg.Prefix, s3cfg.BucketName, s3cl}, nil
+}
+
+func (c *S3Client) GetMedleys() ([]MedleyEntry, error) {
+	idxRaw, err := c.readAll(MedleysIndexFileName)
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", MedleysIndexFileName, err)
+	}
+
+	var idx []MedleyEntry
+	if err := json.Unmarshal(idxRaw, &idx); err != nil {
+		return nil, fmt.Errorf("unmarshal %s: %w", MedleysIndexFileName, err)
+	}
+
+	return idx, nil
 }
 
 func (c *S3Client) Scan(prefix string) ([]*Page, error) {
@@ -153,6 +166,13 @@ func (c *S3Client) Scan(prefix string) ([]*Page, error) {
 					},
 				})
 			}
+		}
+	}
+
+	medleys, _ := c.GetMedleys()
+	for _, medley := range medleys {
+		for locale, localname := range medley.Localnames {
+			l10n.T.SetPath(localname, true, locale, "Medleys", medley.Codename)
 		}
 	}
 

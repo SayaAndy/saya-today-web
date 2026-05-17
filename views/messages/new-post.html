@@ -1,5 +1,5 @@
 {{ define "body" }}
-<p>{{ .L.Mail.NewPost.Intro }}</p>
+<p>{{ l $.Lang "Mail" "NewPost" "Intro" }}</p>
 <table>
     <tr>
         <td rowspan="3"><a href="https://{{ .ClientHost }}/{{ .Lang }}/blog/{{ .Post.FileName }}"><img src="{{ printf .ThumbnailBaseUrl .Post.Metadata.Thumbnail }}"></a></td>
@@ -9,7 +9,7 @@
         <td class="darkened" style="font-size: 16px">{{ .Post.Metadata.ShortDescription }}</td>
     </tr>
     <tr>
-        <td class="darkened" style="font-size: 16px">{{ .L.Mail.NewPost.CapturedOn }} {{ .Post.Metadata.ActionDate }}</td>
+        <td class="darkened" style="font-size: 16px">{{ l $.Lang "Mail" "NewPost" "CapturedOn" }} {{ .Post.Metadata.ActionDate }}</td>
     </tr>
 </table>
 {{ end }}

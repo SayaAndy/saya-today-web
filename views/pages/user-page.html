@@ -6,16 +6,16 @@
         <div class="flex flex-row w-full mb-4 z-21">
             <div class="flex flex-col w-full sm:flex-3/5 grow-0">
                 <label class="block text-main-medium font-bold mb-1 z-22">
-                    {{ .L.UserProfile.EmailHeader }}
+                    {{ l $.Lang "UserProfile" "EmailHeader" }}
                 </label>
                 <input class="bg-background-medium appearance-none border-background-medium rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-background-light focus:text-main-hard z-22"
-                id="email-input" name="email" type="text" value="{{ .Email }}" placeholder="{{ .L.UserProfile.TypeEmail }}" maxlength="64"
+                id="email-input" name="email" type="text" value="{{ .Email }}" placeholder="{{ l $.Lang "UserProfile" "TypeEmail" }}" maxlength="64"
                 data-validated-email="{{ .Email }}" onchange="checkIfValidated(this);">
             </div>
         </div>
         <button class="w-max mx-auto bg-main-hard hover:bg-main-medium active:bg-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/send-verification-code" hx-target="#email-message" hx-swap="outerHTML" hx-indicator="#email-form">
-            {{ .L.UserProfile.SendCodeButton }}
+            {{ l $.Lang "UserProfile" "SendCodeButton" }}
         </button>
     </form>
     <div id="email-message" class="bg-paper bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
@@ -27,7 +27,7 @@
         <div class="flex flex-row w-full mb-4 z-21">
             <div class="flex flex-col w-full sm:flex-2/5 grow-0">
                 <label class="block text-main-medium font-bold ml-1 z-22">
-                    {{ .L.UserProfile.VerificationCodeHeader }}
+                    {{ l $.Lang "UserProfile" "VerificationCodeHeader" }}
                 </label>
                 <input class="bg-background-medium appearance-none border-background-medium rounded ml-6 mr-4 py-2 px-4 text-main-medium leading-tight inset-shadow-[0_0_0.4rem_black] focus:outline-none focus:bg-background-light focus:text-main-hard z-22"
                 name="email_code" type="text" value="{{ .EmailCode }}" placeholder="0123456789ABCDEF" maxlength="16" autocapitalize="characters">
@@ -35,7 +35,7 @@
         </div>
         <button class="w-max mx-auto bg-main-hard hover:bg-main-medium active:bg-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
             hx-post="/api/v1/email/verify" hx-target="#verification-message" hx-swap="outerHTML" hx-indicator="#email-verification-form">
-            {{ .L.UserProfile.VerifyButton }}
+            {{ l $.Lang "UserProfile" "VerifyButton" }}
         </button>
     </form>
     <div id="verification-message" class="bg-paper bg-background-dark text-main-soft z-26 w-full inset-shadow-[0_0_0.4rem_black] py-2 px-4 text-center"></div>
@@ -47,17 +47,17 @@
     <form id="subs-form" class="w-full mb-2 flex flex-col relative crossable">
         <div class="flex flex-col w-full mb-4 z-21">
             <label class="block text-main-medium font-bold mb-1 z-22">
-                {{ .L.UserProfile.SubscriptionHeader }}
+                {{ l $.Lang "UserProfile" "SubscriptionHeader" }}
             </label>
             <div class="flex flex-col sm:flex-row w-full">
                 <div class="m-1 w-1/3">
-                    <label><input class="mr-1" type="radio" id="tagsNone" name="tags" value="none" {{ if eq .TagsPicked "none" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsNone }}</label>
+                    <label><input class="mr-1" type="radio" id="tagsNone" name="tags" value="none" {{ if eq .TagsPicked "none" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ l $.Lang "UserProfile" "TagsNone" }}</label>
                 </div>
                 <div class="m-1 w-1/3">
-                    <label><input class="mr-1" type="radio" id="tagsAll" name="tags" value="all" {{ if eq .TagsPicked "all" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsAll }}</label>
+                    <label><input class="mr-1" type="radio" id="tagsAll" name="tags" value="all" {{ if eq .TagsPicked "all" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ l $.Lang "UserProfile" "TagsAll" }}</label>
                 </div>
                 <div class="m-1 w-1/3">
-                    <label><input class="mr-1" type="radio" id="tagsSpecific" name="tags" value="specific" {{ if eq .TagsPicked "specific" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ .L.UserProfile.TagsSpecific }}</label>
+                    <label><input class="mr-1" type="radio" id="tagsSpecific" name="tags" value="specific" {{ if eq .TagsPicked "specific" }}checked{{ end }} onclick="toggleTagsPick(this);">{{ l $.Lang "UserProfile" "TagsSpecific" }}</label>
                 </div>
             </div>
             <div id="pick-tags-form" class="flex flex-col w-full relative crossable">
@@ -80,7 +80,7 @@
             </div>
             <button class="w-max mx-auto bg-color-main-hard hover:bg-main-medium active:bg-color-main-soft active:inset-shadow-[0.2em_0.2em_0.2rem_black] transition-colors transition-300 text-background-light font-bold py-2 px-4 rounded z-22"
                 hx-put="/api/v1/subs" hx-target="#subs-message" hx-swap="outerHTML" hx-indicator="#subs-form">
-                {{ .L.UserProfile.SaveButton }}
+                {{ l $.Lang "UserProfile" "SaveButton" }}
             </button>
         </div>
     </form>
@@ -168,7 +168,7 @@ function addTag(name) {
     found = [...existingTags].find(opt => opt.value===name);
     if (!found) {
         subsMessage.classList.remove("hidden");
-        subsMessage.innerHTML = "{{ .L.UserProfile.TagDoesNotExist }}".replace("{}", name);
+        subsMessage.innerHTML = "{{ l $.Lang "UserProfile" "TagDoesNotExist" }}".replace("{}", name);
         return;
     }
 
@@ -177,7 +177,7 @@ function addTag(name) {
     found = [...subscribedTags].find(opt => opt.value===name);
     if (found) {
         subsMessage.classList.remove("hidden");
-        subsMessage.innerHTML = "{{ .L.UserProfile.TagAlreadyAdded }}".replace("{}", name);
+        subsMessage.innerHTML = "{{ l $.Lang "UserProfile" "TagAlreadyAdded" }}".replace("{}", name);
         return;
     }
 

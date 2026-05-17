@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -39,24 +40,24 @@ func (r *UnsubscribeHandler) Render(c *fiber.Ctx, supplements *router.Supplement
 	if unsubscribeCode == "" {
 		statusColor = "0, 0, 255"
 		statusEmoji = "(╭ರ_•́)"
-		statusText = supplements.Localization[lang].UnsubscribePage.UnsetCode
+		statusText = l10n.T.GetPath(lang, "UnsubscribePage", "UnsetCode").(string)
 		status = fiber.ErrBadRequest.Code
 	} else if clientError, serverError := supplements.Mailer.Unsubscribe(unsubscribeCode); clientError != nil {
 		slog.Info("got a client error when unsubscribing", slog.String("error", clientError.Error()))
 		statusColor = "255, 0, 0"
 		statusEmoji = "(͠≖~≖  ͡ )"
-		statusText = supplements.Localization[lang].UnsubscribePage.InvalidCode
+		statusText = l10n.T.GetPath(lang, "UnsubscribePage", "InvalidCode").(string)
 		status = fiber.ErrBadRequest.Code
 	} else if serverError != nil {
 		slog.Error("got a server error when unsubscribing", slog.String("error", serverError.Error()))
 		statusColor = "255, 128, 0"
 		statusEmoji = "( ˶°ㅁ°) !!"
-		statusText = supplements.Localization[lang].UnsubscribePage.OnServerError
+		statusText = l10n.T.GetPath(lang, "UnsubscribePage", "OnServerError").(string)
 		status = fiber.ErrInternalServerError.Code
 	} else {
 		statusColor = "0, 255, 0"
 		statusEmoji = "♡⸜(˶˃ ᵕ ˂˶)⸝♡"
-		statusText = supplements.Localization[lang].UnsubscribePage.Success
+		statusText = l10n.T.GetPath(lang, "UnsubscribePage", "Success").(string)
 		status = fiber.StatusOK
 	}
 

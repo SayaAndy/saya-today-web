@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -49,7 +50,7 @@ func (r *OngoingVerificationHandler) Render(c *fiber.Ctx, supplements *router.Su
 	if !isAllowed {
 		sterileDataset["striked-end-time"] = template.HTMLAttr(fmt.Sprintf("data-striked-end-time=\"%d\"", whenAllowed.UnixMilli()))
 		templateMap["Status"] = "Neutral"
-		templateMap["Message"] = strings.ReplaceAll(supplements.Localization[lang].UserProfile.DelayTilVerification, "{}", whenAllowed.Format("2006-01-02 15:04:05 MST"))
+		templateMap["Message"] = strings.ReplaceAll(l10n.T.GetPath(lang, "UserProfile", "DelayTilVerification").(string), "{}", whenAllowed.Format("2006-01-02 15:04:05 MST"))
 	} else {
 		templateMap["Status"] = "OK"
 		templateMap["Message"] = ""

@@ -3,19 +3,19 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="{{ .L.GlobalMap.Description }}" />
-        <title>{{ .L.GlobalMap.Header }} // SAYA.UZ</title>
-        <meta property="og:title" content="{{ .L.GlobalMap.Header }}" />
+        <meta name="description" content="{{ l $.Lang "GlobalMap" "Description" }}" />
+        <title>{{ l $.Lang "GlobalMap" "Header" }} // SAYA.UZ</title>
+        <meta property="og:title" content="{{ l $.Lang "GlobalMap" "Header" }}" />
         <meta
             property="og:description"
-            content="{{ .L.GlobalMap.Description }}"
+            content="{{ l $.Lang "GlobalMap" "Description" }}"
         />
         <meta
             property="og:url"
             content="{{ .CanonicalEndpoint }}/{{ .Lang }}/map"
         />
         <meta property="og:type" content="site" />
-        <title>{{ .L.GlobalMap.Header }} // SAYA.UZ</title>
+        <title>{{ l $.Lang "GlobalMap" "Header" }} // SAYA.UZ</title>
         <link rel="canonical" href="{{ .CanonicalEndpoint }}/{{ .Lang }}/map" />
         <link
             rel="stylesheet"

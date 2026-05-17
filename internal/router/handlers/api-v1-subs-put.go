@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/SayaAndy/saya-today-web/internal/mailer"
 	"github.com/SayaAndy/saya-today-web/internal/router"
+	"github.com/SayaAndy/saya-today-web/l10n"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -52,18 +53,18 @@ func (r *PutSubsHandler) Render(c *fiber.Ctx, supplements *router.Supplements, l
 		subscriptionTypeEnum = mailer.Specific
 	default:
 		templateMap["Status"] = "Failed"
-		templateMap["Message"] = supplements.Localization[lang].UserProfile.SubscribeInvalidType
+		templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "SubscribeInvalidType").(string)
 		return fiber.StatusUnprocessableEntity, nil
 	}
 
 	specificTags := c.FormValue("tags_picked")
 	if err = supplements.Mailer.Subscribe(supplements.Mailer.GetHash(c.IP()), subscriptionTypeEnum, specificTags); err != nil {
 		templateMap["Status"] = "Failed"
-		templateMap["Message"] = supplements.Localization[lang].UserProfile.FailedToSubscribe
+		templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "FailedToSubscribe").(string)
 		return fiber.StatusUnprocessableEntity, nil
 	}
 
 	templateMap["Status"] = "OK"
-	templateMap["Message"] = supplements.Localization[lang].UserProfile.SubscribedSuccessfully
+	templateMap["Message"] = l10n.T.GetPath(lang, "UserProfile", "SubscribedSuccessfully").(string)
 	return fiber.StatusOK, nil
 }
