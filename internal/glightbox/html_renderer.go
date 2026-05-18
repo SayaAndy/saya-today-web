@@ -151,12 +151,12 @@ func (r *GLightboxHTMLRenderer) renderGLightbox(w util.BufWriter, source []byte,
 
 		w.WriteString(strings.ReplaceAll(`
 <div class="items-center flex flex-col">
-	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
+	<hr class="border-t-[0.375rem] border-dotted border-main-hard my-2 w-24 ml-auto mr-auto">
 	<div class="grid masonry-grid-{id}">
 		<div class="grid-sizer grid-sizer-{id}"></div>
 		`+strings.Join(elements, "\n")+`
 	</div>
-	<hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
+	<hr class="border-t-[0.375rem] border-dotted border-main-hard my-2 w-24 ml-auto mr-auto">
 </div>
 
 <script>

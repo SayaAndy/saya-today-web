@@ -1,9 +1,8 @@
 {{ define "body" }}
 <input class="htmx-exit-trigger" type="hidden" name="codename" value="{{ .Codename }}">
-<div class="sticky top-0 left-0 w-full h-[100cqb] -mb-[100cqb] inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
-<article class="relative bg-paper bg-background-light flex flex-col px-8 py-4 overflow-y-auto">
-    <div class="flex flex-col sm:flex-row h-[30cqb] sm:h-[15cqb]">
-        <div class="grow shrink-2 flex-1 overflow-y-auto -ml-8 -mt-4 {{if .Medley}}max-sm:-mr-8{{else}}-mr-8{{end}} z-1 shadow-elevation-2">
+<div class="relative bg-paper bg-background-light flex flex-col py-4 overflow-y-auto">
+    <div class="flex flex-col sm:flex-row h-[30cqb] sm:h-[15cqb] shadow-elevation-6">
+        <div class="grow shrink-2 flex-1 overflow-y-auto -mt-4 z-1 shadow-elevation-3">
             <div class="multitone min-h-full" style="--multitone-bg: url({{ printf $.PhotoStorage.Thumbnail560p.BaseUrl .Thumbnail }});">
                 <div class="ml-8 py-4">
                     <h1 class="max-xs:flex flex-row content-center [@media(max-height:32rem)]:block hidden font-gentium text-2xl font-bold italic text-main-hard tracking-[.0125rem] mb-1">
@@ -21,13 +20,12 @@
                 </div>
             </div>
         </div>
-        <hr class="block sm:hidden border-t-3 bg-paper bg-background-dark border-dotted border-main-hard w-full">
+        <hr class="block sm:hidden border-t-[0.1875rem] bg-paper bg-background-dark border-dotted border-main-hard w-full">
         {{- if .Medley }}
-        <div class="overflow-y-auto grow-2 shrink-0 flex-1 bg-paper bg-background-dark shadow-elevation-2 -mr-8 sm:-mt-4 max-sm:-ml-8 z-2">
-            <h2 class="text-2xl font-gentium font-extrabold text-main-hard tracking-[.0125rem] ml-2">
+        <div class="overflow-y-auto grow-2 shrink-0 flex-1 bg-paper bg-background-dark shadow-elevation-3 sm:-mt-4 z-2">
+            <h2 class="text-2xl font-gentium font-extrabold text-main-hard tracking-[.0125rem] ml-2 mb-2 border-b-[0.25rem] border-dotted w-fit">
                 {{ l .Lang "Medleys" .Medley }}
             </h2>
-            <hr class="block border-t-2 my-1 border-dotted border-main-hard w-full">
             <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone, medley: "{{ .Medley }}", sort: "medley", hideTags: true, hidePublishedTime: true, highlight: "{{ .Codename }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load"
                 class="grow flex flex-col pr-2">
                 Loading...
@@ -35,14 +33,16 @@
         </div>
         {{- end }}
     </div>
-    <hr class="block border-t-3 mb-2 border-dotted border-main-hard w-full ml-auto mr-auto">
-    {{ .ParsedMarkdown }}
+    <hr class="block border-t-[0.375rem] w-24 mx-auto my-4 border-dotted border-main-hard">
+    <article class="px-8 flex flex-col">
+        {{ .ParsedMarkdown }}
+    </article>
 {{- if .MapLocationX }}
-    <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
-    <div id="map-outer-container" class="relative p-1 flex-none ml-auto mr-auto w-[80%] lg:w-[60%] h-[30dvh] md:h-[40dvh]"
+    <hr class="border-t-[0.375rem] border-dotted border-main-hard my-2 w-24 mx-auto">
+    <div id="map-outer-container" class="relative p-1 flex-none mx-auto w-[80%] lg:w-[60%] h-[30dvh] md:h-[40dvh]"
         hx-get="/api/v1/map" hx-vals='{"lang": "{{ .Lang }}", "codename": "{{ .Codename }}", "zoom": 8}' hx-target="this" hx-swap="innerHTML" hx-trigger="load">
     </div>
-    <hr class="border-t-3 border-dotted border-main-hard mt-1 mb-2 w-[80%] ml-auto mr-auto">
+    <hr class="border-t-[0.375rem] border-dotted border-main-hard my-2 w-24 mx-auto">
 
     <script>
         var lightbox = GLightbox({

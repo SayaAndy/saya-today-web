@@ -412,6 +412,7 @@
                 localStorage.setItem("theme", theme);
                 document.body.setAttribute("data-theme", theme);
                 switchThemeDecor(theme);
+                switchColorScheme(matchMedia('(prefers-color-scheme: dark)').matches);
             }
 
             const savedTheme = localStorage.getItem("theme") || "lilac";
@@ -637,15 +638,15 @@
                 class="flex flex-1 min-h-0 z-1 bg-paper bg-background shadow-elevation-3 @container/body"
             >
                 <div
-                    class="bg-paper bg-background-dark border-r-2 border-dashed border-main-hard"
+                    class="bg-paper bg-background-dark border-r-[0.25rem] border-dashed border-main-hard"
                 ></div>
 
                 <div
-                    class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative pt-4 md:pr-4"
+                    class="max-h-full max-w-full flex flex-col grow bg-paper bg-background-dark relative md:pr-4"
                 >
                     <header
                         id="general-page-header"
-                        class="max-xs:hidden [@media(max-height:32rem)]:hidden flex flex-col ml-8 basis-8"
+                        class="max-xs:hidden [@media(max-height:32rem)]:hidden pt-4 flex flex-col ml-8 basis-8"
                     >{{ .RenderedHeader }}</header>
                     <div
                         id="general-page-header-trigger"
@@ -656,12 +657,12 @@
                     ></div>
 
                     <hr
-                        class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-4 border-dotted border-main-hard mb-2"
+                        class="max-xs:hidden [@media(max-height:32rem)]:hidden border-t-[0.5rem] border-dotted border-main-hard mb-2"
                     />
 
                     <main
                         id="general-page-body"
-                        class="relative flex-1 overflow-y-auto @container-size"
+                        class="relative flex-1 overflow-y-auto @container-size inset-shadow-elevation-8"
                     >{{ .RenderedBody }}</main>
                     <div
                         id="general-page-body-trigger"
@@ -683,14 +684,10 @@
                         hx-target="#general-page-footer"
                         hx-swap="innerHTML"
                     ></div>
-
-                    <hr
-                        class="border-t-4 border-dotted border-main-hard mb-2"
-                    />
                 </div>
 
                 <div
-                    class="bg-paper bg-background-dark shadow-2xl border-l-2 border-dotted border-main-hard"
+                    class="bg-paper bg-background-dark shadow-2xl border-l-[0.25rem] border-dotted border-main-hard"
                 ></div>
             </div>
         </div>

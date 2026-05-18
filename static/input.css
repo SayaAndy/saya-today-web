@@ -22,24 +22,38 @@
     --color-main-dark-hard: var(--color-main-dark-hard);
     --color-main-dark-medium: var(--color-main-dark-medium);
     --color-main-dark-soft: var(--color-main-dark-soft);
-    --shadow-elevation-flat: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    --shadow-elevation-flat: 0px 0.0625rem 0.0625rem 0px rgba(0, 0, 0, 0.2);
+    --inset-shadow-elevation-flat: inset 0px 0.0625rem 0.125rem 0px rgba(0, 0, 0, 0.15);
     --shadow-elevation-0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-5: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-7: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-9: 0px 5px 6px -3px rgba(0, 0, 0, 0.2), 0px 9px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 16px 2px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-10: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-11: 0px 6px 7px -4px rgba(0, 0, 0, 0.2), 0px 11px 15px 1px rgba(0, 0, 0, 0.14), 0px 4px 20px 3px rgba(0, 0, 0, 0.12);
-    --shadow-elevation-12: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-0: inset 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    --shadow-elevation-1: 0px 0.125rem 0.0625rem -0.0625rem rgba(0, 0, 0, 0.2), 0px 0.0625rem 0.0625rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.1875rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-1: inset 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.2);
+    --shadow-elevation-2: 0px 0.1875rem 0.0625rem -0.125rem rgba(0, 0, 0, 0.2), 0px 0.125rem 0.125rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.3125rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-2: inset 0px 0.1875rem 0.375rem 0px rgba(0, 0, 0, 0.22);
+    --shadow-elevation-3: 0px 0.1875rem 0.1875rem -0.125rem rgba(0, 0, 0, 0.2), 0px 0.1875rem 0.25rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.5rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-3: inset 0px 0.25rem 0.5rem 0px rgba(0, 0, 0, 0.25);
+    --shadow-elevation-4: 0px 0.125rem 0.25rem -0.0625rem rgba(0, 0, 0, 0.2), 0px 0.25rem 0.3125rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.625rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-4: inset 0px 0.3125rem 0.625rem 0px rgba(0, 0, 0, 0.27);
+    --shadow-elevation-5: 0px 0.1875rem 0.3125rem -0.0625rem rgba(0, 0, 0, 0.2), 0px 0.3125rem 0.5rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.875rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-5: inset 0px 0.375rem 0.75rem 0px rgba(0, 0, 0, 0.3);
+    --shadow-elevation-6: 0px 0.1875rem 0.3125rem -0.0625rem rgba(0, 0, 0, 0.2), 0px 0.375rem 0.625rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 1.125rem 0px rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-6: inset 0px 0.4375rem 0.875rem 0px rgba(0, 0, 0, 0.32);
+    --shadow-elevation-7: 0px 0.25rem 0.3125rem -0.125rem rgba(0, 0, 0, 0.2), 0px 0.4375rem 0.625rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.125rem 1rem 0.0625rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-7: inset 0px 0.5rem 1rem 0px rgba(0, 0, 0, 0.35);
+    --shadow-elevation-8: 0px 0.3125rem 0.3125rem -0.1875rem rgba(0, 0, 0, 0.2), 0px 0.5rem 0.625rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.1875rem 0.875rem 0.125rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-8: inset 0px 0.5625rem 1.125rem 0px rgba(0, 0, 0, 0.37);
+    --shadow-elevation-9: 0px 0.3125rem 0.375rem -0.1875rem rgba(0, 0, 0, 0.2), 0px 0.5625rem 0.75rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.1875rem 1rem 0.125rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-9: inset 0px 0.625rem 1.25rem 0px rgba(0, 0, 0, 0.4);
+    --shadow-elevation-10: 0px 0.375rem 0.375rem -0.1875rem rgba(0, 0, 0, 0.2), 0px 0.625rem 0.875rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.25rem 1.125rem 0.1875rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-10: inset 0px 0.6875rem 1.375rem 0px rgba(0, 0, 0, 0.42);
+    --shadow-elevation-11: 0px 0.375rem 0.4375rem -0.25rem rgba(0, 0, 0, 0.2), 0px 0.6875rem 0.9375rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.25rem 1.25rem 0.1875rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-11: inset 0px 0.75rem 1.5rem 0px rgba(0, 0, 0, 0.45);
+    --shadow-elevation-12: 0px 0.4375rem 0.5rem -0.25rem rgba(0, 0, 0, 0.2), 0px 0.75rem 1.0625rem 0.125rem rgba(0, 0, 0, 0.14), 0px 0.3125rem 1.375rem 0.25rem rgba(0, 0, 0, 0.12);
+    --inset-shadow-elevation-12: inset 0px 0.8125rem 1.625rem 0px rgba(0, 0, 0, 0.47);
 }
 
 html {
-    font-size: 12px;
+    font-size: clamp(11px, min(1dvw, 1dvh) + 7.6px, 16px);
     --crossed-out: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='30' height='30' patternTransform='scale(1) rotate(65)'><rect x='0' y='0' width='100%' height='100%' fill='%232b2b3100' /><path d='M30 15L22.5 30 15 15 22.5 0zm-15 0L7.5 30 0 15 7.5 0z' stroke-width='0.6' stroke='%23ffffffff' fill='none' /></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)' /></svg>");
     --bg-paper: url(data:image/webp;base64,UklGRi4BAABXRUJQVlA4ICIBAABQCQCdASqAAIAAPm02lUmkIqIkIImIgA2JaW3rMFmGDAOKLAoJtP591ByFR74Tun2DP+Lygpfsz5FH7+cKgxi2Islfd03i5AJdXUfU0SDc8SXYAAD++hlzeYAJWQEF8ZdkJdlcA+5btZg0FMGaso8SHoBph0qAOQysElJ5C5SJFNoKIV1J550UyL7Y9Gh0/c/uzLnBmr8lvz7k1WeA81H4S5ViU/wBqa7aM1m8D9rDtrk8cSTqx+xWF6MS8UfZGSsks6CT/igtgv6syFN9uNA3LjnjiCJKYOvFcMkX+jB2578GWVo3nyLaM1QNPYCxn3TiUbnf7U0MdD2NsBpg1+Jd1wu6yW/U+goN+IQS6Nt4RMWltVcZHlxrneKJi0SobO0AAA==);
     --split-right-background: unset;
@@ -73,27 +87,21 @@ body {
     scrollbar-color: var(--color-background-light) var(--color-main-soft);
 }
 
-@media screen and (min-width: 640px) and (min-height: 640px) {
-    html {
-        font-size: 14px;
-    }
-}
-
 @media screen and (min-width: 900px) and (min-height: 900px) {
     html {
-        font-size: 16px;
+        font-size: clamp(16px, min(1dvw, 1dvh) + 7px, 20px);
     }
 }
 
 @media screen and (min-width: 1400px) and (min-height: 1400px) {
     html {
-        font-size: 20px;
+        font-size: clamp(20px, min(1dvw, 1dvh) + 6px, 24px);
     }
 }
 
 @media screen and (min-width: 1920px) and (min-height: 1920px) {
     html {
-        font-size: 24px;
+        font-size: calc(min(1dvw, 1dvh) + 4.8px);
     }
 }
 
@@ -527,14 +535,6 @@ form.crossable.htmx-request input {
         calc(var(--squares-and-triangles-background-height-coef) * 1rem);
 }
 
-.inset-shadow {
-    box-shadow:
-        inset 0dvh 1dvh 1dvh -1dvh rgba(75, 81, 58, 0.5),
-        inset 1dvh 0dvh 1dvh -1dvh rgba(75, 81, 58, 0.5),
-        inset -1dvh 0dvh 1dvh -1dvh rgba(75, 81, 58, 0.5),
-        inset 0dvh -0.5dvh rgba(75, 81, 58, 0.5);
-}
-
 .text-stroke-\(--color-sidebar-stroke\) {
     -webkit-text-stroke-color: var(--color-sidebar-stroke);
 }
@@ -547,7 +547,7 @@ form.crossable.htmx-request input {
     position: fixed;
     width: 12rem;
     height: 12rem;
-    box-shadow: 0.25rem 0.25rem 0.25rem var(--color-main-soft);
+    box-shadow: 0px 0.3125rem 0.3125rem -0.1875rem rgba(0, 0, 0, 0.2), 0px 0.5rem 0.625rem 0.0625rem rgba(0, 0, 0, 0.14), 0px 0.1875rem 0.875rem 0.125rem rgba(0, 0, 0, 0.12);
     border-radius: 50%;
     opacity: 0;
     visibility: hidden;
@@ -582,7 +582,7 @@ form.crossable.htmx-request input {
 
 .theme-icon i {
     position: absolute;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 0.125rem 0.25rem rgba(0, 0, 0, 0.3));
     z-index: 1;
 }
 
@@ -608,7 +608,7 @@ form.crossable.htmx-request input {
     box-shadow: 0rem 0rem 1rem var(--color-main-hard);
     border: 0.5rem solid
         color-mix(in srgb, var(--color-main-soft) 90%, transparent);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(0.125rem);
     top: 35%;
     left: 35%;
     width: 30%;
@@ -633,6 +633,10 @@ form.crossable.htmx-request input {
     transition-timing-function: var(--ease-in-out);
 }
 
+.accent-button {
+    box-shadow: 0px 0.1875rem 0.1875rem -0.125rem rgba(0, 0, 0, 0.2), 0px 0.1875rem 0.25rem 0px rgba(0, 0, 0, 0.14), 0px 0.0625rem 0.5rem 0px rgba(0, 0, 0, 0.12);
+}
+
 .accent-button:hover,
 .accent-button.active:active:hover {
     cursor: pointer;
@@ -646,6 +650,7 @@ form.crossable.htmx-request input {
     --tw-gradient-position: from 45deg in oklab;
     --tw-gradient-to: color-mix(in oklab, var(--color-accent-dark) 30%, transparent);
     --tw-gradient-via: color-mix(in oklab, var(--color-accent-light) 50%, transparent);
+    box-shadow: inset 0px 0.25rem 0.5rem 0px rgba(0, 0, 0, 0.25);
 }
 
 .accent-button.active:hover,
@@ -661,7 +666,7 @@ form.crossable.htmx-request input {
 }
 
 .custom-svg-marker svg {
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0.125rem 0.125rem 0.125rem rgba(0, 0, 0, 0.3));
     transition: transform 0.2s;
 }
 
@@ -717,6 +722,15 @@ form.crossable.htmx-request input {
     width: 10rem;
 }
 
+.grid-item picture {
+    mask-image:
+        linear-gradient(to right, #FFFFFF calc(100% - 0.5rem), transparent 100%),
+        linear-gradient(to left, #FFFFFF calc(100% - 0.5rem), transparent 100%),
+        linear-gradient(to top, #FFFFFF calc(100% - 0.5rem), transparent 100%),
+        linear-gradient(to bottom, #FFFFFF calc(100% - 0.5rem), transparent 100%);
+    mask-composite: intersect;
+}
+
 .grid-sizer {
     width: 10.5rem;
 }
@@ -738,6 +752,10 @@ form.crossable.htmx-request input {
 .grid-item:hover .grid-item-index {
     visibility: hidden;
     opacity: 0;
+}
+
+.grid-item:hover picture {
+    mask-image: none;
 }
 
 .grid-item-2x {
