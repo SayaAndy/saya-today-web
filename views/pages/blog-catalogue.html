@@ -45,50 +45,50 @@
     </symbol>
 </svg>
 <div class="flex md:flex-row flex-col text-base h-full">
-    <div class="relative flex shrink-0 w-full max-h-[30%] md:min-w-1/10 md:max-w-1/4 md:max-h-full md:h-full md:w-fit">
-        <div class="absolute w-full h-full inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+    <div class="relative flex shrink-0 w-full max-h-[30%] md:min-w-1/10 md:max-w-1/4 md:max-h-full md:h-full md:w-fit shadow-elevation-6">
+        <div class="absolute w-full h-full pointer-events-none z-20"></div>
         <form hx-get="/api/v1/blog-search" hx-vals='{"lang": "{{ .Lang }}"}' hx-target=".blog-cards" hx-swap="innerHTML"
-            class="tags-list relative flex flex-col w-full bg-paper bg-background-light">
-            <div class="flex flex-col overflow-y-auto">
+            class="tags-list relative flex flex-col w-full">
+            <div class="flex flex-col bg-paper bg-background-light overflow-y-auto inset-shadow-elevation-6">
                 <fieldset>
                     <legend class="font-bold w-full text-center">{{ l $.Lang "BlogSearch" "OrderByHeader" }}</legend>
                     <div class="md:flex flex-col grid grid-cols-3 grid-rows-2 grid-flow-col">
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortTitleAsc" name="sort" value="titleAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "titleAsc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "TitleOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-letter-asc"/></svg>
                             </label>
                         </div>
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortTitleDesc" name="sort" value="titleDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "titleDesc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "TitleOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-letter-desc"/></svg>
                             </label>
                         </div>
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortActionDateAsc" name="sort" value="actionDateAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "actionDateAsc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "ActionDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-asc"/></svg>
                             </label>
                         </div>
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortActionDateDesc" name="sort" value="actionDateDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "actionDateDesc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "ActionDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-desc"/></svg>
                             </label>
                         </div>
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortPublicationDateAsc" name="sort" value="publicationDateAsc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "publicationDateAsc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "PublicationDateOrdered" }}
                                 <svg viewBox="0 0 24 24" class="h-8"><use href="#icon-arrange-number-asc"/></svg>
                             </label>
                         </div>
-                        <div>
+                        <div class="m-1">
                             <label class="flex justify-start gap-1 items-center">
                                 <input type="radio" id="sortPublicationDateDesc" name="sort" value="publicationDateDesc" class="bg-accent-light border-transparent text-accent-deep focus:border-transparent focus:bg-accent-light focus:ring-1 focus:ring-offset-2 focus:ring-accent-deep" {{ if eq .QuerySort "publicationDateDesc" }}checked{{ end }}>
                                 {{ l $.Lang "BlogSearch" "PublicationDateOrdered" }}
@@ -111,23 +111,20 @@
                     </div>
                 </fieldset>
             </div>
-            <hr class="border-t-2 border-dotted border-main-hard my-0.5">
-            <div class="flex flex-row bg-paper bg-background-dark p-0.5 rounded-1 h-12">
-                <button type="button" onclick="defaultSearchParams(); cleanHrefParams();" class="flex flex-1 justify-center text-main-hard bg-paper bg-accent-light cursor-pointer hover:bg-accent-deep active:text-background-dark transition-colors duration-500">
-                    <svg viewBox="0 0 24 24"><use href="#icon-camera-settings-flip"/></svg>
+            <hr class="border-t-[0.375rem] border-dotted border-main-hard my-2 mx-auto w-24">
+            <div class="flex flex-row p-0.5 rounded-1 h-12">
+                <button type="button" onclick="defaultSearchParams(); cleanHrefParams();" class="accent-button grow h-full">
+                    <svg class="h-full mx-auto" viewBox="0 0 24 24"><use href="#icon-camera-settings-flip"/></svg>
                 </button>
-                <div class="w-1 bg-paper bg-background-light grow-0"></div>
-                <button type="submit" onclick="setHrefParams();" class="flex flex-1 justify-center text-main-hard bg-paper bg-accent-light cursor-pointer hover:bg-accent-deep active:text-background-dark transition-colors duration-500">
-                    <svg viewBox="0 0 24 24"><use href="#icon-search-magnifier"/></svg>
+                <button type="submit" onclick="setHrefParams();" class="accent-button grow h-full">
+                    <svg class="h-full mx-auto" viewBox="0 0 24 24"><use href="#icon-search-magnifier"/></svg>
                 </button>
             </div>
         </form>
     </div>
 
-    <div class="w-[0.5dvh] border-r-2 border-dotted border-main-hard bg-paper bg-background-dark"></div>
-
     <div class="relative flex grow h-full">
-        <div class="absolute w-full h-full inset-0 inset-shadow-[0_0_0.4rem_black] pointer-events-none z-20"></div>
+        <div class="absolute w-full h-full inset-0 inset-shadow-elevation-6 pointer-events-none z-20"></div>
         <div hx-get="/api/v1/blog-search" hx-vals='js:{lang: "{{ .Lang }}", tz: clientTimeZone, highlight: "{{ .PreviousBlogPage }}"}' hx-target="this" hx-swap="innerHTML" hx-trigger="load" hx-include=".tags-list"
             class="blog-cards relative grow flex flex-col overflow-y-auto bg-paper bg-background-light pr-2">
             Loading...

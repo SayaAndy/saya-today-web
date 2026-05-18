@@ -45,7 +45,7 @@ func (t *TailwindTransformer) Transform(node *ast.Document, reader text.Reader, 
 			node.SetAttribute([]byte("class"), []byte("text-base/[2] font-gentium tracking-[.0125rem]"))
 
 		case *ast.Blockquote:
-			node.SetAttribute([]byte("class"), []byte("border-l-2 border-main-medium bg-paper bg-background-dark p-1 mb-2 italic font-thin"))
+			node.SetAttribute([]byte("class"), []byte("border-l-[0.125rem] border-main-medium bg-paper bg-background-dark p-1 mb-2 italic font-thin"))
 
 		case *ast.CodeSpan:
 			node.SetAttribute([]byte("class"), []byte("bg-paper bg-background-dark"))

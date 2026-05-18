@@ -42,7 +42,7 @@ func (r *GetLikeHandler) Render(c *fiber.Ctx, supplements *router.Supplements, l
 		return fiber.StatusBadRequest, fmt.Errorf("error getting path from referer: %w", err)
 	}
 
-	if len(pathParts) != 3 && pathParts[1] != "blog" {
+	if len(pathParts) != 3 || pathParts[1] != "blog" {
 		return fiber.StatusBadRequest, fmt.Errorf("invalid path format: expected '/:lang/blog/:page', got '%s'", path)
 	}
 
