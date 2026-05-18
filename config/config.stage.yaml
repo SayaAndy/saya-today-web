@@ -56,19 +56,19 @@ mail:
 canonicalEndpoint: "https://${FQDN}"
 photoStorage:
   full:
-    baseUrl: https://photos.saya.uz/jpeg-full/%s
+    baseUrl: https://cdn.saya.uz/jpeg-full/%s
   webp:
-    baseUrl: https://photos.saya.uz/webp-full/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-full/%s.webp
   thumbnail1600p:
-    baseUrl: https://photos.saya.uz/webp-1600p/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-1600p/%s.webp
   thumbnail1200p:
-    baseUrl: https://photos.saya.uz/webp-1200p/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-1200p/%s.webp
   thumbnail800p:
-    baseUrl: https://photos.saya.uz/webp-800p/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-800p/%s.webp
   thumbnail560p:
-    baseUrl: https://photos.saya.uz/webp-560p/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-560p/%s.webp
   thumbnail320p:
-    baseUrl: https://photos.saya.uz/webp-320p/%s.webp
+    baseUrl: https://cdn.saya.uz/webp-320p/%s.webp
   homePageGifs:
     baseUrl: https://cdn.saya.uz/static/home-page-gifs/otter-%s.gif
     indexes: ["1", "2", "3"]
