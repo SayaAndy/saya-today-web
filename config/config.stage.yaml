@@ -31,11 +31,11 @@ localePath: ./locale/
 availableLanguages:
   - name: ru
     alt: Русский
-    flag: https://cdn.saya.uz/static/flags/ru.svg
+    flag: https://cdn.saya.uz/stats/flags/ru.svg
     locFile: localization.ru.yaml
   - name: en
     alt: English
-    flag: https://cdn.saya.uz/static/flags/gb.svg
+    flag: https://cdn.saya.uz/stats/flags/gb.svg
     locFile: localization.en.yaml
 auth:
   db:
@@ -70,10 +70,10 @@ photoStorage:
   thumbnail320p:
     baseUrl: https://cdn.saya.uz/webp-320p/%s.webp
   homePageGifs:
-    baseUrl: https://cdn.saya.uz/static/home-page-gifs/otter-%s.gif
+    baseUrl: https://cdn.saya.uz/stats/home-page-gifs/otter-%s.gif
     indexes: ["1", "2", "3"]
 staticStorage:
-  baseUrl: https://cdn.saya.uz/static
+  baseUrl: https://cdn.saya.uz/stats
   map:
     baseUrl: https://cdn.saya.uz/map
     pmTiles: global.pmtiles
