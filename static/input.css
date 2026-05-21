@@ -87,6 +87,10 @@ body {
     scrollbar-color: var(--color-background-light) var(--color-main-soft);
 }
 
+body.glightbox-open {
+    height: 100dvh;
+}
+
 @media screen and (min-width: 900px) and (min-height: 900px) {
     html {
         font-size: clamp(16px, min(1dvw, 1dvh) + 7px, 20px);
@@ -900,8 +904,8 @@ form.crossable.htmx-request input {
 }
 
 .ram-frame {
-    width: 20vmin;
-    height: 20vmin;
+    width: 8rem;
+    height: 8rem;
     user-select: none;
     -webkit-user-select: none;
 }
