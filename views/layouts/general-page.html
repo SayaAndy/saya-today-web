@@ -213,18 +213,8 @@
             var seed = cyrb128("{{ .Title }}");
             var rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
 
-            function calculateVmin(percent) {
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-
-                const smallerDimension = Math.min(
-                    viewportWidth,
-                    viewportHeight,
-                );
-
-                const vminValue = (smallerDimension / 100) * percent;
-
-                return vminValue;
+            function calculateRem(remNum) {
+                return remNum * parseFloat(getComputedStyle(document.documentElement).fontSize);
             }
 
             const _probe = document.createElement('div');
@@ -319,7 +309,7 @@
                     theme = document.body.getAttribute("data-theme");
                 }
 
-                vmin = calculateVmin(1);
+                rem = calculateRem(1);
                 var clWidth = document.documentElement.clientWidth;
                 var clHeight = document.documentElement.clientHeight;
 
@@ -338,11 +328,11 @@
                                 "z-0",
                                 "absolute",
                             );
-                            const x = Math.floor(rand() * clWidth);
-                            const y = Math.floor(rand() * clHeight * 0.8);
                             const rot = rand() * 90;
                             const animDuration = rand() * 10 + 3;
                             const sz = Math.floor(rand() * 8) + 12;
+                            const x = Math.floor(rand() * clWidth - 1.42 * sz);  // 1.42 ~ sqrt(2)
+                            const y = Math.floor(rand() * clHeight * 0.8);
                             star.style.transform = `translateX(${x}px) translateY(${y}px) rotate(${rot}deg)`;
                             star.style.animationDuration = `${animDuration}s`;
                             star.style.fontSize = `${sz}px`;
@@ -362,14 +352,14 @@
                             );
                             let x, y;
                             outerLoop: while (true) {
-                                x = Math.floor(rand() * clWidth - 20 * vmin);
-                                y = Math.floor(rand() * clHeight - 20 * vmin);
+                                x = Math.floor(rand() * clWidth - 22.64 * rem) + 11.32 * rem;  // 11.32 ~ 8 * sqrt(2)
+                                y = Math.floor(rand() * clHeight - 22.64 * rem) + 11.32 * rem;
                                 for (j = 0; j < i - 1; j++) {
                                     const xd = frameCenters[j].x - x;
                                     const yd = frameCenters[j].y - y;
                                     if (
                                         Math.sqrt(xd * xd + yd * yd) <
-                                        30 * vmin
+                                        23 * rem
                                     ) {
                                         continue outerLoop;
                                     }
@@ -713,17 +703,6 @@
                     icon.classList.add("active");
                 }
             });
-
-            function calculateVmax(percent) {
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-
-                const largerDimension = Math.max(viewportWidth, viewportHeight);
-
-                const vmaxValue = (largerDimension / 100) * percent;
-
-                return vmaxValue;
-            }
 
             function positionThemeIcons() {
                 const sliceAngle = 360 / themeIcons.length;
