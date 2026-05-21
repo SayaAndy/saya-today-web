@@ -156,7 +156,13 @@ func (r *BlogPageHandler) RenderHeader(c *fiber.Ctx, supplements *router.Supplem
 		return fiber.StatusNotFound, fmt.Errorf("could not read '%s' for metadata: %w", path, err)
 	}
 
+	pageTitle := metadata.Title
+	if metadata.Medley != "" {
+		pageTitle += " // " + l10n.T.GetPath(lang, "Medleys", metadata.Medley).(string)
+	}
+
 	templateMap["Title"] = metadata.Title
+	templateMap["PageTitle"] = pageTitle
 
 	return fiber.StatusOK, nil
 }

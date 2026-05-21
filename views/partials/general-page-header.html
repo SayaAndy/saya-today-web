@@ -1,4 +1,4 @@
-<title>{{ .Title }} // SAYA.UZ</title>
+<title>{{ or .PageTitle .Title }}</title>
 <div class="flex flex-row mb-2">
     {{ block "header" . }}{{ end }}
     <h1
