@@ -55,8 +55,12 @@ mail:
     onNewPost: "0/5 * * * *"
 canonicalEndpoint: "https://${FQDN}"
 meta:
-  googleSiteVerification: "${GOOGLE_SITE_VERIFICATION}"
-  yandexVerification: "${YANDEX_VERIFICATION}"
+  - name: google-site-verification
+    value: "${GOOGLE_SITE_VERIFICATION}"
+  - name: yandex-verification
+    value: "${YANDEX_VERIFICATION}"
+  - name: msvalidate.01
+    value: "${BING_VERIFICATION}"
 photoStorage:
   full:
     baseUrl: https://cdn.saya.uz/photos/jpeg-full/%s

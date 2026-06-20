@@ -47,11 +47,8 @@ func (r *RootHandler) AddMeta(c *fiber.Ctx, supplements *router.Supplements, lan
 		{Property: "og:url", Content: fmt.Sprint(templateMap["CanonicalEndpoint"]) + "/"},
 		{Property: "og:type", Content: "website"},
 	}
-	if supplements.Meta.GoogleSiteVerification != "" {
-		meta = append(meta, router.MetaField{Name: "google-site-verification", Content: supplements.Meta.GoogleSiteVerification})
-	}
-	if supplements.Meta.YandexVerification != "" {
-		meta = append(meta, router.MetaField{Name: "yandex-verification", Content: supplements.Meta.YandexVerification})
+	for _, field := range supplements.Meta {
+		meta = append(meta, router.MetaField{Name: field.Name, Content: field.Value})
 	}
 	return meta, nil
 }
