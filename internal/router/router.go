@@ -102,7 +102,7 @@ type Supplements struct {
 	BlogTrigger        *blogtrigger.BlogTriggerScheduler
 	TemplateManager    *templatemanager.TemplateManager
 	MarkdownRenderer   goldmark.Markdown
-	Meta               config.MetaConfig
+	Meta               []config.MetaConfig
 	PhotoStorage       config.PhotoStorageConfig
 	StaticStorage      config.StaticStorageConfig
 }

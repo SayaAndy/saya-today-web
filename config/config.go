@@ -20,7 +20,7 @@ type Config struct {
 	Auth               AuthConfig                `json:"Auth" yaml:"auth" validate:"required"`
 	Mail               MailConfig                `json:"Mail" yaml:"mail" validate:"required"`
 	CanonicalEndpoint  string                    `json:"CanonicalEndpoint" yaml:"canonicalEndpoint" validate:"required"`
-	Meta               MetaConfig                `json:"Meta" yaml:"meta"`
+	Meta               []MetaConfig              `json:"Meta" yaml:"meta"`
 	PhotoStorage       PhotoStorageConfig        `json:"PhotoStorage" yaml:"photoStorage"`
 	StaticStorage      StaticStorageConfig       `json:"StaticStorage" yaml:"staticStorage" validate:"required"`
 	AllowOrigins       []string                  `json:"AllowOrigins" yaml:"allowOrigins"`
@@ -237,8 +237,8 @@ type TriggerConfig struct {
 }
 
 type MetaConfig struct {
-	GoogleSiteVerification string `json:"GoogleSiteVerification" yaml:"googleSiteVerification"`
-	YandexVerification     string `json:"YandexVerification" yaml:"yandexVerification"`
+	Name  string `json:"Name" yaml:"name"`
+	Value string `json:"Value" yaml:"value"`
 }
 
 type PhotoStorageConfig struct {
