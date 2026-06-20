@@ -99,4 +99,5 @@ jobs:
             -e saya_today_web_mail_username="${{ secrets.MAIL_USERNAME }}" \
             -e saya_today_web_mail_password="${{ secrets.MAIL_PASSWORD }}" \
             -e saya_today_google_site_verification="${{ secrets.GOOGLE_SITE_VERIFICATION }}" \
-            -e saya_today_yandex_verification="${{ secrets.YANDEX_VERIFICATION }}"
+            -e saya_today_yandex_verification="${{ secrets.YANDEX_VERIFICATION }}" \
+            -e saya_today_bing_verification="${{ secrets.BING_VERIFICATION }}"
